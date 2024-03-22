@@ -9,6 +9,7 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/library-zero-crypto-kotlin" />
             <option value="$PROJECT_DIR$/library-zero-identification-kotlin" />
             <option value="$PROJECT_DIR$/library-zero-kotlin" />
           </set>

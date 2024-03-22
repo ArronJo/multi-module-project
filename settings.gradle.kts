@@ -4,3 +4,4 @@ plugins {
 rootProject.name = "multi-module-project"
 include("library-zero-kotlin")
 include("library-zero-identification-kotlin")
+include("library-zero-crypto-kotlin")

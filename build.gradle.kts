@@ -10,7 +10,9 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
+//    testImplementation("org.jetbrains.kotlin:kotlin-test")
+//    implementation(project(":library-zero-kotlin"))
+
 }
 
 tasks.test {
