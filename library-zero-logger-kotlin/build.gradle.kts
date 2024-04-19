@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.9.22"
+    kotlin("jvm")
 }
 
 group = "com.snc.zero"
@@ -10,8 +10,10 @@ repositories {
 }
 
 dependencies {
-    //testImplementation("org.jetbrains.kotlin:kotlin-test")
-    //implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    testImplementation(kotlin("test"))
+
+    implementation("ch.qos.logback:logback-classic:1.4.14")
+    implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
 }
 
 tasks.test {

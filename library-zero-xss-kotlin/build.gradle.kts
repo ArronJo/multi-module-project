@@ -1,8 +1,9 @@
 plugins {
-    kotlin("jvm") version "1.9.22"
+    kotlin("jvm")
 }
 
 group = "com.snc.zero"
+version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -14,6 +15,8 @@ dependencies {
     implementation(project(":library-zero-logger-kotlin"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
+
+    implementation("org.jsoup:jsoup:1.16.1")
 }
 
 tasks.test {

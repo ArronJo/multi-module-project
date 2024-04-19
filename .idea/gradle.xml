@@ -5,13 +5,19 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="" />
+        <option name="gradleJvm" value="1.8" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/library-zero-age-kotlin" />
+            <option value="$PROJECT_DIR$/library-zero-core-kotlin" />
             <option value="$PROJECT_DIR$/library-zero-crypto-kotlin" />
+            <option value="$PROJECT_DIR$/library-zero-file-manager-kotlin" />
             <option value="$PROJECT_DIR$/library-zero-identification-kotlin" />
-            <option value="$PROJECT_DIR$/library-zero-kotlin" />
+            <option value="$PROJECT_DIR$/library-zero-logger-kotlin" />
+            <option value="$PROJECT_DIR$/library-zero-test-kotlin" />
+            <option value="$PROJECT_DIR$/library-zero-validation-kotlin" />
+            <option value="$PROJECT_DIR$/library-zero-xss-kotlin" />
           </set>
         </option>
       </GradleProjectSettings>
