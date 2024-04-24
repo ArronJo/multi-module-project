@@ -1,6 +1,6 @@
 package com.snc.zero.test.timer
 
-import com.snc.zero.test.extensions.debug.toSecDisplay
+import com.snc.zero.test.extensions.debug.displayInSeconds
 import kotlin.math.max
 
 class TestTimer {
@@ -12,6 +12,6 @@ class TestTimer {
     }
 
     fun stop(): String {
-        return max(System.currentTimeMillis() - startTime, 0).toSecDisplay()
+        return max(System.currentTimeMillis() - startTime, 0).displayInSeconds()
     }
 }
