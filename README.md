@@ -12,6 +12,10 @@
 
 ### 2024-04-25
 
+![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Byte, HexString 신규 함수 추가
+- (String, ByteArray, Byte).toHexString()
+- (String).toBytes()
+
 ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : XSS, Escape 신규 함수 추가
 - (String).cleanXSS()
 - (String).escapeHtmlEntities()
