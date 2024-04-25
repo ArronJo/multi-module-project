@@ -10,6 +10,13 @@
 ---
 ## Release Note
 
+### 2024-04-25
+
+![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : XSS, Escape 신규 함수 추가
+- (String).cleanXSS()
+- (String).escapeHtmlEntities()
+- (String).unescapeHtmlEntities()
+
 ### 2024-04-23
 
 ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : 신규 확장 함수 추가
@@ -17,7 +24,9 @@
 - (Int, Long).padEnd()
 
 ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : core module 추가
+
 ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : logger module 추가
+
 ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : test module 추가
 
 
