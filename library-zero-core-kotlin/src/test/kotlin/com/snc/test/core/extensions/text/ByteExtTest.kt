@@ -1,13 +1,10 @@
 package com.snc.test.core.extensions.text
 
 import com.snc.zero.core.extensions.text.toBytes
-import com.snc.zero.core.extensions.text.toHexString
 import com.snc.zero.core.extensions.text.toStrings
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseTest
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }
