@@ -5,12 +5,17 @@ plugins {
 group = "com.snc.zero"
 version = "1.0-SNAPSHOT"
 
+buildscript {
+    extra.apply {
+        set("jvmToolchainVersion", 17)
+    }
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    //testImplementation("org.jetbrains.kotlin:kotlin-test")
     //implementation("org.jetbrains.kotlin:kotlin-stdlib")
 }
 
@@ -18,5 +23,5 @@ tasks.test {
     useJUnitPlatform()
 }
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(rootProject.extra["jvmToolchainVersion"] as Int)
 }

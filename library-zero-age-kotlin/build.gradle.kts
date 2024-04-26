@@ -10,10 +10,12 @@ repositories {
 }
 
 dependencies {
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation(kotlin("test"))
+
     testImplementation(project(":library-zero-test-kotlin"))
     implementation(project(":library-zero-logger-kotlin"))
-
     implementation(project(":library-zero-core-kotlin"))
 }
 
@@ -21,5 +23,5 @@ tasks.test {
     useJUnitPlatform()
 }
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(rootProject.extra["jvmToolchainVersion"] as Int)
 }
