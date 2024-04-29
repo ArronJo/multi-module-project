@@ -12,52 +12,74 @@
 
 ### 2024-04-26
 
-![chore](https://img.shields.io/badge/Chore-blue.svg) : build.gradle.kts 정리
-
-- jvmToolchain 버전 관리 변수 설정
-- test framework 지정
+build.gradle.kts 정리
+- ![chore](https://img.shields.io/badge/Chore-blue.svg): jvmToolchain 버전 관리 변수 설정
     ```
-    The automatic loading of test framework implementation dependencies has been deprecated.
-    This is scheduled to be removed in Gradle 9.0.
-    Declare the desired test framework directly on the test suite or explicitly declare
-    the test framework implementation dependencies on the test's runtime classpath.
-    Consult the upgrading guide for further information:
-        https://docs.gradle.org/8.4/userguide/upgrading_version_8.html#test_framework_implementation_dependencies
+    buildscript {
+        extra.apply {
+            set("jvmToolchainVersion", 17)
+        }
+    }
+
+    kotlin {
+        jvmToolchain(rootProject.extra["jvmToolchainVersion"] as Int)
+    }
+    ```
+- ![chore](https://img.shields.io/badge/Chore-blue.svg): test framework 지정
+    ```
+    # The automatic loading of test framework implementation dependencies has been deprecated.
+    # This is scheduled to be removed in Gradle 9.0.
+    # Declare the desired test framework directly on the test suite or explicitly declare the test framework implementation dependencies on the test's runtime classpath.
+    # Consult the upgrading guide for further information:
+    #    https://docs.gradle.org/8.4/userguide/upgrading_version_8.html#test_framework_implementation_dependencies
+
+    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     ```
 
-![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : 문자열 검수 관련 신규 함수 추가
-- (String).isLetter()
-- (String).isUpperCase()
-- (String).isLowerCase()
-- (String).isNumber()
-- (String).isHangul()
-- (String).validate()
-- (String).validatePassword()
+
+Added new "validation" module.
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : 문자열 검수 관련 신규 함수 추가
+  - (String).isLetter()
+  - (String).isUpperCase()
+  - (String).isLowerCase()
+  - (String).isNumber()
+  - (String).isHangul()
+  - (String).validate()
+  - (String).validatePassword()
 
 
 ### 2024-04-25
 
-![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Byte, HexString 신규 함수 추가
-- (String, ByteArray, Byte).toHexString()
-- (String).toBytes()
+Updated "core" module.
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Byte, HexString 신규 함수 추가
+  - (String, ByteArray, Byte).toHexString()
+  - (String).toBytes()
 
-![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : XSS, Escape 신규 함수 추가
-- (String).cleanXSS()
-- (String).escapeHtmlEntities()
-- (String).unescapeHtmlEntities()
+
+Added new "xss" module.
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : XSS, Escape 신규 함수 추가
+  - (String).cleanXSS()
+  - (String).escapeHtmlEntities()
+  - (String).unescapeHtmlEntities()
 
 
 ### 2024-04-23
 
-![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : 신규 확장 함수 추가
-- (Int, Long).padStart()
-- (Int, Long).padEnd()
 
-![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : core module 추가
+Updated "core" module.
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : 신규 확장 함수 추가
+  - (Int, Long).padStart()
+  - (Int, Long).padEnd()
 
-![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : logger module 추가
+Added new "logger" module.
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Wrapping the Logging Module
+  - TLogger.kt 추가
+  - Deprecated API 미구현
 
-![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : test module 추가
+Added new "test" module.
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : JUnit 테스트 용 부모 클래스 추가
+  - BaseTest.kt 추가
 
 
 ### 2024-04-21
