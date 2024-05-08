@@ -17,6 +17,8 @@ dependencies {
     testImplementation(project(":library-zero-test-kotlin"))
     implementation(project(":library-zero-logger-kotlin"))
     implementation(project(":library-zero-core-kotlin"))
+
+    implementation("org.bouncycastle:bcprov-jdk18on:1.78.1")
 }
 
 tasks.test {

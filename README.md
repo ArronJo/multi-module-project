@@ -21,6 +21,16 @@
 ---
 ## Release Note
 
+### 2024-05-08
+
+Updated "crypto" module.
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : 해시 신규 클래스 추가
+  - class Hash
+    - object SHA-2
+    - object SHA-3
+    - object SHAKE
+
+
 ### 2024-05-03
 
 Added new "crypto" module.
