@@ -23,19 +23,27 @@ object SHA3 {
 
     private fun digest(msg: String, bitLength: Int = 256, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
         checkBitLength(bitLength)
-        val digest = SHA3Digest(if (bitLength == 128) { 256 } else { bitLength })
+        val digest = SHA3Digest(bitLength)
         val ib = msg.toByteArray(charSet)
         val ob = ByteArray(digest.digestSize)
+        salt(digest, salt, charSet)
+        digest.update(ib, 0, ib.size)
+        iteration(digest, ib, iterationCount, charSet)
+        digest.doFinal(ob, 0)
+        return ob
+    }
+
+    private fun salt(digest: org.bouncycastle.crypto.digests.KeccakDigest, salt: String = "", charSet: Charset = Charsets.UTF_8) {
         if (salt.isNotEmpty()) {
             val sb = salt.toByteArray(charSet)
             digest.update(sb, 0, sb.size)
         }
-        digest.update(ib, 0, ib.size)
+    }
+
+    private fun iteration(digest: org.bouncycastle.crypto.digests.KeccakDigest, ib: ByteArray, iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8) {
         for (i in 1..iterationCount) {
             digest.update(ib, 0, ib.size)
         }
-        digest.doFinal(ob, 0)
-        return ob
     }
 
     private fun checkBitLength(bitLength: Int): Int {

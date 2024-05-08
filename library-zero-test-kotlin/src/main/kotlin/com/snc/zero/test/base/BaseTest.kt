@@ -34,14 +34,14 @@ open class BaseTest {
         @JvmStatic
         @BeforeAll
         fun setupBeforeAll() {
-
+            println()
         }
 
         // 해당 클래스에 있는 TestCase 실행 후
         @JvmStatic
         @AfterAll
         fun setupAfterAll() {
-
+            println()
         }
     }
 

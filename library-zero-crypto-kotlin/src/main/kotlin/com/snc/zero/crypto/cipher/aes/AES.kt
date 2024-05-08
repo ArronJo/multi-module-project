@@ -12,10 +12,7 @@ object AES {
     fun encrypt(data: ByteArray, key: String, iv: String, transform: String = "AES/CBC/PKCS5Padding"): ByteArray {
         val secretKey = SecretKeySpec(genKey(key), "AES")
         val cipher = Cipher.getInstance(transform)
-        var algoParameterSpec: AlgorithmParameterSpec = IvParameterSpec(genIv(iv))
-        if (transform.split("/")[1] == "GCM") {
-            algoParameterSpec = GCMParameterSpec(128, iv.toByteArray())
-        }
+        val algoParameterSpec = parameterSpec(iv, transform)
 
         cipher.init(
             Cipher.ENCRYPT_MODE,
@@ -28,10 +25,7 @@ object AES {
     fun decrypt(enc: ByteArray, key: String, iv: String, transform: String = "AES/CBC/PKCS5Padding"): ByteArray {
         val secretKey = SecretKeySpec(genKey(key), "AES")
         val cipher = Cipher.getInstance(transform)
-        var algoParameterSpec: AlgorithmParameterSpec = IvParameterSpec(genIv(iv))
-        if (transform.split("/")[1] == "GCM") {
-            algoParameterSpec = GCMParameterSpec(128, iv.toByteArray())
-        }
+        val algoParameterSpec = parameterSpec(iv, transform)
 
         cipher.init(
             Cipher.DECRYPT_MODE,
@@ -39,6 +33,14 @@ object AES {
             algoParameterSpec
         )
         return cipher.doFinal(enc)
+    }
+
+    private fun parameterSpec(iv: String, transform: String): AlgorithmParameterSpec {
+        var algoParameterSpec: AlgorithmParameterSpec = IvParameterSpec(genIv(iv))
+        if (transform.split("/")[1] == "GCM") {
+            algoParameterSpec = GCMParameterSpec(128, iv.toByteArray())
+        }
+        return algoParameterSpec
     }
 
     private fun genKey(key: String): ByteArray {

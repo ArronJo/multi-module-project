@@ -3,8 +3,6 @@ package com.snc.zero.crypto.cipher
 import com.snc.zero.crypto.cipher.aes.AES
 import com.snc.zero.crypto.encoder.Decoder
 import com.snc.zero.crypto.encoder.Encoder
-import java.security.Key
-import javax.crypto.SecretKey
 
 class Cipher private constructor(var algo: Algo = Algo.AES) {
 

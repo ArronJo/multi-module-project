@@ -1,6 +1,5 @@
 package com.snc.test.crypto.hash.sha3
 
-import com.snc.zero.core.extensions.random.getRandomString
 import com.snc.zero.core.extensions.text.toHexString
 import com.snc.zero.crypto.hash.sha3.SHAKE
 import com.snc.zero.logger.jvm.TLogging

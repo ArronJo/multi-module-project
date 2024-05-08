@@ -4,7 +4,7 @@ import com.snc.zero.core.extensions.text.toHexString
 import com.snc.zero.crypto.hash.sha3.SHA3
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseTest
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
@@ -33,7 +33,7 @@ class SHA3Test : BaseTest() {
         val v = SHA3.sha224(data).toHexString()
         // then
         logger.debug { "SHA3.sha224: $v" }
-        Assertions.assertEquals(v, "13783bdfa4a63b202d9aa1992eccdd68a9fa5e44539273d8c2b797cd")
+        assertEquals(v, "13783bdfa4a63b202d9aa1992eccdd68a9fa5e44539273d8c2b797cd")
     }
 
     @Test
@@ -50,10 +50,10 @@ class SHA3Test : BaseTest() {
         logger.debug { "SHA3.sha256: $v2" }
         logger.debug { "SHA3.sha256: $v3" }
         logger.debug { "SHA3.sha256: $v4" }
-        Assertions.assertEquals(v1, "f171cbb35dd1166a20f99b5ad226553e122f3c0f2fe981915fb9e4517aac9038")
-        Assertions.assertEquals(v2, "880780e2fd46effa0d5d75b70c6724581364b2a9f70ed87f7ced9a0053593813")
-        Assertions.assertEquals(v3, "1f41a7e6823007e5ffb4ec1ddc8a92956bcacf95c2df50669a6a0bbe7ea1a1a7")
-        Assertions.assertEquals(v4, "796d31c78846ab6cd55ac0beba39eaf0a64afa6ca376e7d1be862ac8c18c081a")
+        assertEquals(v1, "f171cbb35dd1166a20f99b5ad226553e122f3c0f2fe981915fb9e4517aac9038")
+        assertEquals(v2, "880780e2fd46effa0d5d75b70c6724581364b2a9f70ed87f7ced9a0053593813")
+        assertEquals(v3, "1f41a7e6823007e5ffb4ec1ddc8a92956bcacf95c2df50669a6a0bbe7ea1a1a7")
+        assertEquals(v4, "796d31c78846ab6cd55ac0beba39eaf0a64afa6ca376e7d1be862ac8c18c081a")
     }
 
     @Test
@@ -64,7 +64,7 @@ class SHA3Test : BaseTest() {
         val v = SHA3.sha384(data).toHexString()
         // then
         logger.debug { "SHA3.sha384: $v" }
-        Assertions.assertEquals(
+        assertEquals(
             v,
             "6729a614db5c5c97920e15501d361ba2f445758012e181af1c6300a99d9a951553fcc4e14aa614db164f61a758c6d6c9"
         )
@@ -78,7 +78,7 @@ class SHA3Test : BaseTest() {
         val v = SHA3.sha512(data).toHexString()
         // then
         logger.debug { "SHA3.sha512: $v" }
-        Assertions.assertEquals(
+        assertEquals(
             v,
             "f6d1015e17df348f2d84b3b603648ae4bd14011f4e5b82f885e45587bcad48947d37d64501dc965c0f201171c44b656ee28ed9a5060aea1f2a336025320683d6"
         )
