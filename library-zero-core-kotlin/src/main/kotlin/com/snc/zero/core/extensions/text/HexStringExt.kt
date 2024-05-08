@@ -3,7 +3,7 @@ package com.snc.zero.core.extensions.text
 private val hexDigits = "0123456789abcdef".toCharArray()
 
 fun ByteArray.toHexString(): String {
-    val sb = StringBuilder(2 * this.size)
+    val sb = StringBuilder(this.size * 2)
     for (b in this) {
         val i = b.toInt()
         sb.append(hexDigits[i shr 4 and 0xf])
