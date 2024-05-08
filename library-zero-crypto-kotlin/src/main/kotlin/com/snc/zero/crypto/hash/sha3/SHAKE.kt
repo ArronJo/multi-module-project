@@ -20,7 +20,7 @@ object SHAKE {
         val ob = ByteArray(bitLength / 8)
         salt(digest, salt, charSet)
         digest.update(ib, 0, ib.size)
-        iteration(digest, ib, iterationCount, charSet)
+        iteration(digest, ib, iterationCount)
         digest.doOutput(ob, 0, ob.size)
         return ob
     }
@@ -32,7 +32,7 @@ object SHAKE {
         }
     }
 
-    private fun iteration(digest: org.bouncycastle.crypto.digests.KeccakDigest, ib: ByteArray, iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8) {
+    private fun iteration(digest: org.bouncycastle.crypto.digests.KeccakDigest, ib: ByteArray, iterationCount: Int = 0) {
         for (i in 1..iterationCount) {
             digest.update(ib, 0, ib.size)
         }

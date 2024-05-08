@@ -28,7 +28,7 @@ object SHA3 {
         val ob = ByteArray(digest.digestSize)
         salt(digest, salt, charSet)
         digest.update(ib, 0, ib.size)
-        iteration(digest, ib, iterationCount, charSet)
+        iteration(digest, ib, iterationCount)
         digest.doFinal(ob, 0)
         return ob
     }
@@ -40,7 +40,7 @@ object SHA3 {
         }
     }
 
-    private fun iteration(digest: org.bouncycastle.crypto.digests.KeccakDigest, ib: ByteArray, iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8) {
+    private fun iteration(digest: org.bouncycastle.crypto.digests.KeccakDigest, ib: ByteArray, iterationCount: Int = 0) {
         for (i in 1..iterationCount) {
             digest.update(ib, 0, ib.size)
         }

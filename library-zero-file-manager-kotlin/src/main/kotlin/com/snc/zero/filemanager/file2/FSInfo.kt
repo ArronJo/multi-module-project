@@ -1,10 +1,7 @@
 package com.snc.zero.filemanager.file2
 
-import com.snc.zero.logger.jvm.TLogging
 import java.text.DecimalFormat
 import kotlin.math.abs
-
-private val logger = TLogging.logger { }
 
 class FSInfo {
 
