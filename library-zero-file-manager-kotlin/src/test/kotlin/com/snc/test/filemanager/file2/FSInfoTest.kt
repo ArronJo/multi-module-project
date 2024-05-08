@@ -1,4 +1,4 @@
-package com.snc.test.filemanager.file
+package com.snc.test.filemanager.file2
 
 import com.snc.zero.filemanager.file2.FSInfo.Companion.getReadableFileSize
 import com.snc.zero.logger.jvm.TLogging
