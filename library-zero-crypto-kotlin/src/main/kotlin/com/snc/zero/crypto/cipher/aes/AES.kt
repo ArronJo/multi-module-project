@@ -7,13 +7,9 @@ import javax.crypto.spec.SecretKeySpec
 
 object AES {
 
-    private const val ALGORITHM = "AES"
-    private const val MODE = "CFB"
-    private const val PADDING = "PKCS5Padding"
-
-    fun encrypt(key: String, iv: String, data: ByteArray): ByteArray {
-        val secretKey = SecretKeySpec(genKey(key), ALGORITHM)
-        val cipher = Cipher.getInstance("$ALGORITHM/$MODE/$PADDING")
+    fun encrypt(data: ByteArray, key: String, iv: String, transform: String = "AES/CFB/PKCS5Padding"): ByteArray {
+        val secretKey = SecretKeySpec(genKey(key), "AES")
+        val cipher = Cipher.getInstance(transform)
         cipher.init(
             Cipher.ENCRYPT_MODE,
             secretKey,
@@ -22,9 +18,9 @@ object AES {
         return cipher.doFinal(data)
     }
 
-    fun decrypt(key: String, iv: String, enc: ByteArray): ByteArray {
-        val secretKey = SecretKeySpec(genKey(key), ALGORITHM)
-        val cipher = Cipher.getInstance("$ALGORITHM/$MODE/$PADDING")
+    fun decrypt(enc: ByteArray, key: String, iv: String, transform: String = "AES/CFB/PKCS5Padding"): ByteArray {
+        val secretKey = SecretKeySpec(genKey(key), "AES")
+        val cipher = Cipher.getInstance(transform)
         cipher.init(
             Cipher.DECRYPT_MODE,
             secretKey,

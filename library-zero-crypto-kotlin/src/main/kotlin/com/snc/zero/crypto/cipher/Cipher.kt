@@ -3,6 +3,8 @@ package com.snc.zero.crypto.cipher
 import com.snc.zero.crypto.cipher.aes.AES
 import com.snc.zero.crypto.encoder.Decoder
 import com.snc.zero.crypto.encoder.Encoder
+import java.security.Key
+import javax.crypto.SecretKey
 
 class Cipher private constructor(var algo: Algo = Algo.AES) {
 
@@ -20,6 +22,7 @@ class Cipher private constructor(var algo: Algo = Algo.AES) {
 
     private var key: String = ""
     private var iv: String = ""
+    private var transform: String = ""
 
     fun algo(algo: Algo): Cipher {
         this.algo = algo
@@ -32,20 +35,33 @@ class Cipher private constructor(var algo: Algo = Algo.AES) {
         return this
     }
 
+    fun transform(transform: String): Cipher {
+        this.transform = transform
+        return this
+    }
+
     fun encrypt(input: ByteArray): String {
-        return when (this.algo) {
+        return when (algo) {
             Algo.AES -> {
-                val enc = AES.encrypt(this.key, this.iv, input)
+                val enc = if (transform.isNotEmpty()) {
+                    AES.encrypt(input, key, iv, transform)
+                } else {
+                    AES.encrypt(input, key, iv)
+                }
                 Encoder.with(Encoder.Algo.BASE64).encode(enc)
             }
         }
     }
 
     fun decrypt(input: String): ByteArray {
-        return when (this.algo) {
+        return when (algo) {
             Algo.AES -> {
                 val decoded = Decoder.with(Decoder.Algo.BASE64).decode(input)
-                AES.decrypt(this.key, this.iv, decoded)
+                if (transform.isNotEmpty()) {
+                    AES.decrypt(decoded, key, iv, transform)
+                } else {
+                    AES.decrypt(decoded, key, iv)
+                }
             }
         }
     }
