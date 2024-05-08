@@ -23,6 +23,10 @@
 
 ### 2024-05-08
 
+Added new "file-manager" module.
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : FileInfo 클래스 추가
+
+
 Updated "crypto" module.
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : 해시 신규 클래스 추가
   - class Hash
