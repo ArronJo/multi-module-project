@@ -1,30 +1,42 @@
 package com.snc.zero.crypto.cipher.aes
 
 import com.snc.zero.crypto.hash.Hash
+import java.security.spec.AlgorithmParameterSpec
 import javax.crypto.Cipher
+import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
 object AES {
 
-    fun encrypt(data: ByteArray, key: String, iv: String, transform: String = "AES/CFB/PKCS5Padding"): ByteArray {
+    fun encrypt(data: ByteArray, key: String, iv: String, transform: String = "AES/CBC/PKCS5Padding"): ByteArray {
         val secretKey = SecretKeySpec(genKey(key), "AES")
         val cipher = Cipher.getInstance(transform)
+        var algoParameterSpec: AlgorithmParameterSpec = IvParameterSpec(genIv(iv))
+        if (transform.split("/")[1] == "GCM") {
+            algoParameterSpec = GCMParameterSpec(128, iv.toByteArray())
+        }
+
         cipher.init(
             Cipher.ENCRYPT_MODE,
             secretKey,
-            IvParameterSpec(genIv(iv))
+            algoParameterSpec
         )
         return cipher.doFinal(data)
     }
 
-    fun decrypt(enc: ByteArray, key: String, iv: String, transform: String = "AES/CFB/PKCS5Padding"): ByteArray {
+    fun decrypt(enc: ByteArray, key: String, iv: String, transform: String = "AES/CBC/PKCS5Padding"): ByteArray {
         val secretKey = SecretKeySpec(genKey(key), "AES")
         val cipher = Cipher.getInstance(transform)
+        var algoParameterSpec: AlgorithmParameterSpec = IvParameterSpec(genIv(iv))
+        if (transform.split("/")[1] == "GCM") {
+            algoParameterSpec = GCMParameterSpec(128, iv.toByteArray())
+        }
+
         cipher.init(
             Cipher.DECRYPT_MODE,
             secretKey,
-            IvParameterSpec(genIv(iv))
+            algoParameterSpec
         )
         return cipher.doFinal(enc)
     }
