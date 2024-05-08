@@ -30,6 +30,12 @@ Updated "crypto" module.
     - object SHA-3
     - object SHAKE
 
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Cipher Extension 함수 추가
+
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Encoder,Decoder Extension 함수 추가
+
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Hash Extension 함수 추가
+
 
 ### 2024-05-03
 
