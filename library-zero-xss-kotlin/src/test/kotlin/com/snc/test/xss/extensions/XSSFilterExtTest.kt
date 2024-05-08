@@ -14,6 +14,7 @@ private val logger = TLogging.logger { }
 class XSSFilterExtTest : BaseTest() {
 
     companion object {
+
         private lateinit var data1: String
         private lateinit var data2: String
 
@@ -40,7 +41,6 @@ class XSSFilterExtTest : BaseTest() {
         val v1 = data1.cleanXSS()
         // then
         logger.debug { "clean XSS 1 결과: $v1" }
-        //logger.debug("asddasasd {} 11111 {}.", "a", "b")
         //assertEquals(v1, false)
     }
 
@@ -51,6 +51,7 @@ class XSSFilterExtTest : BaseTest() {
         val v1 = data2.cleanXSS()
         // then
         logger.debug { "clean XSS 2 결과: $v1" }
+        //assertEquals(v1, false)
     }
 
     @Test

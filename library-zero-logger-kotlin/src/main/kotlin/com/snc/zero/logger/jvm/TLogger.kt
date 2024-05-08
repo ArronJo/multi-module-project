@@ -2,7 +2,6 @@ package com.snc.zero.logger.jvm
 
 import io.github.oshai.kotlinlogging.KLogger
 
-@Suppress("unused")
 class TLogger(private val logger: KLogger) {
 
     fun debug(msg: () -> Any?): Unit =
