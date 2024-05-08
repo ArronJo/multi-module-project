@@ -20,7 +20,6 @@ class Base64Test : BaseTest() {
         // then
         logger.debug { "Base64 decoded v1: $v" }
         logger.debug { "Base64 decoded v2: $v2" }
-        //assertEquals(v, "asdsncynh 2984yhd89`yu8989189u9jqfdasjgfuiasgds")
         assertEquals(v, v2)
     }
 
@@ -34,7 +33,6 @@ class Base64Test : BaseTest() {
         // then
         logger.debug { "Base64 decoded v1: $v" }
         logger.debug { "Base64 decoded v2: $v2" }
-        //assertEquals(v, "Special chars: ûûÿ here.")
         assertEquals(v, v2)
     }
 }

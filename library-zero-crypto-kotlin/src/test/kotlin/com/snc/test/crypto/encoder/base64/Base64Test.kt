@@ -21,7 +21,6 @@ class Base64Test : BaseTest() {
         // then
         logger.debug { "Base64 encoded 1: $v" }
         logger.debug { "Base64 encoded 2: $v2" }
-        //assertEquals(v, "YXNkc25jeW5oIDI5ODR5aGQ4OWB5dTg5ODkxODl1OWpxZmRhc2pnZnVpYXNnZHM=")
         assertEquals(v, v2)
     }
 
