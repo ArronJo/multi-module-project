@@ -1,7 +1,7 @@
 package com.snc.test.xss.extensions
 
 import com.snc.zero.logger.jvm.TLogging
-import com.snc.zero.test.base.BaseTest
+import com.snc.zero.test.base.BaseJUnit5Test
 import com.snc.zero.xss.extensions.xss.cleanXSS
 import org.jsoup.Jsoup
 import org.jsoup.safety.Safelist
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 private val logger = TLogging.logger { }
 
 @Suppress("NonAsciiCharacters")
-class XSSFilterExtTest : BaseTest() {
+class XSSFilterExtTest : BaseJUnit5Test() {
 
     companion object {
 

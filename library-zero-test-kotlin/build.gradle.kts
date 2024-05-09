@@ -15,6 +15,9 @@ dependencies {
     testImplementation(kotlin("test"))
     implementation("org.junit.jupiter:junit-jupiter-api:5.6.3")
 
+    // https://testng.org/#_download
+    testImplementation("org.testng:testng:7.9.0")
+
     implementation(project(":library-zero-logger-kotlin"))
 }
 

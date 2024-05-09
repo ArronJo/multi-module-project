@@ -3,15 +3,14 @@ package com.snc.test.crypto.hash.sha2
 import com.snc.zero.core.extensions.text.toHexString
 import com.snc.zero.crypto.hash.sha2.SHA2
 import com.snc.zero.logger.jvm.TLogging
-import com.snc.zero.test.base.BaseTest
-import org.junit.jupiter.api.Assertions.assertEquals
+import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }
 
 @Suppress("NonAsciiCharacters")
-class SHA2Test : BaseTest() {
+class SHA2Test : BaseJUnit5Test() {
 
     companion object {
         private var max = 1

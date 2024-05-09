@@ -2,12 +2,12 @@ package com.snc.test.filemanager.file2
 
 import com.snc.zero.filemanager.file2.FSInfo.Companion.getReadableFileSize
 import com.snc.zero.logger.jvm.TLogging
-import com.snc.zero.test.base.BaseTest
+import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }
 
-class FSInfoTest : BaseTest() {
+class FSInfoTest : BaseJUnit5Test() {
 
     @Test
     fun `Readable FileSize`() {

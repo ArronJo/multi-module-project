@@ -3,13 +3,12 @@ package com.snc.test.core.extensions.text
 import com.snc.zero.core.extensions.text.padEnd
 import com.snc.zero.core.extensions.text.padStart
 import com.snc.zero.logger.jvm.TLogging
-import com.snc.zero.test.base.BaseTest
-import org.junit.jupiter.api.Assertions.assertEquals
+import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }
 
-class PaddingExtTest : BaseTest() {
+class PaddingExtTest : BaseJUnit5Test() {
 
     @Test
     fun `Padding Left - Int`() {

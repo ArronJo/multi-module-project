@@ -3,14 +3,13 @@ package com.snc.test.crypto.extensions.hash
 import com.snc.zero.core.extensions.text.toHexString
 import com.snc.zero.crypto.extensions.hash.*
 import com.snc.zero.logger.jvm.TLogging
-import com.snc.zero.test.base.BaseTest
-import org.junit.jupiter.api.Assertions.assertEquals
+import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }
 
-class HashExtTest : BaseTest() {
+class HashExtTest : BaseJUnit5Test() {
 
     private var data = ""
     private var key = ""

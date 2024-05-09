@@ -2,13 +2,12 @@ package com.snc.test.crypto.cipher
 
 import com.snc.zero.crypto.cipher.Cipher
 import com.snc.zero.logger.jvm.TLogging
-import com.snc.zero.test.base.BaseTest
-import org.junit.jupiter.api.Assertions.assertEquals
+import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }
 
-class CipherTest : BaseTest() {
+class CipherTest : BaseJUnit5Test() {
 
     private val key = "as"
     private val iv = "va"

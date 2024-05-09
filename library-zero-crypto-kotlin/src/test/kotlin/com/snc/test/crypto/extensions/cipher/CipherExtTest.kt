@@ -3,14 +3,13 @@ package com.snc.test.crypto.extensions.cipher
 import com.snc.zero.crypto.extensions.cipher.decrypt
 import com.snc.zero.crypto.extensions.cipher.encrypt
 import com.snc.zero.logger.jvm.TLogging
-import com.snc.zero.test.base.BaseTest
-import org.junit.jupiter.api.Assertions.assertEquals
+import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }
 
-class CipherExtTest : BaseTest() {
+class CipherExtTest : BaseJUnit5Test() {
 
     private val key = "as"
     private val iv = "va"

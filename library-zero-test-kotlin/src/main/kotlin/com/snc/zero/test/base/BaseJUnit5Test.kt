@@ -3,7 +3,7 @@ package com.snc.zero.test.base
 import com.snc.zero.test.timer.TestTimer
 import org.junit.jupiter.api.*
 
-open class BaseTest {
+open class BaseJUnit5Test {
 
     /*
         - Slf4j의 문제점
@@ -57,6 +57,14 @@ open class BaseTest {
     // 각 TestCase 실행 전
     @AfterEach
     open fun afterEach(testInfo: TestInfo) {
-        println("Task Result $count elapse: ${timer.stop()}\n")
+        println("Task Result $count elapse: ${timer.stop()}")
+    }
+
+    fun assertEquals(expected: Any?, actual: Any?) {
+        Assertions.assertEquals(expected, actual)
+    }
+
+    fun assertNotEquals(unexpected: Any?, actual: Any?) {
+        Assertions.assertNotEquals(unexpected, actual)
     }
 }

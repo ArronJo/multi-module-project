@@ -3,15 +3,14 @@ package com.snc.test.crypto.hash
 import com.snc.zero.core.extensions.text.toHexString
 import com.snc.zero.crypto.hash.Hash
 import com.snc.zero.logger.jvm.TLogging
-import com.snc.zero.test.base.BaseTest
-import org.junit.jupiter.api.Assertions.assertEquals
+import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }
 
 @Suppress("NonAsciiCharacters")
-class HashTest : BaseTest() {
+class HashTest : BaseJUnit5Test() {
 
     companion object {
         private lateinit var key: String

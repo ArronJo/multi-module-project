@@ -2,13 +2,12 @@ package com.snc.test.crypto.decoder
 
 import com.snc.zero.crypto.encoder.base64.Base64
 import com.snc.zero.logger.jvm.TLogging
-import com.snc.zero.test.base.BaseTest
-import org.junit.jupiter.api.Assertions.assertEquals
+import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }
 
-class DecoderTest : BaseTest() {
+class DecoderTest : BaseJUnit5Test() {
 
     @Test
     fun `Decode To Base64`() {

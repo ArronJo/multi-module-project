@@ -2,13 +2,12 @@ package com.snc.test.core.extensions.text
 
 import com.snc.zero.core.extensions.text.toStrings
 import com.snc.zero.logger.jvm.TLogging
-import com.snc.zero.test.base.BaseTest
-import org.junit.jupiter.api.Assertions.assertEquals
+import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }
 
-class ToStringExtTest : BaseTest() {
+class ToStringExtTest : BaseJUnit5Test() {
 
     @Test
     fun `toStrings - Array`() {

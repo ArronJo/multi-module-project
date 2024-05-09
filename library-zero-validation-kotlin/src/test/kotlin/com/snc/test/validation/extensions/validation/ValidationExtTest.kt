@@ -1,16 +1,15 @@
 package com.snc.test.validation.extensions.validation
 
 import com.snc.zero.logger.jvm.TLogging
-import com.snc.zero.test.base.BaseTest
+import com.snc.zero.test.base.BaseJUnit5Test
 import com.snc.zero.validation.extensions.validation.*
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }
 
 @Suppress("NonAsciiCharacters")
-class ValidationExtTest : BaseTest() {
+class ValidationExtTest : BaseJUnit5Test() {
 
     private lateinit var data: String
 
