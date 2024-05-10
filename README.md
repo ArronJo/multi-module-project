@@ -21,6 +21,13 @@
 ---
 ## Release Note
 
+### 2024-05-10
+
+Updated "core" module.
+
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Filter, QueryString 확장 함수 추가
+
+
 ### 2024-05-08
 
 Added new "file-manager" module.
