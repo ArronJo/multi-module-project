@@ -26,6 +26,8 @@
 Updated "core" module.
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Filter, QueryString 확장 함수 추가
 
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Random, Draw 확장 함수 추가
+
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Counter 테스트 클래스 추가
 
 
