@@ -5,6 +5,7 @@ import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInfo
 
 private val logger = TLogging.logger { }
 
@@ -13,7 +14,9 @@ class FilterExtTest : BaseJUnit5Test() {
     private lateinit var data: String
 
     @BeforeEach
-    fun beforeEach() {
+    override fun beforeEach(testInfo: TestInfo) {
+        super.beforeEach(testInfo)
+
         data = "1abc2DEF3ㅁㅇ릐ㅜㅍ치ㅗ감4!@#$%5^&*()6-=_+\\7[]';\":/?.,<>89"
     }
 

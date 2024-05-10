@@ -6,6 +6,7 @@ import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInfo
 
 private val logger = TLogging.logger { }
 
@@ -17,7 +18,9 @@ class HashExtTest : BaseJUnit5Test() {
     private var max = 0
 
     @BeforeEach
-    fun beforeEach() {
+    override fun beforeEach(testInfo: TestInfo) {
+        super.beforeEach(testInfo)
+
         // given
         data = "adsjijlasdljksf 0123rfj90-10-1230-23d1-uk0``12s`"
         key = "abc"

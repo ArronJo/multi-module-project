@@ -6,6 +6,7 @@ import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInfo
 
 private val logger = TLogging.logger { }
 
@@ -17,7 +18,9 @@ class CipherExtTest : BaseJUnit5Test() {
     private var data2 = ""
 
     @BeforeEach
-    fun beforeEach() {
+    override fun beforeEach(testInfo: TestInfo) {
+        super.beforeEach(testInfo)
+
         data1 = "qwerty|qwerty|qwerty|qwerty|qwerty|qwerty|qwerty|qwerty|qwerty|qwerty|qwerty|qwerty|qwerty|qwerty"
         data2 = "DSgrqTvXG5vEWah1iLfxhSh_mnAIZ8Z9_S-lkp1Ut-IzRlS55xk78viRoPA9v4tdCAKPGMtcSRmQ20DmLfIsRFClqvewaN3-BC8UD3tpDNRkDZm0e8-hmmDDugIKq8rwlDYIOskwW2DKfD1Kt2tJUQ=="
     }
