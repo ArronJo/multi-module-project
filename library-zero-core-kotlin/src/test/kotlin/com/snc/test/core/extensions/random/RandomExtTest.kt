@@ -122,9 +122,11 @@ class RandomExtTest : BaseJUnit5Test() {
     fun `Random 문자열 생성 - 6`() {
         // given
         // when
-        val v1 = randomString(len, isHangul = true)
-        // then
-        logger.debug { "Random String 결과: $v1" }
-        //assertEquals(v1, false)
+        for (i in 1..max) {
+            val v1 = randomString(len, isHangul = true)
+            // then
+            logger.debug { "Random String 결과: $v1" }
+            //assertEquals(v1, false)₩
+        }
     }
 }
