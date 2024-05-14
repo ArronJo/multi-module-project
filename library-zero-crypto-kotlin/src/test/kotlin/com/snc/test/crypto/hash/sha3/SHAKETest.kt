@@ -5,7 +5,7 @@ import com.snc.zero.crypto.hash.sha3.SHAKE
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.BeforeAll
-import kotlin.test.Test
+import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }
 

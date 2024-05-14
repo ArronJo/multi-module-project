@@ -16,14 +16,14 @@ open class BaseJUnit5Test {
         /*
         @JvmStatic
         @BeforeAll
-        fun setupBeforeAll() {
-            println()
+        fun beforeClass() {
+            println("Before Class : $count")
         }
 
         @JvmStatic
         @AfterAll
-        fun setupAfterAll() {
-            println()
+        fun afterClass() {
+            println("After Class : $count")
         }
          */
     }

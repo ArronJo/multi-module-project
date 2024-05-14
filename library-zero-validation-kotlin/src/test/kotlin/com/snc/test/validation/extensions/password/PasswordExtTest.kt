@@ -11,6 +11,25 @@ private val logger = TLogging.logger { }
 class PasswordExtTest : BaseJUnit5Test() {
 
     @Test
+    fun `암호 유효성 검사`() {
+        // given
+        val data1 = "ab1@ab1@99"
+        val data2 = "Ab12Ab1299"
+        val data3 = "Ab1@Ab1@99"
+        // when
+        val v1 = data1.validatePassword()
+        val v2 = data2.validatePassword()
+        val v3 = data3.validatePassword()
+        // then
+        logger.debug { "비밀번호 검수 결과: $data1 -> $v1" }
+        logger.debug { "비밀번호 검수 결과: $data2 -> $v2" }
+        logger.debug { "비밀번호 검수 결과: $data3 -> $v3" }
+        assertEquals(v1, false)
+        assertEquals(v2, false)
+        assertEquals(v3, true)
+    }
+
+    @Test
     fun `영문 + 숫자`() {
         // given
         val data = "abcd1234abcd"

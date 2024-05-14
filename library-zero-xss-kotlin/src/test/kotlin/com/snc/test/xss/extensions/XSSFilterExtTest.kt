@@ -20,7 +20,7 @@ class XSSFilterExtTest : BaseJUnit5Test() {
 
         @JvmStatic
         @BeforeAll
-        fun beforeAll() {
+        fun beforeClass() {
             data1 =
                 "Hello, <b>World!</b> & <font color=\"#A6ABB1\">Welcome</font> to \"<Script>Java</script>\". <script>javascript:alert('1')</script>"
 
@@ -48,7 +48,7 @@ class XSSFilterExtTest : BaseJUnit5Test() {
     fun `clean XSS 2`() {
         // given
         // when
-        val v1 = data2.cleanXSS()
+        val v1 = data2.cleanXSS(jsoup = true)
         // then
         logger.debug { "clean XSS 2 결과: $v1" }
         //assertEquals(v1, false)

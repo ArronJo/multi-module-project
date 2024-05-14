@@ -14,6 +14,8 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation(kotlin("test"))
 
+    testImplementation(project(":library-zero-test-kotlin"))
+
     implementation("ch.qos.logback:logback-classic:1.4.14")
     implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
 }

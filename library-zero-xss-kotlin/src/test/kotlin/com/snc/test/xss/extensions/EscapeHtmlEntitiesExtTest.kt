@@ -18,7 +18,7 @@ class EscapeHtmlEntitiesExtTest : BaseJUnit5Test() {
 
         @JvmStatic
         @BeforeAll
-        fun beforeAll() {
+        fun beforeClass() {
             data1 = "Hello, <b>World!</b> & <font color=\"#A6ABB1\">Welcome</font>> to \"Java\"."
             data2 = "Hello, &lt;b&gt;World!&lt;/b&gt; &amp; &lt;font color=&quot;#A6ABB1&quot;&gt;Welcome&lt;/font&gt;&gt; to &quot;Java&quot;."
         }

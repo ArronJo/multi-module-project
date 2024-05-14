@@ -3,15 +3,26 @@ package com.snc.test.crypto.cipher
 import com.snc.zero.crypto.cipher.Cipher
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }
 
 class CipherTest : BaseJUnit5Test() {
 
-    private val key = "as"
-    private val iv = "va"
-    private val data = "qwerty"
+    companion object {
+        private lateinit var key: String
+        private lateinit var iv: String
+        private lateinit var data: String
+
+        @JvmStatic
+        @BeforeAll
+        fun beforeClass() {
+            key = "as"
+            iv = "va"
+            data = "qwerty"
+        }
+    }
 
     @Test
     fun `AES+CFB+PKCS5Padding Encrypt Decrypt`() {

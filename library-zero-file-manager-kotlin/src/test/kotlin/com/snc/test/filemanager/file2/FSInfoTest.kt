@@ -11,7 +11,6 @@ class FSInfoTest : BaseJUnit5Test() {
 
     @Test
     fun `Readable FileSize`() {
-
         logger.debug { "size = ${getReadableFileSize(0)}" }
         logger.debug { "size = ${getReadableFileSize(1)}" }
         logger.debug { "size = ${getReadableFileSize(2)}" }
