@@ -1,5 +1,8 @@
 package com.snc.zero.core.extensions.text
 
+import com.snc.zero.core.extensions.format.formatDateTime
+import java.util.*
+
 fun <T> Array<T>.toStrings(): String {
     val sb = StringBuilder()
     for (v in this) {
@@ -24,4 +27,8 @@ fun ByteArray.toStrings(): String {
     sb.insert(0, "[")
     sb.append("]")
     return sb.toString()
+}
+
+fun Calendar.toStrings(): String {
+    return this.formatDateTime("yyyyMMddHHmmss")
 }

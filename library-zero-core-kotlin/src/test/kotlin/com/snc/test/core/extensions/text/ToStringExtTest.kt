@@ -4,6 +4,7 @@ import com.snc.zero.core.extensions.text.toStrings
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Test
+import java.util.Calendar
 
 private val logger = TLogging.logger { }
 
@@ -33,5 +34,15 @@ class ToStringExtTest : BaseJUnit5Test() {
         // then
         logger.debug { "toStrings - ByteArray 결과: $v1" }
         assertEquals(v1, "[41, 61, 31, ea, b0, 80]")
+    }
+
+    @Test
+    fun `toStrings - Calendar`() {
+        // given
+        val data = Calendar.getInstance()
+        // when
+        val v1 = data.toStrings()
+        // then
+        logger.debug { "toStrings - Calendar 결과: $v1" }
     }
 }

@@ -132,7 +132,7 @@ fun Calendar.diff(endDateTime: Calendar): Long {
     return differenceInDays
 }
 
-fun String.toCalendar(pattern: String): Calendar {
+fun String.toCalendar(pattern: String = "yyyyMMddHHmmss"): Calendar {
     val format = SimpleDateFormat(pattern, Locale.getDefault())
     val date: Date = format.parse(this) as Date
     return date.toCalendar()

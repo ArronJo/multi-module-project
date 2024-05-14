@@ -6,8 +6,8 @@ import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import com.snc.zero.test.counter.Counter
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
-import kotlin.test.Test
 
 private val logger = TLogging.logger { }
 

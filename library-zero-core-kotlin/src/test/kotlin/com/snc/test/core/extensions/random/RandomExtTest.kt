@@ -6,6 +6,7 @@ import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import com.snc.zero.test.counter.Counter
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
 
 private val logger = TLogging.logger { }
@@ -26,7 +27,7 @@ class RandomExtTest : BaseJUnit5Test() {
         counter = Counter()
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     fun `Random Int - 1`() {
         // given
         for (i in 1..max) {
@@ -40,7 +41,7 @@ class RandomExtTest : BaseJUnit5Test() {
         logger.debug { "Random Int 결과 - 1: Counter[${counter.size()}, ${counter.total()}] : $counter" }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     fun `Random Int - 2`() {
         // given
         for (i in 1..max) {
@@ -54,7 +55,7 @@ class RandomExtTest : BaseJUnit5Test() {
         logger.debug { "Random Int 결과 - 2: Counter[${counter.size()}, ${counter.total()}] : $counter" }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     fun `Random Int - 3`() {
         // given
         for (i in 1..max) {
@@ -68,7 +69,7 @@ class RandomExtTest : BaseJUnit5Test() {
         logger.debug { "Random Int 결과 - 3: Counter[${counter.size()}, ${counter.total()}] : $counter" }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     fun `Random 문자열 생성 - 1`() {
         // given
         // when
@@ -78,7 +79,7 @@ class RandomExtTest : BaseJUnit5Test() {
         //assertEquals(v1, false)
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     fun `Random 문자열 생성 - 2`() {
         // given
         // when
@@ -88,7 +89,7 @@ class RandomExtTest : BaseJUnit5Test() {
         //assertEquals(v1, false)
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     fun `Random 문자열 생성 - 3`() {
         // given
         // when
@@ -98,7 +99,7 @@ class RandomExtTest : BaseJUnit5Test() {
         //assertEquals(v1, false)
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     fun `Random 문자열 생성 - 4`() {
         // given
         // when
@@ -108,7 +109,7 @@ class RandomExtTest : BaseJUnit5Test() {
         //assertEquals(v1, false)
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     fun `Random 문자열 생성 - 5`() {
         // given
         // when
@@ -118,7 +119,7 @@ class RandomExtTest : BaseJUnit5Test() {
         //assertEquals(v1, false)
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     fun `Random 문자열 생성 - 6`() {
         // given
         // when
@@ -126,7 +127,7 @@ class RandomExtTest : BaseJUnit5Test() {
             val v1 = randomString(len, isHangul = true)
             // then
             logger.debug { "Random String 결과: $v1" }
-            //assertEquals(v1, false)₩
+            //assertEquals(v1, false)
         }
     }
 }
