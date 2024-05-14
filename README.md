@@ -31,6 +31,8 @@ Updated "core" module.
 
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Calendar 확장 함수 추가
 
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : JSON 확장 함수 추가
+
 
 ### 2024-05-10
 

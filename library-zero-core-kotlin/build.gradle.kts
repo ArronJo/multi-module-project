@@ -18,6 +18,8 @@ dependencies {
 
     testImplementation(project(":library-zero-test-kotlin"))
     implementation(project(":library-zero-logger-kotlin"))
+
+    implementation("com.google.code.gson:gson:2.10.1")
 }
 
 tasks.test {
