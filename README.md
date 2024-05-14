@@ -27,6 +27,8 @@
 Updated "core" module.
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : DateFormat 확장 함수 추가
 
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : FileSize 확장 함수 추가
+
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Calendar 확장 함수 추가
 
 
