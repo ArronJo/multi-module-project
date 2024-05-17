@@ -27,6 +27,8 @@
 Added new "identification" module.
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : DeIdentification 클래스 추가
 
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Masking 클래스 추가
+
 
 ### 2024-05-14
 
