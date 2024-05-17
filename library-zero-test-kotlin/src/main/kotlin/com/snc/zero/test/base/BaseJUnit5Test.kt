@@ -5,6 +5,7 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
+import java.util.*
 
 open class BaseJUnit5Test {
 
@@ -46,4 +47,12 @@ open class BaseJUnit5Test {
     fun assertNotEquals(unexpected: Any?, actual: Any?) {
         Assertions.assertNotEquals(unexpected, actual)
     }
+
+
+    private val random = SplittableRandom()
+
+    protected fun getRandomInt(min: Int = 0, max: Int): Int {
+        return random.nextInt(max - min + 1) + min
+    }
+
 }
