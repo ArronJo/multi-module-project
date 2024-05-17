@@ -22,6 +22,12 @@
 ## Release Note
 
 
+### 2024-05-17
+
+Added new "identification" module.
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : DeIdentification 클래스 추가
+
+
 ### 2024-05-14
 
 Updated "core" module.
