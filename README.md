@@ -24,12 +24,20 @@
 
 ### 2024-05-17
 
+Added new "file-manager" module.
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : FSDirectory, FSFile 클래스 추가
+
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : File 확장 함수 추가
+
+
 Added new "identification" module.
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : DeIdentification 클래스 추가
 
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Masking 클래스 추가
 
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Faker 클래스 추가
+
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : MoneyFormat 클래스 추가
 
 
 ### 2024-05-14
