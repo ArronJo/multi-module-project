@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.snc.zero"
-version = "1.0-SNAPSHOT"
+version = "1.0-beta"
 
 buildscript {
     extra.apply {
