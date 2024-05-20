@@ -26,30 +26,79 @@
 
 Added new "file-manager" module.
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : FSDirectory, FSFile 클래스 추가
+  - class FSDirectory
+    - create()
+    - delete()
+  - class FSFile
+    - create()
+    - delete()
+    - read()
+    - write()
+    - copy()
+    - toBytes()
+    - getLength()
 
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : File 확장 함수 추가
+  - (String).toFile()
+  - (File).mkdirsOrNot()
 
 
 Added new "identification" module.
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : DeIdentification 클래스 추가
+  - class DeIdentification
+    - regNo()
+    - name()
+    - age()
+    - address()
 
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Masking 클래스 추가
+  - class Masking
+    - regNo()
+    - name()
+    - phoneNum()
+    - email()
+    - masking()
 
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Faker 클래스 추가
+  - class Faker
+    - object Name
+      - fakeKoreanName()
 
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : MoneyFormat 클래스 추가
+  - (Long).formatKoreanMoney()
+  - (Long).formatRealKoreanMoney()
 
 
 ### 2024-05-14
 
 Updated "core" module.
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : DateFormat 확장 함수 추가
+  - (String).formatDateTime()
+  - (Calendar).formatDateTime()
+  - (Date).formatDateTime()
 
-- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : FileSize 확장 함수 추가
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : FileSizeFormat 확장 함수 추가
+  - (Long).formatFileSize()
 
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Calendar 확장 함수 추가
+  - (Calendar).setYear(), addYear(), getYear()
+  - (Calendar).setMonth(), addMonth(), getMonth()
+  - (Calendar).setDay(), addDay(), getDay()
+  - (Calendar).setHour(), addHour(), getHour()
+  - (Calendar).setMinute(), addMinute(), getMinute()
+  - (Calendar).setSecond(), addSecond(), getSecond()
+  - (Calendar).setMillisecond(), addMillisecond(), getMillisecond()
+  - (Calendar).startOfMonth(), endOfMonth()
+  - (Calendar).startOfDay(), endOfDay()
+  - (Calendar).getLastDayOfMonth()
+  - (Calendar).diff()
+  - (String).toCalendar()
+  - (Date).toCalendar()
+
 
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : JSON 확장 함수 추가
+  - (Any).toJsonString()
+  - (String).toObject()
 
 
 ### 2024-05-10

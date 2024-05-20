@@ -8,6 +8,11 @@ class Masking {
     companion object {
 
         @JvmStatic
+        fun regNo(v: String): String {
+            return masking(v, "[-6]")
+        }
+
+        @JvmStatic
         fun name(v: String): String {
             if (1 == v.length) {
                 return "*"
@@ -16,11 +21,6 @@ class Masking {
                 return v[0] + "*"
             }
             return v[0] + "*".repeat(max(0, v.length - 2)) + v[v.length - 1]
-        }
-
-        @JvmStatic
-        fun regNo(v: String): String {
-            return masking(v, "[-6]")
         }
 
         @JvmStatic
