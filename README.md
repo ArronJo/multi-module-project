@@ -56,8 +56,18 @@ Updated "core" module.
 
 Updated "core" module.
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Filter, QueryString 확장 함수 추가
+  - (String).filter()
+  - (Map<*, *>).toQueryString()
+  - (String).getQueryStringValue()
+  - (String).queryStringToMap()
 
-- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Random, Draw 확장 함수 추가
+
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Random 클로벌 확장 함수, Draw 확장 함수 추가
+  - randomInt()
+  - ranomgString()
+  - (List<T>).getRandomItem()
+  - (MutableMap<T, Double>).getWeightedRandom()
+
 
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Counter 테스트 클래스 추가
 
@@ -65,8 +75,9 @@ Updated "core" module.
 ### 2024-05-08
 
 Added new "file-manager" module.
-- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : FileInfo 클래스 추가
-
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : FSInfo 클래스 추가
+  - class FSInfo
+    - getReadableFileSize()
 
 Updated "crypto" module.
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : 해시 신규 클래스 추가
@@ -76,10 +87,25 @@ Updated "crypto" module.
     - object SHAKE
 
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Cipher Extension 함수 추가
+  - (String).encrypt()
+  - (String).decrypt()
 
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Encoder,Decoder Extension 함수 추가
+  - (String).encodeBase64()
+  - (ByteArray).encodeBase64()
+  - (String).decodeBase64()
 
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Hash Extension 함수 추가
+  - (String).toHmacSHA224()
+  - (String).toHmacSHA256()
+  - (String).toHmacSHA384()
+  - (String).toHmacSHA512()
+  - (String).toSha224()
+  - (String).toSha256()
+  - (String).toSha384()
+  - (String).toSha512()
+  - (String).toShake128()
+  - (String).toShake256()
 
 
 ### 2024-05-03
