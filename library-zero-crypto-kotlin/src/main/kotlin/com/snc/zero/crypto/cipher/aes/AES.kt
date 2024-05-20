@@ -9,7 +9,7 @@ import javax.crypto.spec.SecretKeySpec
 
 object AES {
 
-    fun encrypt(data: ByteArray, key: String, iv: String, transform: String = "AES/CBC/PKCS5Padding"): ByteArray {
+    fun encrypt(data: ByteArray, key: String, iv: String, transform: String = "AES/GCM/NoPadding"): ByteArray {
         val secretKey = SecretKeySpec(genKey(key), "AES")
         val cipher = Cipher.getInstance(transform)
         val algoParameterSpec = parameterSpec(iv, transform)
@@ -22,7 +22,7 @@ object AES {
         return cipher.doFinal(data)
     }
 
-    fun decrypt(enc: ByteArray, key: String, iv: String, transform: String = "AES/CBC/PKCS5Padding"): ByteArray {
+    fun decrypt(enc: ByteArray, key: String, iv: String, transform: String = "AES/GCM/NoPadding"): ByteArray {
         val secretKey = SecretKeySpec(genKey(key), "AES")
         val cipher = Cipher.getInstance(transform)
         val algoParameterSpec = parameterSpec(iv, transform)
