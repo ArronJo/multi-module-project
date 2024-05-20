@@ -139,7 +139,7 @@ class FSFile {
         @Throws(IOException::class)
         fun copy(input: InputStream, output: OutputStream): Long {
             var bytesCopied: Long = 0
-            val buffer = ByteArray(8 * 1024)
+            val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
             var bytes = input.read(buffer)
             while (bytes >= 0) {
                 output.write(buffer, 0, bytes)
