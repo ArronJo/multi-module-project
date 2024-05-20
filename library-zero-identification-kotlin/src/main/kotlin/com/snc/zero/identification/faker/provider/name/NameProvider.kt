@@ -29,11 +29,11 @@ open class NameProvider {
 
     private val random = SplittableRandom()
 
-    protected fun getRandomInt(min: Int = 0, max: Int): Int {
+    private fun getRandomInt(min: Int = 0, max: Int): Int {
         return random.nextInt(max - min + 1) + min
     }
 
-    protected fun getWeightedRandom(map: MutableMap<String, Double>): String {
+    private fun getWeightedRandom(map: MutableMap<String, Double>): String {
         var result = ""
         var bestValue = Double.MAX_VALUE
         for (element in map.keys) {
