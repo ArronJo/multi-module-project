@@ -1,4 +1,3 @@
-.dccache
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
@@ -43,3 +42,9 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Snyk ###
+.dccache
+del_ds_store.sh
+snyk_code.sh
+snyk_oss.sh
