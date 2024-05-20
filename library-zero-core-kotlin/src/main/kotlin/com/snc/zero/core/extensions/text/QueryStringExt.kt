@@ -1,6 +1,6 @@
 package com.snc.zero.core.extensions.text
 
-fun HashMap<*, *>.toQueryString(): String {
+fun <T> Map<String, T>.toQueryString(): String {
     val sb = StringBuilder()
     for ((key, value) in this) {
         if (sb.isNotEmpty()) {
