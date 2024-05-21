@@ -7,6 +7,8 @@ import java.nio.charset.Charset
 
 class Hash(var algo: Algo) {
 
+    private val msgEmptyKey = "Empty key"
+    
     companion object {
 
         @JvmStatic
@@ -61,25 +63,25 @@ class Hash(var algo: Algo) {
         return when (this.algo) {
             Algo.HmacSHA224 -> {
                 if (key.isEmpty()) {
-                    throw IllegalArgumentException("Empty key")
+                    throw IllegalArgumentException("key")
                 }
                 return SHA2.hmacSHA224(msg, key, salt, iterationCount, charSet)
             }
             Algo.HmacSHA256 -> {
                 if (key.isEmpty()) {
-                    throw IllegalArgumentException("Empty key")
+                    throw IllegalArgumentException(msgEmptyKey)
                 }
                 return SHA2.hmacSHA256(msg, key, salt, iterationCount, charSet)
             }
             Algo.HmacSHA384 -> {
                 if (key.isEmpty()) {
-                    throw IllegalArgumentException("Empty key")
+                    throw IllegalArgumentException(msgEmptyKey)
                 }
                 return SHA2.hmacSHA384(msg, key, salt, iterationCount, charSet)
             }
             Algo.HmacSHA512 -> {
                 if (key.isEmpty()) {
-                    throw IllegalArgumentException("Empty key")
+                    throw IllegalArgumentException(msgEmptyKey)
                 }
                 return SHA2.hmacSHA512(msg, key, salt, iterationCount, charSet)
             }

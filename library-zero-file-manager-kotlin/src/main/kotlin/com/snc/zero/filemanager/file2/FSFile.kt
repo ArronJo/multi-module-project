@@ -42,10 +42,7 @@ class FSFile {
 
         @JvmStatic
         @Throws(IOException::class)
-        fun delete(file: File, verbose: Boolean = false): Boolean {
-            if (verbose) {
-                logger.error { "delete : $file" }
-            }
+        fun delete(file: File): Boolean {
             return file.delete()
         }
 
@@ -54,23 +51,16 @@ class FSFile {
         fun read(
             file: File,
             charset: Charset = charset("UTF-8"),
-            verbose: Boolean = false
         ): ByteArray {
             val buf = CharArray(DEFAULT_BUFFER_SIZE)
             var br: BufferedReader? = null
             val sb = StringBuilder()
 
             var length = getLength(file)
-            if (verbose) {
-                logger.info { "read file length $length" }
-            }
             try {
                 br = BufferedReader(InputStreamReader(FileInputStream(file), charset))
                 while (length > 0) {
                     val amt = br.read(buf, 0, buf.size)
-                    if (verbose) {
-                        logger.info { "read bytes [$amt / $length]" }
-                    }
                     if (amt == -1) {
                         break //throw new IOException("ERROR : " + file + ": unexpected EOF");
                     }
@@ -80,9 +70,6 @@ class FSFile {
             } catch (e: Exception) {
                 throw IOException("ERROR : $file: trouble reading", e)
             } finally {
-                //if (verbose) {
-                //    logger.info("read data : \n${String(buffer)}")
-                //}
                 closeQuietly(br)
             }
             return sb.toString().toByteArray()

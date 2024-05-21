@@ -36,7 +36,7 @@ class FSDirectoryTest : BaseJUnit5Test() {
 
     @Test
     fun `FSDirectory delete`() {
-        FSDirectory.delete(parent, verbose = true)
+        FSDirectory.delete(parent)
         if (parent.exists()) {
             logger.debug { "delete: $parent exist" }
         } else {

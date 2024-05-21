@@ -27,7 +27,7 @@ class FSFileDeleteTest : BaseJUnit5Test() {
     @Test
     fun `FSFile delete`() {
         val file = File(dir, "create.png")
-        FSFile.delete(file, verbose = true)
+        FSFile.delete(file)
         if (file.exists()) {
             logger.debug { "$file exist" }
         } else {

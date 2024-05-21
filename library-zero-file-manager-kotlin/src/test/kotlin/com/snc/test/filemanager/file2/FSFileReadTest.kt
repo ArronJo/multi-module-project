@@ -33,7 +33,7 @@ class FSFileReadTest : BaseJUnit5Test() {
             logger.debug { "$file not exist" }
             return
         }
-        val ba = FSFile.read(file, verbose = true)
+        val ba = FSFile.read(file)
         logger.debug { "file size : ${FSInfo.getReadableFileSize(ba.size.toLong())}" }
         logger.debug { "\n\nfile data : \n${String(ba)}\n-----E.O.D----\n\n" }
     }
