@@ -45,6 +45,5 @@ bin/
 
 ### Snyk ###
 .dccache
-del_ds_store.sh
 snyk_code.sh
 snyk_oss.sh
