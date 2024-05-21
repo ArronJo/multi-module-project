@@ -191,8 +191,9 @@ build.gradle.kts 정리
     # Consult the upgrading guide for further information:
     #    https://docs.gradle.org/8.4/userguide/upgrading_version_8.html#test_framework_implementation_dependencies
 
-    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     ```
 
 

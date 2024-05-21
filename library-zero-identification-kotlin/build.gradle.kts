@@ -10,9 +10,9 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    testImplementation(kotlin("test"))
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 
     testImplementation(project(":library-zero-test-kotlin"))
     implementation(project(":library-zero-logger-kotlin"))
