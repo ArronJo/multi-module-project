@@ -4,6 +4,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### kotlin 2.0 ###
+.kotlin/
+
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
@@ -47,3 +50,6 @@ bin/
 .dccache
 snyk_code.sh
 snyk_oss.sh
+
+### etc ###
+README_*.md
