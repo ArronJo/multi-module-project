@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.9.22"
+    kotlin("jvm") version "2.0.0"
 }
 
 group = "com.snc.zero"
@@ -7,7 +7,7 @@ version = "1.0-beta"
 
 buildscript {
     extra.apply {
-        set("jvmToolchainVersion", 17)
+        set("jvmTarget", "2.0")
     }
 }
 
@@ -22,8 +22,12 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
 kotlin {
-    jvmToolchain(rootProject.extra["jvmToolchainVersion"] as Int)
+    compilerOptions {
+        languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.fromVersion(rootProject.extra["jvmTarget"] as String))
+        apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.fromVersion(rootProject.extra["jvmTarget"] as String))
+    }
 }
 
 tasks.register<Exec>("runShellScript") {

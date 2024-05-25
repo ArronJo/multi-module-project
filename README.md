@@ -21,6 +21,11 @@
 ---
 ## Release Note
 
+### 2024-05-25
+
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Kotlin 2.0 적용
+
+
 
 ### 2024-05-17
 

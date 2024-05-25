@@ -27,6 +27,10 @@ tasks.test {
     useTestNG()
 }
  */
+
 kotlin {
-    jvmToolchain(rootProject.extra["jvmToolchainVersion"] as Int)
+    compilerOptions {
+        languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.fromVersion(rootProject.extra["jvmTarget"] as String))
+        apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.fromVersion(rootProject.extra["jvmTarget"] as String))
+    }
 }
