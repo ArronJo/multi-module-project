@@ -38,6 +38,7 @@ kotlin {
 ///////////////////////////////////////////////////////////
 // https://docs.gradle.org/current/userguide/jacoco_plugin.html
 // https://docs.sonarsource.com/sonarcloud/enriching/test-coverage/java-test-coverage/
+/*
 tasks.test {
     finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
 }
@@ -57,3 +58,10 @@ tasks.jacocoTestReport {
         html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
     }
 }
+
+sonar {
+    properties {
+        property("sonar.sources", "src")
+    }
+}
+*/

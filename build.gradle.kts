@@ -1,3 +1,5 @@
+import java.util.*
+
 plugins {
     kotlin("jvm") version "2.0.0"
 
@@ -54,6 +56,20 @@ tasks.jacocoTestReport {
         xml.required = true
         csv.required = false
         html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
+    }
+}
+
+sonar {
+    properties {
+        val properties = Properties()
+        file("gradle/wrapper/gradle-wrapper.properties").inputStream().use { stream ->
+            properties.load(stream)
+        }
+
+        property("sonar.sourceEncoding", "UTF-8")
+        property("sonar.projectKey", properties.getProperty("systemProp.sonar.token"))
+        property("sonar.organization", properties.getProperty("systemProp.sonar.organization"))
+        property("sonar.host.url", properties.getProperty("systemProp.sonar.host.url"))
     }
 }
 
