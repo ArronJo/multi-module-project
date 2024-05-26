@@ -1,7 +1,6 @@
 package com.snc.zero.core.extensions.random
 
 import java.security.SecureRandom
-import java.util.*
 import kotlin.math.ln
 
 fun <T> List<T>.getRandomItem(): T {
