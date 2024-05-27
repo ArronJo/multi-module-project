@@ -60,7 +60,7 @@ tasks.jacocoTestReport {
 sonar {
     properties {
         val properties = Properties()
-        val propertiesFile = "./sonarcloud.properties"
+        val propertiesFile = ".sonarcloud.properties"
         file(propertiesFile).inputStream().use { stream ->
             properties.load(stream)
         }
