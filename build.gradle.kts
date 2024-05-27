@@ -65,8 +65,8 @@ sonar {
             properties.load(stream)
         }
 
-        property("sonar.projectKey", properties.getProperty("sonar.projectKey"))
-        property("sonar.organization", properties.getProperty("sonar.organizationKey"))
+        property("sonar.projectKey", "ArronJo_multi-module-project")
+        property("sonar.organization", "organization-aaronjo-for-test")
         property("sonar.host.url", "https://sonarcloud.io")
     }
 }
