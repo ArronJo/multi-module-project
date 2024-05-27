@@ -1,8 +1,5 @@
 plugins {
     kotlin("jvm")
-
-    id("jacoco")
-    id("org.sonarqube")
 }
 
 group = "com.snc.zero"
@@ -33,35 +30,3 @@ kotlin {
         apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.fromVersion(rootProject.extra["jvmTarget"] as String))
     }
 }
-
-
-///////////////////////////////////////////////////////////
-// https://docs.gradle.org/current/userguide/jacoco_plugin.html
-// https://docs.sonarsource.com/sonarcloud/enriching/test-coverage/java-test-coverage/
-/*
-tasks.test {
-    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
-}
-tasks.jacocoTestReport {
-    dependsOn(tasks.test) // tests are required to run before generating the report
-}
-
-jacoco {
-    toolVersion = "0.8.11"
-    reportsDirectory = layout.buildDirectory.dir("customJacocoReportDir")
-}
-
-tasks.jacocoTestReport {
-    reports {
-        xml.required = true
-        csv.required = false
-        html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
-    }
-}
-
-sonar {
-    properties {
-        property("sonar.sources", "src")
-    }
-}
-*/

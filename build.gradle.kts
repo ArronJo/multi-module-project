@@ -1,10 +1,8 @@
-import java.util.*
-
 plugins {
     kotlin("jvm") version "2.0.0"
 
     id("jacoco")
-    id("org.sonarqube") version "3.5.0.2730"
+    //id("org.sonarqube") version "3.5.0.2730"
 }
 
 group = "com.snc.zero"
@@ -37,8 +35,7 @@ kotlin {
 
 
 ///////////////////////////////////////////////////////////
-// https://docs.gradle.org/current/userguide/jacoco_plugin.html
-// https://docs.sonarsource.com/sonarcloud/enriching/test-coverage/java-test-coverage/
+// Jacoco
 tasks.test {
     finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
 }
@@ -59,19 +56,21 @@ tasks.jacocoTestReport {
     }
 }
 
+/*
 sonar {
     properties {
         val properties = Properties()
-        file("gradle/wrapper/gradle-wrapper.properties").inputStream().use { stream ->
+        file("./sonarcloud.properties").inputStream().use { stream ->
             properties.load(stream)
         }
 
         property("sonar.sourceEncoding", "UTF-8")
-        property("sonar.projectKey", properties.getProperty("systemProp.sonar.token"))
-        property("sonar.organization", properties.getProperty("systemProp.sonar.organization"))
-        property("sonar.host.url", properties.getProperty("systemProp.sonar.host.url"))
+        property("sonar.projectKey", properties.getProperty("sonar.token"))
+        property("sonar.organization", properties.getProperty("sonar.organization"))
+        property("sonar.host.url", properties.getProperty("sonar.host.url"))
     }
 }
+ */
 
 
 ///////////////////////////////////////////////////////////
