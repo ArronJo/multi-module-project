@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
 import java.io.File
+import java.nio.file.Paths
 
 private val logger = TLogging.logger { }
 
@@ -20,7 +21,8 @@ class FSDirectoryTest : BaseJUnit5Test() {
     override fun beforeEach(testInfo: TestInfo) {
         super.beforeEach(testInfo)
 
-        parent = "/Users/jwjo/Downloads/zzz".toFile()
+        val projectRoot = Paths.get("").toAbsolutePath()
+        parent = "${projectRoot}/build/zzz".toFile()
         dir = "$parent/aaa/bbb/ccc/ddd/eee/fff/ggg".toFile()
     }
 
