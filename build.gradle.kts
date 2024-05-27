@@ -1,8 +1,10 @@
+import java.util.*
+
 plugins {
     kotlin("jvm") version "2.0.0"
 
     id("jacoco")
-    //id("org.sonarqube") version "3.5.0.2730"
+    id("org.sonarqube") version "4.4.1.3373"
 }
 
 group = "com.snc.zero"
@@ -55,21 +57,19 @@ tasks.jacocoTestReport {
     }
 }
 
-/*
 sonar {
     properties {
         val properties = Properties()
-        file("./sonarcloud.properties").inputStream().use { stream ->
+        val propertiesFile = "./sonarcloud.properties"
+        file(propertiesFile).inputStream().use { stream ->
             properties.load(stream)
         }
 
-        property("sonar.sourceEncoding", "UTF-8")
-        property("sonar.projectKey", properties.getProperty("sonar.token"))
-        property("sonar.organization", properties.getProperty("sonar.organization"))
-        property("sonar.host.url", properties.getProperty("sonar.host.url"))
+        property("sonar.projectKey", properties.getProperty("sonar.projectKey"))
+        property("sonar.organization", properties.getProperty("sonar.organizationKey"))
+        property("sonar.host.url", "https://sonarcloud.io")
     }
 }
- */
 
 
 ///////////////////////////////////////////////////////////
