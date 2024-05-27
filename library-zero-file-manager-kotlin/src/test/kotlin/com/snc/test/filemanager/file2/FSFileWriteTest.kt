@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
 import java.io.File
+import java.nio.file.Paths
 
 private val logger = TLogging.logger { }
 
@@ -20,14 +21,13 @@ class FSFileWriteTest : BaseJUnit5Test() {
     override fun beforeEach(testInfo: TestInfo) {
         super.beforeEach(testInfo)
 
-        parent = "/Users/jwjo/Downloads/zzz".toFile()
+        val projectRoot = Paths.get("").toAbsolutePath()
+        parent = "${projectRoot}/build/zzz".toFile()
         dir = "$parent/ttt".toFile()
     }
 
     @Test
     fun `FSFile write`() {
-        //val file = File(dir, "write_test.js")
-        //val data = "쓰기 테스트 입니다요.\n잘되나???"
         val file = File(dir, "android.svg")
         val data =
             """
