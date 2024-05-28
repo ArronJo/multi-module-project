@@ -15,8 +15,8 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation(project(":library-zero-test-kotlin"))
 
-    implementation("ch.qos.logback:logback-classic:1.4.14")
-    implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
+    implementation(libs.logback.classic)
+    implementation(libs.kotlin.logging.jvm)
 }
 
 tasks.test {

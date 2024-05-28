@@ -66,7 +66,8 @@ sonar {
 
 ///////////////////////////////////////////////////////////
 tasks.register<Exec>("runShellScript") {
-    println(">>>>> task runShellScript")
+    description = "This is a shell task that deletes the '.DS_Store' file when building a project."
+    group = JavaBasePlugin.BUILD_TASK_NAME
     if (System.getProperty("os.name").lowercase().contains("windows")) {
         commandLine("cmd", "/c", "del_ds_store.bat")
     } else {
@@ -74,6 +75,5 @@ tasks.register<Exec>("runShellScript") {
     }
 }
 tasks.named("compileJava") {
-    println(">>>>> task dependsOn(compileJava)")
     dependsOn("runShellScript")
 }

@@ -1,10 +1,18 @@
 [versions]
 junit-jupiter-api = "5.10.2"
 jsoup = "1.16.1"
+logback-classic = "1.4.14"
+kotlin-logging-jvm = "5.1.0"
+bouncycastle-bcprov = "1.78.1"
+google-gson = "2.10.1"
 
 [libraries]
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit-jupiter-api" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-classic" }
+kotlin-logging-jvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging-jvm" }
+bouncycastle-bcprov = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncycastle-bcprov" }
+google-gson = { module = "com.google.code.gson:gson", version.ref = "google-gson" }
 
 [bundles]
 
