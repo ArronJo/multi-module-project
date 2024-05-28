@@ -12,13 +12,13 @@ fun String.formatDateTime(inputFormat: String, outputFormat: String = "yyyyMMddH
 
 fun Calendar.formatDateTime(outputFormat: String = "yyyyMMddHHmmss"): String {
     var v = outputFormat
-    v = v.replace("yyyy".toRegex(), this.get(Calendar.YEAR).toString())
-    v = v.replace("yy".toRegex(), this.get(Calendar.YEAR).toString().substring(2, 4))
-    v = v.replace("MM".toRegex(), (this.get(Calendar.MONTH) + 1).toString().padStart(2, '0'))
-    v = v.replace("dd".toRegex(), this.get(Calendar.DAY_OF_MONTH).toString().padStart(2, '0'))
-    v = v.replace("HH".toRegex(), this.get(Calendar.HOUR_OF_DAY).toString().padStart(2, '0'))
-    v = v.replace("mm".toRegex(), this.get(Calendar.MINUTE).toString().padStart(2, '0'))
-    v = v.replace("ss".toRegex(), this.get(Calendar.SECOND).toString().padStart(2, '0'))
+    v = v.replace("yyyy".toRegex(), this[Calendar.YEAR].toString())
+    v = v.replace("yy".toRegex(), this[Calendar.YEAR].toString().substring(2, 4))
+    v = v.replace("MM".toRegex(), (this[Calendar.MONTH] + 1).toString().padStart(2, '0'))
+    v = v.replace("dd".toRegex(), this[Calendar.DAY_OF_MONTH].toString().padStart(2, '0'))
+    v = v.replace("HH".toRegex(), this[Calendar.HOUR_OF_DAY].toString().padStart(2, '0'))
+    v = v.replace("mm".toRegex(), this[Calendar.MINUTE].toString().padStart(2, '0'))
+    v = v.replace("ss".toRegex(), this[Calendar.SECOND].toString().padStart(2, '0'))
     return v
 }
 

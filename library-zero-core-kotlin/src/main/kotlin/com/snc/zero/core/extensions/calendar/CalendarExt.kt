@@ -4,31 +4,31 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 fun Calendar.setYear(year: Int) {
-    this.set(Calendar.YEAR, year)
+    this[Calendar.YEAR] = year
 }
 
 fun Calendar.setMonth(month: Int) {
-    this.set(Calendar.MONTH, month - 1)
+    this[Calendar.MONTH] = month - 1
 }
 
 fun Calendar.setDay(day: Int) {
-    this.set(Calendar.DAY_OF_MONTH, day)
+    this[Calendar.DAY_OF_MONTH] = day
 }
 
 fun Calendar.setHour(hour: Int) {
-    this.set(Calendar.HOUR_OF_DAY, hour)
+    this[Calendar.HOUR_OF_DAY] = hour
 }
 
 fun Calendar.setMinute(minute: Int) {
-    this.set(Calendar.MINUTE, minute)
+    this[Calendar.MINUTE] = minute
 }
 
 fun Calendar.setSecond(second: Int) {
-    this.set(Calendar.SECOND, second)
+    this[Calendar.SECOND] = second
 }
 
 fun Calendar.setMillisecond(millisecond: Int) {
-    this.set(Calendar.MILLISECOND, millisecond)
+    this[Calendar.MILLISECOND] = millisecond
 }
 
 fun Calendar.startOfMonth() {
@@ -92,31 +92,31 @@ fun Calendar.addMillisecond(amount: Int) {
 }
 
 fun Calendar.getYear(): Int {
-    return this.get(Calendar.YEAR)
+    return this[Calendar.YEAR]
 }
 
 fun Calendar.getMonth(): Int {
-    return this.get(Calendar.MONTH) + 1
+    return this[Calendar.MONTH] + 1
 }
 
 fun Calendar.getDay(): Int {
-    return this.get(Calendar.DAY_OF_MONTH)
+    return this[Calendar.DAY_OF_MONTH]
 }
 
 fun Calendar.getHour(): Int {
-    return this.get(Calendar.HOUR_OF_DAY)
+    return this[Calendar.HOUR_OF_DAY]
 }
 
 fun Calendar.getMinute(): Int {
-    return this.get(Calendar.MINUTE)
+    return this[Calendar.MINUTE]
 }
 
 fun Calendar.getSecond(): Int {
-    return this.get(Calendar.SECOND)
+    return this[Calendar.SECOND]
 }
 
 fun Calendar.getMillisecond(): Int {
-    return this.get(Calendar.MILLISECOND)
+    return this[Calendar.MILLISECOND]
 }
 
 fun Calendar.getLastDayOfMonth(): Int {
