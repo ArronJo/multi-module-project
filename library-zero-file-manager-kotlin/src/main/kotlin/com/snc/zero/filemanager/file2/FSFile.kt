@@ -116,7 +116,7 @@ class FSFile {
             try {
                 src.copyTo(target = dst, overwrite = overwrite)
             } catch (e: IOException) {
-                //logger.error(e) { }
+                logger.warn(e) { }
                 return false
             }
             return true
