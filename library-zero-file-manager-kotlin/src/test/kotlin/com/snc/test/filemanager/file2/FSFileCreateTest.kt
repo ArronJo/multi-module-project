@@ -7,6 +7,7 @@ import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
+import org.junit.jupiter.api.assertDoesNotThrow
 import java.io.File
 import java.nio.file.Paths
 
@@ -29,7 +30,9 @@ class FSFileCreateTest : BaseJUnit5Test() {
     @Test
     fun `FSFile create`() {
         val file = File(dir, "create.txt")
-        FSFile.create(file, overwrite = true)
+        assertDoesNotThrow {
+            FSFile.create(file, overwrite = true)
+        }
         if (file.exists()) {
             logger.debug { "$file exist" }
         } else {

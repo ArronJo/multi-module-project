@@ -8,6 +8,7 @@ import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
+import org.junit.jupiter.api.assertDoesNotThrow
 import java.io.File
 import java.nio.file.Paths
 
@@ -35,7 +36,10 @@ class FSFileReadTest : BaseJUnit5Test() {
             logger.debug { "$file not exist" }
             return
         }
-        val ba = FSFile.read(file)
+        var ba: ByteArray = byteArrayOf()
+        assertDoesNotThrow {
+            ba = FSFile.read(file)
+        }
         logger.debug { "file size : ${FSInfo.getReadableFileSize(ba.size.toLong())}" }
         logger.debug { "\n\nfile data : \n${String(ba)}\n-----E.O.D----\n\n" }
     }

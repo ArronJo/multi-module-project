@@ -7,6 +7,7 @@ import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
+import org.junit.jupiter.api.assertDoesNotThrow
 import java.io.File
 import java.nio.file.Paths
 
@@ -73,7 +74,10 @@ class FSFileWriteTest : BaseJUnit5Test() {
     </g>
 </svg>
             """.trimIndent()
-        FSFile.write(data.toByteArray(), file, overwrite = true)
+
+        assertDoesNotThrow {
+            FSFile.write(data.toByteArray(), file, overwrite = true)
+        }
         if (!file.exists()) {
             logger.debug { "$file not exist" }
         }
@@ -83,7 +87,9 @@ class FSFileWriteTest : BaseJUnit5Test() {
     fun `FSFile copy`() {
         val src = File(dir, "write_test.js")
         val dst = File(dir, "copy_test.js")
-        FSFile.copy(src, dst, overwrite = true)
+        assertDoesNotThrow {
+            FSFile.copy(src, dst, overwrite = true)
+        }
         if (!dst.exists()) {
             logger.debug { "$dst not exist" }
         }

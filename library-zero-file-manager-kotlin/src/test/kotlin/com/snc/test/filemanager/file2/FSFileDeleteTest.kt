@@ -7,6 +7,7 @@ import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
+import org.junit.jupiter.api.assertDoesNotThrow
 import java.io.File
 import java.nio.file.Paths
 
@@ -29,7 +30,9 @@ class FSFileDeleteTest : BaseJUnit5Test() {
     @Test
     fun `FSFile delete`() {
         val file = File(dir, "create.png")
-        FSFile.delete(file)
+        assertDoesNotThrow {
+            FSFile.delete(file)
+        }
         if (file.exists()) {
             logger.debug { "$file exist" }
         } else {

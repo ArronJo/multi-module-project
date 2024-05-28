@@ -7,6 +7,7 @@ import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
+import org.junit.jupiter.api.assertDoesNotThrow
 import java.io.File
 import java.nio.file.Paths
 
@@ -28,7 +29,9 @@ class FSDirectoryTest : BaseJUnit5Test() {
 
     @Test
     fun `FSDirectory create`() {
-        FSDirectory.create(dir, overwrite = true)
+        assertDoesNotThrow {
+            FSDirectory.create(dir, overwrite = true)
+        }
         if (dir.exists()) {
             logger.debug { "create: $dir exist" }
         } else {
@@ -38,7 +41,9 @@ class FSDirectoryTest : BaseJUnit5Test() {
 
     @Test
     fun `FSDirectory delete`() {
-        FSDirectory.delete(parent)
+        assertDoesNotThrow {
+            FSDirectory.delete(parent)
+        }
         if (parent.exists()) {
             logger.debug { "delete: $parent exist" }
         } else {
