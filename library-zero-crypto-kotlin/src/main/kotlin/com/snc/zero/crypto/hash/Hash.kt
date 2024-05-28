@@ -62,27 +62,19 @@ class Hash(var algo: Algo) {
     fun digest(msg: String): ByteArray {
         return when (this.algo) {
             Algo.HmacSHA224 -> {
-                if (key.isEmpty()) {
-                    throw IllegalArgumentException("key")
-                }
+                require(key.isNotEmpty()) { "key" }
                 return SHA2.hmacSHA224(msg, key, salt, iterationCount, charSet)
             }
             Algo.HmacSHA256 -> {
-                if (key.isEmpty()) {
-                    throw IllegalArgumentException(msgEmptyKey)
-                }
+                require(key.isNotEmpty()) { msgEmptyKey }
                 return SHA2.hmacSHA256(msg, key, salt, iterationCount, charSet)
             }
             Algo.HmacSHA384 -> {
-                if (key.isEmpty()) {
-                    throw IllegalArgumentException(msgEmptyKey)
-                }
+                require(key.isNotEmpty()) { msgEmptyKey }
                 return SHA2.hmacSHA384(msg, key, salt, iterationCount, charSet)
             }
             Algo.HmacSHA512 -> {
-                if (key.isEmpty()) {
-                    throw IllegalArgumentException(msgEmptyKey)
-                }
+                require(key.isNotEmpty()) { msgEmptyKey }
                 return SHA2.hmacSHA512(msg, key, salt, iterationCount, charSet)
             }
             Algo.SHA224 -> {
