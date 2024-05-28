@@ -10,13 +10,13 @@ repositories {
 }
 
 dependencies {
+    implementation(libs.logback.classic)
+    implementation(libs.kotlin.logging.jvm)
+
     testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation(project(":library-zero-test-kotlin"))
-
-    implementation(libs.logback.classic)
-    implementation(libs.kotlin.logging.jvm)
 }
 
 tasks.test {

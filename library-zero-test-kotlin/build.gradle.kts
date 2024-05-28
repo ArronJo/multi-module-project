@@ -10,13 +10,12 @@ repositories {
 }
 
 dependencies {
-    implementation(project(":library-zero-logger-kotlin"))
-
-    implementation(libs.junit.jupiter.api)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-
     testImplementation(libs.testng)
+
+    implementation(project(":library-zero-logger-kotlin"))
+    implementation(libs.junit.jupiter.api)
 }
 
 tasks.test {

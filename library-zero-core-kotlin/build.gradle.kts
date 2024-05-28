@@ -10,14 +10,13 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":library-zero-logger-kotlin"))
+    implementation(libs.google.gson)
+
     testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation(project(":library-zero-test-kotlin"))
-
-    implementation(project(":library-zero-logger-kotlin"))
-
-    implementation(libs.google.gson)
 }
 
 tasks.test {
