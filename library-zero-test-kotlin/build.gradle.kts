@@ -15,6 +15,7 @@ dependencies {
 
     testRuntimeOnly(libs.junit.platform.launcher)
     testRuntimeOnly(libs.junit.jupiter.engine)
+
     testImplementation(libs.testng)
 }
 

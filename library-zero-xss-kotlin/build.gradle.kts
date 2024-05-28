@@ -13,10 +13,11 @@ dependencies {
     implementation(project(":library-zero-logger-kotlin"))
     implementation(libs.jsoup)
 
+    testImplementation(project(":library-zero-test-kotlin"))
     testImplementation(libs.junit.jupiter.api)
+
     testRuntimeOnly(libs.junit.platform.launcher)
     testRuntimeOnly(libs.junit.jupiter.engine)
-    testImplementation(project(":library-zero-test-kotlin"))
 }
 
 tasks.test {

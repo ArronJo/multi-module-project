@@ -14,10 +14,11 @@ dependencies {
     implementation(project(":library-zero-core-kotlin"))
     implementation(libs.bouncycastle.bcprov)
 
+    testImplementation(project(":library-zero-test-kotlin"))
     testImplementation(libs.junit.jupiter.api)
+
     testRuntimeOnly(libs.junit.platform.launcher)
     testRuntimeOnly(libs.junit.jupiter.engine)
-    testImplementation(project(":library-zero-test-kotlin"))
 }
 
 tasks.test {
