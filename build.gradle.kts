@@ -60,6 +60,7 @@ sonar {
         property("sonar.projectKey", "ArronJo_multi-module-project")
         property("sonar.organization", "organization-aaronjo-for-test")
         property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.login", System.getenv("SONAR_TOKEN"))
     }
 }
 
