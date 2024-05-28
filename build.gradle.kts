@@ -1,5 +1,3 @@
-import java.util.*
-
 plugins {
     kotlin("jvm") version "2.0.0"
 
@@ -59,12 +57,6 @@ tasks.jacocoTestReport {
 
 sonar {
     properties {
-        val properties = Properties()
-        val propertiesFile = ".sonarcloud.properties"
-        file(propertiesFile).inputStream().use { stream ->
-            properties.load(stream)
-        }
-
         property("sonar.projectKey", "ArronJo_multi-module-project")
         property("sonar.organization", "organization-aaronjo-for-test")
         property("sonar.host.url", "https://sonarcloud.io")
