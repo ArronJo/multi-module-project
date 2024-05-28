@@ -1,5 +1,6 @@
 [versions]
 junit-jupiter-api = "5.10.2"
+testng = "7.9.0"
 jsoup = "1.16.1"
 logback-classic = "1.4.14"
 kotlin-logging-jvm = "5.1.0"
@@ -8,6 +9,7 @@ google-gson = "2.10.1"
 
 [libraries]
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit-jupiter-api" }
+testng = { module = "org.testng:testng", version.ref = "testng" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-classic" }
 kotlin-logging-jvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging-jvm" }
