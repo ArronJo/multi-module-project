@@ -57,8 +57,8 @@ tasks.jacocoTestReport {
 
 sonar {
     properties {
-        property("sonar.projectKey", "ArronJo_multi-module-project")
-        property("sonar.organization", "organization-aaronjo-for-test")
+        property("sonar.projectKey", System.getenv("SONAR_PROJECTKEY"))
+        property("sonar.organization", System.getenv("SONAR_ORGANIZATION"))
         property("sonar.host.url", "https://sonarcloud.io")
     }
 }
