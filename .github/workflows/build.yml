@@ -35,7 +35,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          echo "runner.os: ${{ runner.os }}"
-          echo "secrets.GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}"
-          echo "secrets.SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}"
+          echo "secrets.GITHUB_TOKEN: ${{ sonar.projectKey }}"
+          echo "secrets.SONAR_TOKEN: ${{ sonar.organization }}"
           ./gradlew build sonar --info
