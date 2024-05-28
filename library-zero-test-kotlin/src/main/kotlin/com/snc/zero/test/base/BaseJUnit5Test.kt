@@ -48,6 +48,9 @@ open class BaseJUnit5Test {
         Assertions.assertNotEquals(unexpected, actual)
     }
 
+    fun assertDoesNotThrow(executable: () -> Unit) {
+        Assertions.assertDoesNotThrow(executable)
+    }
 
     private val random = SplittableRandom()
 

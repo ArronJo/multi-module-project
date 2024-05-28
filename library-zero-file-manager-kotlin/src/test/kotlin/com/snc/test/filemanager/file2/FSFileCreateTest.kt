@@ -7,7 +7,6 @@ import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
-import org.junit.jupiter.api.assertDoesNotThrow
 import java.io.File
 import java.nio.file.Paths
 
@@ -23,6 +22,7 @@ class FSFileCreateTest : BaseJUnit5Test() {
         super.beforeEach(testInfo)
 
         val projectRoot = Paths.get("").toAbsolutePath()
+        println("Project Root Directory: $projectRoot")
         parent = "${projectRoot}/build/zzz".toFile()
         dir = "$parent/ttt".toFile()
     }
