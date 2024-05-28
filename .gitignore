@@ -7,9 +7,6 @@ build/
 ### kotlin 2.0 ###
 .kotlin/
 
-### Sonar ###
-.sonarcloud.properties
-
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
