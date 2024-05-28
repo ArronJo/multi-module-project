@@ -1,7 +1,6 @@
 package com.snc.test.filemanager.file2
 
 import com.snc.zero.filemanager.file2.FSFile
-import com.snc.zero.filemanager.file2.FSInfo
 import com.snc.zero.filemanager.file2.extensions.toFile
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
@@ -13,7 +12,7 @@ import java.nio.file.Paths
 
 private val logger = TLogging.logger { }
 
-class FSFileTest : BaseJUnit5Test() {
+class FSFileWriteTest : BaseJUnit5Test() {
 
     private lateinit var parent: File
     private lateinit var dir: File
@@ -23,51 +22,8 @@ class FSFileTest : BaseJUnit5Test() {
         super.beforeEach(testInfo)
 
         val projectRoot = Paths.get("").toAbsolutePath()
-        println("Project Root Directory: $projectRoot")
         parent = "${projectRoot}/build/zzz".toFile()
         dir = "$parent/ttt".toFile()
-    }
-
-    @Test
-    fun `FSFile create`() {
-        val file = File(dir, "create.txt")
-        assertDoesNotThrow {
-            FSFile.create(file, overwrite = true)
-        }
-        if (file.exists()) {
-            logger.debug { "$file exist" }
-        } else {
-            logger.debug { "$file not exist" }
-        }
-    }
-
-    @Test
-    fun `FSFile delete`() {
-        val file = File(dir, "create.png")
-        assertDoesNotThrow {
-            FSFile.delete(file)
-        }
-        if (file.exists()) {
-            logger.debug { "$file exist" }
-        } else {
-            logger.debug { "$file not exist" }
-        }
-    }
-
-    @Test
-    fun `FSFile read`() {
-        //val file = File(dir, "write_test.js")
-        val file = File(dir, "android.svg")
-        if (!file.exists()) {
-            logger.debug { "$file not exist" }
-            return
-        }
-        var ba: ByteArray = byteArrayOf()
-        assertDoesNotThrow {
-            ba = FSFile.read(file)
-        }
-        logger.debug { "file size : ${FSInfo.getReadableFileSize(ba.size.toLong())}" }
-        logger.debug { "\n\nfile data : \n${String(ba)}\n-----E.O.D----\n\n" }
     }
 
     @Test
@@ -117,10 +73,7 @@ class FSFileTest : BaseJUnit5Test() {
     </g>
 </svg>
             """.trimIndent()
-
-        assertDoesNotThrow {
-            FSFile.write(data.toByteArray(), file, overwrite = true)
-        }
+        FSFile.write(data.toByteArray(), file, overwrite = true)
         if (!file.exists()) {
             logger.debug { "$file not exist" }
         }
@@ -130,9 +83,7 @@ class FSFileTest : BaseJUnit5Test() {
     fun `FSFile copy`() {
         val src = File(dir, "write_test.js")
         val dst = File(dir, "copy_test.js")
-        assertDoesNotThrow {
-            FSFile.copy(src, dst, overwrite = true)
-        }
+        FSFile.copy(src, dst, overwrite = true)
         if (!dst.exists()) {
             logger.debug { "$dst not exist" }
         }
