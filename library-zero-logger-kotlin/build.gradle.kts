@@ -14,8 +14,8 @@ dependencies {
     implementation(libs.kotlin.logging.jvm)
 
     testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testRuntimeOnly(libs.junit.platform.launcher)
+    testRuntimeOnly(libs.junit.jupiter.engine)
     testImplementation(project(":library-zero-test-kotlin"))
 }
 
