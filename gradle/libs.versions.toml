@@ -1,0 +1,11 @@
+[versions]
+junit-jupiter-api = "5.10.2"
+jsoup = "1.16.1"
+
+[libraries]
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit-jupiter-api" }
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
+
+[bundles]
+
+[plugins]

@@ -10,14 +10,14 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
+    testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
-
     testImplementation(project(":library-zero-test-kotlin"))
+
     implementation(project(":library-zero-logger-kotlin"))
 
-    implementation("org.jsoup:jsoup:1.16.1")
+    implementation(libs.jsoup)
 }
 
 tasks.test {
