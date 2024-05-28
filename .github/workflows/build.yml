@@ -1,4 +1,4 @@
-name: Use GitHub Secrets
+name: SonarCloud
 on:
   push:
     branches:
@@ -7,21 +7,35 @@ on:
     types: [opened, synchronize, reopened]
 jobs:
   build:
+    name: Build and analyze
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Use secret in a script
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'zulu' # Alternative distribution options are available
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+      - name: Build and analyze
         env:
-          MY_SECRET: ${{ secrets.MY_SECRET }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          echo "Using the secret in a script:"
-          echo "MY_SECRET is $MY_SECRET"
-
-      - name: Use secret as an environment variable
-        run: echo "MY_SECRET is set"
-        env:
-          MY_SECRET: ${{ secrets.MY_SECRET }}
-        shell: bash
+          echo "runner.os: ${{ runner.os }}"
+          echo "secrets.GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}"
+          echo "secrets.SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}"
+          ./gradlew build sonar --info
