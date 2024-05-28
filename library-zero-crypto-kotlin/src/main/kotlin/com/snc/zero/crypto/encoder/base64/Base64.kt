@@ -89,23 +89,23 @@ object Base64 {
     }
 
     private fun getByte(c: Char): Byte {
-        when (c) {
+        return when (c) {
             in 'A'..'Z' -> {
-                return (c.code - 'A'.code and 0xff).toByte()
+                (c.code - 'A'.code and 0xff).toByte()
             }
             in 'a'..'z' -> {
-                return ((((26 + c.code) - 'a'.code) and 0xff)).toByte()
+                (((26 + c.code) - 'a'.code) and 0xff).toByte()
             }
             in '0'..'9' -> {
-                return (52 + c.code - '0'.code and 0xff).toByte()
+                (52 + c.code - '0'.code and 0xff).toByte()
             }
             '+', '-' -> {
-                return (62 and 0xff).toByte()
+                (62 and 0xff).toByte()
             }
             '/', '_' -> {
-                return (63 and 0xff).toByte()
+                (63 and 0xff).toByte()
             }
-            else -> return 0xff.toByte()
+            else -> 0xff.toByte()
         }
     }
 }
