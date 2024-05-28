@@ -20,10 +20,8 @@ class FSFile {
         @Throws(IOException::class)
         fun create(file: File, overwrite: Boolean = false): Boolean {
             val parentFile = file.parentFile
-            if (parentFile != null) {
-                if (!parentFile.mkdirsOrNot()) {
-                    throw IOException("Unable to create parent directory.. $parentFile")
-                }
+            if (parentFile != null && !parentFile.mkdirsOrNot()) {
+                throw IOException("Unable to create parent directory.. $parentFile")
             }
             overwrite(file, overwrite)
             return file.createNewFile()
@@ -79,10 +77,8 @@ class FSFile {
         @Throws(IOException::class)
         fun write(data: ByteArray, out: File, overwrite: Boolean = false): Int {
             val parentFile = out.getParentFile() ?: return -1
-            if (!parentFile.exists()) {
-                if (!parentFile.mkdirs()) {
-                    return -2
-                }
+            if (!parentFile.exists() && !parentFile.mkdirs()) {
+                return -2
             }
             create(out, overwrite)
 

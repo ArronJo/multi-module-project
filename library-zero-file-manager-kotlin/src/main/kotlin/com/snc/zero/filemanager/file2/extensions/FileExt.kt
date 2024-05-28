@@ -14,7 +14,7 @@ fun File.mkdirsOrNot(overwrite: Boolean = false): Boolean {
                 throw IOException("The source file can't delete.")
             }
         } else {
-            return true //throw IOException("The source file already exists.")
+            return true
         }
     }
     return this.mkdirs()

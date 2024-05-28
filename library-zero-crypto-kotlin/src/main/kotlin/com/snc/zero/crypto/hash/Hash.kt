@@ -62,7 +62,7 @@ class Hash(var algo: Algo) {
     fun digest(msg: String): ByteArray {
         return when (this.algo) {
             Algo.HmacSHA224 -> {
-                require(key.isNotEmpty()) { "key" }
+                require(key.isNotEmpty()) { msgEmptyKey }
                 return SHA2.hmacSHA224(msg, key, salt, iterationCount, charSet)
             }
             Algo.HmacSHA256 -> {

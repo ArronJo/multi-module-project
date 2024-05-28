@@ -13,20 +13,6 @@ open class BaseJUnit5Test {
 
     companion object {
         var count = 0
-
-        /*
-        @JvmStatic
-        @BeforeAll
-        fun beforeClass() {
-            println("Before Class : $count")
-        }
-
-        @JvmStatic
-        @AfterAll
-        fun afterClass() {
-            println("After Class : $count")
-        }
-         */
     }
 
     @BeforeEach
