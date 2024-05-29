@@ -22,10 +22,6 @@ dependencies {
 
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
-
 kotlin {
     compilerOptions {
         languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.fromVersion(rootProject.extra["jvmTarget"] as String))
@@ -35,39 +31,56 @@ kotlin {
 
 
 ///////////////////////////////////////////////////////////
-tasks.test {
-    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
-}
-tasks.jacocoTestReport {
-    dependsOn(tasks.test) // tests are required to run before generating the report
-    reports {
-        xml.required = true
-        html.required = true
-        csv.required = false
-    }
-}
-
 jacoco {
     toolVersion = "0.8.11"
 
     println()
-    println("jacoco.layout.buildDirectory: ${layout.buildDirectory}")
-    //reportsDirectory.set(layout.buildDirectory.dir("customJacocoReportDir"))
+    println("LOG: jacoco.layout.buildDirectory: ${layout.buildDirectory}")
+    println()
+    println("LOG: jacoco.reportsDirectory: ${reportsDirectory.get()}")
+    //reportsDirectory.set(layout.buildDirectory.dir("jacoco").get())
+    //reportsDirectory.set(layout.buildDirectory.dir("jacocoTestReport"))
+    //println()
+    //println("jacoco.reportsDirectory: ${reportsDirectory.get()}")
+}
+tasks.test {
+    println()
+    println("LOG: tasks.test { }")
+
+    useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+}
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        csv.required.set(false)
+    }
+
+    println()
+    println("LOG: jacoco.report.xml: ${reports.xml.required.get()}")
+    println("LOG: jacoco.report.html: ${reports.html.required.get()}")
+    println("LOG: jacoco.report.csv: ${reports.csv.required.get()}")
+
+    dependsOn(tasks.test) // tests are required to run before generating the report
 }
 
-sonar {
-    properties {
-        property("sonar.projectKey", System.getenv("SONAR_PROJECTKEY"))
-        property("sonar.organization", System.getenv("SONAR_ORGANIZATION"))
-        property("sonar.host.url", "https://sonarcloud.io")
-        //property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory}/reports/tests/test/index.html")
-        property("sonar.coverage.jacoco.xmlReportPaths", "target/site/jacoco/jacoco.xml")
-    }
-}
+//sonar {
+//    properties {
+//        println()
+//        println("sonar.coverage.jacoco.xmlReportPaths: ${property("sonar.coverage.jacoco.xmlReportPaths")}")
+//
+//        property("sonar.projectKey", System.getenv("SONAR_PROJECTKEY"))
+//        property("sonar.organization", System.getenv("SONAR_ORGANIZATION"))
+//        property("sonar.host.url", "https://sonarcloud.io")
+//        //property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory}/reports/tests/test/index.html")
+//        property("sonar.coverage.jacoco.xmlReportPaths", "target/site/jacoco/jacoco.xml")
+//    }
+//}
 
 
 ///////////////////////////////////////////////////////////
-tasks.register<Exec>("runShellScript") {
+tasks.register<Exec>("deleteDSStoreShellScript") {
     description = "This is a shell task that deletes the '.DS_Store' file when building a project."
     group = JavaBasePlugin.BUILD_TASK_NAME
     if (System.getProperty("os.name").lowercase().contains("windows")) {
@@ -77,5 +90,5 @@ tasks.register<Exec>("runShellScript") {
     }
 }
 tasks.named("compileJava") {
-    dependsOn("runShellScript")
+    dependsOn("deleteDSStoreShellScript")
 }
