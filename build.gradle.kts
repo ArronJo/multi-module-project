@@ -57,6 +57,7 @@ sonar {
         property("sonar.projectKey", System.getenv("SONAR_PROJECTKEY"))
         property("sonar.organization", System.getenv("SONAR_ORGANIZATION"))
         property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory}/reports/jacoco/test/jacocoTestReport.xml")
     }
 }
 
