@@ -90,7 +90,6 @@ object Base64 {
         return result
     }
 
-    @Generated("exclude")
     private fun getByte(c: Char): Byte {
         return when (c) {
             in 'A'..'Z' -> {
@@ -105,10 +104,9 @@ object Base64 {
             '+', '-' -> {
                 (62 and 0xff).toByte()
             }
-            '/', '_' -> {
+            else -> { //if (c == '/' || c == '_') {
                 (63 and 0xff).toByte()
             }
-            else -> 0xff.toByte()
         }
     }
 }

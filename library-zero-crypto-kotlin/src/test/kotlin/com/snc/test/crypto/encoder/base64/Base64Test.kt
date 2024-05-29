@@ -11,7 +11,7 @@ private val logger = TLogging.logger { }
 class Base64Test : BaseJUnit5Test() {
 
     @Test
-    fun `Encode To Base64`() {
+    fun `Encode To Base64 변환 1`() {
         // given
         val data = "asdsncynh 2984yhd89`yu8989189u9jqfdasjgfuiasgds"
         // when
@@ -24,7 +24,20 @@ class Base64Test : BaseJUnit5Test() {
     }
 
     @Test
-    fun `Encode To Base64 (Safe URL)`() {
+    fun `Encode To Base64 변환 2`() {
+        // given
+        val data = "12388890121231803280890ㅇㅂ주8890ㅇ0ㅜ1208989012089128 ㄷ12120ㄷ12"
+        // when
+        val v = Base64.encode(data.toByteArray())
+        val v2 = java.util.Base64.getEncoder().encodeToString(data.toByteArray())
+        // then
+        logger.debug { "Base64 encoded 1: $v" }
+        logger.debug { "Base64 encoded 2: $v2" }
+        assertEquals(v, v2)
+    }
+
+    @Test
+    fun `Encode To Base64 (Safe URL) 변환`() {
         // given
         val data = "Special chars: \u00fb\u00fb\u00ff here."
         // when

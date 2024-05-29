@@ -7,10 +7,11 @@ import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }
 
+@Suppress("NonAsciiCharacters")
 class Base64Test : BaseJUnit5Test() {
 
     @Test
-    fun `Decode To Base64`() {
+    fun `Decode To Base64 변환`() {
         // given
         val data = "YXNkc25jeW5oIDI5ODR5aGQ4OWB5dTg5ODkxODl1OWpxZmRhc2pnZnVpYXNnZHM="
         // when
@@ -23,7 +24,7 @@ class Base64Test : BaseJUnit5Test() {
     }
 
     @Test
-    fun `Decode To Base64 (Safe URL)`() {
+    fun `Decode To Base64 (Safe URL) 변환`() {
         // given
         val data = "U3BlY2lhbCBjaGFyczogw7vDu8O/IGhlcmUu"   // -> "Special chars: ûÿ here."
         // when
