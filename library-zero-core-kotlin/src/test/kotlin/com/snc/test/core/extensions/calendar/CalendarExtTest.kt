@@ -35,8 +35,13 @@ class CalendarExtTest : BaseJUnit5Test() {
         // given
         val cal = Calendar.getInstance()
         // when
+        cal.addYear(1)
         cal.addMonth(1)
         cal.addDay(1)
+        cal.addHour(1)
+        cal.addMinute(1)
+        cal.addSecond(1)
+        cal.addMillisecond(1)
         // then
         logger.debug { "Calendar 연산 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} ${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}" }
         //assertEquals(v1, false)
@@ -54,6 +59,29 @@ class CalendarExtTest : BaseJUnit5Test() {
         logger.debug { "Calendar 날짜 표현: ${cal.toStrings()} -> $v1" }
         logger.debug { "Calendar 날짜 표현: ${cal.toStrings()} -> $v2" }
         logger.debug { "Calendar 날짜 표현: ${cal.toStrings()} -> $v3" }
+        //assertEquals(v1, false)
+    }
+
+    @Test
+    fun `Calendar 날짜 비교`() {
+        // given
+        val cal = Calendar.getInstance()
+        val cal2 = cal.clone() as Calendar
+        // when
+        cal2.addMonth(1)
+        // then
+        logger.debug { "Calendar diff 결과: ${cal.diff(cal2)}" }
+        //assertEquals(v1, false)
+    }
+
+    @Test
+    fun `Calendar start day of month`() {
+        // given
+        val cal = Calendar.getInstance()
+        // when
+        cal.startOfMonth()
+        // then
+        logger.debug { "Calendar start day of month 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} ${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}" }
         //assertEquals(v1, false)
     }
 
