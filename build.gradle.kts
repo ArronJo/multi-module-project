@@ -52,14 +52,9 @@ tasks.jacocoTestReport {
 
 sonar {
     properties {
-        println()
-        println("sonar.coverage.jacoco.xmlReportPaths: ${property("sonar.coverage.jacoco.xmlReportPaths")}")
-
         property("sonar.projectKey", System.getenv("SONAR_PROJECTKEY"))
         property("sonar.organization", System.getenv("SONAR_ORGANIZATION"))
         property("sonar.host.url", "https://sonarcloud.io")
-        //property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory}/reports/tests/test/index.html")
-        property("sonar.coverage.jacoco.xmlReportPaths", "target/site/jacoco/jacoco.xml")
     }
 }
 
