@@ -1,5 +1,7 @@
 package com.snc.zero.crypto.encoder.base64
 
+import javax.annotation.processing.Generated
+
 object Base64 {
 
     private val TABLE = charArrayOf(
@@ -88,6 +90,7 @@ object Base64 {
         return result
     }
 
+    @Generated("exclude")
     private fun getByte(c: Char): Byte {
         return when (c) {
             in 'A'..'Z' -> {

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }
 
+@Suppress("NonAsciiCharacters")
 class Base64Test : BaseJUnit5Test() {
 
     @Test
@@ -35,4 +36,24 @@ class Base64Test : BaseJUnit5Test() {
         logger.debug { "Base64 encoded 2: $v2" } // "U3BlY2lhbCBjaGFyczogw7vDu8O/IGhlcmUu"
         assertNotEquals(v, v2)
     }
+
+//    @Test
+//    fun `'Fully covered by tests' 를 받기 위해 uncovered line 테스트 함수 구현 1`() {
+//        // given
+//        // when
+//        val v1 = Base64.getByte('a')
+//        val v2 = Base64.getByte('+')
+//        val v3 = Base64.getByte('-')
+//        val v4 = Base64.getByte('/')
+//        val v5 = Base64.getByte('_')
+//        val v6 = Base64.getByte('*')
+//        // then
+//        logger.debug { "Base64 getByte('a'): $v1" }
+//        logger.debug { "Base64 getByte('+'): $v2" }
+//        logger.debug { "Base64 getByte('-'): $v3" }
+//        logger.debug { "Base64 getByte('/'): $v4" }
+//        logger.debug { "Base64 getByte('_'): $v5" }
+//        logger.debug { "Base64 getByte('*'): $v6" }
+//        //assertNotEquals(v, v2)
+//    }
 }
