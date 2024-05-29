@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm")
+    id("jacoco")
 }
 
 group = "com.snc.zero"
@@ -19,18 +20,23 @@ dependencies {
     testImplementation(libs.testng)
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
-/*
-tasks.test {
-    useTestNG()
-}
- */
-
 kotlin {
     compilerOptions {
         languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.fromVersion(rootProject.extra["jvmTarget"] as String))
         apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.fromVersion(rootProject.extra["jvmTarget"] as String))
     }
+}
+
+tasks.test {
+    useJUnitPlatform()
+    //useTestNG()
+    finalizedBy(tasks.jacocoTestReport)
+}
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        csv.required.set(false)
+    }
+    dependsOn(tasks.test)
 }

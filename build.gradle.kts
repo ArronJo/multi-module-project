@@ -31,22 +31,13 @@ kotlin {
 
 
 ///////////////////////////////////////////////////////////
+subprojects {
+
+}
 jacoco {
     toolVersion = "0.8.11"
-
-    println()
-    println("LOG: jacoco.layout.buildDirectory: ${layout.buildDirectory}")
-    println()
-    println("LOG: jacoco.reportsDirectory: ${reportsDirectory.get()}")
-    //reportsDirectory.set(layout.buildDirectory.dir("jacoco").get())
-    //reportsDirectory.set(layout.buildDirectory.dir("jacocoTestReport"))
-    //println()
-    //println("jacoco.reportsDirectory: ${reportsDirectory.get()}")
 }
 tasks.test {
-    println()
-    println("LOG: tasks.test { }")
-
     useJUnitPlatform()
     finalizedBy(tasks.jacocoTestReport)
 }
@@ -56,27 +47,21 @@ tasks.jacocoTestReport {
         html.required.set(true)
         csv.required.set(false)
     }
-
-    println()
-    println("LOG: jacoco.report.xml: ${reports.xml.required.get()}")
-    println("LOG: jacoco.report.html: ${reports.html.required.get()}")
-    println("LOG: jacoco.report.csv: ${reports.csv.required.get()}")
-
-    dependsOn(tasks.test) // tests are required to run before generating the report
+    dependsOn(tasks.test)
 }
 
-//sonar {
-//    properties {
-//        println()
-//        println("sonar.coverage.jacoco.xmlReportPaths: ${property("sonar.coverage.jacoco.xmlReportPaths")}")
-//
-//        property("sonar.projectKey", System.getenv("SONAR_PROJECTKEY"))
-//        property("sonar.organization", System.getenv("SONAR_ORGANIZATION"))
-//        property("sonar.host.url", "https://sonarcloud.io")
-//        //property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory}/reports/tests/test/index.html")
-//        property("sonar.coverage.jacoco.xmlReportPaths", "target/site/jacoco/jacoco.xml")
-//    }
-//}
+sonar {
+    properties {
+        println()
+        println("sonar.coverage.jacoco.xmlReportPaths: ${property("sonar.coverage.jacoco.xmlReportPaths")}")
+
+        property("sonar.projectKey", System.getenv("SONAR_PROJECTKEY"))
+        property("sonar.organization", System.getenv("SONAR_ORGANIZATION"))
+        property("sonar.host.url", "https://sonarcloud.io")
+        //property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory}/reports/tests/test/index.html")
+        property("sonar.coverage.jacoco.xmlReportPaths", "target/site/jacoco/jacoco.xml")
+    }
+}
 
 
 ///////////////////////////////////////////////////////////
