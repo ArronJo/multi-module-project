@@ -27,7 +27,7 @@ class ValidationExtTest : BaseJUnit5Test() {
         // when
         val v1 = data.validate(isDigit = true)
         // then
-        logger.debug { "문자열 (숫자) 검수 결과: $v1" }
+        logger.debug { "문자열 (숫자) 검수 결과: $v1 : $data" }
         assertEquals(v1, 1)
     }
 
@@ -37,7 +37,7 @@ class ValidationExtTest : BaseJUnit5Test() {
         // when
         val v1 = data.validate(isLowerCase = true)
         // then
-        logger.debug { "문자열 (영소) 검수 결과: $v1" }
+        logger.debug { "문자열 (영소) 검수 결과: $v1 : $data" }
         assertEquals(v1, 1)
     }
 
@@ -47,7 +47,7 @@ class ValidationExtTest : BaseJUnit5Test() {
         // when
         val v1 = data.validate(isUpperCase = true)
         // then
-        logger.debug { "문자열 (영대) 검수 결과: $v1" }
+        logger.debug { "문자열 (영대) 검수 결과: $v1 : $data" }
         assertEquals(v1, 1)
     }
 
@@ -57,7 +57,7 @@ class ValidationExtTest : BaseJUnit5Test() {
         // when
         val v1 = data.validate(isUpperCase = true, isLowerCase = true)
         // then
-        logger.debug { "문자열 (영소 + 영대) 검수 결과: $v1" }
+        logger.debug { "문자열 (영소 + 영대) 검수 결과: $v1 : $data" }
         assertEquals(v1, 2)
     }
 
@@ -67,7 +67,7 @@ class ValidationExtTest : BaseJUnit5Test() {
         // when
         val v1 = data.validate(isLowerCase = true, isUpperCase = true, isDigit = true)
         // then
-        logger.debug { "문자열 (영소 + 영대 + 숫자) 검수 결과: $v1" }
+        logger.debug { "문자열 (영소 + 영대 + 숫자) 검수 결과: $v1 : $data" }
         assertEquals(v1, 3)
     }
 
@@ -77,7 +77,7 @@ class ValidationExtTest : BaseJUnit5Test() {
         // when
         val v1 = data.validate(isLowerCase = true, isUpperCase = true, isDigit = true, isSpecialChars = true)
         // then
-        logger.debug { "문자열 (영소 + 영대 + 숫자 + 특수문자) 검수 결과: $v1" }
+        logger.debug { "문자열 (영소 + 영대 + 숫자 + 특수문자) 검수 결과: $v1 : $data" }
         assertEquals(v1, 4)
     }
 
@@ -88,7 +88,7 @@ class ValidationExtTest : BaseJUnit5Test() {
         // when
         val v1 = data.isNumber()
         // then
-        logger.debug { "숫자로 구성되어 있느냐 결과: $v1" }
+        logger.debug { "숫자로 구성되어 있느냐 결과: $v1 : $data" }
         assertEquals(v1, true)
     }
 
@@ -99,7 +99,7 @@ class ValidationExtTest : BaseJUnit5Test() {
         // when
         val v1 = data.isLowerCase()
         // then
-        logger.debug { "영소로 구성되어 있느냐 결과: $v1" }
+        logger.debug { "영소로 구성되어 있느냐 결과: $v1 : $data" }
         assertEquals(v1, true)
     }
     @Test
@@ -109,7 +109,7 @@ class ValidationExtTest : BaseJUnit5Test() {
         // when
         val v1 = data.isUpperCase()
         // then
-        logger.debug { "영대로 구성되어 있느냐 결과: $v1" }
+        logger.debug { "영대로 구성되어 있느냐 결과: $v1 : $data" }
         assertEquals(v1, true)
     }
 
@@ -120,18 +120,18 @@ class ValidationExtTest : BaseJUnit5Test() {
         // when
         val v1 = data.isLetter()
         // then
-        logger.debug { "(영소 + 영대)로 구성되어 있느냐 결과: $v1" }
+        logger.debug { "(영소 + 영대)로 구성되어 있느냐 결과: $v1 : $data" }
         assertEquals(v1, true)
     }
 
     @Test
     fun `한글로 구성되어 있느냐`() {
         // given
-        val data = "가나담ㄴㅇㅌㄴㅊ피ㅡ퍄ㅐㅈ덩ㄹ"
+        val data = "가나담ㄴㅇㅌㄴㅊ피ᄩㅡ퍄ㅐㅈ덩ㄹ"
         // when
         val v1 = data.isHangul()
         // then
-        logger.debug { "한글로 구성되어 있느냐 결과: $v1" }
+        logger.debug { "한글로 구성되어 있느냐 결과: $v1 : $data" }
         assertEquals(v1, true)
     }
 }
