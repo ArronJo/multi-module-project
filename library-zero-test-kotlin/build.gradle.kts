@@ -1,6 +1,5 @@
 plugins {
     kotlin("jvm")
-    id("jacoco")
 }
 
 group = "com.snc.zero"
