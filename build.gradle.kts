@@ -40,16 +40,19 @@ tasks.test {
 }
 tasks.jacocoTestReport {
     dependsOn(tasks.test) // tests are required to run before generating the report
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
 }
 
 jacoco {
     toolVersion = "0.8.11"
-}
 
-tasks.jacocoTestReport {
-    reports {
-        xml.required = true
-    }
+    println()
+    println("jacoco.layout.buildDirectory: ${layout.buildDirectory}")
+    //reportsDirectory.set(layout.buildDirectory.dir("customJacocoReportDir"))
 }
 
 sonar {
@@ -57,7 +60,8 @@ sonar {
         property("sonar.projectKey", System.getenv("SONAR_PROJECTKEY"))
         property("sonar.organization", System.getenv("SONAR_ORGANIZATION"))
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory}/reports/jacoco/test/jacocoTestReport.xml")
+        //property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory}/reports/tests/test/index.html")
+        property("sonar.coverage.jacoco.xmlReportPaths", "target/site/jacoco/jacoco.xml")
     }
 }
 
