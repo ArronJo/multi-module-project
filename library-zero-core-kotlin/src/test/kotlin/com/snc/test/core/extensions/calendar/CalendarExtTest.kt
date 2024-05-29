@@ -1,41 +1,92 @@
 package com.snc.test.core.extensions.calendar
 
-import com.snc.zero.core.extensions.random.getRandomItem
+import com.snc.zero.core.extensions.calendar.*
+import com.snc.zero.core.extensions.format.formatDateTime
+import com.snc.zero.core.extensions.text.toStrings
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
-import com.snc.zero.test.counter.Counter
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInfo
+import java.util.*
 
 private val logger = TLogging.logger { }
 
+@Suppress("NonAsciiCharacters")
 class CalendarExtTest : BaseJUnit5Test() {
 
-    private var max: Int = 0
-    private lateinit var counter: Counter
-
-    @BeforeEach
-    override fun beforeEach(testInfo: TestInfo) {
-        super.beforeEach(testInfo)
-
-        max = 30
-        counter = Counter()
+    @Test
+    fun `Calendar Set 1`() {
+        // given
+        val cal = Calendar.getInstance()
+        // when
+        cal.setYear(2024)
+        cal.setMonth(2)
+        cal.setDay(2)
+        cal.setHour(9)
+        cal.setMinute(13)
+        cal.setSecond(22)
+        cal.setMillisecond(123)
+        // then
+        logger.debug { "Calendar 연산 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} ${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}" }
+        //assertEquals(v1, false)
     }
 
     @Test
-    fun `Random Draw Item`() {
+    fun `Calendar Add 1`() {
         // given
-        val data = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "0")
+        val cal = Calendar.getInstance()
         // when
-        for (i in 1..max) {
-            val v1 = data.getRandomItem()
-            counter.put(v1)
+        cal.addMonth(1)
+        cal.addDay(1)
+        // then
+        logger.debug { "Calendar 연산 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} ${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}" }
+        //assertEquals(v1, false)
+    }
 
-            // then
-            logger.debug { "Random Draw Item 결과: $v1" }
-            //assertEquals(v1, false)
-        }
-        logger.debug { "Random Draw Item 결과: Counter[${counter.size()}, ${counter.total()}] : $counter" }
+    @Test
+    fun `Calendar 날짜 표현`() {
+        // given
+        val cal = Calendar.getInstance()
+        // when
+        val v1 = cal.formatDateTime("yy-MM-dd")
+        val v2 = cal.formatDateTime("yyyy-MM-dd")
+        val v3 = cal.formatDateTime("yyyy-MM-dd HH:mm:ss")
+        // then
+        logger.debug { "Calendar 날짜 표현: ${cal.toStrings()} -> $v1" }
+        logger.debug { "Calendar 날짜 표현: ${cal.toStrings()} -> $v2" }
+        logger.debug { "Calendar 날짜 표현: ${cal.toStrings()} -> $v3" }
+        //assertEquals(v1, false)
+    }
+
+    @Test
+    fun `Calendar last day of month`() {
+        // given
+        val cal = Calendar.getInstance()
+        // when
+        cal.endOfMonth()
+        // then
+        logger.debug { "Calendar end day of month 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} ${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}" }
+        //assertEquals(v1, false)
+    }
+
+    @Test
+    fun `Calendar last time of day`() {
+        // given
+        val cal = Calendar.getInstance()
+        // when
+        cal.endOfDay()
+        // then
+        logger.debug { "Calendar last time of day 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} ${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}" }
+        //assertEquals(v1, false)
+    }
+
+    @Test
+    fun `String toCalendar 테스트`() {
+        // given
+        val data = "20240402175932"
+        // when
+        val v1 = data.toCalendar("yyyyMMddHHmmss")
+        // then
+        logger.debug { "String toCalendar 결과: $data -> ${v1.toStrings()}" }
+        //assertEquals(v1, false)
     }
 }
