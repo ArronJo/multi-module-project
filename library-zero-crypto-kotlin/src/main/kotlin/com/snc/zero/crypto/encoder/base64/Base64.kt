@@ -1,7 +1,5 @@
 package com.snc.zero.crypto.encoder.base64
 
-import javax.annotation.processing.Generated
-
 object Base64 {
 
     private val TABLE = charArrayOf(
@@ -12,7 +10,7 @@ object Base64 {
         'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
         'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
         'w', 'x', 'y', 'z', '0', '1', '2', '3',
-        '4', '5', '6', '7', '8', '9', '-', '_'
+        '4', '5', '6', '7', '8', '9', '-', '_', // '+', '/'
     )
 
     fun encode(data: ByteArray): String {

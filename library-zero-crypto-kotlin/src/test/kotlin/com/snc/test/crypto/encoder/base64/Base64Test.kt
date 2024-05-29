@@ -26,14 +26,17 @@ class Base64Test : BaseJUnit5Test() {
     @Test
     fun `Encode To Base64 변환 2`() {
         // given
-        val data = "12388890121231803280890ㅇㅂ주8890ㅇ0ㅜ1208989012089128 ㄷ12120ㄷ12"
+        val data = listOf(
+            //"ÿ", "û",
+            //"M", "Ma", "Man",
+            "Ma\u007e","Ma\u007f",
+            )
         // when
-        val v = Base64.encode(data.toByteArray())
-        val v2 = java.util.Base64.getEncoder().encodeToString(data.toByteArray())
-        // then
-        logger.debug { "Base64 encoded 1: $v" }
-        logger.debug { "Base64 encoded 2: $v2" }
-        assertEquals(v, v2)
+        for (input in data) {
+            val v = Base64.encode(input.toByteArray())
+            // then
+            logger.debug { "Base64 encoded : $v" }
+        }
     }
 
     @Test

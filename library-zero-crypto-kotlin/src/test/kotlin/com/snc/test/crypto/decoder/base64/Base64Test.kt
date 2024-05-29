@@ -11,7 +11,33 @@ private val logger = TLogging.logger { }
 class Base64Test : BaseJUnit5Test() {
 
     @Test
-    fun `Decode To Base64 변환`() {
+    fun `Decode To Base64 변환 1`() {
+        // given
+        val data = "TWF+"
+        // when
+        val v = String(Base64.decode(data))
+        val v2 = String(java.util.Base64.getDecoder().decode(data))
+        // then
+        logger.debug { "Base64 decoded v1: $v" }
+        logger.debug { "Base64 decoded v2: $v2" }
+        assertEquals(v, v2)
+    }
+
+    @Test
+    fun `Decode To Base64 변환 2`() {
+        // given
+        val data = "TWF/"
+        // when
+        val v = String(Base64.decode(data))
+        val v2 = String(java.util.Base64.getDecoder().decode(data))
+        // then
+        logger.debug { "Base64 decoded v1: $v" }
+        logger.debug { "Base64 decoded v2: $v2" }
+        assertEquals(v, v2)
+    }
+
+    @Test
+    fun `Decode To Base64 변환 3`() {
         // given
         val data = "YXNkc25jeW5oIDI5ODR5aGQ4OWB5dTg5ODkxODl1OWpxZmRhc2pnZnVpYXNnZHM="
         // when
