@@ -31,7 +31,8 @@ class FSFile {
             if (file.exists()) {
                 if (!overwrite) {
                     throw IOException("The source file already exists. $file")
-                } else if (!delete(file)) {
+                }
+                if (!delete(file)) {
                     throw IOException("Tried to overwrite the destination, but failed to delete it. $file")
                 }
             }
@@ -113,20 +114,6 @@ class FSFile {
                 return false
             }
             return true
-        }
-
-        @JvmStatic
-        @Throws(IOException::class)
-        fun copy(input: InputStream, output: OutputStream): Long {
-            var bytesCopied: Long = 0
-            val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
-            var bytes = input.read(buffer)
-            while (bytes >= 0) {
-                output.write(buffer, 0, bytes)
-                bytesCopied += bytes.toLong()
-                bytes = input.read(buffer)
-            }
-            return bytesCopied
         }
 
         @JvmStatic

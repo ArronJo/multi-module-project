@@ -42,6 +42,22 @@ class FSFileCreateTest : BaseJUnit5Test() {
     fun `FSFile create or overwrite 2`() {
         val file = File(dir, "create.txt")
         FSFile.create(file, overwrite = true)
+        FSFile.create(file, overwrite = false)
+        if (file.exists()) {
+            logger.debug { "$file exist" }
+        } else {
+            logger.debug { "$file not exist" }
+        }
+    }
+
+    @Test
+    fun `FSFile create or overwrite 3`() {
+        val file = File("/", "create.txt")
+        val e = assertThrows(
+            IllegalArgumentException::class.java
+        ) {
+            FSFile.create(file, overwrite = true)
+        }
         if (file.exists()) {
             logger.debug { "$file exist" }
         } else {
