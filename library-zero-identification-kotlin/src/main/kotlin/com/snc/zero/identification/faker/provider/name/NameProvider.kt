@@ -3,9 +3,6 @@ package com.snc.zero.identification.faker.provider.name
 import java.util.*
 import kotlin.math.ln
 
-/**
- * 이름 부모 Provider
- */
 open class NameProvider {
 
     protected val lastNames = mutableMapOf<String, Double>()

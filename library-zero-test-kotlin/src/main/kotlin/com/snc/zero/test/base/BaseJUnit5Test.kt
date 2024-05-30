@@ -45,5 +45,4 @@ open class BaseJUnit5Test {
     protected fun getRandomInt(min: Int = 0, max: Int): Int {
         return random.nextInt(max - min + 1) + min
     }
-
 }

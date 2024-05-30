@@ -23,6 +23,7 @@ class FSFileReadTest : BaseJUnit5Test() {
         super.beforeEach(testInfo)
 
         val projectRoot = Paths.get("").toAbsolutePath()
+        println("Project Root Directory: $projectRoot")
         parent = "${projectRoot}/build/zzz".toFile()
         dir = "$parent/ttt".toFile()
     }
@@ -35,7 +36,10 @@ class FSFileReadTest : BaseJUnit5Test() {
             logger.debug { "$file not exist" }
             return
         }
-        val ba = FSFile.read(file)
+        var ba: ByteArray = byteArrayOf()
+        assertDoesNotThrow {
+            ba = FSFile.read(file)
+        }
         logger.debug { "file size : ${FSInfo.getReadableFileSize(ba.size.toLong())}" }
         logger.debug { "\n\nfile data : \n${String(ba)}\n-----E.O.D----\n\n" }
     }

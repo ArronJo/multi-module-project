@@ -1,8 +1,5 @@
 package com.snc.zero.identification.faker.provider.name
 
-/**
- * 한글 이름
- */
 object KoreanNameProvider : NameProvider() {
 
     init {

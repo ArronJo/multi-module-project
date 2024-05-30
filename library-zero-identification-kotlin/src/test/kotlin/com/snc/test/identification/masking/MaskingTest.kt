@@ -140,7 +140,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "[3-A]")
         // then[
         logger.debug { "$s -> '[3-A]' -> $v" }
-        //assertEquals(v, "1234567890@12*******")
+        assertEquals(v, "1234567890@ 123ski789")
     }
 
     @Test

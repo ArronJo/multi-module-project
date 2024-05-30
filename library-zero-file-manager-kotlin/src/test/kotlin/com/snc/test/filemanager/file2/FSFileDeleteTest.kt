@@ -22,6 +22,7 @@ class FSFileDeleteTest : BaseJUnit5Test() {
         super.beforeEach(testInfo)
 
         val projectRoot = Paths.get("").toAbsolutePath()
+        println("Project Root Directory: $projectRoot")
         parent = "${projectRoot}/build/zzz".toFile()
         dir = "$parent/ttt".toFile()
     }
@@ -29,7 +30,9 @@ class FSFileDeleteTest : BaseJUnit5Test() {
     @Test
     fun `FSFile delete`() {
         val file = File(dir, "create.png")
-        FSFile.delete(file)
+        assertDoesNotThrow {
+            FSFile.delete(file)
+        }
         if (file.exists()) {
             logger.debug { "$file exist" }
         } else {

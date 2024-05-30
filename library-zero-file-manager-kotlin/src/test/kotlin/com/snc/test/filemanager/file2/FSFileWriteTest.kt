@@ -12,6 +12,7 @@ import java.nio.file.Paths
 
 private val logger = TLogging.logger { }
 
+@Suppress("NonAsciiCharacters")
 class FSFileWriteTest : BaseJUnit5Test() {
 
     private lateinit var parent: File
@@ -22,12 +23,26 @@ class FSFileWriteTest : BaseJUnit5Test() {
         super.beforeEach(testInfo)
 
         val projectRoot = Paths.get("").toAbsolutePath()
+        println("Project Root Directory: $projectRoot")
         parent = "${projectRoot}/build/zzz".toFile()
         dir = "$parent/ttt".toFile()
     }
 
     @Test
-    fun `FSFile write`() {
+    fun `FSFile write 1메가 이상`() {
+        val file = File(dir, "1mb.txt")
+        var data = ""
+        for (i in 1..10 * 1024) {
+            data += "svg width=\"70px\" height=\"70px\" viewBox=\"0 0 70 70\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+        }
+        FSFile.write(data.toByteArray(), file, overwrite = true)
+        if (!file.exists()) {
+            logger.debug { "$file not exist" }
+        }
+    }
+
+    @Test
+    fun `FSFile write 1메가 미만`() {
         val file = File(dir, "android.svg")
         val data =
             """
@@ -73,7 +88,10 @@ class FSFileWriteTest : BaseJUnit5Test() {
     </g>
 </svg>
             """.trimIndent()
-        FSFile.write(data.toByteArray(), file, overwrite = true)
+
+        assertDoesNotThrow {
+            FSFile.write(data.toByteArray(), file, overwrite = true)
+        }
         if (!file.exists()) {
             logger.debug { "$file not exist" }
         }
@@ -83,7 +101,9 @@ class FSFileWriteTest : BaseJUnit5Test() {
     fun `FSFile copy`() {
         val src = File(dir, "write_test.js")
         val dst = File(dir, "copy_test.js")
-        FSFile.copy(src, dst, overwrite = true)
+        assertDoesNotThrow {
+            FSFile.copy(src, dst, overwrite = true)
+        }
         if (!dst.exists()) {
             logger.debug { "$dst not exist" }
         }
