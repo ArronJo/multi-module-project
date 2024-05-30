@@ -18,10 +18,7 @@ class FSDirectory {
         @JvmStatic
         fun delete(dir: File): Boolean {
             if (!dir.exists()) {
-                return true
-            }
-            if (!dir.isDirectory()) {
-                throw IOException("The file passed to the dir argument was not a directory.")
+                return false
             }
 
             val dirs: MutableList<File> = ArrayList()

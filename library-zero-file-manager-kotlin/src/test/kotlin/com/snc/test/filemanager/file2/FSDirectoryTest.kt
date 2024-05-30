@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
 import java.io.File
+import java.io.IOException
 import java.nio.file.Paths
 
 private val logger = TLogging.logger { }
@@ -52,7 +53,7 @@ class FSDirectoryTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `FSDirectory delete`() {
+    fun `FSDirectory delete 1`() {
         assertDoesNotThrow {
             FSDirectory.delete(parent)
         }
@@ -61,5 +62,11 @@ class FSDirectoryTest : BaseJUnit5Test() {
         } else {
             logger.debug { "delete: $parent not exist" }
         }
+    }
+
+    @Test
+    fun `FSDirectory delete 2`() {
+        val ret = FSDirectory.delete(File(parent, "notexist"))
+        assertEquals(ret, false)
     }
 }
