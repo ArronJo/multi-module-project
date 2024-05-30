@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
 import java.io.File
+import java.io.IOException
 import java.nio.file.Paths
 
 private val logger = TLogging.logger { }
@@ -41,27 +42,25 @@ class FSFileCreateTest : BaseJUnit5Test() {
     @Test
     fun `FSFile create or overwrite 2`() {
         val file = File(dir, "create.txt")
-        FSFile.create(file, overwrite = true)
-        FSFile.create(file, overwrite = false)
-        if (file.exists()) {
-            logger.debug { "$file exist" }
-        } else {
-            logger.debug { "$file not exist" }
+        val e = assertThrows(
+            IOException::class.java
+        ) {
+            FSFile.create(file, overwrite = true)
+            FSFile.create(file, overwrite = false)
         }
+        logger.debug { "${e.message}" }
+        assertEquals(e.message, "The source file already exists. $file")
     }
 
     @Test
     fun `FSFile create or overwrite 3`() {
         val file = File("/", "create.txt")
-        assertThrows(
-            IllegalArgumentException::class.java
+        val e = assertThrows(
+            IOException::class.java
         ) {
             FSFile.create(file, overwrite = true)
         }
-        if (file.exists()) {
-            logger.debug { "$file exist" }
-        } else {
-            logger.debug { "$file not exist" }
-        }
+        logger.debug { "${e.message}" }
+        assertNotEquals(e.message, "")
     }
 }

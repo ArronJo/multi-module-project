@@ -1,10 +1,10 @@
 package com.snc.test.core.extensions.random
 
+import com.snc.zero.core.counter.Counter
 import com.snc.zero.core.extensions.random.getRandomItem
 import com.snc.zero.core.extensions.random.getWeightedRandom
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
-import com.snc.zero.test.counter.Counter
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
