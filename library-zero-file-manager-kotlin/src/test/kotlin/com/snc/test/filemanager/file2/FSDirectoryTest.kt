@@ -28,9 +28,21 @@ class FSDirectoryTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `FSDirectory create`() {
+    fun `FSDirectory create 1`() {
         assertDoesNotThrow {
             FSDirectory.create(dir, overwrite = true)
+        }
+        if (dir.exists()) {
+            logger.debug { "create: $dir exist" }
+        } else {
+            logger.debug { "create: $dir not exist" }
+        }
+    }
+
+    @Test
+    fun `FSDirectory create 2`() {
+        assertDoesNotThrow {
+            FSDirectory.create(dir, overwrite = false)
         }
         if (dir.exists()) {
             logger.debug { "create: $dir exist" }
