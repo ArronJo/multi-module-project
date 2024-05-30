@@ -1,6 +1,5 @@
 package com.snc.zero.filemanager.file2
 
-import com.snc.zero.filemanager.file2.extensions.mkdirsOrNot
 import com.snc.zero.logger.jvm.TLogging
 import java.io.*
 import java.util.*
@@ -17,9 +16,10 @@ class FSFile {
         @JvmStatic
         @Throws(IOException::class)
         fun create(file: File, overwrite: Boolean = false): Boolean {
-            val parentFile = file.parentFile
-            if (parentFile != null && !parentFile.mkdirsOrNot()) {
-                throw IOException("Unable to create parent directory.. $parentFile")
+            file.parentFile?.let {
+                if (!it.mkdirs()) {
+                    throw IOException("Unable to create parent directory.. $it")
+                }
             }
             overwrite(file, overwrite)
             return file.createNewFile()
@@ -126,12 +126,12 @@ class FSFile {
         private fun closeQuietly(os: OutputStream?) {
             try {
                 os?.flush()
-            } catch (e: Exception) {
+            } catch (e: IOException) {
                 logger.error(e) { "Exception" }
             }
             try {
                 os?.close()
-            } catch (e: Exception) {
+            } catch (e: IOException) {
                 logger.error(e) { "Exception" }
             }
         }
@@ -139,7 +139,7 @@ class FSFile {
         private fun closeQuietly(c: Closeable?) {
             try {
                 c?.close()
-            } catch (e: Exception) {
+            } catch (e: IOException) {
                 logger.error(e) { "Exception" }
             }
         }
