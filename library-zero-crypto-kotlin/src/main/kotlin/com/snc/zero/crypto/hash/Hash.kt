@@ -9,7 +9,7 @@ import kotlin.jvm.Throws
 class Hash(var algo: Algo) {
 
     private val msgEmptyKey = "Empty key"
-
+    
     companion object {
 
         @JvmStatic

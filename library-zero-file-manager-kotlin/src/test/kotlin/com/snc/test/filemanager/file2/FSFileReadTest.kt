@@ -29,7 +29,7 @@ class FSFileReadTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `FSFile read`() {
+    fun `FSFile read 1`() {
         //val file = File(dir, "write_test.js")
         val file = File(dir, "android.svg")
         if (!file.exists()) {
@@ -39,6 +39,22 @@ class FSFileReadTest : BaseJUnit5Test() {
         var ba: ByteArray = byteArrayOf()
         assertDoesNotThrow {
             ba = FSFile.read(file)
+        }
+        logger.debug { "file size : ${FSInfo.getReadableFileSize(ba.size.toLong())}" }
+        logger.debug { "\n\nfile data : \n${String(ba)}\n-----E.O.D----\n\n" }
+    }
+
+    @Test
+    fun `FSFile read 2`() {
+        //val file = File(dir, "write_test.js")
+        val file = File(dir, "android.svg")
+        if (!file.exists()) {
+            logger.debug { "$file not exist" }
+            return
+        }
+        var ba: ByteArray = byteArrayOf()
+        assertDoesNotThrow {
+            ba = FSFile.read(file, charset = "UTF-8")
         }
         logger.debug { "file size : ${FSInfo.getReadableFileSize(ba.size.toLong())}" }
         logger.debug { "\n\nfile data : \n${String(ba)}\n-----E.O.D----\n\n" }

@@ -3,8 +3,6 @@ package com.snc.zero.filemanager.file2
 import com.snc.zero.filemanager.file2.extensions.mkdirsOrNot
 import com.snc.zero.logger.jvm.TLogging
 import java.io.*
-import java.nio.CharBuffer
-import java.nio.charset.Charset
 import java.util.*
 
 private val logger = TLogging.logger { }
@@ -28,6 +26,7 @@ class FSFile {
         }
 
         @JvmStatic
+        @Throws(IOException::class)
         private fun overwrite(file: File, overwrite: Boolean = false) {
             if (file.exists()) {
                 if (!overwrite) {
@@ -48,7 +47,7 @@ class FSFile {
         @Throws(IOException::class)
         fun read(
             file: File,
-            charset: Charset = charset("UTF-8"),
+            charset: String = "UTF-8"
         ): ByteArray {
             val buf = CharArray(DEFAULT_BUFFER_SIZE)
             var br: BufferedReader? = null
@@ -56,7 +55,7 @@ class FSFile {
 
             var length = getLength(file)
             try {
-                br = BufferedReader(InputStreamReader(FileInputStream(file), charset))
+                br = BufferedReader(InputStreamReader(FileInputStream(file), charset(charset)))
                 while (length > 0) {
                     val amt = br.read(buf, 0, buf.size)
                     if (amt == -1) {
@@ -65,8 +64,7 @@ class FSFile {
                     sb.appendRange(buf, 0, amt)
                     length -= amt
                 }
-            } catch (e: Exception) {
-                throw IOException("ERROR : $file: trouble reading", e)
+
             } finally {
                 closeQuietly(br)
             }
@@ -98,8 +96,7 @@ class FSFile {
                     os.write(buffer, 0, len)
                     offset += len
                 }
-            } catch (e: IOException) {
-                throw IOException("ERROR : trouble writing $out")
+
             } finally {
                 closeQuietly(os)
             }
@@ -130,18 +127,6 @@ class FSFile {
                 bytes = input.read(buffer)
             }
             return bytesCopied
-        }
-
-        @JvmStatic
-        fun toBytes(chars: CharArray): ByteArray {
-            val charBuffer = CharBuffer.wrap(chars)
-            val byteBuffer = Charset.forName("UTF-8").encode(charBuffer)
-            val bytes = Arrays.copyOfRange(
-                byteBuffer.array(),
-                byteBuffer.position(), byteBuffer.limit()
-            )
-            Arrays.fill(byteBuffer.array(), 0.toByte()) // clear sensitive data
-            return bytes
         }
 
         @JvmStatic
