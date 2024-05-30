@@ -59,9 +59,6 @@ class FSFile {
                 br = BufferedReader(InputStreamReader(FileInputStream(file), charset(charset)))
                 while (length > 0) {
                     val amt = br.read(buf, 0, buf.size)
-                    if (amt == -1) {
-                        break
-                    }
                     sb.appendRange(buf, 0, amt)
                     length -= amt
                 }

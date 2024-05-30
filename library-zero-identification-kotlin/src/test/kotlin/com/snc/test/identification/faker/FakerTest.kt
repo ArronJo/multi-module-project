@@ -11,7 +11,7 @@ private val logger = TLogging.logger { }
 class FakerTest : BaseJUnit5Test() {
 
     @Test
-    fun `가명 만들기`() {
+    fun `가명 만들기 1`() {
         // given
         val max = 30
         // when

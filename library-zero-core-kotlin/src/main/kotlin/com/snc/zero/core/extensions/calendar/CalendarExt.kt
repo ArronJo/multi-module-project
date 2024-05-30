@@ -1,7 +1,9 @@
 package com.snc.zero.core.extensions.calendar
 
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 fun Calendar.setYear(year: Int) {
     this[Calendar.YEAR] = year

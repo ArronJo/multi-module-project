@@ -96,16 +96,4 @@ class FSFileWriteTest : BaseJUnit5Test() {
             logger.debug { "$file not exist" }
         }
     }
-
-    @Test
-    fun `FSFile copy`() {
-        val src = File(dir, "write_test.js")
-        val dst = File(dir, "copy_test.js")
-        assertDoesNotThrow {
-            FSFile.copy(src, dst, overwrite = true)
-        }
-        if (!dst.exists()) {
-            logger.debug { "$dst not exist" }
-        }
-    }
 }

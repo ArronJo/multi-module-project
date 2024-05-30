@@ -1,4 +1,4 @@
-package com.snc.zero.test.counter
+package com.snc.zero.core.counter
 
 class Counter {
 

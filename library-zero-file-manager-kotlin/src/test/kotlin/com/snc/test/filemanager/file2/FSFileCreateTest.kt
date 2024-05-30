@@ -53,7 +53,7 @@ class FSFileCreateTest : BaseJUnit5Test() {
     @Test
     fun `FSFile create or overwrite 3`() {
         val file = File("/", "create.txt")
-        val e = assertThrows(
+        assertThrows(
             IllegalArgumentException::class.java
         ) {
             FSFile.create(file, overwrite = true)
