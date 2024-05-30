@@ -4,11 +4,12 @@ import com.snc.zero.crypto.hash.sha2.SHA2
 import com.snc.zero.crypto.hash.sha3.SHA3
 import com.snc.zero.crypto.hash.sha3.SHAKE
 import java.nio.charset.Charset
+import kotlin.jvm.Throws
 
 class Hash(var algo: Algo) {
 
     private val msgEmptyKey = "Empty key"
-    
+
     companion object {
 
         @JvmStatic
@@ -59,6 +60,7 @@ class Hash(var algo: Algo) {
         return this
     }
 
+    @Throws(IllegalArgumentException::class)
     fun digest(msg: String): ByteArray {
         return when (this.algo) {
             Algo.HmacSHA224 -> {

@@ -38,10 +38,13 @@ class HashTest : BaseJUnit5Test() {
         // given
         val data = "qwerty"
         // when
-        val v = Hash.with(Hash.Algo.HmacSHA224).key("").digest(data).toHexString()
+        val e = assertThrows(
+            IllegalArgumentException::class.java
+        ) {
+            Hash.with(Hash.Algo.HmacSHA224).key("").digest(data).toHexString()
+        }
         // then
-        logger.debug { "Hash.Algo.HmacSHA224: $v" }
-        assertEquals(v, "ec85c6b61056b438c0bbd95ff021543a3bd85c4572562f708ffcb8ee")
+        assertEquals(e.message, "Empty key")
     }
 
     @Test
@@ -60,10 +63,13 @@ class HashTest : BaseJUnit5Test() {
         // given
         val data = "qwerty"
         // when
-        val v = Hash.with(Hash.Algo.HmacSHA256).key("").digest(data).toHexString()
+        val e = assertThrows(
+            IllegalArgumentException::class.java
+        ) {
+            Hash.with(Hash.Algo.HmacSHA256).key("").digest(data).toHexString()
+        }
         // then
-        logger.debug { "Hash.Algo.HmacSHA256: $v" }
-        assertEquals(v, "1eea2ffaeebbc5ab3946e1a15ffc7f13129a54571195952e995c3785a4a5cf89")
+        assertEquals(e.message, "Empty key")
     }
 
     @Test
@@ -82,10 +88,13 @@ class HashTest : BaseJUnit5Test() {
         // given
         val data = "qwerty"
         // when
-        val v = Hash.with(Hash.Algo.HmacSHA384).key("").digest(data).toHexString()
+        val e = assertThrows(
+            IllegalArgumentException::class.java
+        ) {
+            Hash.with(Hash.Algo.HmacSHA384).key("").digest(data).toHexString()
+        }
         // then
-        logger.debug { "Hash.Algo.HmacSHA384: $v" }
-        assertEquals(v, "5a497b34497187f764f94a5ddd6e16b5b7be924f2d32857cd29944a02fff0b0514fb83387ec85212be2a5ddf1e18993c")
+        assertEquals(e.message, "Empty key")
     }
 
     @Test
@@ -104,10 +113,13 @@ class HashTest : BaseJUnit5Test() {
         // given
         val data = "qwerty"
         // when
-        val v = Hash.with(Hash.Algo.HmacSHA512).key("").digest(data).toHexString()
+        val e = assertThrows(
+            IllegalArgumentException::class.java
+        ) {
+            Hash.with(Hash.Algo.HmacSHA512).key("").digest(data).toHexString()
+        }
         // then
-        logger.debug { "Hash.Algo.HmacSHA512: $v" }
-        assertEquals(v, "7979a814a63df67c03d308c1a06e4e4a311589ec5a9eb1872ca401555b7ddf1bad6002022580a63efd8c1f1bc207ab01ff37e13b7d60503ca89bcef7ba42f202")
+        assertEquals(e.message, "Empty key")
     }
 
     @Test
