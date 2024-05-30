@@ -24,7 +24,7 @@ class FSFileCreateTest : BaseJUnit5Test() {
 
         val projectRoot = Paths.get("").toAbsolutePath()
         println("Project Root Directory: $projectRoot")
-        parent = "${projectRoot}/build/zzz".toFile()
+        parent = "${projectRoot}/build/xxx".toFile()
         dir = "$parent/ttt".toFile()
     }
 
@@ -43,6 +43,19 @@ class FSFileCreateTest : BaseJUnit5Test() {
 
     @Test
     fun `FSFile create or overwrite 2`() {
+        val file = File(dir, "create1.txt")
+        val e = assertThrows(
+            IOException::class.java
+        ) {
+            FSFile.create(file, overwrite = true)
+            FSFile.create(file, overwrite = false)
+        }
+        logger.debug { "${e.message}" }
+        //assertEquals(e.message, "Unable to create parent directory. ${file.parent}")
+    }
+
+    @Test
+    fun `FSFile create or overwrite 3`() {
         val file = File("/", "create2.txt")
         val e = assertThrows(
             IOException::class.java

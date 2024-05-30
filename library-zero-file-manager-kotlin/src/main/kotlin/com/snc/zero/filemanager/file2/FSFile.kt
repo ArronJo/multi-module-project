@@ -54,7 +54,7 @@ class FSFile {
             var br: BufferedReader? = null
             val sb = StringBuilder()
 
-            var length = getLength(file)
+            var length = file.length()
             try {
                 br = BufferedReader(InputStreamReader(FileInputStream(file), charset(charset)))
                 while (length > 0) {
@@ -111,16 +111,6 @@ class FSFile {
                 return false
             }
             return true
-        }
-
-        @JvmStatic
-        fun getLength(file: File): Int {
-            val longLength = file.length()
-            val length = longLength.toInt()
-            if (length.toLong() != longLength) {
-                throw IOException("ERROR : $file: file too long")
-            }
-            return length
         }
 
         private fun closeQuietly(os: OutputStream?) {
