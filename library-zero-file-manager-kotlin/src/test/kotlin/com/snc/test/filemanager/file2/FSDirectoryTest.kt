@@ -42,6 +42,7 @@ class FSDirectoryTest : BaseJUnit5Test() {
     @Test
     fun `FSDirectory create 2`() {
         assertDoesNotThrow {
+            FSDirectory.create(dir, overwrite = true)
             FSDirectory.create(dir, overwrite = false)
         }
         if (dir.exists()) {
@@ -54,6 +55,7 @@ class FSDirectoryTest : BaseJUnit5Test() {
     @Test
     fun `FSDirectory delete 1`() {
         assertDoesNotThrow {
+            FSDirectory.create(dir, overwrite = true)
             FSDirectory.delete(parent)
         }
         if (parent.exists()) {
