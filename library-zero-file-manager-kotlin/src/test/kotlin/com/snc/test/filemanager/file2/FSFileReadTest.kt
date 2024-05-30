@@ -30,12 +30,13 @@ class FSFileReadTest : BaseJUnit5Test() {
 
     @Test
     fun `FSFile read 1`() {
-        //val file = File(dir, "write_test.js")
-        val file = File(dir, "android.svg")
-        if (!file.exists()) {
-            logger.debug { "$file not exist" }
-            return
+        val file = File(dir, "read_test.txt")
+        var data = ""
+        for (i in 1..10 * 1024) {
+            data += "svg width=\"70px\" height=\"70px\" viewBox=\"0 0 70 70\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\""
         }
+        FSFile.write(data.toByteArray(), file, overwrite = true)
+
         var ba: ByteArray = byteArrayOf()
         assertDoesNotThrow {
             ba = FSFile.read(file)
@@ -46,12 +47,13 @@ class FSFileReadTest : BaseJUnit5Test() {
 
     @Test
     fun `FSFile read 2`() {
-        //val file = File(dir, "write_test.js")
-        val file = File(dir, "android.svg")
-        if (!file.exists()) {
-            logger.debug { "$file not exist" }
-            return
+        val file = File(dir, "read_test.txt")
+        var data = ""
+        for (i in 1..10 * 1024) {
+            data += "svg width=\"70px\" height=\"70px\" viewBox=\"0 0 70 70\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\""
         }
+        FSFile.write(data.toByteArray(), file, overwrite = true)
+
         var ba: ByteArray = byteArrayOf()
         assertDoesNotThrow {
             ba = FSFile.read(file, charset = "UTF-8")

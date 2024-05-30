@@ -59,7 +59,7 @@ class FSFile {
                 while (length > 0) {
                     val amt = br.read(buf, 0, buf.size)
                     if (amt == -1) {
-                        break //throw new IOException("ERROR : " + file + ": unexpected EOF");
+                        break
                     }
                     sb.appendRange(buf, 0, amt)
                     length -= amt
