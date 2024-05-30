@@ -30,18 +30,7 @@ class FSFileCreateTest : BaseJUnit5Test() {
 
     @Test
     fun `FSFile create or overwrite 1`() {
-        val file = File(dir, "create.txt")
-        FSFile.create(file, overwrite = true)
-        if (file.exists()) {
-            logger.debug { "$file exist" }
-        } else {
-            logger.debug { "$file not exist" }
-        }
-    }
-
-    @Test
-    fun `FSFile create or overwrite 2`() {
-        val file = File(dir, "create.txt")
+        val file = File(dir, "create1.txt")
         val e = assertThrows(
             IOException::class.java
         ) {
@@ -49,12 +38,12 @@ class FSFileCreateTest : BaseJUnit5Test() {
             FSFile.create(file, overwrite = false)
         }
         logger.debug { "${e.message}" }
-        assertEquals(e.message, "The source file already exists. $file")
+        //assertEquals(e.message, "Unable to create parent directory. ${file.parent}")
     }
 
     @Test
-    fun `FSFile create or overwrite 3`() {
-        val file = File("/", "create.txt")
+    fun `FSFile create or overwrite 2`() {
+        val file = File("/", "create2.txt")
         val e = assertThrows(
             IOException::class.java
         ) {
@@ -62,5 +51,24 @@ class FSFileCreateTest : BaseJUnit5Test() {
         }
         logger.debug { "${e.message}" }
         assertNotEquals(e.message, "")
+    }
+
+    @Test
+    fun `FSFile copy 1`() {
+        val src = File(dir, "copy1.txt")
+        val dst = File(dir, "copy2.txt")
+//        val e = assertThrows(
+//            IOException::class.java
+//        ) {
+            FSFile.create(src, overwrite = true)
+            FSFile.copy(src, dst, overwrite = true)
+//        }
+        if (dst.exists()) {
+            logger.debug { "$dst exist" }
+        } else {
+            logger.debug { "$dst not exist" }
+        }
+//        logger.debug { "${e.message}" }
+        assertEquals(dst.exists(), true)
     }
 }

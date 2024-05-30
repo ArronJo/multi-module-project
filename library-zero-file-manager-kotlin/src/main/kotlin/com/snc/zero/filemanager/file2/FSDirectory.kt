@@ -1,6 +1,5 @@
 package com.snc.zero.filemanager.file2
 
-import com.snc.zero.filemanager.file2.extensions.mkdirsOrNot
 import java.io.File
 import java.io.IOException
 
@@ -10,7 +9,10 @@ class FSDirectory {
 
         @JvmStatic
         fun create(dir: File, overwrite: Boolean = false): Boolean {
-            return dir.mkdirsOrNot(overwrite)
+            if (dir.exists() && !overwrite) {
+                return false
+            }
+            return dir.mkdirs()
         }
 
         @JvmStatic
