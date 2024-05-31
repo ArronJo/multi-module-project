@@ -43,7 +43,7 @@ class FSFileCreateTest : BaseJUnit5Test() {
 
     @Test
     fun `FSFile create or overwrite 2`() {
-        val file = File(dir, "create1.txt")
+        val file = File(dir, "create2.txt")
         val e = assertThrows(
             IOException::class.java
         ) {
@@ -56,7 +56,19 @@ class FSFileCreateTest : BaseJUnit5Test() {
 
     @Test
     fun `FSFile create or overwrite 3`() {
-        val file = File("/", "create2.txt")
+        val file = File("/", "create3.txt")
+        val e = assertThrows(
+            IOException::class.java
+        ) {
+            FSFile.create(file, overwrite = true)
+        }
+        logger.debug { "${e.message}" }
+        assertNotEquals(e.message, "")
+    }
+
+    @Test
+    fun `FSFile create or overwrite 4`() {
+        val file = File("/usr/sbin", "create4.txt")
         val e = assertThrows(
             IOException::class.java
         ) {

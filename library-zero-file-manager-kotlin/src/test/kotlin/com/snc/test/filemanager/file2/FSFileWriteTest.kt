@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
 import java.io.File
+import java.io.IOException
 import java.nio.file.Paths
 
 private val logger = TLogging.logger { }
@@ -95,5 +96,29 @@ class FSFileWriteTest : BaseJUnit5Test() {
         if (!file.exists()) {
             logger.debug { "$file not exist" }
         }
+    }
+
+    @Test
+    fun `FSFile write Exception 1`() {
+        val file = File("/usr/sbin", "create4.txt")
+        val e = assertThrows(
+            IOException::class.java
+        ) {
+            FSFile.write("에러 나겟지?".toByteArray(), file, overwrite = true)
+        }
+        logger.debug { "${e.message}" }
+        assertNotEquals(e.message, "")
+    }
+
+    @Test
+    fun `FSFile write Exception 2`() {
+        val file = File("/usr/sbin", "alias")
+        val e = assertThrows(
+            IOException::class.java
+        ) {
+            FSFile.write("에러 나겟지?".toByteArray(), file, overwrite = true)
+        }
+        logger.debug { "${e.message}" }
+        assertNotEquals(e.message, "")
     }
 }
