@@ -7,7 +7,7 @@ build/
 ### kotlin 2.0 ###
 .kotlin/
 
-### SonarQube ###
+### SonarScanner ###
 sonar-project.properties
 
 ### IntelliJ IDEA ###
