@@ -24,6 +24,10 @@ open class BaseJUnit5Test {
         println("Task Result $count elapse: ${timer.stop()}")
     }
 
+    fun assertAll(vararg executables: Executable) {
+        Assertions.assertAll(*executables)
+    }
+
     fun assertEquals(expected: Any?, actual: Any?) {
         Assertions.assertEquals(expected, actual)
     }

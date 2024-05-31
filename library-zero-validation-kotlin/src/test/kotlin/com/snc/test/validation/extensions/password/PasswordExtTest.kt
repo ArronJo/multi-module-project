@@ -24,9 +24,12 @@ class PasswordExtTest : BaseJUnit5Test() {
         logger.debug { "비밀번호 검수 결과: $data1 -> $v1" }
         logger.debug { "비밀번호 검수 결과: $data2 -> $v2" }
         logger.debug { "비밀번호 검수 결과: $data3 -> $v3" }
-        assertEquals(v1, false)
-        assertEquals(v2, false)
-        assertEquals(v3, true)
+
+        assertAll(
+            { assertEquals(v1, false) },
+            { assertEquals(v2, false) },
+            { assertEquals(v3, true) }
+        )
     }
 
     @Test
