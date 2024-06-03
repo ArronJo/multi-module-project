@@ -30,8 +30,8 @@ class FSFileCopyTest : BaseJUnit5Test() {
 
     @Test
     fun `FSFile copy 1`() {
-        val src = File(dir, "copy1.txt")
-        val dst = File(dir, "copy1-1.txt")
+        val src = File(dir, "copy1-1.txt")
+        val dst = File(dir, "copy1-2.txt")
         //val e = assertThrows(
         //    IOException::class.java
         //) {
