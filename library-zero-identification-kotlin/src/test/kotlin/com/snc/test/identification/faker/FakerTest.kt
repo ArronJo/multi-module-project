@@ -19,9 +19,9 @@ class FakerTest : BaseJUnit5Test() {
             val r = getRandomInt(0, 1)
             if (r > 1) { logger.debug { "r : $r" } }
             val sex = if (r > 0) "F" else "M"
-            val v = Faker.Name.fakeKoreanName(r > 0)
+            val v1 = Faker.Name.fakeKoreanName(r > 0)
             // then
-            logger.debug { "fake name: ${i.toString().padStart(2, '0')} : [$sex] $v" }
+            logger.debug { "fake name: ${i.toString().padStart(2, '0')} : [$sex] $v1" }
         }
     }
 }
