@@ -36,7 +36,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
         for (i in 1..10 * 1024) {
             data += "svg width=\"70px\" height=\"70px\" viewBox=\"0 0 70 70\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\""
         }
-        FSFile.write(data.toByteArray(), file, overwrite = true)
+        FSFile.write(file, data.toByteArray(), overwrite = true)
         if (!file.exists()) {
             logger.debug { "$file not exist" }
         }
@@ -91,7 +91,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
             """.trimIndent()
 
         assertDoesNotThrow {
-            FSFile.write(data.toByteArray(), file, overwrite = true)
+            FSFile.write(file, data.toByteArray(), overwrite = true)
         }
         if (!file.exists()) {
             logger.debug { "$file not exist" }
@@ -104,7 +104,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
         val e = assertThrows(
             IOException::class.java
         ) {
-            FSFile.write("에러 나겟지?".toByteArray(), file, overwrite = true)
+            FSFile.write(file, "에러 나겟지?".toByteArray(), overwrite = true)
         }
         logger.debug { "${e.message}" }
         assertNotEquals(e.message, "")
@@ -116,7 +116,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
         val e = assertThrows(
             IOException::class.java
         ) {
-            FSFile.write("에러 나겟지?".toByteArray(), file, overwrite = true)
+            FSFile.write(file, "에러 나겟지?".toByteArray(), overwrite = true)
         }
         logger.debug { "${e.message}" }
         assertNotEquals(e.message, "")
@@ -124,13 +124,9 @@ class FSFileWriteTest : BaseJUnit5Test() {
 
     @Test
     fun `FSFile write Exception 3`() {
-        val file = File("/usr/xxx/yyy", "ccc")
-        val e = assertThrows(
-            IOException::class.java
-        ) {
-            FSFile.write("에러 나겟지?".toByteArray(), file, overwrite = true)
-        }
-        logger.debug { "${e.message}" }
-        assertNotEquals(e.message, "")
+        val file = File("/usr/xxx", "ccc")
+        val r = FSFile.write(file, "에러 나겟지?".toByteArray(), overwrite = true)
+        logger.debug { "write Exception : $r" }
+        assertEquals(r, -2)
     }
 }

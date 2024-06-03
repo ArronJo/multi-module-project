@@ -35,7 +35,7 @@ class FSFileReadTest : BaseJUnit5Test() {
         for (i in 1..10 * 1024) {
             data += "svg width=\"70px\" height=\"70px\" viewBox=\"0 0 70 70\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\""
         }
-        FSFile.write(data.toByteArray(), file, overwrite = true)
+        FSFile.write(file, data.toByteArray(), overwrite = true)
 
         var ba: ByteArray = byteArrayOf()
         assertDoesNotThrow {
@@ -52,7 +52,7 @@ class FSFileReadTest : BaseJUnit5Test() {
         for (i in 1..10 * 1024) {
             data += "svg width=\"70px\" height=\"70px\" viewBox=\"0 0 70 70\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\""
         }
-        FSFile.write(data.toByteArray(), file, overwrite = true)
+        FSFile.write(file, data.toByteArray(), overwrite = true)
 
         var ba: ByteArray = byteArrayOf()
         assertDoesNotThrow {
