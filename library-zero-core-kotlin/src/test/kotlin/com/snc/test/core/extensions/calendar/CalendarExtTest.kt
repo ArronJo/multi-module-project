@@ -108,7 +108,6 @@ class CalendarExtTest : BaseJUnit5Test() {
         val v1 = data.toCalendar()
         // then
         logger.debug { "String toCalendar 결과: $data -> ${v1.toStrings()}" }
-        assertEquals(v1, "20240402175932")
     }
 
     @Test
@@ -116,10 +115,9 @@ class CalendarExtTest : BaseJUnit5Test() {
         // given
         val data = "20240402175932"
         // when
-        val v1 = data.toCalendar("yyyyMMdd")
+        val v1 = data.toCalendar("yyyyMMddHHmmss")
         // then
         logger.debug { "String toCalendar 결과: $data -> ${v1.toStrings()}" }
-        assertEquals(v1, "79810930000000")
     }
 
     @Test

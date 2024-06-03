@@ -3,7 +3,6 @@ package com.snc.zero.filemanager.file2
 import java.io.*
 import java.util.*
 
-
 class FSFile {
 
     companion object {

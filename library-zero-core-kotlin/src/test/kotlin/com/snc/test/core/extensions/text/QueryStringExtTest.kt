@@ -53,6 +53,6 @@ class QueryStringExtTest : BaseJUnit5Test() {
         val v1 = data.queryStringToMap()
         // then
         logger.debug { "결과: $v1" }
-        assertEquals(v1, "{srchCtgry=1, curPage=2, srchKey=3, srchEndDt=, srchBeginDt=5, srchText=4}")
+        assertEquals(v1.toString(), "{srchCtgry=1, curPage=2, srchKey=3, srchEndDt=, srchBeginDt=5, srchText=4}")
     }
 }
