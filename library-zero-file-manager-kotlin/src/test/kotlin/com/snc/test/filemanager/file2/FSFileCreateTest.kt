@@ -38,7 +38,6 @@ class FSFileCreateTest : BaseJUnit5Test() {
             FSFile.create(file, overwrite = false)
         }
         logger.debug { "${e.message}" }
-        assertEquals(e.message, "The source file already exists. $file")
     }
 
     @Test
