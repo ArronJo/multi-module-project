@@ -36,7 +36,6 @@ class RandomExtTest : BaseJUnit5Test() {
             counter.put(v1.toString())
             // then
             logger.debug { "Random Int 결과 - 1: $v1" }
-            //assertEquals(v1, false)
         }
         logger.debug { "Random Int 결과 - 1: Counter[${counter.size()}, ${counter.total()}] : $counter" }
     }
@@ -50,7 +49,6 @@ class RandomExtTest : BaseJUnit5Test() {
             counter.put(v1.toString())
             // then
             logger.debug { "Random Int 결과 - 2: $v1" }
-            //assertEquals(v1, false)
         }
         logger.debug { "Random Int 결과 - 2: Counter[${counter.size()}, ${counter.total()}] : $counter" }
     }
@@ -64,7 +62,6 @@ class RandomExtTest : BaseJUnit5Test() {
             counter.put(v1.toString())
             // then
             logger.debug { "Random Int 결과 - 3: $v1" }
-            //assertEquals(v1, false)
         }
         logger.debug { "Random Int 결과 - 3: Counter[${counter.size()}, ${counter.total()}] : $counter" }
     }
@@ -76,7 +73,6 @@ class RandomExtTest : BaseJUnit5Test() {
         val v1 = randomString(len)
         // then
         logger.debug { "Random String 결과: $v1" }
-        //assertEquals(v1, false)
     }
 
     @Test
@@ -86,7 +82,6 @@ class RandomExtTest : BaseJUnit5Test() {
         val v1 = randomString(len, isDigit = true)
         // then
         logger.debug { "Random String 결과: $v1" }
-        //assertEquals(v1, false)
     }
 
     @Test
@@ -96,7 +91,6 @@ class RandomExtTest : BaseJUnit5Test() {
         val v1 = randomString(len, isUpperCase = true)
         // then
         logger.debug { "Random String 결과: $v1" }
-        //assertEquals(v1, false)
     }
 
     @Test
@@ -106,7 +100,6 @@ class RandomExtTest : BaseJUnit5Test() {
         val v1 = randomString(len, isLowerCase = true)
         // then
         logger.debug { "Random String 결과: $v1" }
-        //assertEquals(v1, false)
     }
 
     @Test
@@ -116,7 +109,6 @@ class RandomExtTest : BaseJUnit5Test() {
         val v1 = randomString(len, isLetter = true)
         // then
         logger.debug { "Random String 결과: $v1" }
-        //assertEquals(v1, false)
     }
 
     @Test
@@ -127,7 +119,6 @@ class RandomExtTest : BaseJUnit5Test() {
             val v1 = randomString(len, isHangul = true)
             // then
             logger.debug { "Random String 결과: $v1" }
-            //assertEquals(v1, false)
         }
     }
 }

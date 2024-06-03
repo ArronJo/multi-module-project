@@ -38,7 +38,7 @@ class FSFileCreateTest : BaseJUnit5Test() {
             FSFile.create(file, overwrite = false)
         }
         logger.debug { "${e.message}" }
-        //assertEquals(e.message, "Unable to create parent directory. ${file.parent}")
+        assertEquals(e.message, "The source file already exists. $file")
     }
 
     @Test
@@ -51,7 +51,7 @@ class FSFileCreateTest : BaseJUnit5Test() {
             FSFile.create(file, overwrite = false)
         }
         logger.debug { "${e.message}" }
-        //assertEquals(e.message, "Unable to create parent directory. ${file.parent}")
+        assertEquals(e.message, "The source file already exists. $file")
     }
 
     @Test

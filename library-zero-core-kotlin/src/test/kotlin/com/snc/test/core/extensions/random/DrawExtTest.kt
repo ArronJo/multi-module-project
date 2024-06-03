@@ -34,7 +34,6 @@ class DrawExtTest : BaseJUnit5Test() {
             counter.put(v1)
             // then
             logger.debug { "Random Draw Item 결과: $v1" }
-            //assertEquals(v1, false)
         }
         logger.debug { "Random Draw Item 결과: Counter[${counter.size()}, ${counter.total()}] : $counter" }
     }
@@ -68,7 +67,6 @@ class DrawExtTest : BaseJUnit5Test() {
             }
             // then
             logger.debug { "Weighted Random Drawing 결과: $v1" }
-            //assertEquals(v1, false)
         }
         logger.debug { "Weighted Random Drawing 결과: Counter[${counter.size()}, ${counter.total()}] : $counter" }
     }

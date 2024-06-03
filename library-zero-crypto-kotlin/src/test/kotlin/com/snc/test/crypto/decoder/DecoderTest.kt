@@ -19,7 +19,6 @@ class DecoderTest : BaseJUnit5Test() {
         // then
         logger.debug { "Base64 decoded v1: $v" }
         logger.debug { "Base64 decoded v2: $v2" }
-        //assertEquals(v, "asdsncynh 2984yhd89`yu8989189u9jqfdasjgfuiasgds")
         assertEquals(String(v), v2)
     }
 
@@ -33,7 +32,6 @@ class DecoderTest : BaseJUnit5Test() {
         // then
         logger.debug { "Base64 decoded v1: $v" }
         logger.debug { "Base64 decoded v2: $v2" }
-        //assertEquals(v, "Special chars: ûûÿ here.")
         assertEquals(String(v), v2)
     }
 }

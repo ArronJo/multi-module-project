@@ -27,7 +27,6 @@ class CalendarExtTest : BaseJUnit5Test() {
         cal.setMillisecond(123)
         // then
         logger.debug { "Calendar 연산 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} ${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}" }
-        //assertEquals(v1, false)
     }
 
     @Test
@@ -44,7 +43,6 @@ class CalendarExtTest : BaseJUnit5Test() {
         cal.addMillisecond(1)
         // then
         logger.debug { "Calendar 연산 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} ${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}" }
-        //assertEquals(v1, false)
     }
 
     @Test
@@ -59,7 +57,6 @@ class CalendarExtTest : BaseJUnit5Test() {
         logger.debug { "Calendar 날짜 표현: ${cal.toStrings()} -> $v1" }
         logger.debug { "Calendar 날짜 표현: ${cal.toStrings()} -> $v2" }
         logger.debug { "Calendar 날짜 표현: ${cal.toStrings()} -> $v3" }
-        //assertEquals(v1, false)
     }
 
     @Test
@@ -71,7 +68,6 @@ class CalendarExtTest : BaseJUnit5Test() {
         cal2.addMonth(1)
         // then
         logger.debug { "Calendar diff 결과: ${cal.diff(cal2)}" }
-        //assertEquals(v1, false)
     }
 
     @Test
@@ -82,7 +78,6 @@ class CalendarExtTest : BaseJUnit5Test() {
         cal.startOfMonth()
         // then
         logger.debug { "Calendar start day of month 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} ${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}" }
-        //assertEquals(v1, false)
     }
 
     @Test
@@ -93,7 +88,6 @@ class CalendarExtTest : BaseJUnit5Test() {
         cal.endOfMonth()
         // then
         logger.debug { "Calendar end day of month 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} ${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}" }
-        //assertEquals(v1, false)
     }
 
     @Test
@@ -104,7 +98,6 @@ class CalendarExtTest : BaseJUnit5Test() {
         cal.endOfDay()
         // then
         logger.debug { "Calendar last time of day 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} ${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}" }
-        //assertEquals(v1, false)
     }
 
     @Test
@@ -115,7 +108,7 @@ class CalendarExtTest : BaseJUnit5Test() {
         val v1 = data.toCalendar()
         // then
         logger.debug { "String toCalendar 결과: $data -> ${v1.toStrings()}" }
-        //assertEquals(v1, false)
+        assertEquals(v1, "20240402175932")
     }
 
     @Test
@@ -126,7 +119,7 @@ class CalendarExtTest : BaseJUnit5Test() {
         val v1 = data.toCalendar("yyyyMMdd")
         // then
         logger.debug { "String toCalendar 결과: $data -> ${v1.toStrings()}" }
-        //assertEquals(v1, false)
+        assertEquals(v1, "79810930000000")
     }
 
     @Test
@@ -137,6 +130,5 @@ class CalendarExtTest : BaseJUnit5Test() {
         val v1 = data.toCalendar()
         // then
         logger.debug { "Date toCalendar 결과: $data -> ${v1.toStrings()}" }
-        //assertEquals(v1, false)
     }
 }

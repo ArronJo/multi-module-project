@@ -19,7 +19,7 @@ class DateFormatterExtTest : BaseJUnit5Test() {
         val v1 = data.formatDateTime(inputFormat = "yyyyMMddHHmmss", outputFormat = "yyyy-MM-dd HH:mm")
         // then
         logger.debug { "String dateFormat 결과: $data -> $v1" }
-        //assertEquals(v1, false)
+        assertEquals(v1, "2024-04-02 17:59")
     }
 
     @Test
@@ -30,7 +30,6 @@ class DateFormatterExtTest : BaseJUnit5Test() {
         val v1 = data.formatDateTime(outputFormat = "yyyy-MM-dd HH:mm")
         // then
         logger.debug { "Calendar dateFormat 결과: $data -> $v1" }
-        //assertEquals(v1, false)
     }
 
     @Test
@@ -41,6 +40,5 @@ class DateFormatterExtTest : BaseJUnit5Test() {
         val v1 = data.formatDateTime(outputFormat = "yyyy-MM-dd HH:mm")
         // then
         logger.debug { "Date dateFormat 결과: $data -> $v1" }
-        //assertEquals(v1, false)
     }
 }

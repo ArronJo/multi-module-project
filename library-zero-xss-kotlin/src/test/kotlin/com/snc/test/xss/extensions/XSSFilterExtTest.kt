@@ -41,7 +41,7 @@ class XSSFilterExtTest : BaseJUnit5Test() {
         val v1 = data1.cleanXSS()
         // then
         logger.debug { "clean XSS 1 결과: $v1" }
-        //assertEquals(v1, false)
+        assertEquals(v1, "Hello, &lt;b&gt;World!&lt;/b&gt; &amp; &lt;font color=&quot;#A6ABB1&quot;&gt;Welcome&lt;/font&gt; to &quot;&quot;. ")
     }
 
     @Test
@@ -51,7 +51,10 @@ class XSSFilterExtTest : BaseJUnit5Test() {
         val v1 = data2.cleanXSS(jsoup = true)
         // then
         logger.debug { "clean XSS 2 결과: $v1" }
-        //assertEquals(v1, false)
+        assertEquals(v1, "당사 사정에 따라 일정이 변경될 수 있으며 변동 시 재공지하도록 하겠습니다.\"\n" +
+                "<br>\n" +
+                "오늘도 방문해주셔서 감사합니다.마지막test&gt;<b>&gt;xsstest</b>P Tag 테스트 &gt;\n" +
+                "<p>&gt;PPPPP</p>Font Tag 테스트 &gt;&gt;FFFFFFFF&gt;응???")
     }
 
     @Test

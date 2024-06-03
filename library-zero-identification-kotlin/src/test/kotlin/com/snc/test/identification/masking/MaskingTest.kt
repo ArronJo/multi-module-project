@@ -74,7 +74,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "12")
         // then
         logger.debug { "$s -> '12' -> $v" }
-        //assertEquals(v, "1234567890@123ski789")
+        assertEquals(v, "**34567890@**3ski789")
     }
 
     @Test
