@@ -38,6 +38,9 @@ class FSFile {
         @JvmStatic
         @Throws(IOException::class)
         fun delete(file: File): Boolean {
+            if (!file.exists()) {
+                return false
+            }
             return file.delete()
         }
 

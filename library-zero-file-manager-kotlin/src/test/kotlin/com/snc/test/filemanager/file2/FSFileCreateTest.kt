@@ -125,34 +125,4 @@ class FSFileCreateTest : BaseJUnit5Test() {
         logger.debug { "${e.message}" }
         assertNotEquals(e.message, "")
     }
-
-    @Test
-    fun `FSFile copy 1`() {
-        val src = File(dir, "copy1.txt")
-        val dst = File(dir, "copy2.txt")
-        FSFile.create(src, overwrite = true)
-        FSFile.copy(src, dst, overwrite = true)
-        if (dst.exists()) {
-            logger.debug { "$dst exist" }
-        } else {
-            logger.debug { "$dst not exist" }
-        }
-        FSFile.delete(src)
-        assertEquals(dst.exists(), true)
-    }
-
-    @Test
-    fun `FSFile copy 2`() {
-        val src = File(dir, "copy2.txt")
-        val dst = File("/")
-        val e = assertThrows(
-            IOException::class.java
-        ) {
-            FSFile.create(src, overwrite = true)
-            FSFile.copy(src, dst, overwrite = true)
-        }
-        FSFile.delete(src)
-        logger.debug { "${e.message}" }
-        assertNotEquals(e.message, "")
-    }
 }
