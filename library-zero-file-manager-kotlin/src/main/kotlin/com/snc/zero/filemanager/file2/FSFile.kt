@@ -1,10 +1,8 @@
 package com.snc.zero.filemanager.file2
 
-import com.snc.zero.logger.jvm.TLogging
 import java.io.*
 import java.util.*
 
-private val logger = TLogging.logger { }
 
 class FSFile {
 
@@ -106,8 +104,7 @@ class FSFile {
         fun copy(src: File, dst: File, overwrite: Boolean = false): Boolean {
             try {
                 src.copyTo(target = dst, overwrite = overwrite)
-            } catch (e: IOException) {
-                logger.warn(e) { }
+            } catch (_: IOException) {
                 return false
             }
             return true
@@ -116,21 +113,21 @@ class FSFile {
         private fun closeQuietly(os: OutputStream?) {
             try {
                 os?.flush()
-            } catch (e: IOException) {
-                logger.error(e) { "Exception" }
+            } catch (_: IOException) {
+
             }
             try {
                 os?.close()
-            } catch (e: IOException) {
-                logger.error(e) { "Exception" }
+            } catch (_: IOException) {
+
             }
         }
 
         private fun closeQuietly(c: Closeable?) {
             try {
                 c?.close()
-            } catch (e: IOException) {
-                logger.error(e) { "Exception" }
+            } catch (_: IOException) {
+
             }
         }
     }
