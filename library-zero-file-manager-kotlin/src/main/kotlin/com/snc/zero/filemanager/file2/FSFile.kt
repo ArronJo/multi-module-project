@@ -113,12 +113,12 @@ class FSFile {
             try {
                 os?.flush()
             } catch (_: IOException) {
-
+                //
             }
             try {
                 os?.close()
             } catch (_: IOException) {
-
+                //
             }
         }
 
@@ -126,7 +126,7 @@ class FSFile {
             try {
                 c?.close()
             } catch (_: IOException) {
-
+                //
             }
         }
     }
