@@ -58,6 +58,7 @@ class FSFileReadTest : BaseJUnit5Test() {
         assertDoesNotThrow {
             ba = FSFile.read(file, charset = "UTF-8")
         }
+        FSFile.delete(file)
         logger.debug { "file size : ${FSInfo.getReadableFileSize(ba.size.toLong())}" }
         logger.debug { "\n\nfile data : \n${String(ba)}\n-----E.O.D----\n\n" }
     }

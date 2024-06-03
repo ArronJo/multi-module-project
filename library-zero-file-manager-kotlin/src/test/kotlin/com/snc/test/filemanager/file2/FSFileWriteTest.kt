@@ -99,6 +99,15 @@ class FSFileWriteTest : BaseJUnit5Test() {
     }
 
     @Test
+    fun `FSFile write 1`() {
+        val file = File(dir, "write1.txt")
+        val r = FSFile.write(file, "정상정상정상".toByteArray())
+        logger.debug { "write length : $r" }
+        FSFile.delete(file)
+        assertNotEquals(r, 0)
+    }
+
+    @Test
     fun `FSFile write Exception 1`() {
         val file = File("/usr/sbin", "create4.txt")
         val e = assertThrows(
