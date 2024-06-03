@@ -9,6 +9,7 @@ build/
 
 ### SonarScanner ###
 sonar-project.properties
+/.scannerwork
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
