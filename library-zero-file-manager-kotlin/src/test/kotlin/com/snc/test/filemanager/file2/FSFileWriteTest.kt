@@ -133,9 +133,29 @@ class FSFileWriteTest : BaseJUnit5Test() {
 
     @Test
     fun `FSFile write Exception 3`() {
-        val file = File("/usr/xxx", "ccc")
+        val file = File("/usr/xxx", "333")
         val r = FSFile.write(file, "에러 나겟지?".toByteArray(), overwrite = true)
         logger.debug { "write Exception : $r" }
         assertEquals(r, -2)
+    }
+
+    @Test
+    fun `FSFile write Exception 4`() {
+        val file = File("/")
+        val r = FSFile.write(file, "에러 나겟지?".toByteArray(), overwrite = true)
+        logger.debug { "write Exception : $r" }
+        assertEquals(r, -1)
+    }
+
+    @Test
+    fun `FSFile write Exception 5`() {
+        val file = File("/", "444")
+        val e = assertThrows(
+            IOException::class.java
+        ) {
+            FSFile.write(file, "에러 나겟지?".toByteArray(), overwrite = true)
+        }
+        logger.debug { "${e.message}" }
+        assertNotEquals(e.message, "")
     }
 }
