@@ -14,7 +14,7 @@ class FSFile {
         @Throws(IOException::class)
         fun create(file: File, overwrite: Boolean = false): Boolean {
             file.parentFile?.let {
-                if (!it.exists() && it.mkdirs()) {
+                if (!it.exists() && !it.mkdirs()) {
                     throw IOException("Unable to create parent directory. $it")
                 }
             }
