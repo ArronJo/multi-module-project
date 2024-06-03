@@ -32,14 +32,14 @@ class FSFileCopyTest : BaseJUnit5Test() {
     fun `FSFile copy 1`() {
         val src = File(dir, "copy1.txt")
         val dst = File(dir, "copy1-1.txt")
-        val e = assertThrows(
-            IOException::class.java
-        ) {
+        //val e = assertThrows(
+        //    IOException::class.java
+        //) {
             FSFile.create(src, overwrite = true)
             FSFile.copy(src, dst, overwrite = true)
-        }
-        logger.debug { "${e.message}" }
-        assertNotEquals(e.message, "")
+        //}
+        //logger.debug { "${e.message}" }
+        //assertNotEquals(e.message, "")
     }
 
     @Test
@@ -58,17 +58,16 @@ class FSFileCopyTest : BaseJUnit5Test() {
 
     @Test
     fun `FSFile copy 3`() {
-        val src = File(dir, "copy2.txt")
+        val src = File(dir, "copy3.txt")
         val dst = File("/")
-        //val e = assertThrows(
-        //    IOException::class.java
-        //) {
-        FSFile.create(src, overwrite = true)
-        FSFile.write(src, "test".toByteArray(), overwrite = true)
-        FSFile.copy(src, dst, overwrite = true)
-        //}
-        //FSFile.delete(src)
-        //logger.debug { "${e.message}" }
-        //assertNotEquals(e.message, "")
+        val e = assertThrows(
+            IOException::class.java
+        ) {
+            FSFile.create(src, overwrite = true)
+            FSFile.copy(src, dst, overwrite = true)
+        }
+        FSFile.delete(src)
+        logger.debug { "${e.message}" }
+        assertNotEquals(e.message, "")
     }
 }

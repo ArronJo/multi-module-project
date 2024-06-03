@@ -103,13 +103,8 @@ class FSFile {
 
         @JvmStatic
         @Throws(IOException::class)
-        fun copy(src: File, dst: File, overwrite: Boolean = false): Boolean {
-            try {
-                src.copyTo(target = dst, overwrite = overwrite)
-            } catch (_: IOException) {
-                return false
-            }
-            return true
+        fun copy(src: File, dst: File, overwrite: Boolean = false) {
+            src.copyTo(target = dst, overwrite = overwrite)
         }
 
         private fun closeQuietly(os: OutputStream?) {
