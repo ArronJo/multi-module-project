@@ -25,7 +25,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
 
         val projectRoot = Paths.get("").toAbsolutePath()
         println("Project Root Directory: $projectRoot")
-        parent = "${projectRoot}/build/zzz".toFile()
+        parent = "${projectRoot}/build/xxx".toFile()
         dir = "$parent/ttw".toFile()
     }
 
