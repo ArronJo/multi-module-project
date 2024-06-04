@@ -104,7 +104,8 @@ class FSFile {
             src.copyTo(target = dst, overwrite = overwrite)
         }
 
-        private fun closeQuietly(os: OutputStream?) {
+        @JvmStatic
+        fun closeQuietly(os: OutputStream?) {
             try {
                 os?.flush()
             } catch (_: IOException) {
@@ -117,7 +118,8 @@ class FSFile {
             }
         }
 
-        private fun closeQuietly(c: Closeable?) {
+        @JvmStatic
+        fun closeQuietly(c: Closeable?) {
             try {
                 c?.close()
             } catch (_: IOException) {
