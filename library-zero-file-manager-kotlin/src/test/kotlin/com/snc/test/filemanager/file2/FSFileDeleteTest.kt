@@ -41,7 +41,7 @@ class FSFileDeleteTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `FSFile delete s2`() {
+    fun `FSFile delete 2`() {
         val file = File(dir, "delete.png")
         assertDoesNotThrow {
             FSFile.delete(file, ignore = true)

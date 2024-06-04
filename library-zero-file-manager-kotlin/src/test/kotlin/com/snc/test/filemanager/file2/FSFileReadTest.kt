@@ -47,7 +47,7 @@ class FSFileReadTest : BaseJUnit5Test() {
             logger.debug { "file size : ${FSInfo.getReadableFileSize(ba.size.toLong())}" }
             logger.debug { "\n\nfile data : \n${String(ba)}\n-----E.O.D----\n\n" }
         } finally {
-            FSFile.delete(file)
+            FSFile.delete(file, ignore = true)
         }
     }
 
@@ -60,17 +60,17 @@ class FSFileReadTest : BaseJUnit5Test() {
         }
 
         try {
+            FSFile.create(file, overwrite = true)
             FSFile.write(file, data.toByteArray(), overwrite = true)
 
             var ba: ByteArray = byteArrayOf()
             assertDoesNotThrow {
                 ba = FSFile.read(file, charset = "UTF-8")
             }
-            FSFile.delete(file)
             logger.debug { "file size : ${FSInfo.getReadableFileSize(ba.size.toLong())}" }
             logger.debug { "\n\nfile data : \n${String(ba)}\n-----E.O.D----\n\n" }
         } finally {
-            FSFile.delete(file)
+            FSFile.delete(file, ignore = true)
         }
     }
 }

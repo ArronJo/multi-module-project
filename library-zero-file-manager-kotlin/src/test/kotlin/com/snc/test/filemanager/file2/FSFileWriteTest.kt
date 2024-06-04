@@ -44,7 +44,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
                 logger.debug { "$file not exist" }
             }
         } finally {
-            FSFile.delete(file)
+            FSFile.delete(file, ignore = true)
         }
     }
 
@@ -104,7 +104,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
                 logger.debug { "$file not exist" }
             }
         } finally {
-            FSFile.delete(file)
+            FSFile.delete(file, ignore = true)
         }
     }
 
@@ -116,7 +116,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
             logger.debug { "write length : $r" }
             assertNotEquals(r, 0)
         } finally {
-            FSFile.delete(file)
+            FSFile.delete(file, ignore = true)
         }
     }
 
