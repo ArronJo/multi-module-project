@@ -92,7 +92,7 @@ class FSFileCreateTest : BaseJUnit5Test() {
 
     @Test
     fun `FSFile create or overwrite 5-2`() {
-        val file = File("/usr/bin", "sleep")
+        val file = File("/bin", "sleep")
         val e = assertThrows(
             IOException::class.java
         ) {
