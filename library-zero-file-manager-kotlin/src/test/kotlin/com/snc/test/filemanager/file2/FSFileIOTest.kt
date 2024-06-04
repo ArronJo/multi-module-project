@@ -2,6 +2,7 @@ package com.snc.test.filemanager.file2
 
 import com.snc.zero.filemanager.file2.FSFile
 import com.snc.zero.filemanager.file2.extensions.toFile
+import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -9,7 +10,10 @@ import org.junit.jupiter.api.TestInfo
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.io.IOException
 import java.nio.file.Paths
+
+private val logger = TLogging.logger { }
 
 class FSFileIOTest : BaseJUnit5Test() {
 
@@ -38,11 +42,23 @@ class FSFileIOTest : BaseJUnit5Test() {
 
     @Test
     fun `FSFile closeQuietly Exception 1`() {
-        FSFile.closeQuietly(FileOutputStream(File("")))
+        val e = assertThrows(
+            IOException::class.java
+        ) {
+            FSFile.closeQuietly(FileOutputStream(File("")))
+        }
+        logger.debug { "${e.message}" }
+        assertNotEquals(e.message, "")
     }
 
     @Test
     fun `FSFile closeQuietly Exception 2`() {
-        FSFile.closeQuietly(FileInputStream(File("")))
+        val e = assertThrows(
+            IOException::class.java
+        ) {
+            FSFile.closeQuietly(FileInputStream(File("")))
+        }
+        logger.debug { "${e.message}" }
+        assertNotEquals(e.message, "")
     }
 }
