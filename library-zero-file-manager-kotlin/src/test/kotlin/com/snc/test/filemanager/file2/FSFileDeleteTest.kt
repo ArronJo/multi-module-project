@@ -24,8 +24,8 @@ class FSFileDeleteTest : BaseJUnit5Test() {
 
         val projectRoot = Paths.get("").toAbsolutePath()
         println("Project Root Directory: $projectRoot")
-        parent = "${projectRoot}/build/zzz".toFile()
-        dir = "$parent/ttt".toFile()
+        parent = "${projectRoot}/build/xxx".toFile()
+        dir = "$parent/ttd".toFile()
     }
 
     @Test

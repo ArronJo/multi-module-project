@@ -25,7 +25,7 @@ class FSFileCopyTest : BaseJUnit5Test() {
         val projectRoot = Paths.get("").toAbsolutePath()
         println("Project Root Directory: $projectRoot")
         parent = "${projectRoot}/build/xxx".toFile()
-        dir = "$parent/ccc".toFile()
+        dir = "$parent/tcc".toFile()
     }
 
     @Test

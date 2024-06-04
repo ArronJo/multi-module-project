@@ -98,6 +98,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
 
         try {
             assertDoesNotThrow {
+                FSFile.create(file, overwrite = true)
                 FSFile.write(file, data.toByteArray())
             }
             if (!file.exists()) {
