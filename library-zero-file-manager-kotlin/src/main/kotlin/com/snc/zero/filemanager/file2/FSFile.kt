@@ -75,10 +75,6 @@ class FSFile {
         @JvmStatic
         @Throws(IOException::class)
         fun write(out: File, data: ByteArray, overwrite: Boolean = false): Int {
-            val parentFile = out.parentFile ?: return -1
-            if (!parentFile.exists() && !parentFile.mkdirs()) {
-                return -2
-            }
             overwrite(out, overwrite)
 
             var os: FileOutputStream? = null
