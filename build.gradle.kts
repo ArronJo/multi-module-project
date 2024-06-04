@@ -1,8 +1,10 @@
 plugins {
     kotlin("jvm") version "2.0.0"
+    id("java")
 
+    // https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
     id("jacoco")
-    id("org.sonarqube") version "4.4.1.3373"
+    id("org.sonarqube") version "5.0.0.4638"
 }
 
 group = "com.snc.zero"
@@ -10,6 +12,7 @@ version = "1.0-beta"
 
 buildscript {
     extra.apply {
+        //set("javaVersion", JavaVersion.VERSION_17)
         set("jvmTarget", "2.0")
     }
 }
@@ -21,6 +24,10 @@ repositories {
 dependencies {
 
 }
+
+//java {
+//    sourceCompatibility = rootProject.extra["javaVersion"] as JavaVersion
+//}
 
 kotlin {
     compilerOptions {
@@ -35,6 +42,7 @@ jacoco {
     toolVersion = "0.8.11"
 }
 
+// https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
 sonar {
     properties {
         property("sonar.projectKey", System.getenv("SONAR_PROJECTKEY"))
@@ -44,6 +52,7 @@ sonar {
     }
 }
 
+System.setProperty("sonar.gradle.skipCompile", "true")
 
 ///////////////////////////////////////////////////////////
 tasks.register<Exec>("deleteDSStoreShellScript") {
