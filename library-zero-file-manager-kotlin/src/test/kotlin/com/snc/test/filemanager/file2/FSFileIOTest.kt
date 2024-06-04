@@ -28,13 +28,21 @@ class FSFileIOTest : BaseJUnit5Test() {
 
     @Test
     fun `FSFile closeQuietly 1`() {
-        val fos: FileOutputStream? = null
-        FSFile.closeQuietly(fos)
+        FSFile.closeQuietly(null)
     }
 
     @Test
     fun `FSFile closeQuietly 2`() {
-        val fis: FileInputStream? = null
-        FSFile.closeQuietly(fis)
+        FSFile.closeQuietly(null)
+    }
+
+    @Test
+    fun `FSFile closeQuietly Exception 1`() {
+        FSFile.closeQuietly(FileOutputStream(File("")))
+    }
+
+    @Test
+    fun `FSFile closeQuietly Exception 2`() {
+        FSFile.closeQuietly(FileInputStream(File("")))
     }
 }
