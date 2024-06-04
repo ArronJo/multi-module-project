@@ -47,7 +47,7 @@ class FSFileIOTest : BaseJUnit5Test() {
         val e = assertThrows(
             IOException::class.java
         ) {
-            FSFile.closeQuietly(FileOutputStream(File("")))
+            FSFile.closeQuietly(FileOutputStream(File("/ioa")))
         }
         logger.debug { "${e.message}" }
         assertNotEquals(e.message, "")
@@ -58,7 +58,7 @@ class FSFileIOTest : BaseJUnit5Test() {
         val e = assertThrows(
             IOException::class.java
         ) {
-            FSFile.closeQuietly(FileInputStream(File("")))
+            FSFile.closeQuietly(FileInputStream(File("/iob")))
         }
         logger.debug { "${e.message}" }
         assertNotEquals(e.message, "")
