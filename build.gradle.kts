@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm") version "2.0.0"
-    id("java")
+    //id("java")
 
     // https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
     id("jacoco")
@@ -64,6 +64,7 @@ tasks.register<Exec>("deleteDSStoreShellScript") {
         commandLine("sh", "./del_ds_store.sh")
     }
 }
+
 tasks.named("compileJava") {
     dependsOn("deleteDSStoreShellScript")
 }
