@@ -35,14 +35,20 @@ class FSFileReadTest : BaseJUnit5Test() {
         for (i in 1..10 * 1024) {
             data += "svg width=\"70px\" height=\"70px\" viewBox=\"0 0 70 70\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\""
         }
-        FSFile.write(file, data.toByteArray(), overwrite = true)
 
-        var ba: ByteArray = byteArrayOf()
-        assertDoesNotThrow {
-            ba = FSFile.read(file)
+        try {
+            FSFile.create(file, overwrite = true)
+            FSFile.write(file, data.toByteArray(), overwrite = true)
+
+            var ba: ByteArray = byteArrayOf()
+            assertDoesNotThrow {
+                ba = FSFile.read(file)
+            }
+            logger.debug { "file size : ${FSInfo.getReadableFileSize(ba.size.toLong())}" }
+            logger.debug { "\n\nfile data : \n${String(ba)}\n-----E.O.D----\n\n" }
+        } finally {
+            FSFile.delete(file)
         }
-        logger.debug { "file size : ${FSInfo.getReadableFileSize(ba.size.toLong())}" }
-        logger.debug { "\n\nfile data : \n${String(ba)}\n-----E.O.D----\n\n" }
     }
 
     @Test
@@ -52,14 +58,19 @@ class FSFileReadTest : BaseJUnit5Test() {
         for (i in 1..10 * 1024) {
             data += "svg width=\"70px\" height=\"70px\" viewBox=\"0 0 70 70\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\""
         }
-        FSFile.write(file, data.toByteArray(), overwrite = true)
 
-        var ba: ByteArray = byteArrayOf()
-        assertDoesNotThrow {
-            ba = FSFile.read(file, charset = "UTF-8")
+        try {
+            FSFile.write(file, data.toByteArray(), overwrite = true)
+
+            var ba: ByteArray = byteArrayOf()
+            assertDoesNotThrow {
+                ba = FSFile.read(file, charset = "UTF-8")
+            }
+            FSFile.delete(file)
+            logger.debug { "file size : ${FSInfo.getReadableFileSize(ba.size.toLong())}" }
+            logger.debug { "\n\nfile data : \n${String(ba)}\n-----E.O.D----\n\n" }
+        } finally {
+            FSFile.delete(file)
         }
-        FSFile.delete(file)
-        logger.debug { "file size : ${FSInfo.getReadableFileSize(ba.size.toLong())}" }
-        logger.debug { "\n\nfile data : \n${String(ba)}\n-----E.O.D----\n\n" }
     }
 }

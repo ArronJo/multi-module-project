@@ -37,9 +37,12 @@ class FSFile {
 
         @JvmStatic
         @Throws(IOException::class)
-        fun delete(file: File): Boolean {
+        fun delete(file: File, ignore: Boolean = false): Boolean {
             if (!file.exists()) {
-                return false
+                if (ignore) {
+                    return false
+                }
+                throw IOException("Target file does not exist.")
             }
             return file.delete()
         }
@@ -76,7 +79,7 @@ class FSFile {
             if (!parentFile.exists() && !parentFile.mkdirs()) {
                 return -2
             }
-            create(out, overwrite)
+            overwrite(out, overwrite)
 
             var os: FileOutputStream? = null
             var offset = 0

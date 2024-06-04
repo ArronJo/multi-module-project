@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
 import java.io.File
+import java.io.IOException
 import java.nio.file.Paths
 
 private val logger = TLogging.logger { }
@@ -28,10 +29,22 @@ class FSFileDeleteTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `FSFile delete`() {
-        val file = File(dir, "create.png")
-        assertDoesNotThrow {
+    fun `FSFile delete 1`() {
+        val file = File(dir, "delete.png")
+        val e = assertThrows(
+            IOException::class.java
+        ) {
             FSFile.delete(file)
+        }
+        logger.debug { "${e.message}" }
+        assertNotEquals(e.message, "")
+    }
+
+    @Test
+    fun `FSFile delete s2`() {
+        val file = File(dir, "delete.png")
+        assertDoesNotThrow {
+            FSFile.delete(file, ignore = true)
         }
         if (file.exists()) {
             logger.debug { "$file exist" }

@@ -36,9 +36,15 @@ class FSFileWriteTest : BaseJUnit5Test() {
         for (i in 1..10 * 1024) {
             data += "svg width=\"70px\" height=\"70px\" viewBox=\"0 0 70 70\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\""
         }
-        FSFile.write(file, data.toByteArray(), overwrite = true)
-        if (!file.exists()) {
-            logger.debug { "$file not exist" }
+
+        try {
+            FSFile.create(file, overwrite = true)
+            FSFile.write(file, data.toByteArray(), overwrite = true)
+            if (!file.exists()) {
+                logger.debug { "$file not exist" }
+            }
+        } finally {
+            FSFile.delete(file)
         }
     }
 
@@ -90,21 +96,28 @@ class FSFileWriteTest : BaseJUnit5Test() {
 </svg>
             """.trimIndent()
 
-        assertDoesNotThrow {
-            FSFile.write(file, data.toByteArray(), overwrite = true)
-        }
-        if (!file.exists()) {
-            logger.debug { "$file not exist" }
+        try {
+            assertDoesNotThrow {
+                FSFile.write(file, data.toByteArray(), overwrite = true)
+            }
+            if (!file.exists()) {
+                logger.debug { "$file not exist" }
+            }
+        } finally {
+            FSFile.delete(file)
         }
     }
 
     @Test
     fun `FSFile write 1`() {
         val file = File(dir, "write1.txt")
-        val r = FSFile.write(file, "정상정상정상".toByteArray())
-        logger.debug { "write length : $r" }
-        FSFile.delete(file)
-        assertNotEquals(r, 0)
+        try {
+            val r = FSFile.write(file, "정상정상정상".toByteArray())
+            logger.debug { "write length : $r" }
+            assertNotEquals(r, 0)
+        } finally {
+            FSFile.delete(file)
+        }
     }
 
     @Test
@@ -121,7 +134,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
 
     @Test
     fun `FSFile write Exception 2`() {
-        val file = File("/usr/sbin", "alias")
+        val file = File("/usr/sbin", "aaa")
         val e = assertThrows(
             IOException::class.java
         ) {
