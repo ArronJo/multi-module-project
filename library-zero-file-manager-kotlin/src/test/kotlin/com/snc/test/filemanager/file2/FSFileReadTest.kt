@@ -38,7 +38,7 @@ class FSFileReadTest : BaseJUnit5Test() {
 
         try {
             FSFile.create(file, overwrite = true)
-            FSFile.write(file, data.toByteArray(), overwrite = true)
+            FSFile.write(file, data.toByteArray())
 
             var ba: ByteArray = byteArrayOf()
             assertDoesNotThrow {
@@ -61,7 +61,7 @@ class FSFileReadTest : BaseJUnit5Test() {
 
         try {
             FSFile.create(file, overwrite = true)
-            FSFile.write(file, data.toByteArray(), overwrite = true)
+            FSFile.write(file, data.toByteArray())
 
             var ba: ByteArray = byteArrayOf()
             assertDoesNotThrow {

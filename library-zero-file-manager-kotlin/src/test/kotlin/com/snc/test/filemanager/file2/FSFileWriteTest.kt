@@ -26,7 +26,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
         val projectRoot = Paths.get("").toAbsolutePath()
         println("Project Root Directory: $projectRoot")
         parent = "${projectRoot}/build/zzz".toFile()
-        dir = "$parent/ttt".toFile()
+        dir = "$parent/ttw".toFile()
     }
 
     @Test
@@ -39,7 +39,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
 
         try {
             FSFile.create(file, overwrite = true)
-            FSFile.write(file, data.toByteArray(), overwrite = true)
+            FSFile.write(file, data.toByteArray())
             if (!file.exists()) {
                 logger.debug { "$file not exist" }
             }
@@ -98,7 +98,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
 
         try {
             assertDoesNotThrow {
-                FSFile.write(file, data.toByteArray(), overwrite = true)
+                FSFile.write(file, data.toByteArray())
             }
             if (!file.exists()) {
                 logger.debug { "$file not exist" }
@@ -112,6 +112,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
     fun `FSFile write 1`() {
         val file = File(dir, "write1.txt")
         try {
+            FSFile.create(file, overwrite = true)
             val r = FSFile.write(file, "정상정상정상".toByteArray())
             logger.debug { "write length : $r" }
             assertNotEquals(r, 0)
@@ -122,13 +123,14 @@ class FSFileWriteTest : BaseJUnit5Test() {
 
     @Test
     fun `FSFile write Exception 1`() {
-        val file = File("/usr/sbin", "create4.txt")
+        val file = File("/usr/sbin", "writeE1.txt")
         val e = assertThrows(
             IOException::class.java
         ) {
-            FSFile.write(file, "에러 나겟지?".toByteArray(), overwrite = true)
+            FSFile.create(file, overwrite = true)
+            FSFile.write(file, "에러 나겟지?".toByteArray())
         }
-        logger.debug { "${e.message}" }
+        logger.debug { "write Exception : ${e.message}" }
         assertNotEquals(e.message, "")
     }
 
@@ -138,26 +140,37 @@ class FSFileWriteTest : BaseJUnit5Test() {
         val e = assertThrows(
             IOException::class.java
         ) {
-            FSFile.write(file, "에러 나겟지?".toByteArray(), overwrite = true)
+            FSFile.create(file, overwrite = true)
+            FSFile.write(file, "에러 나겟지?".toByteArray())
         }
-        logger.debug { "${e.message}" }
+        logger.debug { "write Exception : ${e.message}" }
         assertNotEquals(e.message, "")
     }
 
     @Test
     fun `FSFile write Exception 3`() {
         val file = File("/usr/xxx", "333")
-        val r = FSFile.write(file, "에러 나겟지?".toByteArray(), overwrite = true)
-        logger.debug { "write Exception : $r" }
-        assertEquals(r, -2)
+        val e = assertThrows(
+            IOException::class.java
+        ) {
+            FSFile.create(file, overwrite = true)
+            FSFile.write(file, "에러 나겟지?".toByteArray())
+        }
+        logger.debug { "write Exception : ${e.message}" }
+        assertNotEquals(e.message, "")
     }
 
     @Test
     fun `FSFile write Exception 4`() {
         val file = File("/")
-        val r = FSFile.write(file, "에러 나겟지?".toByteArray(), overwrite = true)
-        logger.debug { "write Exception : $r" }
-        assertEquals(r, -1)
+        val e = assertThrows(
+            IOException::class.java
+        ) {
+            FSFile.create(file, overwrite = true)
+            FSFile.write(file, "에러 나겟지?".toByteArray())
+        }
+        logger.debug { "write Exception : ${e.message}" }
+        assertNotEquals(e.message, "")
     }
 
     @Test
@@ -166,9 +179,10 @@ class FSFileWriteTest : BaseJUnit5Test() {
         val e = assertThrows(
             IOException::class.java
         ) {
-            FSFile.write(file, "에러 나겟지?".toByteArray(), overwrite = true)
+            FSFile.create(file, overwrite = true)
+            FSFile.write(file, "에러 나겟지?".toByteArray())
         }
-        logger.debug { "${e.message}" }
+        logger.debug { "write Exception : ${e.message}" }
         assertNotEquals(e.message, "")
     }
 }

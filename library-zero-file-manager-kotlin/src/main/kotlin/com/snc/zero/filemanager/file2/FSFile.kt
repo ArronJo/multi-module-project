@@ -74,9 +74,7 @@ class FSFile {
 
         @JvmStatic
         @Throws(IOException::class)
-        fun write(out: File, data: ByteArray, overwrite: Boolean = false): Int {
-            overwrite(out, overwrite)
-
+        fun write(out: File, data: ByteArray): Int {
             var os: FileOutputStream? = null
             var offset = 0
             try {
