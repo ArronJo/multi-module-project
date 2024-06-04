@@ -114,7 +114,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
         val file = File(dir, "write1.txt")
         try {
             FSFile.create(file, overwrite = true)
-            val r = FSFile.write(file, "정상정상정상".toByteArray())
+            val r = FSFile.write(file, "정상정상정상1111".toByteArray())
             logger.debug { "write length : $r" }
             assertNotEquals(r, 0)
         } finally {
