@@ -6,15 +6,19 @@ import com.snc.zero.identification.faker.provider.name.NameProvider
 class Faker {
 
     enum class ProviderType {
-        KOREAN
+        KOREAN,
+        ETC
     }
 
     object Name {
 
         private fun getProvider(type: ProviderType): NameProvider {
-            when (type) {
+            return when (type) {
                 ProviderType.KOREAN -> {
-                    return KoreanNameProvider
+                    KoreanNameProvider
+                }
+                else -> {
+                    KoreanNameProvider
                 }
             }
         }
