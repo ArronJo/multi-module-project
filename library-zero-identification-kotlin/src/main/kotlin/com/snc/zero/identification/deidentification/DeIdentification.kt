@@ -15,13 +15,22 @@ class DeIdentification {
         }
 
         @JvmStatic
-        fun name(v: String): String {
+        fun name(v: String, masking: Boolean = false): String {
+            if (masking) {
+                // 외자 등 모두 2개로 고정한다. (v.length - 1) -> 2 로 수정
+                return v.substring(0, 1) + "◯".repeat(2)
+            }
             return v.substring(0, 1) + "씨"
         }
 
         @JvmStatic
-        fun age(v: Int): String {
-            return bornInThose(v).toString() + "대"
+        fun age(v: Int, dataSuppression: Boolean = false): String {
+            val age = bornInThose(v).toString()
+            if (dataSuppression) {
+                val a = v / 10
+                return "${a*10}~${(a+1)*10}세"
+            }
+            return "$age 대"
         }
 
         @JvmStatic

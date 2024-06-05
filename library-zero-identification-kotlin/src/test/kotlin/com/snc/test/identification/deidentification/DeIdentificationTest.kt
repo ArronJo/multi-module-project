@@ -1,6 +1,7 @@
 package com.snc.test.identification.deidentification
 
 import com.snc.zero.identification.deidentification.DeIdentification
+import com.snc.zero.identification.faker.Faker
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Test
@@ -11,6 +12,18 @@ private val logger = TLogging.logger { }
 class DeIdentificationTest : BaseJUnit5Test() {
 
     @Test
+    fun `이름 - 가명처리 (Pseudonymization)`() {
+        // given
+        val name = "진가연"
+        // when
+        val r = getRandomInt(0, 1)
+        val v = Faker.Name.fakeKoreanName(r > 0)
+        // then
+        logger.debug { "name: $name -> $v" }
+        assertNotEquals(v, "")
+    }
+
+    @Test
     fun `이름 - 데이터 범주화(Data Suppression)`() {
         // given
         val name = "진가연"
@@ -19,6 +32,17 @@ class DeIdentificationTest : BaseJUnit5Test() {
         // then
         logger.debug { "name: $name -> $v" }
         assertEquals(v, "진씨")
+    }
+
+    @Test
+    fun `이름 - 데이터 마스킹 (Data Masking)`() {
+        // given
+        val name = "진가연"
+        // when
+        val v = DeIdentification.name(name, masking = true)
+        // then
+        logger.debug { "name: $name -> $v" }
+        assertEquals(v, "진◯◯")
     }
 
     @Test
@@ -41,6 +65,17 @@ class DeIdentificationTest : BaseJUnit5Test() {
         // then
         logger.debug { "age: $age -> $v" }
         assertEquals(v, "30대")
+    }
+
+    @Test
+    fun `나이 - 데이터 범주화(Data Suppression)`() {
+        // given
+        val age = 37
+        // when
+        val v = DeIdentification.age(age, dataSuppression = true)
+        // then
+        logger.debug { "age: $age -> $v" }
+        assertEquals(v, "30~40세")
     }
 
     @Test
