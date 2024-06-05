@@ -1,5 +1,6 @@
 package com.snc.zero.identification.faker
 
+import com.snc.zero.identification.faker.provider.name.EnglishNameProvider
 import com.snc.zero.identification.faker.provider.name.KoreanNameProvider
 import com.snc.zero.identification.faker.provider.name.NameProvider
 
@@ -7,7 +8,7 @@ class Faker {
 
     enum class ProviderType {
         KOREAN,
-        ETC
+        ENGLISH
     }
 
     object Name {
@@ -16,7 +17,7 @@ class Faker {
             return if (ProviderType.KOREAN == type) {
                 KoreanNameProvider
             } else {
-                KoreanNameProvider
+                EnglishNameProvider
             }
         }
 
