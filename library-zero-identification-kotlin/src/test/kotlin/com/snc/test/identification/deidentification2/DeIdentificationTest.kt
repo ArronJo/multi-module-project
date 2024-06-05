@@ -51,7 +51,7 @@ class DeIdentificationTest : BaseJUnit5Test() {
         val v = DeIdentification.DataReduction.regNo(regNo)
         // then
         logger.debug { "regNo: $regNo -> $v" }
-        assertEquals(v, "80년대생 남자")
+        assertEquals(v, "80년대생 여자")
     }
 
     @Test
