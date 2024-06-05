@@ -4,6 +4,8 @@ import com.snc.zero.identification.faker.Faker
 
 /**
  * 개인정보 비식별 조치 (De-identification)
+ * - 익명화 (Anonymization) : 개인식별정보 삭제 혹은 알아볼수 없게 변환
+ * - 가명화 (Pseudonymization)
  *
  * 처리기법
  * - 가명처리 (Pseudonymization)
@@ -16,7 +18,7 @@ class DeIdentification {
 
     /**
      * 가명처리 (Pseudonymization)
-     * : 예시) 홍길동, 35세, 서울 거주, 한국대 재학  ->  임꺽정, 30대, 서울 거주, 국제대 재학
+     * : 예시) 홍길동, 35세, 서울 거주, 한국대 재학  ->  임꺽정, 30대, 서울 거주, 국제대 재학 (from 행안부, 2016)
      * : 세부기술: 1)휴리스틱 가명화, 2)암호화, 3)교환방법
      */
     class Pseudonymization {
@@ -46,16 +48,16 @@ class DeIdentification {
 
     /**
      * 총계처리 (Aggregation)
-     * : 예시) 임꺽정 180cm, 홍길동 170cm, 이콩쥐 160cm, 김팥쥐 150cm  ->  물리학과 학생 키 합 : 660cm, 평균키 165cm
+     * : 예시) 임꺽정 180cm, 홍길동 170cm, 이콩쥐 160cm, 김팥쥐 150cm  ->  물리학과 학생 키 합 : 660cm, 평균키 165cm (from 행안부, 2016)
      * : 세부기술: 4)총계처리 5)부분총계 6)라운딩 7)재배열
      */
-    //class Aggregation {
-    //
-    //}
+    class Aggregation {
+
+    }
 
     /**
      * 데이터 삭제 (Data Reduction)
-     * : 예시) 주민등록번호 901206-1234567  ->  90년대 생, 남자
+     * : 예시) 주민등록번호 901206-1234567  ->  90년대 생, 남자 (from 행안부, 2016)
      * : 세부기술: 8)식별자 삭제 9)식별자 부분삭제 10)레코드 삭제 11)식별요소 전부삭제
      */
     class DataReduction {
@@ -81,8 +83,8 @@ class DeIdentification {
 
     /**
      * 데이터 범주화 (Data Suppression)
-     * : 예시) 홍길동, 35세  ->  홍씨, 30~40세
-     * : 예시) 서울특별시 송파구 가락본동 78번지  →  서울시 송파구  →  서울
+     * : 예시) 홍길동, 35세  ->  홍씨, 30~40세 (from 행안부, 2016)
+     * : 예시) 서울특별시 송파구 가락본동 78번지  →  서울시 송파구  →  서울 (from 행안부, 2016)
      * : 세부기술: 12)감추기 13)랜덤라운딩 14)범위 방법 15)제어 라운딩
      */
     class DataSuppression {
@@ -132,7 +134,7 @@ class DeIdentification {
 
     /**
      * 데이터 마스킹 (Data Masking)
-     * : 예시) 홍길동, 35세, 서울 거주, 한국대 재학  ->  홍ㅇㅇ, 35세, 서울 거주, ㅇㅇ대학 재학
+     * : 예시) 홍길동, 35세, 서울 거주, 한국대 재학  ->  홍ㅇㅇ, 35세, 서울 거주, ㅇㅇ대학 재학 (from 행안부, 2016)
      * : 세부기술: 16)임의 잡음 추가 17)공백과 대체
      */
     class DataMasking {
