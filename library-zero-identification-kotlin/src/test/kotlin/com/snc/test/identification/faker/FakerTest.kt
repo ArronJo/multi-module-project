@@ -43,15 +43,16 @@ class FakerTest : BaseJUnit5Test() {
     @Test
     fun `가명 만들기 Provider 1`() {
         // given
-        val max = 30
+        val provider = Faker.ProviderType.ETC
         // when
-        for (i in 1..max) {
-            val r = getRandomInt(0, 1)
-            if (r > 1) { logger.debug { "r : $r" } }
-            val sex = if (r > 0) "F" else "M"
-            val v1 = Faker.Name.fake(Faker.ProviderType.ETC, r > 0)
-            // then
-            logger.debug { "fake name: ${i.toString().padStart(2, '0')} : [$sex] ${v1.joinToString(separator = "")}" }
-        }
+        Faker.Name.fake(provider, true)
+    }
+
+    @Test
+    fun `가명 만들기 Provider 2`() {
+        // given
+        val provider = Faker.ProviderType.KOREAN
+        // when
+        Faker.Name.fake(provider, true)
     }
 }
