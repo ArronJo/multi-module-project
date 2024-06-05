@@ -43,9 +43,10 @@ class FakerTest : BaseJUnit5Test() {
     @Test
     fun `가명 만들기 Provider 1`() {
         // given
-        val provider = Faker.ProviderType.ETC
+        val provider = Faker.ProviderType.ENGLISH
         // when
-        Faker.Name.fake(provider, true)
+        val v1 = Faker.Name.fake(provider, true)
+        logger.debug { "fake name: ${v1.joinToString(separator = "")}" }
     }
 
     @Test
@@ -53,6 +54,7 @@ class FakerTest : BaseJUnit5Test() {
         // given
         val provider = Faker.ProviderType.KOREAN
         // when
-        Faker.Name.fake(provider, true)
+        val v1 = Faker.Name.fake(provider, true)
+        logger.debug { "fake name: ${v1.joinToString(separator = "")}" }
     }
 }
