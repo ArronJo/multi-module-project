@@ -23,7 +23,11 @@ class Faker {
         fun fake(type: ProviderType, female: Boolean = false): Array<String> {
             val provider = getProvider(type)
             val lastName = provider.generateLastName()
-            val firstName = if (female) KoreanNameProvider.generateFemaleName() else KoreanNameProvider.generateMaleName()
+            val firstName = if (female) {
+                KoreanNameProvider.generateFemaleName()
+            } else {
+                KoreanNameProvider.generateMaleName()
+            }
             return arrayOf(lastName, firstName)
         }
 
