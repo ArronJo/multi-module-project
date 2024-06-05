@@ -64,7 +64,7 @@ class DeIdentificationTest : BaseJUnit5Test() {
         val v = DeIdentification.age(age)
         // then
         logger.debug { "age: $age -> $v" }
-        assertEquals(v, "30대")
+        assertEquals(v, "30 대")
     }
 
     @Test

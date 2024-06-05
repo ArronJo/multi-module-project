@@ -17,8 +17,7 @@ class DeIdentification {
         @JvmStatic
         fun name(v: String, masking: Boolean = false): String {
             if (masking) {
-                // 외자 등 모두 2개로 고정한다. (v.length - 1) -> 2 로 수정
-                return v.substring(0, 1) + "◯".repeat(2)
+                  return v.substring(0, 1) + "◯".repeat(2)
             }
             return v.substring(0, 1) + "씨"
         }
