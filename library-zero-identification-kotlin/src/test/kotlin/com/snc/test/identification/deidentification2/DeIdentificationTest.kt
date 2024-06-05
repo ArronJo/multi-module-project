@@ -33,7 +33,7 @@ class DeIdentificationTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `데이터 삭제 (Data Reduction) - 주민등록번호`() {
+    fun `데이터 삭제 (Data Reduction) - 주민등록번호1`() {
         // given
         val regNo = "891023-1234567"
         // when
@@ -44,7 +44,29 @@ class DeIdentificationTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `데이터 삭제 (Data Reduction) - 생년월일`() {
+    fun `데이터 삭제 (Data Reduction) - 주민등록번호 2`() {
+        // given
+        val regNo = "891023-2234567"
+        // when
+        val v = DeIdentification.DataReduction.regNo(regNo)
+        // then
+        logger.debug { "regNo: $regNo -> $v" }
+        assertEquals(v, "80년대생 남자")
+    }
+
+    @Test
+    fun `데이터 삭제 (Data Reduction) - 생년월일 1`() {
+        // given
+        val birth = "19891023"
+        // when
+        val v = DeIdentification.DataReduction.birth(birth)
+        // then
+        logger.debug { "birth: $birth -> $v" }
+        assertEquals(v, "1980년대생")
+    }
+
+    @Test
+    fun `데이터 삭제 (Data Reduction) - 생년월일 2`() {
         // given
         val birth = "891023"
         // when
@@ -52,6 +74,20 @@ class DeIdentificationTest : BaseJUnit5Test() {
         // then
         logger.debug { "birth: $birth -> $v" }
         assertEquals(v, "80년대생")
+    }
+
+    @Test
+    fun `데이터 삭제 (Data Reduction) - 생년월일 3`() {
+        // given
+        val birth = "891023123123"
+        // when
+        val e = assertThrows(
+            IllegalArgumentException::class.java
+        ) {
+            DeIdentification.DataReduction.birth(birth)
+        }
+        // then
+        assertNotEquals(e.message, "")
     }
 
     @Test

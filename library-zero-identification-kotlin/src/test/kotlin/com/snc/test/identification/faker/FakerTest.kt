@@ -54,7 +54,7 @@ class FakerTest : BaseJUnit5Test() {
         // given
         val provider = Faker.ProviderType.KOREAN
         // when
-        val v1 = Faker.Name.fake(provider, true)
+        val v1 = Faker.Name.fake(provider, false)
         logger.debug { "fake name: ${v1.joinToString(separator = "")}" }
     }
 }
