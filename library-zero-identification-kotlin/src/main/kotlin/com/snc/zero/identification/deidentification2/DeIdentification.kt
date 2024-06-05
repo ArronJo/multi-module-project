@@ -51,9 +51,9 @@ class DeIdentification {
      * : 예시) 임꺽정 180cm, 홍길동 170cm, 이콩쥐 160cm, 김팥쥐 150cm  ->  물리학과 학생 키 합 : 660cm, 평균키 165cm (from 행안부, 2016)
      * : 세부기술: 4)총계처리 5)부분총계 6)라운딩 7)재배열
      */
-    class Aggregation {
-
-    }
+    //class Aggregation {
+    //
+    //}
 
     /**
      * 데이터 삭제 (Data Reduction)
