@@ -13,13 +13,10 @@ class Faker {
     object Name {
 
         private fun getProvider(type: ProviderType): NameProvider {
-            return when (type) {
-                ProviderType.KOREAN -> {
-                    KoreanNameProvider
-                }
-                else -> {
-                    KoreanNameProvider
-                }
+            return if (ProviderType.KOREAN == type) {
+                KoreanNameProvider
+            } else {
+                KoreanNameProvider
             }
         }
 
