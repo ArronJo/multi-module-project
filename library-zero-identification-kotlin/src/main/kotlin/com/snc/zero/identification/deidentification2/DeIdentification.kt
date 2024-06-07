@@ -2,25 +2,8 @@ package com.snc.zero.identification.deidentification2
 
 import com.snc.zero.identification.faker.Faker
 
-/**
- * 개인정보 비식별 조치 (De-identification)
- * - 익명화 (Anonymization) : 개인식별정보 삭제 혹은 알아볼수 없게 변환
- * - 가명화 (Pseudonymization)
- *
- * 처리기법
- * - 가명처리 (Pseudonymization)
- * - 총계처리 (Aggregation)
- * - 데이터 삭제 (Data Reduction)
- * - 데이터 범주화 (Data Suppression)
- * - 데이터 마스킹 (Data Masking)
- */
 class DeIdentification {
 
-    /**
-     * 가명처리 (Pseudonymization)
-     * : 예시) 홍길동, 35세, 서울 거주, 한국대 재학  ->  임꺽정, 30대, 서울 거주, 국제대 재학 (from 행안부, 2016)
-     * : 세부기술: 1)휴리스틱 가명화, 2)암호화, 3)교환방법
-     */
     class Pseudonymization {
 
         companion object {
@@ -46,11 +29,6 @@ class DeIdentification {
         }
     }
 
-    /**
-     * 데이터 삭제 (Data Reduction)
-     * : 예시) 주민등록번호 901206-1234567  ->  90년대 생, 남자 (from 행안부, 2016)
-     * : 세부기술: 8)식별자 삭제 9)식별자 부분삭제 10)레코드 삭제 11)식별요소 전부삭제
-     */
     class DataReduction {
 
         companion object {
@@ -72,12 +50,6 @@ class DeIdentification {
         }
     }
 
-    /**
-     * 데이터 범주화 (Data Suppression)
-     * : 예시) 홍길동, 35세  ->  홍씨, 30~40세 (from 행안부, 2016)
-     * : 예시) 서울특별시 송파구 가락본동 78번지  →  서울시 송파구  →  서울 (from 행안부, 2016)
-     * : 세부기술: 12)감추기 13)랜덤라운딩 14)범위 방법 15)제어 라운딩
-     */
     class DataSuppression {
 
         companion object {
@@ -96,23 +68,10 @@ class DeIdentification {
             @JvmStatic
             fun address(addr: String): String {
                 val region = arrayOf(
-                    "서울",  //"서울특별시",
-                    "부산",  //"부산광역시",
-                    "대구",  //"대구광역시",
-                    "인천",  //"인천광역시",
-                    "광주",  //"광주광역시",
-                    "대전",  //"대전광역시",
-                    "울산",  //"울산광역시",
-                    "세종",  //"세종특별자치시",
-                    "경기도",
-                    "강원",  //"강원특별자치도",
-                    "충청북도",
-                    "충청남도",
-                    "전북",  //"전북특별자치도",
-                    "전라남도",
-                    "경상북도",
-                    "경상남도",
-                    "제주"
+                    "서울", "부산", "대구", "인천", "광주",
+                    "대전", "울산", "세종", "경기도", "강원",
+                    "충청북도", "충청남도", "전라북도", "전라남도",
+                    "경상북도", "경상남도", "제주"
                 )
                 for (r in region) {
                     if (addr.startsWith(r)) {
@@ -124,11 +83,6 @@ class DeIdentification {
         }
     }
 
-    /**
-     * 데이터 마스킹 (Data Masking)
-     * : 예시) 홍길동, 35세, 서울 거주, 한국대 재학  ->  홍ㅇㅇ, 35세, 서울 거주, ㅇㅇ대학 재학 (from 행안부, 2016)
-     * : 세부기술: 16)임의 잡음 추가 17)공백과 대체
-     */
     class DataMasking {
 
         companion object {
