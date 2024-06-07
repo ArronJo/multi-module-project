@@ -35,17 +35,17 @@ class DeIdentificationTest : BaseJUnit5Test() {
     @Test
     fun `데이터 삭제 (Data Reduction) - 주민등록번호 1`() {
         // given
-        var regNo1 = "891023-1234567"
-        var regNo3 = "891023-3234567"
-        var regNo5 = "891023-5234567"
-        var regNo7 = "891023-7234567"
-        var regNo9 = "891023-9234567"
+        val regNo1 = "891023-1234567"
+        val regNo3 = "891023-3234567"
+        val regNo5 = "891023-5234567"
+        val regNo7 = "891023-7234567"
+        val regNo9 = "891023-9234567"
         // when
-        var v1 = DeIdentification.DataReduction.regNo(regNo1)
-        var v3 = DeIdentification.DataReduction.regNo(regNo3)
-        var v5 = DeIdentification.DataReduction.regNo(regNo5)
-        var v7 = DeIdentification.DataReduction.regNo(regNo7)
-        var v9 = DeIdentification.DataReduction.regNo(regNo9)
+        val v1 = DeIdentification.DataReduction.regNo(regNo1)
+        val v3 = DeIdentification.DataReduction.regNo(regNo3)
+        val v5 = DeIdentification.DataReduction.regNo(regNo5)
+        val v7 = DeIdentification.DataReduction.regNo(regNo7)
+        val v9 = DeIdentification.DataReduction.regNo(regNo9)
         // then
         logger.debug { "regNo: $regNo1 -> $v1" }
         assertEquals(v1, "80년대생 남자")
