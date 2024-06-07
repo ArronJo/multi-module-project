@@ -33,25 +33,65 @@ class DeIdentificationTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `데이터 삭제 (Data Reduction) - 주민등록번호1`() {
+    fun `데이터 삭제 (Data Reduction) - 주민등록번호 1`() {
         // given
-        val regNo = "891023-1234567"
+        var regNo1 = "891023-1234567"
+        var regNo3 = "891023-3234567"
+        var regNo5 = "891023-5234567"
+        var regNo7 = "891023-7234567"
+        var regNo9 = "891023-9234567"
         // when
-        val v = DeIdentification.DataReduction.regNo(regNo)
+        var v1 = DeIdentification.DataReduction.regNo(regNo1)
+        var v3 = DeIdentification.DataReduction.regNo(regNo3)
+        var v5 = DeIdentification.DataReduction.regNo(regNo5)
+        var v7 = DeIdentification.DataReduction.regNo(regNo7)
+        var v9 = DeIdentification.DataReduction.regNo(regNo9)
         // then
-        logger.debug { "regNo: $regNo -> $v" }
-        assertEquals(v, "80년대생 남자")
+        logger.debug { "regNo: $regNo1 -> $v1" }
+        assertEquals(v1, "80년대생 남자")
+
+        logger.debug { "regNo: $regNo3 -> $v3" }
+        assertEquals(v3, "80년대생 남자")
+
+        logger.debug { "regNo: $regNo5 -> $v5" }
+        assertEquals(v5, "80년대생 남자")
+
+        logger.debug { "regNo: $regNo7 -> $v7" }
+        assertEquals(v7, "80년대생 남자")
+
+        logger.debug { "regNo: $regNo9 -> $v9" }
+        assertEquals(v9, "80년대생 남자")
     }
 
     @Test
     fun `데이터 삭제 (Data Reduction) - 주민등록번호 2`() {
         // given
-        val regNo = "891023-2234567"
+        val regNo2 = "891023-2234567"
+        val regNo4 = "891023-4234567"
+        val regNo6 = "891023-6234567"
+        val regNo8 = "891023-8234567"
+        val regNo0 = "891023-0234567"
         // when
-        val v = DeIdentification.DataReduction.regNo(regNo)
+        val v2 = DeIdentification.DataReduction.regNo(regNo2)
+        val v4 = DeIdentification.DataReduction.regNo(regNo4)
+        val v6 = DeIdentification.DataReduction.regNo(regNo6)
+        val v8 = DeIdentification.DataReduction.regNo(regNo8)
+        val v0 = DeIdentification.DataReduction.regNo(regNo0)
         // then
-        logger.debug { "regNo: $regNo -> $v" }
-        assertEquals(v, "80년대생 여자")
+        logger.debug { "regNo: $regNo2 -> $v2" }
+        assertEquals(v2, "80년대생 여자")
+
+        logger.debug { "regNo: $regNo4 -> $v4" }
+        assertEquals(v2, "80년대생 여자")
+
+        logger.debug { "regNo: $regNo6 -> $v6" }
+        assertEquals(v2, "80년대생 여자")
+
+        logger.debug { "regNo: $regNo8 -> $v8" }
+        assertEquals(v2, "80년대생 여자")
+
+        logger.debug { "regNo: $regNo0 -> $v0" }
+        assertEquals(v2, "80년대생 여자")
     }
 
     @Test
