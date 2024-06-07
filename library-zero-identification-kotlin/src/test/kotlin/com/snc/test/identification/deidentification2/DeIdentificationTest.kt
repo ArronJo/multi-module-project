@@ -153,7 +153,7 @@ class DeIdentificationTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `데이터 범주화(Data Suppression) - 주소`() {
+    fun `데이터 범주화(Data Suppression) - 주소 1`() {
         // given
         val addr = "제주특별자치도 제주시 광양4길 20 (이도일동)"
         // when
@@ -161,6 +161,17 @@ class DeIdentificationTest : BaseJUnit5Test() {
         // then
         logger.debug { "addr: $addr -> $v" }
         assertEquals(v, "제주 거주")
+    }
+
+    @Test
+    fun `데이터 범주화(Data Suppression) - 주소 2`() {
+        // given
+        val addr = "저세상도 이세상시 광양18길 28 (삽실팔동)"
+        // when
+        val v = DeIdentification.DataSuppression.address(addr)
+        // then
+        logger.debug { "addr: $addr -> $v" }
+        assertEquals(v, "거주지 미확인")
     }
 
     @Test
