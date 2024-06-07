@@ -58,8 +58,7 @@ class DeIdentification {
             fun regNo(v: String): String {
                 val sex = when (v.replace("[^0-9]".toRegex(), "")[6]) {
                     '1', '3', '5', '7', '9' -> "남자"
-                    '2', '4', '6', '8', '0' -> "여자"
-                    else -> "모름"
+                    else -> "여자"
                 }
                 return "${birth(v.substring(0, 6))} $sex"
             }
