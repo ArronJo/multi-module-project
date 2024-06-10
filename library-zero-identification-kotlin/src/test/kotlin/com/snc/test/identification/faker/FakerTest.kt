@@ -15,11 +15,13 @@ class FakerTest : BaseJUnit5Test() {
         // given
         val max = 30
         // when
+        var v1 = ""
         for (i in 1..max) {
-            val v1 = Faker.Name.fakeKoreanName(true)
+            v1 = Faker.Name.fakeKoreanName(true)
             // then
             logger.debug { "fake name: ${i.toString().padStart(2, '0')} : [F] $v1" }
         }
+        assertNotEquals(v1, "")
     }
 
     @Test
@@ -27,11 +29,13 @@ class FakerTest : BaseJUnit5Test() {
         // given
         val max = 30
         // when
+        var v1 = ""
         for (i in 1..max) {
-            val v1 = Faker.Name.fakeKoreanName(false)
+            v1 = Faker.Name.fakeKoreanName(false)
             // then
             logger.debug { "fake name: ${i.toString().padStart(2, '0')} : [M] $v1" }
         }
+        assertNotEquals(v1, "")
     }
 
     @Test
@@ -39,15 +43,17 @@ class FakerTest : BaseJUnit5Test() {
         // given
         val max = 30
         // when
+        var v1: Array<String> = arrayOf()
         for (i in 1..max) {
             val r = getRandomInt(0, 1)
             if (r > 1) { logger.debug { "r : $r" } }
             val sex = if (r > 0) "F" else "M"
             val provider = if (r > 0) Faker.ProviderType.KOREAN else Faker.ProviderType.ENGLISH
-            val v1 = Faker.Name.fake(type = provider, female = r > 0)
+            v1 = Faker.Name.fake(type = provider, female = r > 0)
             // then
             logger.debug { "fake name: ${i.toString().padStart(2, '0')} : [$sex] ${v1.joinToString(separator = "")}" }
         }
+        assertNotEquals(v1.joinToString(separator = ""), "")
     }
 
     @Test
@@ -57,6 +63,7 @@ class FakerTest : BaseJUnit5Test() {
         // when
         val v1 = Faker.Name.fake(provider, female = true)
         logger.debug { "fake name: ${v1.joinToString(separator = "")}" }
+        assertNotEquals(v1.joinToString(separator = ""), "")
     }
 
     @Test
@@ -66,5 +73,6 @@ class FakerTest : BaseJUnit5Test() {
         // when
         val v1 = Faker.Name.fake(provider, female = false)
         logger.debug { "fake name: ${v1.joinToString(separator = "")}" }
+        assertNotEquals(v1.joinToString(separator = ""), "")
     }
 }
