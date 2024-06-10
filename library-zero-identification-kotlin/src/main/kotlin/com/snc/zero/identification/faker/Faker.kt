@@ -29,7 +29,7 @@ class Faker {
             } else {
                 provider.generateMaleName()
             }
-            return arrayOf(lastName, firstName)
+            return arrayOf(firstName, lastName)
         }
 
         fun fakeKoreanName(female: Boolean = false): String {

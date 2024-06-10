@@ -6,17 +6,17 @@ object DeIdentification {
 
     object Pseudonymization {
 
-        fun name(name: String, female: Boolean = false): String {
+        fun name(firstName: String, lastName: String, provider: Faker.ProviderType = Faker.ProviderType.KOREAN, female: Boolean = false): Array<String> {
             var v: Array<String>
             while (true) {
-                v = Faker.Name.fake(Faker.ProviderType.KOREAN, female)
-                if (name.substring(0, 1) != v[0]
-                    && name.substring(1, 2) != v[1]
+                v = Faker.Name.fake(provider, female)
+                if (!v[0].lowercase().startsWith(firstName.substring(0, 1).lowercase())
+                    && !v[1].lowercase().startsWith(lastName.substring(0, 1).lowercase())
                 ) {
                     break
                 }
             }
-            return v.joinToString(separator = "")
+            return v
         }
 
         fun age(v: Int): String {

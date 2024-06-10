@@ -1,6 +1,7 @@
 package com.snc.test.identification.deidentification2
 
 import com.snc.zero.identification.deidentification2.DeIdentification
+import com.snc.zero.identification.faker.Faker
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Test
@@ -11,13 +12,50 @@ private val logger = TLogging.logger { }
 class DeIdentificationTest : BaseJUnit5Test() {
 
     @Test
-    fun `가명처리 (Pseudonymization) - 이름`() {
+    fun `가명처리 (Pseudonymization) - 이름 1`() {
         // given
-        val name = "진가연"
+        val lastName = "김"
+        val firstName = "가연"
         // when
-        val v = DeIdentification.Pseudonymization.name(name)
+        val v = DeIdentification.Pseudonymization.name(firstName, lastName, Faker.ProviderType.KOREAN, female = true)
         // then
-        logger.debug { "name: $name -> $v" }
+        logger.debug { "name: ${lastName + firstName} -> ${v[1]}${v[0]}" }
+        assertNotEquals(v, "")
+    }
+
+    @Test
+    fun `가명처리 (Pseudonymization) - 이름 2`() {
+        // given
+        val lastName = "김"
+        val firstName = "가연"
+        // when
+        val v = DeIdentification.Pseudonymization.name(firstName, lastName, Faker.ProviderType.KOREAN)
+        // then
+        logger.debug { "name: ${lastName + firstName} -> ${v[1]}${v[0]}" }
+        assertNotEquals(v, "")
+    }
+
+    @Test
+    fun `가명처리 (Pseudonymization) - 이름 3`() {
+        // given
+        val lastName = "Jones"
+        val firstName = "Mary"
+        // when
+        val v = DeIdentification.Pseudonymization.name(firstName, lastName, Faker.ProviderType.ENGLISH, female = true)
+        // then
+        logger.debug { "name: $firstName $lastName -> ${v[0]} ${v[1]}" }
+        assertNotEquals(v, "")
+    }
+
+    @Test
+    fun `가명처리 (Pseudonymization) - 이름 4`() {
+        // given
+        val lastName = "Jones"
+        val firstName = "Mary"
+        // when
+        val v = DeIdentification.Pseudonymization.name(firstName, lastName, Faker.ProviderType.ENGLISH)
+        // then
+        logger.debug { "name: ${lastName + firstName} -> ${v[0]} ${v[1]}" }
         assertNotEquals(v, "")
     }
 

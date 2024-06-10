@@ -3,23 +3,32 @@ package com.snc.zero.identification.faker.provider.name
 object EnglishNameProvider : NameProvider() {
 
     init {
+
         firstNamesFemale.addAll(
             arrayOf(
-                "a", "b", "c",
+                "Mary", "Patricia", "Jennifer", "Linda",
+                "Elizabeth", "Barbara", "Susan",
+                "Jessica", "Sarah", "Karen"
             )
         )
 
         firstNamesMale.addAll(
             arrayOf(
-                "d", "e", "f"
+                "Michael", "James", "John",
+                "Robert", "David", "William",
+                "Richard", "Joseph", "Charles", "Thomas"
             )
         )
 
-        lastNames["A"] = 0.10689
-        lastNames["B"] = 0.07307
-        lastNames["C"] = 0.04192
-        lastNames["D"] = 0.02333
-        lastNames["E"] = 0.02151
-        lastNames["F"] = 0.01176
+        lastNames["Jones"] = 0.00193
+        lastNames["Garcia"] = 0.00192
+        lastNames["Miller"] = 0.00191
+        lastNames["Davis"] = 0.00186
+        lastNames["Rodriguez"] = 0.00186
+        lastNames["Martinez"] = 0.00171
+        lastNames["Brown"] = 0.00167
+        lastNames["Williams"] = 0.00159
+        lastNames["Johnson"] = 0.00153
+        lastNames["Smith"] = 0.00144
     }
 }
