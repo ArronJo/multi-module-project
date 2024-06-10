@@ -4,7 +4,7 @@ import com.snc.zero.identification.faker.provider.name.EnglishNameProvider
 import com.snc.zero.identification.faker.provider.name.KoreanNameProvider
 import com.snc.zero.identification.faker.provider.name.NameProvider
 
-class Faker {
+object Faker {
 
     enum class ProviderType {
         KOREAN,

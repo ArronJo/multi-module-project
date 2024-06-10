@@ -16,7 +16,7 @@ class FakerTest : BaseJUnit5Test() {
         val max = 30
         // when
         for (i in 1..max) {
-            val v1 = Faker.Name.fakeKoreanName(female = true)
+            val v1 = Faker.Name.fakeKoreanName(true)
             // then
             logger.debug { "fake name: ${i.toString().padStart(2, '0')} : [F] $v1" }
         }
@@ -28,14 +28,14 @@ class FakerTest : BaseJUnit5Test() {
         val max = 30
         // when
         for (i in 1..max) {
-            val v1 = Faker.Name.fakeKoreanName(female = false)
+            val v1 = Faker.Name.fakeKoreanName(false)
             // then
             logger.debug { "fake name: ${i.toString().padStart(2, '0')} : [M] $v1" }
         }
     }
 
     @Test
-    fun `가명 만들기 3`() {
+    fun `가명 만들기 랜덤 1`() {
         // given
         val max = 30
         // when
@@ -43,7 +43,8 @@ class FakerTest : BaseJUnit5Test() {
             val r = getRandomInt(0, 1)
             if (r > 1) { logger.debug { "r : $r" } }
             val sex = if (r > 0) "F" else "M"
-            val v1 = Faker.Name.fake(Faker.ProviderType.KOREAN, r > 0)
+            val provider = if (r > 0) Faker.ProviderType.KOREAN else Faker.ProviderType.ENGLISH
+            val v1 = Faker.Name.fake(type = provider, female = r > 0)
             // then
             logger.debug { "fake name: ${i.toString().padStart(2, '0')} : [$sex] ${v1.joinToString(separator = "")}" }
         }
