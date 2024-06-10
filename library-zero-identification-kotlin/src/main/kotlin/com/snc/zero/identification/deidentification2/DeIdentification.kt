@@ -8,14 +8,14 @@ object DeIdentification {
 
         fun name(name: String, female: Boolean = false): String {
             var v: Array<String>
-            do {
+            while (true) {
                 v = Faker.Name.fake(Faker.ProviderType.KOREAN, female)
                 if (name.substring(0, 1) != v[0]
-                    && name.substring(1) != v[1]
+                    && name.substring(1, 2) != v[1]
                 ) {
                     break
                 }
-            } while (true)
+            }
             return v.joinToString(separator = "")
         }
 
@@ -78,7 +78,6 @@ object DeIdentification {
     object DataMasking {
 
         fun name(v: String): String {
-            // 이름이 외자 인 경우 등이 존재하므로 통일성을 가지기 위해 2개로 고정한다. (v.length - 1) → 2 로 수정
             return v.substring(0, 1) + "◯".repeat(2)
         }
     }
