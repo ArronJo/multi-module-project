@@ -35,7 +35,6 @@ object DeIdentification {
             return "${birth(v.substring(0, 6))} $sex"
         }
 
-        @JvmStatic
         fun birth(v: String): String {
             val yyyy = if (v.length == 8) {
                 4
