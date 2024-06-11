@@ -25,6 +25,10 @@ dependencies {
 
 }
 
+tasks.test {
+    useJUnitPlatform()
+}
+
 //java {
 //    sourceCompatibility = rootProject.extra["javaVersion"] as JavaVersion
 //}
@@ -38,9 +42,23 @@ kotlin {
 
 
 ///////////////////////////////////////////////////////////
+// https://github.com/jacoco/jacoco/releases
 jacoco {
-    toolVersion = "0.8.11"
+    toolVersion = "0.8.12"
 }
+/*
+tasks.test {
+    useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(true)
+    }
+    dependsOn(tasks.test)
+}
+ */
 
 // https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
 sonar {
@@ -53,6 +71,7 @@ sonar {
 }
 
 System.setProperty("sonar.gradle.skipCompile", "true")
+
 
 ///////////////////////////////////////////////////////////
 tasks.register<Exec>("deleteDSStoreShellScript") {

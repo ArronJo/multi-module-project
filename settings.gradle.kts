@@ -12,6 +12,3 @@ include(":library-zero-logger-kotlin")
 include(":library-zero-test-kotlin")
 include(":library-zero-validation-kotlin")
 include(":library-zero-xss-kotlin")
-
-// https://sonarsource.atlassian.net/browse/SCANGRADLE-134
-//System.setProperty("sonar.gradle.skipCompile", "true")

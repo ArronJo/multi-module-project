@@ -34,7 +34,7 @@ open class NameProvider {
         var result = ""
         var bestValue = Double.MAX_VALUE
         for (element in map.keys) {
-            val value = -ln(random.nextDouble()) / (map[element] ?: 0.0)
+            val value = -ln(random.nextDouble()) / map.getOrDefault(element, 0.0)
             if (value < bestValue) {
                 bestValue = value
                 result = element

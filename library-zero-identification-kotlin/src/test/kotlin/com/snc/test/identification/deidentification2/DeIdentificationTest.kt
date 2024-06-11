@@ -12,7 +12,7 @@ private val logger = TLogging.logger { }
 class DeIdentificationTest : BaseJUnit5Test() {
 
     @Test
-    fun `가명처리 (Pseudonymization) - 이름 1`() {
+    fun `가명처리 (Pseudonymization) - 이름 1-1`() {
         // given
         val lastName = "김"
         val firstName = "가연"
@@ -24,7 +24,7 @@ class DeIdentificationTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `가명처리 (Pseudonymization) - 이름 2`() {
+    fun `가명처리 (Pseudonymization) - 이름 1-2`() {
         // given
         val lastName = "김"
         val firstName = "가연"
@@ -36,7 +36,19 @@ class DeIdentificationTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `가명처리 (Pseudonymization) - 이름 3`() {
+    fun `가명처리 (Pseudonymization) - 이름 1-3`() {
+        // given
+        val lastName = "김"
+        val firstName = "가연"
+        // when
+        val v = DeIdentification.Pseudonymization.name(firstName, lastName)
+        // then
+        logger.debug { "name: ${lastName + firstName} -> ${v[1]}${v[0]}" }
+        assertNotEquals(v, "")
+    }
+
+    @Test
+    fun `가명처리 (Pseudonymization) - 이름 2-1`() {
         // given
         val lastName = "Jones"
         val firstName = "Mary"
@@ -48,7 +60,7 @@ class DeIdentificationTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `가명처리 (Pseudonymization) - 이름 4`() {
+    fun `가명처리 (Pseudonymization) - 이름 2-2`() {
         // given
         val lastName = "Jones"
         val firstName = "Mary"

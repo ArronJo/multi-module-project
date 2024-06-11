@@ -9,6 +9,14 @@ object Faker {
     enum class ProviderType {
         KOREAN,
         ENGLISH
+        ;
+    }
+
+    fun checkEnum(type: ProviderType): Boolean {
+        return when (type) {
+            ProviderType.KOREAN -> true
+            else -> false
+        }
     }
 
     object Name {

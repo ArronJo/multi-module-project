@@ -39,6 +39,20 @@ class FakerTest : BaseJUnit5Test() {
     }
 
     @Test
+    fun `가명 만들기 3`() {
+        // given
+        val max = 30
+        // when
+        var v1 = ""
+        for (i in 1..max) {
+            v1 = Faker.Name.fakeKoreanName()
+            // then
+            logger.debug { "fake name: ${i.toString().padStart(2, '0')} : [M] $v1" }
+        }
+        assertNotEquals(v1, "")
+    }
+
+    @Test
     fun `가명 만들기 랜덤 1`() {
         // given
         val max = 30
@@ -74,5 +88,64 @@ class FakerTest : BaseJUnit5Test() {
         val v1 = Faker.Name.fake(provider, female = false)
         logger.debug { "fake name: ${v1.joinToString(separator = "")}" }
         assertNotEquals(v1.joinToString(separator = ""), "")
+    }
+
+    @Test
+    fun `가명 만들기 Provider 3`() {
+        // given
+        val provider = Faker.ProviderType.KOREAN
+        // when
+        val v1 = Faker.Name.fake(provider)
+        logger.debug { "fake name: ${v1.joinToString(separator = "")}" }
+        assertNotEquals(v1.joinToString(separator = ""), "")
+    }
+
+    @Test
+    fun `Enum 테스트 1-1`() {
+        // given
+        val v = Faker.ProviderType.KOREAN
+        // when
+        assertEquals("KOREAN", v.name)
+    }
+
+    @Test
+    fun `Enum 테스트 1-2`() {
+        // given
+        val v = Faker.ProviderType.valueOf("KOREAN")
+        // when
+        assertEquals(Faker.ProviderType.KOREAN, v)
+    }
+
+    @Test
+    fun `Enum 테스트 2-1`() {
+        // given
+        val v = Faker.ProviderType.entries.toTypedArray()
+        // when
+        assertEquals(Faker.ProviderType.KOREAN, v[0])
+        assertEquals(Faker.ProviderType.ENGLISH, v[1])
+    }
+
+    @Test
+    fun `Enum 테스트 2-2`() {
+        // given
+        val v = Faker.ProviderType.entries
+        // when
+        assertEquals(Faker.ProviderType.KOREAN, v[0])
+        assertEquals(Faker.ProviderType.ENGLISH, v[1])
+    }
+
+    @Test
+    fun `Enum 테스트 2-3`() {
+        // given
+        val v = Faker.ProviderType.values()
+        // when
+        assertEquals(Faker.ProviderType.KOREAN, v[0])
+        assertEquals(Faker.ProviderType.ENGLISH, v[1])
+    }
+
+    @Test
+    fun `Enum 테스트 3`() {
+        assertEquals(Faker.checkEnum(Faker.ProviderType.KOREAN), true)
+        assertEquals(Faker.checkEnum(Faker.ProviderType.ENGLISH), false)
     }
 }
