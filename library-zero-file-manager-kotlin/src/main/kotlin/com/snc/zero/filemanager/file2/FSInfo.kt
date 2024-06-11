@@ -27,33 +27,13 @@ object FSInfo {
             DecimalFormat("#,###,###").format(size)
         }
         val unit = when (count) {
-            0 -> {
-                "bytes"
-            }
-
-            1 -> {
-                "KB"
-            }
-
-            2 -> {
-                "MB"
-            }
-
-            3 -> {
-                "GB"
-            }
-
-            4 -> {
-                "TB"
-            }
-
-            5 -> {
-                "PB"
-            }
-
-            else -> {
-                "BigSize"
-            }
+            0 -> { "bytes" }
+            1 -> { "KB" }
+            2 -> { "MB" }
+            3 -> { "GB" }
+            4 -> { "TB" }
+            5 -> { "PB" }
+            else -> { "BigSize" }
         }
         return "$formatSize $unit"
     }
