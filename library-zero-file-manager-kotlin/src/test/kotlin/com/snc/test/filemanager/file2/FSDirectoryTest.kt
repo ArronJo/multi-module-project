@@ -1,6 +1,7 @@
 package com.snc.test.filemanager.file2
 
 import com.snc.zero.filemanager.file2.FSDirectory
+import com.snc.zero.filemanager.file2.FSFile
 import com.snc.zero.filemanager.file2.extensions.toFile
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
@@ -53,6 +54,18 @@ class FSDirectoryTest : BaseJUnit5Test() {
     }
 
     @Test
+    fun `FSDirectory create 3`() {
+        assertDoesNotThrow {
+            FSDirectory.create(dir)
+        }
+        if (dir.exists()) {
+            logger.debug { "create: $dir exist" }
+        } else {
+            logger.debug { "create: $dir not exist" }
+        }
+    }
+
+    @Test
     fun `FSDirectory delete 1`() {
         assertDoesNotThrow {
             FSDirectory.create(dir, overwrite = true)
@@ -69,5 +82,13 @@ class FSDirectoryTest : BaseJUnit5Test() {
     fun `FSDirectory delete 2`() {
         val ret = FSDirectory.delete(File(parent, "notexist"))
         assertEquals(ret, false)
+    }
+
+    @Test
+    fun `FSDirectory delete 3`() {
+        val f = File(dir, "ddd3.txt")
+        FSFile.create(f, true)
+        val ret = FSDirectory.delete(f)
+        assertEquals(ret, true)
     }
 }

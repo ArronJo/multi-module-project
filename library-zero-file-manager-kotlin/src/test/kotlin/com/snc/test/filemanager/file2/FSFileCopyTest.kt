@@ -64,7 +64,7 @@ class FSFileCopyTest : BaseJUnit5Test() {
             IOException::class.java
         ) {
             FSFile.create(src, overwrite = true)
-            FSFile.copy(src, dst, overwrite = true)
+            FSFile.copy(src, dst)
         }
         FSFile.delete(src)
         logger.debug { "${e.message}" }
