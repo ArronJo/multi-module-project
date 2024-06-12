@@ -1,7 +1,6 @@
 package com.snc.test.filemanager.file2
 
 import com.snc.zero.filemanager.file2.FSFile
-import com.snc.zero.filemanager.file2.FSInfo
 import com.snc.zero.filemanager.file2.extensions.toFile
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
@@ -44,7 +43,6 @@ class FSFileReadTest : BaseJUnit5Test() {
             assertDoesNotThrow {
                 ba = FSFile.read(file)
             }
-            logger.debug { "file size : ${FSInfo.getReadableFileSize(ba.size.toLong())}" }
             logger.debug { "\n\nfile data : \n${String(ba)}\n-----E.O.D----\n\n" }
         } finally {
             FSFile.delete(file, ignore = true)
@@ -67,7 +65,6 @@ class FSFileReadTest : BaseJUnit5Test() {
             assertDoesNotThrow {
                 ba = FSFile.read(file, charset = "UTF-8")
             }
-            logger.debug { "file size : ${FSInfo.getReadableFileSize(ba.size.toLong())}" }
             logger.debug { "\n\nfile data : \n${String(ba)}\n-----E.O.D----\n\n" }
         } finally {
             FSFile.delete(file, ignore = true)
