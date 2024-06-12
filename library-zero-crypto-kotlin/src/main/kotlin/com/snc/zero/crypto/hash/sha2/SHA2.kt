@@ -1,11 +1,12 @@
 package com.snc.zero.crypto.hash.sha2
 
+import com.snc.zero.crypto.hash.base.BaseHash
 import java.nio.charset.Charset
 import java.security.MessageDigest
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
-object SHA2 {
+object SHA2: BaseHash() {
 
     fun hmacSHA224(msg: String, key: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
         return digest(msg, key, 224, salt, iterationCount, charSet)
@@ -23,23 +24,7 @@ object SHA2 {
         return digest(msg, key, 512, salt, iterationCount, charSet)
     }
 
-    fun sha224(msg: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
-        return digest(msg, 224, salt, iterationCount, charSet)
-    }
-
-    fun sha256(msg: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
-        return digest(msg, 256, salt, iterationCount, charSet)
-    }
-
-    fun sha384(msg: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
-        return digest(msg, 384, salt, iterationCount, charSet)
-    }
-
-    fun sha512(msg: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
-        return digest(msg, 512, salt, iterationCount, charSet)
-    }
-
-    private fun digest(msg: String, key: String, bitLength: Int = 256, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
+    private fun digest(msg: String, key: String, bitLength: Int, salt: String, iterationCount: Int, charSet: Charset): ByteArray {
         checkBitLength(bitLength)
         val alg = "HmacSHA$bitLength"
         val signingKey = SecretKeySpec(key.toByteArray(), alg)
@@ -56,7 +41,7 @@ object SHA2 {
         return hashed
     }
 
-    private fun digest(msg: String, bitLength: Int = 256, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
+    override fun digest(msg: String, bitLength: Int, salt: String, iterationCount: Int, charSet: Charset): ByteArray {
         checkBitLength(bitLength)
         val alg = "SHA-$bitLength"
         val md = MessageDigest.getInstance(alg)

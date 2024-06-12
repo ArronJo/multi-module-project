@@ -6,15 +6,7 @@ import java.nio.charset.Charset
 
 object SHAKE: BaseHash() {
 
-    fun sha128(msg: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
-        return digest(msg, 128, salt, iterationCount, charSet)
-    }
-
-    fun sha256(msg: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
-        return digest(msg, 256, salt, iterationCount, charSet)
-    }
-
-    private fun digest(msg: String, bitLength: Int = 128, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
+    override fun digest(msg: String, bitLength: Int, salt: String, iterationCount: Int, charSet: Charset): ByteArray {
         checkBitLength(bitLength)
         val digest = SHAKEDigest(bitLength)
         val ib = msg.toByteArray(charSet)
