@@ -3,31 +3,33 @@ package com.snc.zero.core.extensions.format
 import java.text.DecimalFormat
 
 fun Long.formatKoreanMoney(unit: String = "만"): String {
-    val c = if ("경" == unit) { 16 }
-    else if ("천조" == unit) { 15 }
-    else if ("백조" == unit) { 14 }
-    else if ("십조" == unit) { 13 }
-    else if ("조" == unit) { 12 }
-    else if ("천억" == unit) { 11 }
-    else if ("백억" == unit) { 10 }
-    else if ("십억" == unit) { 9 }
-    else if ("억" == unit) { 8 }
-    else if ("천만" == unit || "천만원" == unit) { 7 }
-    else if ("백만" == unit || "백만원" == unit) { 6 }
-    else if ("십만" == unit || "십만원" == unit) { 5 }
-    else if ("만" == unit || "만원" == unit) { 4 }
-    else if ("천" == unit || "천원" == unit) { 3 }
-    else { 0 }
+    val c = when (unit) {
+        "경" -> { 16 }
+        "천조" -> { 15 }
+        "백조" -> { 14 }
+        "십조" -> { 13 }
+        "조" -> { 12 }
+        "천억" -> { 11 }
+        "백억" -> { 10 }
+        "십억" -> { 9 }
+        "억" -> { 8 }
+        "천만", "천만원" -> { 7 }
+        "백만", "백만원" -> { 6 }
+        "십만", "십만원" -> { 5 }
+        "만", "만원" -> { 4 }
+        "천", "천원" -> { 3 }
+        else -> { 0 }
+    }
 
     var u = 1
     for (i in 1..c) {
         u *= 10
     }
-    if (this < u) {
-        return this.toString()
+    if (this >= u) {
+        val n = this / u
+        return DecimalFormat("#,###,###").format(n) + unit
     }
-    val n = this / u
-    return DecimalFormat("#,###,###").format(n) + unit
+    return this.toString()
 }
 
 fun Long.formatRealKoreanMoney(): String {
