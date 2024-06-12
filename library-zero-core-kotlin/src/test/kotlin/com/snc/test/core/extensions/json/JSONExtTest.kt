@@ -1,5 +1,6 @@
 package com.snc.test.core.extensions.json
 
+import com.google.gson.JsonSyntaxException
 import com.google.gson.annotations.SerializedName
 import com.snc.zero.core.extensions.json.toJsonString
 import com.snc.zero.core.extensions.json.toObject
@@ -45,5 +46,13 @@ class JSONExtTest : BaseJUnit5Test() {
         val v1 = data.toObject(NoticeListDto::class.java)
         // then
         logger.debug { "JSON toObject 1 결과: $data -> $v1" }
+    }
+
+    @Test
+    fun `JSON toObject 테스트 2`() {
+        assertThrows(JsonSyntaxException::class.java) {
+            val data = "{\"_embedded\":\"abc\",},}"
+            data.toObject(NoticeListDto::class.java)
+        }
     }
 }

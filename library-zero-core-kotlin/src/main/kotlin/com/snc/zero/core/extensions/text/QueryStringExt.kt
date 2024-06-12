@@ -13,7 +13,7 @@ fun <T> Map<String, T>.toQueryString(): String {
 
 fun String.getQueryStringValue(key: String): String {
     val map = queryStringToMap()
-    return map[key] ?: ""
+    return map.getOrDefault(key, "")
 }
 
 fun String.queryStringToMap(): HashMap<String, String> {

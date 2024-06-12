@@ -75,4 +75,12 @@ class PaddingExtTest : BaseJUnit5Test() {
         logger.debug { "padEnd - String 결과: $data -> $v1" }
         assertEquals(v1, "abc123abc____")
     }
+
+    @Test
+    fun `Padding All`() {
+        logger.debug { "all: ${1.padStart(2)}" }
+        logger.debug { "all: ${10L.padStart(2)}" }
+        logger.debug { "all: ${1.padEnd(2)}" }
+        logger.debug { "all: ${10L.padEnd(2)}" }
+    }
 }

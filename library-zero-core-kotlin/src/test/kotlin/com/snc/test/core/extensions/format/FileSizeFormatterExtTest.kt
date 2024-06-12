@@ -26,10 +26,10 @@ class FileSizeFormatterExtTest : BaseJUnit5Test() {
         // given
         val data = 2500L
         // when
-        val v1 = data.formatFileSize()
+        val v1 = data.formatFileSize(true)
         // then
         logger.debug { "파일 단위 2: $v1" }
-        assertEquals(v1, "2 KB")
+        assertEquals(v1, "2.44 KB")
     }
 
     @Test
@@ -37,7 +37,7 @@ class FileSizeFormatterExtTest : BaseJUnit5Test() {
         // given
         val data = 25000L
         // when
-        val v1 = data.formatFileSize()
+        val v1 = data.formatFileSize(false)
         // then
         logger.debug { "파일 단위 3: $v1" }
         assertEquals(v1, "24 KB")
@@ -48,10 +48,10 @@ class FileSizeFormatterExtTest : BaseJUnit5Test() {
         // given
         val data = 250000L
         // when
-        val v1 = data.formatFileSize()
+        val v1 = data.formatFileSize(displayFloat = true)
         // then
         logger.debug { "파일 단위 4: $v1" }
-        assertEquals(v1, "244 KB")
+        assertEquals(v1, "244.14 KB")
     }
 
     @Test
@@ -59,7 +59,7 @@ class FileSizeFormatterExtTest : BaseJUnit5Test() {
         // given
         val data = 2500000L
         // when
-        val v1 = data.formatFileSize()
+        val v1 = data.formatFileSize(displayFloat = false)
         // then
         logger.debug { "파일 단위 5: $v1" }
         assertEquals(v1, "2 MB")
@@ -74,5 +74,18 @@ class FileSizeFormatterExtTest : BaseJUnit5Test() {
         // then
         logger.debug { "파일 단위 6: $v1" }
         assertEquals(v1, "24 MB")
+    }
+
+    @Test
+    fun `파일 단위 표기 테스트 all`() {
+        logger.debug { "all: ${1L.formatFileSize()}" }
+        logger.debug { "all: ${1000L.formatFileSize()}" }
+        logger.debug { "all: ${1030L.formatFileSize()}" }
+        logger.debug { "all: ${2048L.formatFileSize()}" }
+        logger.debug { "all: ${1023023024L.formatFileSize()}" }
+        logger.debug { "all: ${922337203685L.formatFileSize()}" }
+        logger.debug { "all: ${922337203685476L.formatFileSize()}" }
+        logger.debug { "all: ${92233720368547758L.formatFileSize()}" }
+        logger.debug { "all: ${Long.MAX_VALUE.formatFileSize()}" }
     }
 }

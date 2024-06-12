@@ -31,17 +31,24 @@ object Masking {
 
     fun masking(v: String, rangePattern: String, charMark: Char = '*'): String {
         var pattern = rangePattern
-
-        if (pattern[0] != '[' && pattern[pattern.length - 1] != ']') {
-            return v.replace(pattern.toRegex(), ("" + charMark).repeat(pattern.length))
+        if (pattern[0] != '[' || pattern[pattern.length - 1] != ']') {
+            return v.replace(pattern, ("" + charMark).repeat(pattern.length))
         }
-
         pattern = pattern.substring(0, pattern.length - 1).substring(1)
         if (pattern.isEmpty()) {
             return v
         }
-
         return parsePattern(v, pattern, charMark)
+    }
+
+    fun masking(v: String, regex: Regex, charMark: Char = '*'): String {
+        return v.replace(regex, charMark.toString())
+    }
+
+    fun masking(v: String, st: Int, ed: Int, charMark: Char = '*'): String {
+        val firstPart: String = v.substring(0, st)
+        val secondPart: String = v.substring(ed)
+        return firstPart + ("" + charMark).repeat((ed - st)) + secondPart
     }
 
     private fun parsePattern(v: String, pattern: String, charMark: Char): String {
@@ -52,7 +59,7 @@ object Masking {
             }
             if (pattern.matches("^\\d+$".toRegex())) { // isNumber
                 val idx = pattern.toInt()
-                return marking(v, idx, idx + pattern.length, charMark)
+                return masking(v, idx, idx + pattern.length, charMark)
             }
             return v
         }
@@ -62,27 +69,18 @@ object Masking {
             val arr = pattern.split("-")
             val st = max(0, v.length - Integer.parseInt(arr[1]))
             val ed = v.length
-            return marking(v, st, ed, charMark)
+            return masking(v, st, ed, charMark)
         }
 
         // '-' 가 1번째 뒤에 위치함. ex) "2-", "2-7", "2-@"
         val arr = pattern.split("-")
         val st = min(v.length, Integer.parseInt(arr[0]))
-        var ed = v.length
-        if (arr.size >= 2) {
-            // 숫자 위치이냐? 문자이냐?에 따라 길이 분기
-            ed = if (arr[1].matches("^\\d+$".toRegex())) {
-                min(v.length, Integer.parseInt(arr[1]) + 1)
-            } else {
-                max(st, v.indexOf(arr[1]))
-            }
+        // 숫자 위치이냐? 문자이냐?에 따라 길이 분기
+        val ed = if (arr[1].matches("^\\d+$".toRegex())) {
+            min(v.length, Integer.parseInt(arr[1]) + 1)
+        } else {
+            max(st, v.indexOf(arr[1]))
         }
-        return marking(v, st, ed, charMark)
-    }
-
-    private fun marking(v: String, st: Int, ed: Int, charMark: Char): String {
-        val firstPart: String = v.substring(0, st)
-        val secondPart: String = v.substring(ed)
-        return firstPart + ("" + charMark).repeat((ed - st)) + secondPart
+        return masking(v, st, ed, charMark)
     }
 }

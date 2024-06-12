@@ -100,17 +100,6 @@ class MaskingTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `masking() 테스트 - 패턴 '12'-3`() {
-        // given
-        val s = "1234567890@123ski789"
-        // when
-        val v = Masking.masking(s, "[12")
-        // then
-        logger.debug { "$s -> '[12' -> $v" }
-        assertEquals(v, "1*34567890@123ski789")
-    }
-
-    @Test
     fun `masking() 테스트 - 패턴 'ski'`() {
         // given
         val s = "1234567890@123ski789"
@@ -207,5 +196,96 @@ class MaskingTest : BaseJUnit5Test() {
         // then
         logger.debug { "$s -> '[-10]' -> $v" }
         assertEquals(v, "1234567890@123ski789**********")
+    }
+
+    @Test
+    fun `masking() 테스트 - 패턴 Exp 1-1`() {
+        // given
+        val s = "1234567890@123ski789"
+        // when
+        val v = Masking.masking(s, "[1")
+        // then
+        logger.debug { "$s -> '[1' -> $v" }
+        assertEquals(v, "1234567890@123ski789")
+    }
+
+    @Test
+    fun `masking() 테스트 - 패턴 Exp 1-2`() {
+        // given
+        val s = "1234567890@123ski789"
+        // when
+        val v = Masking.masking(s, "[1-")
+        // then
+        logger.debug { "$s -> '[1-' -> $v" }
+        assertEquals(v, "1234567890@123ski789")
+    }
+
+    @Test
+    fun `masking() 테스트 - 패턴 Exp 2-1`() {
+        // given
+        val s = "1234567890@123ski789"
+        // when
+        val v = Masking.masking(s, "1]")
+        // then
+        logger.debug { "$s -> '1]' -> $v" }
+        assertEquals(v, "1234567890@123ski789")
+    }
+
+    @Test
+    fun `masking() 테스트 - 패턴 Exp 2-2`() {
+        // given
+        val s = "1234567890@123ski789"
+        // when
+        val v = Masking.masking(s, "-1]")
+        // then
+        logger.debug { "$s -> '-1]' -> $v" }
+        assertEquals(v, "1234567890@123ski789")
+    }
+
+    @Test
+    fun `masking() 테스트 - st, ed 1-1`() {
+        // given
+        val s = "1234567890@123ski789"
+        // when
+        val v = Masking.masking(s, 3, 7)
+        // then
+        logger.debug { "$s -> '(3,7)' -> $v" }
+        assertEquals(v, "123****890@123ski789")
+    }
+
+    @Test
+    fun `masking() 테스트 - st, ed 1-2`() {
+        // given
+        val s = "1234567890@123ski789"
+        // when
+        val v = Masking.masking(s, 3, 7, '-')
+        // then
+        logger.debug { "$s -> '(3,7)' -> $v" }
+        assertEquals(v, "123----890@123ski789")
+    }
+
+    @Test
+    fun `masking() 테스트 - regex 1-1`() {
+        // given
+        val s = "1234567890@123ski789"
+        // when
+        val v = Masking.masking(s, "[a-z]".toRegex())
+        // then
+        logger.debug { "$s -> '[a-z]' -> $v" }
+        assertEquals(v, "1234567890@123***789")
+    }
+
+    @Test
+    fun `masking() 테스트 - regex 1-2`() {
+        // given
+        val s = "1234567890@123ski789"
+        // when
+        val v = Masking.masking(s, "[A-Z]".toRegex(), '-')
+        // then
+        logger.debug { "$s -> 'A-Z]' -> $v" }
+        assertEquals(v, "1234567890@123ski789")
+
+//        val a = "3-@".split('-')
+//        logger.debug { "$a -> ${a.size}" }
     }
 }

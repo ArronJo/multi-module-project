@@ -60,7 +60,7 @@ class CalendarExtTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `Calendar 날짜 비교`() {
+    fun `Calendar 날짜 비교 1`() {
         // given
         val cal = Calendar.getInstance()
         val cal2 = cal.clone() as Calendar
@@ -70,6 +70,16 @@ class CalendarExtTest : BaseJUnit5Test() {
         logger.debug { "Calendar diff 결과: ${cal.diff(cal2)}" }
     }
 
+    @Test
+    fun `Calendar 날짜 비교 2`() {
+        // given
+        val cal = Calendar.getInstance()
+        val cal2 = cal.clone() as Calendar
+        // when
+        cal2.addMonth(-1)
+        // then
+        logger.debug { "Calendar diff 결과: ${cal.diff(cal2)}" }
+    }
     @Test
     fun `Calendar start day of month`() {
         // given

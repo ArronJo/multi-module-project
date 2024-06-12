@@ -13,7 +13,7 @@ class Counter {
     }
 
     fun get(key: String): Int {
-        return countMap[key] ?: return 0
+        return countMap.getOrDefault(key, 0)
     }
 
     fun get(): HashMap<String, Int> {

@@ -25,7 +25,7 @@ class DrawExtTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `Random Draw Item`() {
+    fun `Random Draw Item 1`() {
         // given
         val data = listOf("1", "2", "3", "4", "5", "6", "7", "8", "9", "0")
         // when
@@ -38,6 +38,13 @@ class DrawExtTest : BaseJUnit5Test() {
         logger.debug { "Random Draw Item 결과: Counter[${counter.size()}, ${counter.total()}] : $counter" }
     }
 
+    @Test
+    fun `Random Draw Item 2`() {
+        assertThrows(IllegalArgumentException::class.java) {
+            val data = arrayListOf<String>()
+            data.getRandomItem()
+        }
+    }
     @Test
     fun `Weighted Random Drawing`() {
         // given

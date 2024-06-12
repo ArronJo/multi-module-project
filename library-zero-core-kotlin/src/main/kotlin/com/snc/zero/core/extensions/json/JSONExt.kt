@@ -1,8 +1,10 @@
 package com.snc.zero.core.extensions.json
 
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonSyntaxException
 import com.google.gson.stream.JsonWriter
 import java.io.StringWriter
+import kotlin.jvm.Throws
 
 fun Any.toJsonString(): String {
     val builder = GsonBuilder()
@@ -13,13 +15,9 @@ fun Any.toJsonString(): String {
     return gson.toJson(this)
 }
 
+@Throws(JsonSyntaxException::class)
 fun <T> String.toObject(clazz: Class<T>): T? {
-    try {
-        val builder = GsonBuilder()
-        val gson = builder.create()
-        return gson.fromJson(this, clazz)
-    } catch (e: Exception) {
-        e.printStackTrace()
-    }
-    return null
+    val builder = GsonBuilder()
+    val gson = builder.create()
+    return gson.fromJson(this, clazz)
 }

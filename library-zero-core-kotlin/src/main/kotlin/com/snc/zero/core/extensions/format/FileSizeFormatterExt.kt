@@ -31,12 +31,7 @@ fun Long.formatFileSize(displayFloat: Boolean = false): String {
         3 -> { "GB" }
         4 -> { "TB" }
         5 -> { "PB" }
-        6 -> { "EB" }
-        7 -> { "ZB" }
-        8 -> { "YB" }
-        else -> {
-            "BigSize"
-        }
+        else -> { "BigSize" }
     }
     return "$formatSize $unit"
 }
