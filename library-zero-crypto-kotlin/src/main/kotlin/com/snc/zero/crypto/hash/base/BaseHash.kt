@@ -46,7 +46,7 @@ abstract class BaseHash: Digest {
     }
 }
 
-interface Digest {
+fun interface Digest {
     fun digest(
         msg: String,
         bitLength: Int,
