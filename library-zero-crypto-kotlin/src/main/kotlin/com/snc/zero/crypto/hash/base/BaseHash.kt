@@ -6,8 +6,8 @@ abstract class BaseHash: Digest {
 
     protected fun salt(
         digest: org.bouncycastle.crypto.digests.KeccakDigest,
-        salt: String = "",
-        charSet: Charset = Charsets.UTF_8
+        salt: String,
+        charSet: Charset
     ) {
         if (salt.isNotEmpty()) {
             val sb = salt.toByteArray(charSet)
@@ -18,7 +18,7 @@ abstract class BaseHash: Digest {
     protected fun iteration(
         digest: org.bouncycastle.crypto.digests.KeccakDigest,
         ib: ByteArray,
-        iterationCount: Int = 0
+        iterationCount: Int
     ) {
         for (i in 1..iterationCount) {
             digest.update(ib, 0, ib.size)

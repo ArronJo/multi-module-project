@@ -54,9 +54,6 @@ object SHA2: BaseHash() {
             md.reset()
             hashed = md.digest(hashed)
         }
-        if (bitLength == 128) {
-            return hashed.copyOf(16)
-        }
         return hashed
     }
 

@@ -6,6 +6,7 @@ import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import java.nio.charset.Charset
 
 private val logger = TLogging.logger { }
 
@@ -81,5 +82,13 @@ class SHA3Test : BaseJUnit5Test() {
             v,
             "f6d1015e17df348f2d84b3b603648ae4bd14011f4e5b82f885e45587bcad48947d37d64501dc965c0f201171c44b656ee28ed9a5060aea1f2a336025320683d6"
         )
+    }
+
+    @Test
+    fun `SHA3 - SHA EXCEPTION 1-1`() {
+        assertThrows(IllegalArgumentException::class.java) {
+            val data = "qwerty"
+            SHA3.digest(data, 111, "", 0, Charset.defaultCharset()).toHexString()
+        }
     }
 }

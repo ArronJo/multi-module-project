@@ -6,6 +6,7 @@ import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import java.nio.charset.Charset
 
 private val logger = TLogging.logger { }
 
@@ -25,7 +26,7 @@ class SHA2Test : BaseJUnit5Test() {
     }
 
     @Test
-    fun `SHA2 - hmacSHA224 테스트`() {
+    fun `SHA2 - hmacSHA224 테스트 1-1`() {
         // given
         val data = "qwerty"
         // when
@@ -36,7 +37,18 @@ class SHA2Test : BaseJUnit5Test() {
     }
 
     @Test
-    fun `SHA2 - hmacSHA256 테스트`() {
+    fun `SHA2 - hmacSHA224 테스트 1-2`() {
+        // given
+        val data = "qwerty"
+        // when
+        val v = SHA2.hmacSHA224(data, key).toHexString()
+        // then
+        logger.debug { "SHA2.hmacSHA224: $v" }
+        assertEquals(v, "ec85c6b61056b438c0bbd95ff021543a3bd85c4572562f708ffcb8ee")
+    }
+
+    @Test
+    fun `SHA2 - hmacSHA256 테스트 1-1`() {
         // given
         val data = "qwerty"
         // when
@@ -47,7 +59,18 @@ class SHA2Test : BaseJUnit5Test() {
     }
 
     @Test
-    fun `SHA2 - hmacSHA384 테스트`() {
+    fun `SHA2 - hmacSHA256 테스트 1-2`() {
+        // given
+        val data = "qwerty"
+        // when
+        val v = SHA2.hmacSHA256(data, key).toHexString()
+        // then
+        logger.debug { "SHA2.hmacSHA256: $v" }
+        assertEquals(v, "1eea2ffaeebbc5ab3946e1a15ffc7f13129a54571195952e995c3785a4a5cf89")
+    }
+
+    @Test
+    fun `SHA2 - hmacSHA384 테스트 1-1`() {
         // given
         val data = "qwerty"
         // when
@@ -61,7 +84,21 @@ class SHA2Test : BaseJUnit5Test() {
     }
 
     @Test
-    fun `SHA2 - hmacSHA512 테스트`() {
+    fun `SHA2 - hmacSHA384 테스트 1-2`() {
+        // given
+        val data = "qwerty"
+        // when
+        val v = SHA2.hmacSHA384(data, key).toHexString()
+        // then
+        logger.debug { "SHA2.hmacSHA384: $v" }
+        assertEquals(
+            v,
+            "5a497b34497187f764f94a5ddd6e16b5b7be924f2d32857cd29944a02fff0b0514fb83387ec85212be2a5ddf1e18993c"
+        )
+    }
+
+    @Test
+    fun `SHA2 - hmacSHA512 테스트 1-1`() {
         // given
         val data = "qwerty"
         // when
@@ -75,7 +112,21 @@ class SHA2Test : BaseJUnit5Test() {
     }
 
     @Test
-    fun `SHA2 - SHA224 테스트`() {
+    fun `SHA2 - hmacSHA512 테스트 1-2`() {
+        // given
+        val data = "qwerty"
+        // when
+        val v = SHA2.hmacSHA512(data, key).toHexString()
+        // then
+        logger.debug { "SHA2.hmacSHA512: $v" }
+        assertEquals(
+            v,
+            "7979a814a63df67c03d308c1a06e4e4a311589ec5a9eb1872ca401555b7ddf1bad6002022580a63efd8c1f1bc207ab01ff37e13b7d60503ca89bcef7ba42f202"
+        )
+    }
+
+    @Test
+    fun `SHA2 - SHA224 테스트 1-1`() {
         // given
         val data = "qwerty"
         // when
@@ -86,7 +137,18 @@ class SHA2Test : BaseJUnit5Test() {
     }
 
     @Test
-    fun `SHA2 - SHA256 테스트`() {
+    fun `SHA2 - SHA224 테스트 1-2`() {
+        // given
+        val data = "qwerty"
+        // when
+        val v = SHA2.sha224(data).toHexString()
+        // then
+        logger.debug { "SHA2.sha224: $v" }
+        assertEquals(v, "5154aaa49392fb275ce7e12a7d3e00901cf9cf3ab10491673f97322f")
+    }
+
+    @Test
+    fun `SHA2 - SHA256 테스트 1-1`() {
         // given
         val data = "qwerty"
         // when
@@ -97,7 +159,18 @@ class SHA2Test : BaseJUnit5Test() {
     }
 
     @Test
-    fun `SHA2 - SHA384 테스트`() {
+    fun `SHA2 - SHA256 테스트 1-2`() {
+        // given
+        val data = "qwerty"
+        // when
+        val v = SHA2.sha256(data).toHexString()
+        // then
+        logger.debug { "SHA2.sha256: $v" }
+        assertEquals(v, "65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5")
+    }
+
+    @Test
+    fun `SHA2 - SHA384 테스트 1-1`() {
         // given
         val data = "qwerty"
         // when
@@ -111,7 +184,21 @@ class SHA2Test : BaseJUnit5Test() {
     }
 
     @Test
-    fun `SHA2 - SHA512 테스트`() {
+    fun `SHA2 - SHA384 테스트 1-2`() {
+        // given
+        val data = "qwerty"
+        // when
+        val v = SHA2.sha384(data).toHexString()
+        // then
+        logger.debug { "SHA2.sha384: $v" }
+        assertEquals(
+            v,
+            "1ab60e110d41a9aac5e30d086c490819bfe3461b38c76b9602fe9686aa0aa3d28c63c96a1019e3788c40a14f4292e50f"
+        )
+    }
+
+    @Test
+    fun `SHA2 - SHA512 테스트 1-1`() {
         // given
         val data = "qwerty"
         // when
@@ -122,5 +209,41 @@ class SHA2Test : BaseJUnit5Test() {
             v,
             "a2b4dd04be49317f7648ffda4902fc0e8d6e4ec269c5de4acbeda6ef6ec2329066ef12f97b813f0d857f58135d07779dd88a2ad6d93d524d115913dd5fc95190"
         )
+    }
+
+    @Test
+    fun `SHA2 - SHA512 테스트 1-2`() {
+        // given
+        val data = "qwerty"
+        // when
+        val v = SHA2.sha512(data, salt = "12345", iterationCount = 1).toHexString()
+        // then
+        logger.debug { "SHA2.sha512: $v" }
+        assertEquals(
+            v,
+            "ae078302fd6ee3a2899253080b27438fcc6ffc55c8946661d83e3a51a2139f54567b7a66909141ba8ca1befc1648682b623ace62529e79731170d0b67d2e709e"
+        )
+    }
+
+    @Test
+    fun `SHA2 - SHA512 테스트 1-3`() {
+        // given
+        val data = "qwerty"
+        // when
+        val v = SHA2.sha512(data).toHexString()
+        // then
+        logger.debug { "SHA2.sha512: $v" }
+        assertEquals(
+            v,
+            "0dd3e512642c97ca3f747f9a76e374fbda73f9292823c0313be9d78add7cdd8f72235af0c553dd26797e78e1854edee0ae002f8aba074b066dfce1af114e32f8"
+        )
+    }
+
+    @Test
+    fun `SHA2 - SHA EXCEPTION 1-1`() {
+        assertThrows(IllegalArgumentException::class.java) {
+            val data = "qwerty"
+            SHA2.digest(data, 111, "", 0, Charset.defaultCharset()).toHexString()
+        }
     }
 }

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }
 
+@Suppress("NonAsciiCharacters")
 class EncoderTest : BaseJUnit5Test() {
 
     @Test
@@ -33,5 +34,16 @@ class EncoderTest : BaseJUnit5Test() {
         logger.debug { "Base64 encoded 1: $v" }  // "U3BlY2lhbCBjaGFyczogw7vDu8O_IGhlcmUu"
         logger.debug { "Base64 encoded 2: $v2" } // "U3BlY2lhbCBjaGFyczogw7vDu8O/IGhlcmUu"
         assertNotEquals(v, v2)
+    }
+
+    @Test
+    fun `Encode 테스트 1-1`() {
+        // given
+        val data = "aaaaa"
+        // when
+        val v1 = Encoder.with().encode(data.toByteArray())
+        val v2 = String(java.util.Base64.getEncoder().encode(data.toByteArray()))
+        // then
+        assertEquals(v1, v2)
     }
 }

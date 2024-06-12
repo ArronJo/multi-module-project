@@ -231,4 +231,37 @@ class HashTest : BaseJUnit5Test() {
         logger.debug { "Hash.Algo.SHAKE256: $v" }
         assertEquals(v, "36663c4c841a09dc408044d3536fc73e7de7ff542e3853accdf96cc48256d60a")
     }
+
+    @Test
+    fun `Hash 테스트 1-1`() {
+        // given
+        val data = "qwerty"
+        // when
+        val v1 = Hash.with().digest(data).toHexString()
+        val v2 = Hash.with(Hash.Algo.SHA256).digest(data).toHexString()
+        // then
+        assertEquals(v1, "65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5")
+        assertEquals(v2, "65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5")
+    }
+
+    @Test
+    fun `Hash 테스트 1-2`() {
+        // given
+        // when
+        val v = Hash.Algo.valueOf("SHA224")
+        // then
+        logger.debug { "Hash: $v" }
+        assertEquals(v, Hash.Algo.SHA224)
+    }
+
+    @Test
+    fun `Hash 테스트 1-3`() {
+        // given
+        // when
+        val v1 = Hash.Algo.values()
+        val v2 = Hash.Algo.entries.toTypedArray()
+        // then
+        assertNotEquals(Hash.Algo.SHA224, v1[0])
+        assertNotEquals(Hash.Algo.SHA224, v2[0])
+    }
 }
