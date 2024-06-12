@@ -68,5 +68,6 @@ class MoneyFormatterExtTest : BaseJUnit5Test() {
         logger.debug { "한글 금액 : ${data.formatKoreanMoney("천")}" }
         logger.debug { "한글 금액 : ${data.formatKoreanMoney("천원")}" }
         logger.debug { "한글 금액 : ${data.formatKoreanMoney("백")}" }
+        logger.debug { "한글 금액 : ${data.formatKoreanMoney("10000")}" }
     }
 }
