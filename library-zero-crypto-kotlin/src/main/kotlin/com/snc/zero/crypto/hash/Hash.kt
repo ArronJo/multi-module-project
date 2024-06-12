@@ -104,10 +104,10 @@ class Hash(var algo: Algo) {
                 SHA3.sha512(msg, salt, iterationCount, charSet)
             }
             Algo.SHAKE128 -> {
-                SHAKE.sha128(msg, salt, iterationCount, charSet)
+                SHAKE.shake128(msg, salt, iterationCount, charSet)
             }
             Algo.SHAKE256 -> {
-                SHAKE.sha256(msg, salt, iterationCount, charSet)
+                SHAKE.shake256(msg, salt, iterationCount, charSet)
             }
         }
     }
