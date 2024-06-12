@@ -22,7 +22,7 @@ object SHA3: BaseHash() {
         return digest(msg, 512, salt, iterationCount, charSet)
     }
 
-    private fun digest(msg: String, bitLength: Int = 256, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
+    internal fun digest(msg: String, bitLength: Int = 256, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
         checkBitLength(bitLength)
         val digest = SHA3Digest(bitLength)
         val ib = msg.toByteArray(charSet)

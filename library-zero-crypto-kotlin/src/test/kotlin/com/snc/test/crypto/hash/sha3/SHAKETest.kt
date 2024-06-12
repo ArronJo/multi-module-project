@@ -29,7 +29,7 @@ class SHAKETest : BaseJUnit5Test() {
         // given
         val data = "qwerty"
         // when
-        val v = SHAKE.shake128(data).toHexString()
+        val v = SHAKE.sha128(data).toHexString()
         // then
         logger.debug { "SHA3.shake128: $v" }
         assertEquals(v, "b66869ad27654f99e4e620ddf5670ae5")
@@ -40,7 +40,7 @@ class SHAKETest : BaseJUnit5Test() {
         // given
         val data = "qwerty"
         // when
-        val v = SHAKE.shake256(data).toHexString()
+        val v = SHAKE.sha256(data).toHexString()
         // then
         logger.debug { "SHA3.shake256: $v" }
         assertEquals(v, "36663c4c841a09dc408044d3536fc73e7de7ff542e3853accdf96cc48256d60a")
