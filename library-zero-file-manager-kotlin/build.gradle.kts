@@ -14,7 +14,7 @@ dependencies {
     implementation(project(":library-zero-logger-kotlin"))
 
     testImplementation(project(":library-zero-test-kotlin"))
-    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter)
 
     testRuntimeOnly(libs.junit.platform.launcher)
     testRuntimeOnly(libs.junit.jupiter.engine)
