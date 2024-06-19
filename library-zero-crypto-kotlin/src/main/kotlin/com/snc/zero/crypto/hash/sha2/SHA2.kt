@@ -24,22 +24,6 @@ object SHA2: BaseHash() {
         return digest(msg, key, 512, salt, iterationCount, charSet)
     }
 
-    fun sha224(msg: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
-        return digest(msg, 224, salt, iterationCount, charSet)
-    }
-
-    fun sha256(msg: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
-        return digest(msg, 256, salt, iterationCount, charSet)
-    }
-
-    fun sha384(msg: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
-        return digest(msg, 384, salt, iterationCount, charSet)
-    }
-
-    fun sha512(msg: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
-        return digest(msg, 512, salt, iterationCount, charSet)
-    }
-
     private fun digest(msg: String, key: String, bitLength: Int, salt: String, iterationCount: Int, charSet: Charset): ByteArray {
         checkBitLength(bitLength)
         val alg = "HmacSHA$bitLength"
@@ -55,6 +39,22 @@ object SHA2: BaseHash() {
             hashed = md.doFinal(hashed)
         }
         return hashed
+    }
+
+    fun sha224(msg: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
+        return digest(msg, 224, salt, iterationCount, charSet)
+    }
+
+    fun sha256(msg: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
+        return digest(msg, 256, salt, iterationCount, charSet)
+    }
+
+    fun sha384(msg: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
+        return digest(msg, 384, salt, iterationCount, charSet)
+    }
+
+    fun sha512(msg: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
+        return digest(msg, 512, salt, iterationCount, charSet)
     }
 
     fun digest(msg: String, bitLength: Int, salt: String, iterationCount: Int, charSet: Charset): ByteArray {
