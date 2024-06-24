@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.snc.zero"
-version = "1.0-SNAPSHOT"
+version = "1.0-beta"
 
 repositories {
     mavenCentral()
@@ -12,12 +12,6 @@ repositories {
 dependencies {
     implementation(libs.logback.classic)
     implementation(libs.kotlin.logging.jvm)
-
-    testImplementation(project(":library-zero-test-kotlin"))
-    testImplementation(libs.junit.jupiter)
-
-    testRuntimeOnly(libs.junit.platform.launcher)
-    testRuntimeOnly(libs.junit.jupiter.engine)
 }
 
 //java {

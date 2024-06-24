@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.snc.zero"
-version = "1.0-SNAPSHOT"
+version = "1.0-beta"
 
 repositories {
     mavenCentral()
@@ -11,7 +11,6 @@ repositories {
 
 dependencies {
     // https://docs.gradle.org/8.4/userguide/upgrading_version_8.html#test_framework_implementation_dependencies
-    implementation(project(":library-zero-logger-kotlin"))
     implementation(libs.junit.jupiter)
     //implementation(libs.junit.jupiter.api)
 

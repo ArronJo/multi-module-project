@@ -42,6 +42,34 @@ kotlin {
 
 
 ///////////////////////////////////////////////////////////
+subprojects {
+    apply(plugin = "java")
+
+    repositories {
+        mavenCentral()
+    }
+
+    if (name != "library-zero-test-kotlin") {
+        dependencies {
+            evaluationDependsOn(":library-zero-test-kotlin")
+            dependencies {
+                add("implementation", project(":library-zero-test-kotlin"))
+            }
+            dependencies {
+                testImplementation(rootProject.libs.junit.jupiter)
+                testRuntimeOnly(rootProject.libs.junit.platform.launcher)
+                testRuntimeOnly(rootProject.libs.junit.jupiter.engine)
+            }
+        }
+
+        tasks.test {
+            useJUnitPlatform()
+        }
+    }
+}
+
+
+///////////////////////////////////////////////////////////
 // https://github.com/jacoco/jacoco/releases
 jacoco {
     toolVersion = "0.8.12"
