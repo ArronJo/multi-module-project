@@ -42,8 +42,48 @@ kotlin {
 
 
 ///////////////////////////////////////////////////////////
+tasks.register("allProjectDependencies") {
+    group = "help"
+    description = "Displays dependencies for all projects"
+
+    doLast {
+        val targetProp = project.layout.buildDirectory.file("all-dependencies.txt")
+        val outputFile = targetProp.get().asFile
+        println("outputFile.parentFile: ${outputFile.parentFile}")
+        if (!outputFile.parentFile.exists()) {
+            outputFile.parentFile.mkdirs()
+        }
+        outputFile.createNewFile()
+
+        outputFile.bufferedWriter().use { writer ->
+            subprojects.forEach { subproject ->
+                writer.write("\n${subproject.name} dependencies:\n")
+                subproject.configurations.forEach { configuration ->
+                    writer.write("\n${configuration.name}\n")
+                    configuration.dependencies.forEach { dependency ->
+                        writer.write("  ${dependency.group}:${dependency.name}:${dependency.version}\n")
+                    }
+                }
+            }
+        }
+        println("Dependencies written to ${outputFile.absolutePath}")
+    }
+}
+
 subprojects {
     apply(plugin = "java")
+
+    tasks.register<DependencyReportTask>("allDependencies") {
+        // 특정 구성(configuration)의 의존성만 보고 싶다면,
+        //configurations = setOf(project.configurations.getByName("compileClasspath"))
+    }
+    // HTML 보고서를 생성하고 싶다면, 다음과 같이 설정할 수 있습니다:
+    tasks.register<HtmlDependencyReportTask>("htmlDependencyReport") {
+        reports {
+            html.required.set(true)
+            html.outputLocation.set(file("${layout.buildDirectory}/reports/dependencies"))
+        }
+    }
 
     repositories {
         mavenCentral()
