@@ -30,6 +30,18 @@
 ---
 ## Release Note
 
+
+### 2024-05-17
+
+Updated the "identification" module.
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Masking 클래스 추가
+  - class PatternMasking
+    - id()
+    - phoneNum()
+    - account()
+    - card()
+    - addressDetail()
+
 ### 2024-05-25
 
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Kotlin 2.0 적용
@@ -54,7 +66,6 @@ Added new "file-manager" module.
 
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : File 확장 함수 추가
   - (String).toFile()
-  - (File).mkdirsOrNot()
 
 
 Added new "identification" module.

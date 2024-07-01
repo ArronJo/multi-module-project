@@ -36,14 +36,12 @@ object DeIdentification {
         }
 
         fun birth(v: String): String {
-            val yyyy = if (v.length == 8) {
-                4
-            } else if (v.length == 6) {
-                2
-            } else {
-                0
+            val pos = when (v.length) {
+                8 -> { 4 }
+                6 -> { 2 }
+                else -> { 0 }
             }
-            return "${bornInThose(v.substring(0, yyyy))}년대생"
+            return "${bornInThose(v.substring(0, pos))}년대생"
         }
     }
 

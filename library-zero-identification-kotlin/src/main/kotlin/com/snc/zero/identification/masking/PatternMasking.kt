@@ -2,7 +2,7 @@ package com.snc.zero.identification.masking
 
 object PatternMasking {
 
-    fun maskingId(str: String): String {
+    fun id(str: String): String {
         val idPattern = """^(\d{6})[-]?(\d{7})$""".toRegex()
 
         return when {
@@ -20,7 +20,7 @@ object PatternMasking {
         }
     }
 
-    fun maskingPhoneNum(str: String): String {
+    fun phoneNum(str: String): String {
         val phonePattern = """^(01[016789])[-]?(\d{3,4})[-]?(\d{4})$""".toRegex()
 
         return when {
@@ -38,7 +38,7 @@ object PatternMasking {
         }
     }
 
-    fun maskingAccount(str: String): String {
+    fun account(str: String): String {
         val accountPattern = """^(\d{2,6})[-]?(\d{2,6})[-]?(\d{2,6})$""".toRegex()
 
         return when {
@@ -58,7 +58,7 @@ object PatternMasking {
         }
     }
 
-    fun maskingCard(str: String): String {
+    fun card(str: String): String {
         val cardPattern =
             """^(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})$|^(\d{4})[-\s]?(\d{6})[-\s]?(\d{5})$""".toRegex()
 
@@ -81,7 +81,7 @@ object PatternMasking {
         }
     }
 
-    fun maskingAddressDetail(str: String): String {
+    fun addressDetail(str: String): String {
         val parts = str.split(" ")
 
         // 마지막 두 부분을 제외한 나머지를 주소1로, 마지막 두 부분을 주소2로 간주
@@ -105,5 +105,4 @@ object PatternMasking {
             }
         }
     }
-
 }
