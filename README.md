@@ -117,8 +117,7 @@ Updated "core" module.
   - (Calendar).startOfDay(), endOfDay()
   - (Calendar).getLastDayOfMonth()
   - (Calendar).diff()
-  - (String).toCalendar()
-  - (Date).toCalendar()
+  - (String, Date).toCalendar()
 
 
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : JSON 확장 함수 추가
