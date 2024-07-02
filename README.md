@@ -138,7 +138,7 @@ Updated "core" module.
 
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Random 클로벌 확장 함수, Draw 확장 함수 추가
   - randomInt()
-  - ranomgString()
+  - randomString()
   - (List<T>).getRandomItem()
   - (MutableMap<T, Double>).getWeightedRandom()
 
