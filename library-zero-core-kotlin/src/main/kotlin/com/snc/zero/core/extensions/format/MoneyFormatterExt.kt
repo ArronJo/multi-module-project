@@ -2,7 +2,7 @@ package com.snc.zero.core.extensions.format
 
 import java.text.DecimalFormat
 
-fun Long.formatKoreanMoney(unit: String = "만"): String {
+fun Long.formatNumericalKoreanMoney(unit: String = "만"): String {
     val c = when (unit) {
         "경" -> { 16 }
         "천조" -> { 15 }
@@ -32,7 +32,7 @@ fun Long.formatKoreanMoney(unit: String = "만"): String {
     return this.toString()
 }
 
-fun Long.formatRealKoreanMoney(): String {
+fun Long.formatWordKoreanMoney(): String {
     val han1 = arrayOf( "", "일", "이", "삼", "사", "오", "육", "칠", "팔", "구" )
     val han2 = arrayOf( "", "십", "백", "천" )
     val han3 = arrayOf( "", "만", "억", "조", "경" )

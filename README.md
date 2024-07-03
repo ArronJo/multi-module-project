@@ -90,8 +90,8 @@ Added new "identification" module.
       - fakeKoreanName()
 
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : MoneyFormat 클래스 추가
-  - (Long).formatKoreanMoney()
-  - (Long).formatRealKoreanMoney()
+  - (Long).formatNumericalKoreanMoney()
+  - (Long).formatWordKoreanMoney()
 
 
 ### 2024-05-14
