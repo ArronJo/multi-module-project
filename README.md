@@ -30,6 +30,11 @@
 ---
 ## Release Note
 
+### 2024-07-04
+
+Updated the "test" module.
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : TestCAse 클래스 추가, given->whens->then,catch
+
 
 ### 2024-05-17
 
@@ -42,10 +47,10 @@ Updated the "identification" module.
     - card()
     - addressDetail()
 
+
 ### 2024-05-25
 
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Kotlin 2.0 적용
-
 
 
 ### 2024-05-17
