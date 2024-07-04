@@ -93,22 +93,22 @@ subprojects {
         mavenCentral()
     }
 
-    if (name != "library-zero-test-kotlin") {
-        dependencies {
+    dependencies {
+        if (name != "library-zero-test-kotlin") {
             evaluationDependsOn(":library-zero-test-kotlin")
             dependencies {
                 add("implementation", project(":library-zero-test-kotlin"))
             }
-            dependencies {
-                testImplementation(rootProject.libs.junit.jupiter)
-                testRuntimeOnly(rootProject.libs.junit.platform.launcher)
-                testRuntimeOnly(rootProject.libs.junit.jupiter.engine)
-            }
         }
+        dependencies {
+            testImplementation(rootProject.libs.junit.jupiter)
+            testRuntimeOnly(rootProject.libs.junit.platform.launcher)
+            testRuntimeOnly(rootProject.libs.junit.jupiter.engine)
+        }
+    }
 
-        tasks.test {
-            useJUnitPlatform()
-        }
+    tasks.test {
+        useJUnitPlatform()
     }
 }
 
