@@ -74,11 +74,15 @@ subprojects {
     apply(plugin = "java")
 
     tasks.register<DependencyReportTask>("allDependencies") {
+        description = "Inject dependencies into subprojects."
+        group = JavaBasePlugin.DOCUMENTATION_GROUP
         // 특정 구성(configuration)의 의존성만 보고 싶다면,
         //configurations = setOf(project.configurations.getByName("compileClasspath"))
     }
     // HTML 보고서를 생성하고 싶다면, 다음과 같이 설정할 수 있습니다:
     tasks.register<HtmlDependencyReportTask>("htmlDependencyReport") {
+        description = "Generates the HTML documentation for this project."
+        group = JavaBasePlugin.DOCUMENTATION_GROUP
         reports {
             html.required.set(true)
             html.outputLocation.set(file("${layout.buildDirectory}/reports/dependencies"))
