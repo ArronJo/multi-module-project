@@ -63,7 +63,7 @@ object PatternMasking {
             arrayOf(
                 """^(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})$""",
                 """^(\d{4})[-\s]?(\d{6})[-\s]?(\d{5})$"""
-            ).joinToString { "|" }.trimMargin().toRegex()
+            ).joinToString(separator = "|").trimMargin().toRegex()
 
         return when {
             cardPattern.matches(str) -> {
