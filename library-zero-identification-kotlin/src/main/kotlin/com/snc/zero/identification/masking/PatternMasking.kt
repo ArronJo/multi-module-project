@@ -60,7 +60,10 @@ object PatternMasking {
 
     fun card(str: String): String {
         val cardPattern =
-            """^(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})$|^(\d{4})[-\s]?(\d{6})[-\s]?(\d{5})$""".toRegex()
+            arrayOf(
+                """^(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})$""",
+                """^(\d{4})[-\s]?(\d{6})[-\s]?(\d{5})$"""
+            ).joinToString { "|" }.trimMargin().toRegex()
 
         return when {
             cardPattern.matches(str) -> {
