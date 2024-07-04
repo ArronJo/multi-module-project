@@ -17,6 +17,6 @@ class EncoderExtTest : BaseJUnit5Test() {
         val v = data.encodeBase64()
         // then
         logger.debug { "encoded: $v" }
-        assertEquals(v, "YXNkc25jeW5oIDI5ODR5aGQ4OWB5dTg5ODkxODl1OWpxZmRhc2pnZnVpYXNnZHM=")
+        assertEquals("YXNkc25jeW5oIDI5ODR5aGQ4OWB5dTg5ODkxODl1OWpxZmRhc2pnZnVpYXNnZHM=", v)
     }
 }

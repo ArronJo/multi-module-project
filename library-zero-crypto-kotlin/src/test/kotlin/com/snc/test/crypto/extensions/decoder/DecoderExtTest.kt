@@ -17,6 +17,6 @@ class DecoderExtTest : BaseJUnit5Test() {
         val v = String(data.decodeBase64())
         // then
         logger.debug { "decoded: $v" }
-        assertEquals(v, "asdsncynh 2984yhd89`yu8989189u9jqfdasjgfuiasgds")
+        assertEquals("asdsncynh 2984yhd89`yu8989189u9jqfdasjgfuiasgds", v)
     }
 }

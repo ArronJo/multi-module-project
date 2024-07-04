@@ -32,12 +32,12 @@ class MathExtTest : BaseJUnit5Test() {
         logger.debug { "Rounded to 5 decimal places: $v5" }    // 3.55555
 
         // then
-        assertEquals(vm1, 0.0)
-        assertEquals(v0, 4.0)
-        assertEquals(v1, 3.6)
-        assertEquals(v2, 3.56)
-        assertEquals(v3, 3.556)
-        assertEquals(v4, 3.5556)
-        assertEquals(v5, 3.55555)
+        assertEquals(0.0, vm1)
+        assertEquals(4.0, v0)
+        assertEquals(3.6, v1)
+        assertEquals(3.56, v2)
+        assertEquals(3.556, v3)
+        assertEquals(3.5556, v4)
+        assertEquals(3.55555, v5)
     }
 }

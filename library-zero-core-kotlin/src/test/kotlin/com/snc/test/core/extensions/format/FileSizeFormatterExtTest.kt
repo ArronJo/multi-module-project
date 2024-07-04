@@ -18,7 +18,7 @@ class FileSizeFormatterExtTest : BaseJUnit5Test() {
         val v1 = data.formatFileSize()
         // then
         logger.debug { "파일 단위 1: $v1" }
-        assertEquals(v1, "250 bytes")
+        assertEquals("250 bytes", v1)
     }
 
     @Test
@@ -29,7 +29,7 @@ class FileSizeFormatterExtTest : BaseJUnit5Test() {
         val v1 = data.formatFileSize(true)
         // then
         logger.debug { "파일 단위 2: $v1" }
-        assertEquals(v1, "2.44 KB")
+        assertEquals("2.44 KB", v1)
     }
 
     @Test
@@ -40,7 +40,7 @@ class FileSizeFormatterExtTest : BaseJUnit5Test() {
         val v1 = data.formatFileSize(false)
         // then
         logger.debug { "파일 단위 3: $v1" }
-        assertEquals(v1, "24 KB")
+        assertEquals("24 KB", v1)
     }
 
     @Test
@@ -51,7 +51,7 @@ class FileSizeFormatterExtTest : BaseJUnit5Test() {
         val v1 = data.formatFileSize(displayFloat = true)
         // then
         logger.debug { "파일 단위 4: $v1" }
-        assertEquals(v1, "244.14 KB")
+        assertEquals("244.14 KB", v1)
     }
 
     @Test
@@ -62,7 +62,7 @@ class FileSizeFormatterExtTest : BaseJUnit5Test() {
         val v1 = data.formatFileSize(displayFloat = false)
         // then
         logger.debug { "파일 단위 5: $v1" }
-        assertEquals(v1, "2 MB")
+        assertEquals("2 MB", v1)
     }
 
     @Test
@@ -73,7 +73,7 @@ class FileSizeFormatterExtTest : BaseJUnit5Test() {
         val v1 = data.formatFileSize()
         // then
         logger.debug { "파일 단위 6: $v1" }
-        assertEquals(v1, "24 MB")
+        assertEquals("24 MB", v1)
     }
 
     @Test

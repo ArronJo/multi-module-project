@@ -22,7 +22,7 @@ class CounterTest : BaseJUnit5Test() {
         data.put("1")
         // then
         logger.debug { "Counter 1 결과: $data, ${data.total()}" }
-        assertEquals(data.toString(), "{1=2, 2=2, 3=1}")
+        assertEquals("{1=2, 2=2, 3=1}", data.toString())
         logger.debug { "Counter : ${data.get()}, ${data.get("1")}" }
     }
 }

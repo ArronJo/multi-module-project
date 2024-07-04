@@ -19,7 +19,7 @@ class MoneyFormatterExtTest : BaseJUnit5Test() {
         val v1 = data.formatNumericalKoreanMoney("만원")
         // then
         logger.debug { "한글 금액 1: $v1" }
-        assertEquals(v1, "2,500만원")
+        assertEquals("2,500만원", v1)
     }
 
     @Test
@@ -30,7 +30,7 @@ class MoneyFormatterExtTest : BaseJUnit5Test() {
         val v2 = data.formatWordKoreanMoney()
         // then
         logger.debug { "한글 금액 2: $v2" }
-        assertEquals(v2, "이천오백만")
+        assertEquals("이천오백만", v2)
     }
 
     @Test
@@ -41,7 +41,7 @@ class MoneyFormatterExtTest : BaseJUnit5Test() {
         val v1 = data.formatNumericalKoreanMoney()
         // then
         logger.debug { "한글 금액 3: $v1" }
-        assertEquals(v1, "2,500만")
+        assertEquals("2,500만", v1)
     }
 
     @Test

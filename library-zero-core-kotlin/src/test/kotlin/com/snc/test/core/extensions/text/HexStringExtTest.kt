@@ -18,7 +18,7 @@ class HexStringExtTest : BaseJUnit5Test() {
         val v = data.toHexString()
         // then
         logger.debug { "ToHexString 1: data -> $v" }
-        assertEquals(v, "616263646566414243444546")
+        assertEquals("616263646566414243444546", v)
     }
 
     @Test
@@ -29,7 +29,7 @@ class HexStringExtTest : BaseJUnit5Test() {
         val v = data.toHexString()
         // then
         logger.debug { "ToHexString 2: data -> $v" }
-        assertEquals(v, "31323334353637383930")
+        assertEquals("31323334353637383930", v)
     }
 
     @Test
@@ -40,6 +40,6 @@ class HexStringExtTest : BaseJUnit5Test() {
         val v = data.toHexString()
         // then
         logger.debug { "ToHexString 3: data -> $v" }
-        assertEquals(v, "2021402324255e262a2829")
+        assertEquals("2021402324255e262a2829", v)
     }
 }

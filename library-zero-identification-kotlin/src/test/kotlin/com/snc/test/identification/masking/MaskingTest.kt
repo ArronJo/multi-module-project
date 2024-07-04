@@ -30,7 +30,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.regNo(regNo)
         // then
         logger.debug { "$regNo -> regNo -> $v" }
-        assertEquals(v, "801206-1******")
+        assertEquals("801206-1******", v)
     }
 
     @Test
@@ -41,7 +41,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.phoneNum(phoneNum)
         // then
         logger.debug { "$phoneNum -> phoneNum -> $v" }
-        assertEquals(v, "010-1234-****")
+        assertEquals("010-1234-****", v)
     }
 
     @Test
@@ -52,7 +52,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.email(email)
         // then
         logger.debug { "$email -> email -> $v" }
-        assertEquals(v, "abcd***@hanwha.com")
+        assertEquals("abcd***@hanwha.com", v)
     }
 
     @Test
@@ -63,7 +63,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "[]")
         // then
         logger.debug { "$s -> '[*]' -> $v" }
-        assertEquals(v, "1234567890@123ski789")
+        assertEquals("1234567890@123ski789", v)
     }
 
     @Test
@@ -74,7 +74,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "[*]")
         // then
         logger.debug { "$s -> '[*]' -> $v" }
-        assertEquals(v, "********************")
+        assertEquals("********************", v)
     }
 
     @Test
@@ -85,7 +85,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "12")
         // then
         logger.debug { "$s -> '12' -> $v" }
-        assertEquals(v, "**34567890@**3ski789")
+        assertEquals("**34567890@**3ski789", v)
     }
 
     @Test
@@ -96,7 +96,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "[12]")
         // then
         logger.debug { "$s -> '[12]' -> $v" }
-        assertEquals(v, "1234567890@1**ski789")
+        assertEquals("1234567890@1**ski789", v)
     }
 
     @Test
@@ -107,7 +107,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "ski")
         // then
         logger.debug { "$s -> 'ski' -> $v" }
-        assertEquals(v, "1234567890@123***789")
+        assertEquals("1234567890@123***789", v)
     }
 
     @Test
@@ -118,7 +118,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "[ski]")
         // then
         logger.debug { "$s -> '[ski]' -> $v" }
-        assertEquals(v, "1234567890@123ski789")
+        assertEquals("1234567890@123ski789", v)
     }
 
     @Test
@@ -129,7 +129,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "[3-7]")
         // then
         logger.debug { "$s -> '[3-7]' -> $v" }
-        assertEquals(v, "123*****90@123ski789")
+        assertEquals("123*****90@123ski789", v)
     }
 
     @Test
@@ -140,7 +140,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "[3-77]")
         // then
         logger.debug { "$s -> '[3-77]' -> $v" }
-        assertEquals(v, "123*****************")
+        assertEquals("123*****************", v)
     }
 
     @Test
@@ -151,7 +151,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "[20-77]")
         // then
         logger.debug { "$s -> '[20-77]' -> $v" }
-        assertEquals(v, "1234567890@123ski789")
+        assertEquals("1234567890@123ski789", v)
     }
 
     @Test
@@ -162,7 +162,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "[3-@]")
         // then
         logger.debug { "$s -> '[3-@]' -> $v" }
-        assertEquals(v, "123*******@123ski789")
+        assertEquals("123*******@123ski789", v)
     }
 
     @Test
@@ -173,7 +173,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "[3-A]")
         // then[
         logger.debug { "$s -> '[3-A]' -> $v" }
-        assertEquals(v, "1234567890@ 123ski789")
+        assertEquals("1234567890@ 123ski789", v)
     }
 
     @Test
@@ -184,7 +184,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "[-7]")
         // then
         logger.debug { "$s -> '[-7]' -> $v" }
-        assertEquals(v, "1234567890@12*******")
+        assertEquals("1234567890@12*******", v)
     }
 
     @Test
@@ -195,7 +195,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "[-10]")
         // then
         logger.debug { "$s -> '[-10]' -> $v" }
-        assertEquals(v, "1234567890@123ski789**********")
+        assertEquals("1234567890@123ski789**********", v)
     }
 
     @Test
@@ -206,7 +206,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "[1")
         // then
         logger.debug { "$s -> '[1' -> $v" }
-        assertEquals(v, "1234567890@123ski789")
+        assertEquals("1234567890@123ski789", v)
     }
 
     @Test
@@ -217,7 +217,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "[1-")
         // then
         logger.debug { "$s -> '[1-' -> $v" }
-        assertEquals(v, "1234567890@123ski789")
+        assertEquals("1234567890@123ski789", v)
     }
 
     @Test
@@ -228,7 +228,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "1]")
         // then
         logger.debug { "$s -> '1]' -> $v" }
-        assertEquals(v, "1234567890@123ski789")
+        assertEquals("1234567890@123ski789", v)
     }
 
     @Test
@@ -239,7 +239,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "-1]")
         // then
         logger.debug { "$s -> '-1]' -> $v" }
-        assertEquals(v, "1234567890@123ski789")
+        assertEquals("1234567890@123ski789", v)
     }
 
     @Test
@@ -250,7 +250,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, 3, 7)
         // then
         logger.debug { "$s -> '(3,7)' -> $v" }
-        assertEquals(v, "123****890@123ski789")
+        assertEquals("123****890@123ski789", v)
     }
 
     @Test
@@ -261,7 +261,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, 3, 7, '-')
         // then
         logger.debug { "$s -> '(3,7)' -> $v" }
-        assertEquals(v, "123----890@123ski789")
+        assertEquals("123----890@123ski789", v)
     }
 
     @Test
@@ -272,7 +272,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "[a-z]".toRegex())
         // then
         logger.debug { "$s -> '[a-z]' -> $v" }
-        assertEquals(v, "1234567890@123***789")
+        assertEquals("1234567890@123***789", v)
     }
 
     @Test
@@ -283,7 +283,7 @@ class MaskingTest : BaseJUnit5Test() {
         val v = Masking.masking(s, "[A-Z]".toRegex(), '-')
         // then
         logger.debug { "$s -> 'A-Z]' -> $v" }
-        assertEquals(v, "1234567890@123ski789")
+        assertEquals("1234567890@123ski789", v)
 
 //        val a = "3-@".split('-')
 //        logger.debug { "$a -> ${a.size}" }

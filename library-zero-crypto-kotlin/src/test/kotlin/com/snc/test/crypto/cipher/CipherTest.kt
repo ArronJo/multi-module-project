@@ -46,7 +46,7 @@ class CipherTest : BaseJUnit5Test() {
         val plainText = String(v)
         logger.debug { "AES decrypt [$transform]: $plainText" }
 
-        assertEquals(plainText, data)
+        assertEquals(data, plainText)
     }
 
     @Test
@@ -69,7 +69,7 @@ class CipherTest : BaseJUnit5Test() {
         val plainText = String(v)
         logger.debug { "AES decrypt [$transform]: $plainText" }
 
-        assertEquals(plainText, data)
+        assertEquals(data, plainText)
     }
 
     @Test
@@ -92,7 +92,7 @@ class CipherTest : BaseJUnit5Test() {
         val plainText = String(v)
         logger.debug { "AES decrypt [$transform]: $plainText" }
 
-        assertEquals(plainText, data)
+        assertEquals(data, plainText)
     }
 
     @Test
@@ -115,7 +115,7 @@ class CipherTest : BaseJUnit5Test() {
         val plainText = String(v)
         logger.debug { "AES decrypt [$transform]: $plainText" }
 
-        assertEquals(plainText, data)
+        assertEquals(data, plainText)
     }
 
     @Test
@@ -128,7 +128,7 @@ class CipherTest : BaseJUnit5Test() {
         val plainText = String(dec)
         logger.debug { "AES default: $plainText" }
 
-        assertEquals(plainText, data)
+        assertEquals(data, plainText)
     }
 
     @Test
@@ -136,6 +136,6 @@ class CipherTest : BaseJUnit5Test() {
         val enc = Cipher.with().algo(Cipher.Algo.AES).key(key, iv).encrypt(data.toByteArray())
         val dec = Cipher.with().algo(Cipher.Algo.AES).key(key, iv).decrypt(enc)
         val plainText = String(dec)
-        assertEquals(plainText, data)
+        assertEquals(data, plainText)
     }
 }

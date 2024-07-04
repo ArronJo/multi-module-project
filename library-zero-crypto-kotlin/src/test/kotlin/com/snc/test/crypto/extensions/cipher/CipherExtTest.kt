@@ -32,7 +32,7 @@ class CipherExtTest : BaseJUnit5Test() {
         val v = data1.encrypt(key = key, iv = iv)
         // then
         logger.debug { "AES encrypt: $v" }
-        assertEquals(v, data2)
+        assertEquals(data2, v)
     }
 
     @Test
@@ -42,6 +42,6 @@ class CipherExtTest : BaseJUnit5Test() {
         val v = data2.decrypt(key = key, iv = iv)
         // then
         logger.debug { "AES decrypt: $v" }
-        assertEquals(v, data1)
+        assertEquals(data1, v)
     }
 }

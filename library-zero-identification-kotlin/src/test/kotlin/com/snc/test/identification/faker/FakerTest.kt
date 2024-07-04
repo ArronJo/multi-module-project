@@ -21,7 +21,7 @@ class FakerTest : BaseJUnit5Test() {
             // then
             logger.debug { "fake name: ${i.toString().padStart(2, '0')} : [F] $v1" }
         }
-        assertNotEquals(v1, "")
+        assertNotEquals("", v1)
     }
 
     @Test
@@ -35,7 +35,7 @@ class FakerTest : BaseJUnit5Test() {
             // then
             logger.debug { "fake name: ${i.toString().padStart(2, '0')} : [M] $v1" }
         }
-        assertNotEquals(v1, "")
+        assertNotEquals("", v1)
     }
 
     @Test
@@ -49,7 +49,7 @@ class FakerTest : BaseJUnit5Test() {
             // then
             logger.debug { "fake name: ${i.toString().padStart(2, '0')} : [M] $v1" }
         }
-        assertNotEquals(v1, "")
+        assertNotEquals("", v1)
     }
 
     @Test
@@ -67,7 +67,7 @@ class FakerTest : BaseJUnit5Test() {
             // then
             logger.debug { "fake name: ${i.toString().padStart(2, '0')} : [$sex] ${v1.joinToString(separator = "")}" }
         }
-        assertNotEquals(v1.joinToString(separator = ""), "")
+        assertNotEquals("", v1.joinToString(separator = ""))
     }
 
     @Test
@@ -77,7 +77,7 @@ class FakerTest : BaseJUnit5Test() {
         // when
         val v1 = Faker.Name.fake(provider, female = true)
         logger.debug { "fake name: ${v1.joinToString(separator = "")}" }
-        assertNotEquals(v1.joinToString(separator = ""), "")
+        assertNotEquals("", v1.joinToString(separator = ""))
     }
 
     @Test
@@ -87,7 +87,7 @@ class FakerTest : BaseJUnit5Test() {
         // when
         val v1 = Faker.Name.fake(provider, female = false)
         logger.debug { "fake name: ${v1.joinToString(separator = "")}" }
-        assertNotEquals(v1.joinToString(separator = ""), "")
+        assertNotEquals("", v1.joinToString(separator = ""))
     }
 
     @Test
@@ -97,7 +97,7 @@ class FakerTest : BaseJUnit5Test() {
         // when
         val v1 = Faker.Name.fake(provider)
         logger.debug { "fake name: ${v1.joinToString(separator = "")}" }
-        assertNotEquals(v1.joinToString(separator = ""), "")
+        assertNotEquals("", v1.joinToString(separator = ""))
     }
 
     @Test

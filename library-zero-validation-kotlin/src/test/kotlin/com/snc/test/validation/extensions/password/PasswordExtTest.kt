@@ -26,9 +26,9 @@ class PasswordExtTest : BaseJUnit5Test() {
         logger.debug { "비밀번호 검수 결과: $data3 -> $v3" }
 
         assertAll(
-            { assertEquals(v1, false) },
-            { assertEquals(v2, false) },
-            { assertEquals(v3, true) }
+            { assertEquals(false, v1) },
+            { assertEquals(false, v2) },
+            { assertEquals(true, v3) }
         )
     }
 
@@ -40,7 +40,7 @@ class PasswordExtTest : BaseJUnit5Test() {
         val v1 = data.validatePassword()
         // then
         logger.debug { "조건(영소,영대,숫자,특수문자) : 비밀번호 검수 결과: $data -> $v1" }
-        assertEquals(v1, false)
+        assertEquals(false, v1)
     }
 
     @Test
@@ -51,7 +51,7 @@ class PasswordExtTest : BaseJUnit5Test() {
         val v1 = data.validatePassword()
         // then
         logger.debug { "조건(영소,영대,숫자,특수문자) : 비밀번호 검수 결과: $data -> $v1" }
-        assertEquals(v1, false)
+        assertEquals(false, v1)
     }
 
     @Test
@@ -62,7 +62,7 @@ class PasswordExtTest : BaseJUnit5Test() {
         val v1 = data.validatePassword()
         // then
         logger.debug { "조건(영소,영대,숫자,특수문자) : 비밀번호 검수 결과: $data -> $v1" }
-        assertEquals(v1, true)
+        assertEquals(true, v1)
     }
 
     @Test
@@ -73,6 +73,6 @@ class PasswordExtTest : BaseJUnit5Test() {
         val v1 = data.trim().validatePassword()
         // then
         logger.debug { "조건(영소,영대,숫자,특수문자) : 비밀번호 검수 결과: $data -> $v1" }
-        assertEquals(v1, true)
+        assertEquals(true, v1)
     }
 }

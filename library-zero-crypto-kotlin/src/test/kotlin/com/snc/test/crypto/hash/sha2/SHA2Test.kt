@@ -33,7 +33,7 @@ class SHA2Test : BaseJUnit5Test() {
         val v = SHA2.hmacSHA224(data, key, salt = "12345").toHexString()
         // then
         logger.debug { "SHA2.hmacSHA224: $v" }
-        assertEquals(v, "0548931713e38196e753621c43523ee539ef65b6a35f0f5ac977d7dd")
+        assertEquals("0548931713e38196e753621c43523ee539ef65b6a35f0f5ac977d7dd", v)
     }
 
     @Test
@@ -44,7 +44,7 @@ class SHA2Test : BaseJUnit5Test() {
         val v = SHA2.hmacSHA224(data, key).toHexString()
         // then
         logger.debug { "SHA2.hmacSHA224: $v" }
-        assertEquals(v, "ec85c6b61056b438c0bbd95ff021543a3bd85c4572562f708ffcb8ee")
+        assertEquals("ec85c6b61056b438c0bbd95ff021543a3bd85c4572562f708ffcb8ee", v)
     }
 
     @Test
@@ -55,7 +55,7 @@ class SHA2Test : BaseJUnit5Test() {
         val v = SHA2.hmacSHA256(data, key, salt = "12345").toHexString()
         // then
         logger.debug { "SHA2.hmacSHA256: $v" }
-        assertEquals(v, "ab797fa89ea3bcfa3ae65a5273732adc801019186682c6896dfe8c0355609687")
+        assertEquals("ab797fa89ea3bcfa3ae65a5273732adc801019186682c6896dfe8c0355609687", v)
     }
 
     @Test
@@ -66,7 +66,7 @@ class SHA2Test : BaseJUnit5Test() {
         val v = SHA2.hmacSHA256(data, key).toHexString()
         // then
         logger.debug { "SHA2.hmacSHA256: $v" }
-        assertEquals(v, "1eea2ffaeebbc5ab3946e1a15ffc7f13129a54571195952e995c3785a4a5cf89")
+        assertEquals("1eea2ffaeebbc5ab3946e1a15ffc7f13129a54571195952e995c3785a4a5cf89", v)
     }
 
     @Test
@@ -77,10 +77,7 @@ class SHA2Test : BaseJUnit5Test() {
         val v = SHA2.hmacSHA384(data, key, salt = "12345").toHexString()
         // then
         logger.debug { "SHA2.hmacSHA384: $v" }
-        assertEquals(
-            v,
-            "fbe34011f801eae454af427424a7b13b08855dce3e85a7f2befc53e49336305b389dacd3f7c9e2219bbed5fee4d4f9a7"
-        )
+        assertEquals("fbe34011f801eae454af427424a7b13b08855dce3e85a7f2befc53e49336305b389dacd3f7c9e2219bbed5fee4d4f9a7", v)
     }
 
     @Test
@@ -91,10 +88,7 @@ class SHA2Test : BaseJUnit5Test() {
         val v = SHA2.hmacSHA384(data, key).toHexString()
         // then
         logger.debug { "SHA2.hmacSHA384: $v" }
-        assertEquals(
-            v,
-            "5a497b34497187f764f94a5ddd6e16b5b7be924f2d32857cd29944a02fff0b0514fb83387ec85212be2a5ddf1e18993c"
-        )
+        assertEquals("5a497b34497187f764f94a5ddd6e16b5b7be924f2d32857cd29944a02fff0b0514fb83387ec85212be2a5ddf1e18993c", v)
     }
 
     @Test
@@ -105,10 +99,7 @@ class SHA2Test : BaseJUnit5Test() {
         val v = SHA2.hmacSHA512(data, key, salt = "12345").toHexString()
         // then
         logger.debug { "SHA2.hmacSHA512: $v" }
-        assertEquals(
-            v,
-            "d822b408db0f7a784df6f2c5f8c29205d99dde87e71871f3f050b6990bac726968488d7d5f75f2f0be0024e1e1e147afceeb8edda291a7e913e685627974a0ef"
-        )
+        assertEquals("d822b408db0f7a784df6f2c5f8c29205d99dde87e71871f3f050b6990bac726968488d7d5f75f2f0be0024e1e1e147afceeb8edda291a7e913e685627974a0ef", v)
     }
 
     @Test
@@ -119,10 +110,7 @@ class SHA2Test : BaseJUnit5Test() {
         val v = SHA2.hmacSHA512(data, key).toHexString()
         // then
         logger.debug { "SHA2.hmacSHA512: $v" }
-        assertEquals(
-            v,
-            "7979a814a63df67c03d308c1a06e4e4a311589ec5a9eb1872ca401555b7ddf1bad6002022580a63efd8c1f1bc207ab01ff37e13b7d60503ca89bcef7ba42f202"
-        )
+        assertEquals("7979a814a63df67c03d308c1a06e4e4a311589ec5a9eb1872ca401555b7ddf1bad6002022580a63efd8c1f1bc207ab01ff37e13b7d60503ca89bcef7ba42f202", v)
     }
 
     @Test
@@ -133,7 +121,7 @@ class SHA2Test : BaseJUnit5Test() {
         val v = SHA2.sha224(data, salt = "12345").toHexString()
         // then
         logger.debug { "SHA2.sha224: $v" }
-        assertEquals(v, "8dcccaaeab3b51c23c591638492cd5f2a7582b983a895efdfcc54543")
+        assertEquals("8dcccaaeab3b51c23c591638492cd5f2a7582b983a895efdfcc54543", v)
     }
 
     @Test
@@ -144,7 +132,7 @@ class SHA2Test : BaseJUnit5Test() {
         val v = SHA2.sha224(data).toHexString()
         // then
         logger.debug { "SHA2.sha224: $v" }
-        assertEquals(v, "5154aaa49392fb275ce7e12a7d3e00901cf9cf3ab10491673f97322f")
+        assertEquals("5154aaa49392fb275ce7e12a7d3e00901cf9cf3ab10491673f97322f", v)
     }
 
     @Test
@@ -155,7 +143,7 @@ class SHA2Test : BaseJUnit5Test() {
         val v = SHA2.sha256(data, salt = "12345").toHexString()
         // then
         logger.debug { "SHA2.sha256: $v" }
-        assertEquals(v, "ba467682f4b8c0a1f4f74137cf39598569e13692eea3146b9107ed61888bb499")
+        assertEquals("ba467682f4b8c0a1f4f74137cf39598569e13692eea3146b9107ed61888bb499", v)
     }
 
     @Test
@@ -166,7 +154,7 @@ class SHA2Test : BaseJUnit5Test() {
         val v = SHA2.sha256(data).toHexString()
         // then
         logger.debug { "SHA2.sha256: $v" }
-        assertEquals(v, "65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5")
+        assertEquals("65e84be33532fb784c48129675f9eff3a682b27168c0ea744b2cf58ee02337c5", v)
     }
 
     @Test
@@ -177,10 +165,7 @@ class SHA2Test : BaseJUnit5Test() {
         val v = SHA2.sha384(data, salt = "12345").toHexString()
         // then
         logger.debug { "SHA2.sha384: $v" }
-        assertEquals(
-            v,
-            "2e4e60fc809f234c19d3c132106ccbd3e7344e3bb1d1b80f6bce0708ad46782997cf8517eaf74d29cd481428243c6db7"
-        )
+        assertEquals("2e4e60fc809f234c19d3c132106ccbd3e7344e3bb1d1b80f6bce0708ad46782997cf8517eaf74d29cd481428243c6db7", v)
     }
 
     @Test
@@ -191,10 +176,7 @@ class SHA2Test : BaseJUnit5Test() {
         val v = SHA2.sha384(data).toHexString()
         // then
         logger.debug { "SHA2.sha384: $v" }
-        assertEquals(
-            v,
-            "1ab60e110d41a9aac5e30d086c490819bfe3461b38c76b9602fe9686aa0aa3d28c63c96a1019e3788c40a14f4292e50f"
-        )
+        assertEquals("1ab60e110d41a9aac5e30d086c490819bfe3461b38c76b9602fe9686aa0aa3d28c63c96a1019e3788c40a14f4292e50f", v)
     }
 
     @Test
@@ -205,10 +187,7 @@ class SHA2Test : BaseJUnit5Test() {
         val v = SHA2.sha512(data, salt = "12345").toHexString()
         // then
         logger.debug { "SHA2.sha512: $v" }
-        assertEquals(
-            v,
-            "a2b4dd04be49317f7648ffda4902fc0e8d6e4ec269c5de4acbeda6ef6ec2329066ef12f97b813f0d857f58135d07779dd88a2ad6d93d524d115913dd5fc95190"
-        )
+        assertEquals("a2b4dd04be49317f7648ffda4902fc0e8d6e4ec269c5de4acbeda6ef6ec2329066ef12f97b813f0d857f58135d07779dd88a2ad6d93d524d115913dd5fc95190", v)
     }
 
     @Test
@@ -219,10 +198,7 @@ class SHA2Test : BaseJUnit5Test() {
         val v = SHA2.sha512(data, salt = "12345", iterationCount = 1).toHexString()
         // then
         logger.debug { "SHA2.sha512: $v" }
-        assertEquals(
-            v,
-            "ae078302fd6ee3a2899253080b27438fcc6ffc55c8946661d83e3a51a2139f54567b7a66909141ba8ca1befc1648682b623ace62529e79731170d0b67d2e709e"
-        )
+        assertEquals("ae078302fd6ee3a2899253080b27438fcc6ffc55c8946661d83e3a51a2139f54567b7a66909141ba8ca1befc1648682b623ace62529e79731170d0b67d2e709e", v)
     }
 
     @Test
@@ -233,10 +209,7 @@ class SHA2Test : BaseJUnit5Test() {
         val v = SHA2.sha512(data).toHexString()
         // then
         logger.debug { "SHA2.sha512: $v" }
-        assertEquals(
-            v,
-            "0dd3e512642c97ca3f747f9a76e374fbda73f9292823c0313be9d78add7cdd8f72235af0c553dd26797e78e1854edee0ae002f8aba074b066dfce1af114e32f8"
-        )
+        assertEquals("0dd3e512642c97ca3f747f9a76e374fbda73f9292823c0313be9d78add7cdd8f72235af0c553dd26797e78e1854edee0ae002f8aba074b066dfce1af114e32f8", v)
     }
 
     @Test

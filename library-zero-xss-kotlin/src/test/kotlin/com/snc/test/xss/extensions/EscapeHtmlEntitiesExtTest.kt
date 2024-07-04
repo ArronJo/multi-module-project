@@ -31,7 +31,7 @@ class EscapeHtmlEntitiesExtTest : BaseJUnit5Test() {
         val v1 = data1.escapeHtmlEntities()
         // then
         logger.debug { "escape HtmlEntities 결과: $v1" }
-        assertEquals(v1, data2)
+        assertEquals(data2, v1)
     }
 
     @Test
@@ -41,6 +41,6 @@ class EscapeHtmlEntitiesExtTest : BaseJUnit5Test() {
         val v1 = data2.unescapeHtmlEntities()
         // then
         logger.debug { "unescape HtmlEntities 결과: $v1" }
-        assertEquals(v1, data1)
+        assertEquals(data1, v1)
     }
 }

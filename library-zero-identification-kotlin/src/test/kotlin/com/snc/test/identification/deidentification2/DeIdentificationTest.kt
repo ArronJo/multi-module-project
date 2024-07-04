@@ -20,7 +20,7 @@ class DeIdentificationTest : BaseJUnit5Test() {
         val v = DeIdentification.Pseudonymization.name(firstName, lastName, Faker.ProviderType.KOREAN, female = true)
         // then
         logger.debug { "name: ${lastName + firstName} -> ${v[1]}${v[0]}" }
-        assertNotEquals(v, "")
+        assertNotEquals("", v)
     }
 
     @Test
@@ -32,7 +32,7 @@ class DeIdentificationTest : BaseJUnit5Test() {
         val v = DeIdentification.Pseudonymization.name(firstName, lastName, Faker.ProviderType.KOREAN)
         // then
         logger.debug { "name: ${lastName + firstName} -> ${v[1]}${v[0]}" }
-        assertNotEquals(v, "")
+        assertNotEquals("", v)
     }
 
     @Test
@@ -44,7 +44,7 @@ class DeIdentificationTest : BaseJUnit5Test() {
         val v = DeIdentification.Pseudonymization.name(firstName, lastName)
         // then
         logger.debug { "name: ${lastName + firstName} -> ${v[1]}${v[0]}" }
-        assertNotEquals(v, "")
+        assertNotEquals("", v)
     }
 
     @Test
@@ -56,7 +56,7 @@ class DeIdentificationTest : BaseJUnit5Test() {
         val v = DeIdentification.Pseudonymization.name(firstName, lastName, Faker.ProviderType.ENGLISH, female = true)
         // then
         logger.debug { "name: $firstName $lastName -> ${v[0]} ${v[1]}" }
-        assertNotEquals(v, "")
+        assertNotEquals("", v)
     }
 
     @Test
@@ -68,7 +68,7 @@ class DeIdentificationTest : BaseJUnit5Test() {
         val v = DeIdentification.Pseudonymization.name(firstName, lastName, Faker.ProviderType.ENGLISH)
         // then
         logger.debug { "name: ${lastName + firstName} -> ${v[0]} ${v[1]}" }
-        assertNotEquals(v, "")
+        assertNotEquals("", v)
     }
 
     @Test
@@ -79,7 +79,7 @@ class DeIdentificationTest : BaseJUnit5Test() {
         val v = DeIdentification.Pseudonymization.age(age)
         // then
         logger.debug { "age: $age -> $v" }
-        assertEquals(v, "30 대")
+        assertEquals("30 대", v)
     }
 
     @Test
@@ -98,19 +98,19 @@ class DeIdentificationTest : BaseJUnit5Test() {
         val v9 = DeIdentification.DataReduction.regNo(regNo9)
         // then
         logger.debug { "regNo: $regNo1 -> $v1" }
-        assertEquals(v1, "80년대생 남자")
+        assertEquals("80년대생 남자", v1)
 
         logger.debug { "regNo: $regNo3 -> $v3" }
-        assertEquals(v3, "80년대생 남자")
+        assertEquals("80년대생 남자", v3)
 
         logger.debug { "regNo: $regNo5 -> $v5" }
-        assertEquals(v5, "80년대생 남자")
+        assertEquals("80년대생 남자", v5)
 
         logger.debug { "regNo: $regNo7 -> $v7" }
-        assertEquals(v7, "80년대생 남자")
+        assertEquals("80년대생 남자", v7)
 
         logger.debug { "regNo: $regNo9 -> $v9" }
-        assertEquals(v9, "80년대생 남자")
+        assertEquals("80년대생 남자", v9)
     }
 
     @Test
@@ -129,19 +129,19 @@ class DeIdentificationTest : BaseJUnit5Test() {
         val v0 = DeIdentification.DataReduction.regNo(regNo0)
         // then
         logger.debug { "regNo: $regNo2 -> $v2" }
-        assertEquals(v2, "80년대생 여자")
+        assertEquals("80년대생 여자", v2)
 
         logger.debug { "regNo: $regNo4 -> $v4" }
-        assertEquals(v2, "80년대생 여자")
+        assertEquals("80년대생 여자", v4)
 
         logger.debug { "regNo: $regNo6 -> $v6" }
-        assertEquals(v2, "80년대생 여자")
+        assertEquals("80년대생 여자", v6)
 
         logger.debug { "regNo: $regNo8 -> $v8" }
-        assertEquals(v2, "80년대생 여자")
+        assertEquals("80년대생 여자", v8)
 
         logger.debug { "regNo: $regNo0 -> $v0" }
-        assertEquals(v2, "80년대생 여자")
+        assertEquals("80년대생 여자", v0)
     }
 
     @Test
@@ -152,7 +152,7 @@ class DeIdentificationTest : BaseJUnit5Test() {
         val v = DeIdentification.DataReduction.birth(birth)
         // then
         logger.debug { "birth: $birth -> $v" }
-        assertEquals(v, "1980년대생")
+        assertEquals("1980년대생", v)
     }
 
     @Test
@@ -163,7 +163,7 @@ class DeIdentificationTest : BaseJUnit5Test() {
         val v = DeIdentification.DataReduction.birth(birth)
         // then
         logger.debug { "birth: $birth -> $v" }
-        assertEquals(v, "80년대생")
+        assertEquals("80년대생", v)
     }
 
     @Test
@@ -177,7 +177,7 @@ class DeIdentificationTest : BaseJUnit5Test() {
             DeIdentification.DataReduction.birth(birth)
         }
         // then
-        assertNotEquals(e.message, "")
+        assertNotEquals("", e.message)
     }
 
     @Test
@@ -188,7 +188,7 @@ class DeIdentificationTest : BaseJUnit5Test() {
         val v = DeIdentification.DataSuppression.name(name)
         // then
         logger.debug { "name: $name -> $v" }
-        assertEquals(v, "진씨")
+        assertEquals("진씨", v)
     }
 
     @Test
@@ -199,7 +199,7 @@ class DeIdentificationTest : BaseJUnit5Test() {
         val v = DeIdentification.DataSuppression.age(age)
         // then
         logger.debug { "age: $age -> $v" }
-        assertEquals(v, "30~40세")
+        assertEquals("30~40세", v)
     }
 
     @Test
@@ -210,7 +210,7 @@ class DeIdentificationTest : BaseJUnit5Test() {
         val v = DeIdentification.DataSuppression.address(addr)
         // then
         logger.debug { "addr: $addr -> $v" }
-        assertEquals(v, "제주 거주")
+        assertEquals("제주 거주", v)
     }
 
     @Test
@@ -221,7 +221,7 @@ class DeIdentificationTest : BaseJUnit5Test() {
         val v = DeIdentification.DataSuppression.address(addr)
         // then
         logger.debug { "addr: $addr -> $v" }
-        assertEquals(v, "거주지 미확인")
+        assertEquals("거주지 미확인", v)
     }
 
     @Test
@@ -232,7 +232,7 @@ class DeIdentificationTest : BaseJUnit5Test() {
         val v = DeIdentification.DataMasking.name(name)
         // then
         logger.debug { "name: $name -> $v" }
-        assertEquals(v, "진◯◯")
+        assertEquals("진◯◯", v)
     }
 
 }

@@ -22,7 +22,7 @@ class ToStringExtTest : BaseJUnit5Test() {
         val v1 = data.toTypedArray().toStrings()
         // then
         logger.debug { "toStrings - Array 결과: $v1" }
-        assertEquals(v1, "[A, a, 1, 가]")
+        assertEquals("[A, a, 1, 가]", v1)
     }
 
     @Test
@@ -33,7 +33,7 @@ class ToStringExtTest : BaseJUnit5Test() {
         val v1 = data.toByteArray().toStrings()
         // then
         logger.debug { "toStrings - ByteArray 결과: $v1" }
-        assertEquals(v1, "[41, 61, 31, ea, b0, 80]")
+        assertEquals("[41, 61, 31, ea, b0, 80]", v1)
     }
 
     @Test

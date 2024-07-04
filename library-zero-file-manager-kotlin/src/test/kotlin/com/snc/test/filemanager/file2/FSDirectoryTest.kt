@@ -81,7 +81,7 @@ class FSDirectoryTest : BaseJUnit5Test() {
     @Test
     fun `FSDirectory delete 2`() {
         val ret = FSDirectory.delete(File(parent, "notexist"))
-        assertEquals(ret, false)
+        assertEquals(false, ret)
     }
 
     @Test
@@ -89,6 +89,6 @@ class FSDirectoryTest : BaseJUnit5Test() {
         val f = File(dir, "ddd3.txt")
         FSFile.create(f, true)
         val ret = FSDirectory.delete(f)
-        assertEquals(ret, true)
+        assertEquals(true, ret)
     }
 }

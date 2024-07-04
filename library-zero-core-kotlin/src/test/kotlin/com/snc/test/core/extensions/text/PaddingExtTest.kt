@@ -18,7 +18,7 @@ class PaddingExtTest : BaseJUnit5Test() {
         val v1 = data.padStart(length = 2, padChar = '0')
         // then
         logger.debug { "padStart - Int 결과: $data -> $v1" }
-        assertEquals(v1, "07")
+        assertEquals("07", v1)
     }
 
     @Test
@@ -29,7 +29,7 @@ class PaddingExtTest : BaseJUnit5Test() {
         val v1 = data.padStart(length = 2, padChar = '0')
         // then
         logger.debug { "padStart - Long 결과: $data -> $v1" }
-        assertEquals(v1, "07")
+        assertEquals("07", v1)
     }
 
     @Test
@@ -40,7 +40,7 @@ class PaddingExtTest : BaseJUnit5Test() {
         val v1 = data.padStart(length = 13, padChar = '_')
         // then
         logger.debug { "padStart - String 결과: $data -> $v1" }
-        assertEquals(v1, "____abc123abc")
+        assertEquals("____abc123abc", v1)
     }
 
     @Test
@@ -51,7 +51,7 @@ class PaddingExtTest : BaseJUnit5Test() {
         val v1 = data.padEnd(length = 2, padChar = '0')
         // then
         logger.debug { "padEnd - Int 결과: $data -> $v1" }
-        assertEquals(v1, "70")
+        assertEquals("70", v1)
     }
 
     @Test
@@ -62,7 +62,7 @@ class PaddingExtTest : BaseJUnit5Test() {
         val v1 = data.padEnd(length = 2, padChar = '0')
         // then
         logger.debug { "padEnd - Long 결과: $data -> $v1" }
-        assertEquals(v1, "70")
+        assertEquals("70", v1)
     }
 
     @Test
@@ -73,7 +73,7 @@ class PaddingExtTest : BaseJUnit5Test() {
         val v1 = data.padEnd(length = 13, padChar = '_')
         // then
         logger.debug { "padEnd - String 결과: $data -> $v1" }
-        assertEquals(v1, "abc123abc____")
+        assertEquals("abc123abc____", v1)
     }
 
     @Test

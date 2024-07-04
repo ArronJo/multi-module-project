@@ -20,7 +20,7 @@ class ByteExtTest : BaseJUnit5Test() {
         val v = String(b)
         // then
         logger.debug { "toBytes 1: data -> ${b.toStrings()} -> $v" }
-        assertEquals(v, "abcdefABCDEF")
+        assertEquals("abcdefABCDEF", v)
     }
 
     @Test
@@ -32,7 +32,7 @@ class ByteExtTest : BaseJUnit5Test() {
         val v = String(b)
         // then
         logger.debug { "toBytes 2: data -> ${b.toStrings()} -> $v" }
-        assertEquals(v, "1234567890")
+        assertEquals("1234567890", v)
     }
 
     @Test
@@ -44,6 +44,6 @@ class ByteExtTest : BaseJUnit5Test() {
         val v = String(b)
         // then
         logger.debug { "toBytes 3: data -> ${b.toStrings()} -> $v" }
-        assertEquals(v, " !@#\$%^&*()")
+        assertEquals(" !@#\$%^&*()", v)
     }
 }
