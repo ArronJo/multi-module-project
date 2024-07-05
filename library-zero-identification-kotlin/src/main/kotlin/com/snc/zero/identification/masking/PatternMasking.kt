@@ -44,10 +44,10 @@ object PatternMasking {
         val matchResult = cardPattern.find(str)
         if (matchResult != null) {
             val groups = matchResult.groupValues.drop(1).filter { it.isNotEmpty() }
-            return when (groups.size) {
-                4 -> "${groups[0]}-****-****-${groups[3]}"  // 16자리 카드
-                3 -> "${groups[0]}-******-${groups[2]}"     // 15자리 카드 (American Express)
-                else -> str
+            if (4 == groups.size) {
+                return "${groups[0]}-****-****-${groups[3]}"  // 16자리 카드
+            } else if (3 == groups.size) {
+                return "${groups[0]}-******-${groups[2]}"     // 15자리 카드 (American Express)
             }
         }
         return str
