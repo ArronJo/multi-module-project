@@ -77,13 +77,17 @@ class PatternMaskingTest : BaseJUnit5Test() {
         logger.debug { v2 }     // 출력: 1234-****-****-3456
         assertEquals("1234-****-****-3456", v2)
 
-        val v3 = PatternMasking.card("1234 567890 12345")
+        val v3 = PatternMasking.card("123456789012345")
         logger.debug { v3 }      // 출력: 1234-******-12345 (American Express)
         assertEquals("1234-******-12345", v3)
 
-        val v4 = PatternMasking.card("HelloWorld")
-        logger.debug { v4 }       // 출력: HelloWorld (변경 없음)
-        assertEquals("HelloWorld", v4)
+        val v4 = PatternMasking.card("1234 567890 12345")
+        logger.debug { v4 }      // 출력: 1234-******-12345 (American Express)
+        assertEquals("1234-******-12345", v4)
+
+        val v99 = PatternMasking.card("HelloWorld")
+        logger.debug { v99 }       // 출력: HelloWorld (변경 없음)
+        assertEquals("HelloWorld", v99)
     }
 
     @Test
