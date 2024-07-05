@@ -85,10 +85,6 @@ class PatternMaskingTest : BaseJUnit5Test() {
         logger.debug { v4 }      // 출력: 1234-******-12345 (American Express)
         assertEquals("1234-******-12345", v4)
 
-        val v5 = PatternMasking.card("1234")
-        logger.debug { v5 }      // 출력: 1234-******-12345 (American Express)
-        assertEquals("1234-******-12345", v5)
-
         val v99 = PatternMasking.card("HelloWorld")
         logger.debug { v99 }       // 출력: HelloWorld (변경 없음)
         assertEquals("HelloWorld", v99)
