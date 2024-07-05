@@ -23,6 +23,10 @@ class PatternMaskingTest : BaseJUnit5Test() {
         val v3 = PatternMasking.id("HelloWorld")
         logger.debug { v3 }      // 출력: HelloWorld (변경 없음)
         assertEquals("HelloWorld", v3)
+
+        val v4 = PatternMasking.id("")
+        logger.debug { v4 }      // 출력: HelloWorld (변경 없음)
+        assertEquals("", v4)
     }
 
     @Test

@@ -4,58 +4,34 @@ object PatternMasking {
 
     fun id(str: String): String {
         val idPattern = """^(\d{6})[-]?(\d{7})$""".toRegex()
-
-        return when {
-            idPattern.matches(str) -> {
-                val matchResult = idPattern.find(str)
-                if (matchResult != null) {
-                    val (birthDate, personalNum) = matchResult.destructured
-                    "$birthDate-${personalNum.take(1)}******"
-                } else {
-                    str
-                }
-            }
-
-            else -> str
+        val matchResult = idPattern.find(str)
+        if (matchResult != null) {
+            val (birthDate, personalNum) = matchResult.destructured
+            return "$birthDate-${personalNum.take(1)}******"
         }
+        return str
     }
 
     fun phoneNum(str: String): String {
         val phonePattern = """^(01[016789])[-]?(\d{3,4})[-]?(\d{4})$""".toRegex()
-
-        return when {
-            phonePattern.matches(str) -> {
-                val matchResult = phonePattern.find(str)
-                if (matchResult != null) {
-                    val (prefix, _, last) = matchResult.destructured
-                    "$prefix-****-$last"
-                } else {
-                    str
-                }
-            }
-
-            else -> str
+        val matchResult = phonePattern.find(str)
+        if (matchResult != null) {
+            val (prefix, _, last) = matchResult.destructured
+            return "$prefix-****-$last"
         }
+        return str
     }
 
     fun account(str: String): String {
         val accountPattern = """^(\d{2,6})[-]?(\d{2,6})[-]?(\d{2,6})$""".toRegex()
-
-        return when {
-            accountPattern.matches(str) -> {
-                val matchResult = accountPattern.find(str)
-                if (matchResult != null) {
-                    val (first, middle, last) = matchResult.destructured
-                    "${first.take(2)}${"*".repeat(first.length - 2)}-" +
-                            "${"*".repeat(middle.length)}-" +
-                            "${"*".repeat(last.length - 2)}${last.takeLast(2)}"
-                } else {
-                    str
-                }
-            }
-
-            else -> str
+        val matchResult = accountPattern.find(str)
+        if (matchResult != null) {
+            val (first, middle, last) = matchResult.destructured
+            return "${first.take(2)}${"*".repeat(first.length - 2)}-" +
+                    "${"*".repeat(middle.length)}-" +
+                    "${"*".repeat(last.length - 2)}${last.takeLast(2)}"
         }
+        return str
     }
 
     fun card(str: String): String {
@@ -65,23 +41,16 @@ object PatternMasking {
                 """^(\d{4})[-\s]?(\d{6})[-\s]?(\d{5})$"""
             ).joinToString(separator = "|").trimMargin().toRegex()
 
-        return when {
-            cardPattern.matches(str) -> {
-                val matchResult = cardPattern.find(str)
-                if (matchResult != null) {
-                    val groups = matchResult.groupValues.drop(1).filter { it.isNotEmpty() }
-                    when (groups.size) {
-                        4 -> "${groups[0]}-****-****-${groups[3]}"  // 16자리 카드
-                        3 -> "${groups[0]}-******-${groups[2]}"     // 15자리 카드 (American Express)
-                        else -> str
-                    }
-                } else {
-                    str
-                }
+        val matchResult = cardPattern.find(str)
+        if (matchResult != null) {
+            val groups = matchResult.groupValues.drop(1).filter { it.isNotEmpty() }
+            return when (groups.size) {
+                4 -> "${groups[0]}-****-****-${groups[3]}"  // 16자리 카드
+                3 -> "${groups[0]}-******-${groups[2]}"     // 15자리 카드 (American Express)
+                else -> str
             }
-
-            else -> str
         }
+        return str
     }
 
     fun addressDetail(str: String): String {
