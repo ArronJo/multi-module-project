@@ -8,12 +8,11 @@ object PatternMasking {
         return when {
             idPattern.matches(str) -> {
                 val matchResult = idPattern.find(str)
-                if (matchResult != null) {
+                matchResult?.let {
                     val (birthDate, personalNum) = matchResult.destructured
-                    "$birthDate-${personalNum.take(1)}******"
-                } else {
-                    str
+                    return "$birthDate-${personalNum.take(1)}******"
                 }
+                str
             }
 
             else -> str
@@ -26,12 +25,11 @@ object PatternMasking {
         return when {
             phonePattern.matches(str) -> {
                 val matchResult = phonePattern.find(str)
-                if (matchResult != null) {
+                matchResult?.let {
                     val (prefix, _, last) = matchResult.destructured
-                    "$prefix-****-$last"
-                } else {
-                    str
+                    return "$prefix-****-$last"
                 }
+                str
             }
 
             else -> str
@@ -44,14 +42,13 @@ object PatternMasking {
         return when {
             accountPattern.matches(str) -> {
                 val matchResult = accountPattern.find(str)
-                if (matchResult != null) {
+                matchResult?.let {
                     val (first, middle, last) = matchResult.destructured
-                    "${first.take(2)}${"*".repeat(first.length - 2)}-" +
+                    return "${first.take(2)}${"*".repeat(first.length - 2)}-" +
                             "${"*".repeat(middle.length)}-" +
                             "${"*".repeat(last.length - 2)}${last.takeLast(2)}"
-                } else {
-                    str
                 }
+                str
             }
 
             else -> str
@@ -68,16 +65,15 @@ object PatternMasking {
         return when {
             cardPattern.matches(str) -> {
                 val matchResult = cardPattern.find(str)
-                if (matchResult != null) {
+                matchResult?.let {
                     val groups = matchResult.groupValues.drop(1).filter { it.isNotEmpty() }
-                    when (groups.size) {
+                    return when (groups.size) {
                         4 -> "${groups[0]}-****-****-${groups[3]}"  // 16자리 카드
                         3 -> "${groups[0]}-******-${groups[2]}"     // 15자리 카드 (American Express)
                         else -> str
                     }
-                } else {
-                    str
                 }
+                str
             }
 
             else -> str
