@@ -3,6 +3,7 @@ package com.snc.test.identification.masking
 import com.snc.zero.identification.masking.PatternMasking
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
+import com.snc.zero.test.testcase.TestCase
 import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }
@@ -12,21 +13,45 @@ class PatternMaskingTest : BaseJUnit5Test() {
 
     @Test
     fun `패턴 마스킹 - 주민등록번호`() {
-        val v1 = PatternMasking.id("900101-1234567")
-        logger.debug { v1 }  // 출력: 900101-1******
-        assertEquals("900101-1******", v1)
+        TestCase.create<String, String, Unit>()
+            .given { "900101-1234567" }
+            .whens { data -> PatternMasking.id(data)}
+            .then { result ->
+                logger.debug { result }  // 출력: 900101-1******
+                assertEquals("900101-1******", result)
+            }
 
-        val v2 = PatternMasking.id("9001011234567")
-        logger.debug { v2 }   // 출력: 900101-1******
-        assertEquals("900101-1******", v2)
+        TestCase.create<String, String, Unit>()
+            .given { "9001011234567" }
+            .whens { data -> PatternMasking.id(data) }
+            .then { result ->
+                logger.debug { result }  // 출력: 900101-1******
+                assertEquals("900101-1******", result)
+            }
 
-        val v3 = PatternMasking.id("HelloWorld")
-        logger.debug { v3 }      // 출력: HelloWorld (변경 없음)
-        assertEquals("HelloWorld", v3)
+        TestCase.create<String, String, Unit>()
+            .given { "9001011234567" }
+            .whens { data -> PatternMasking.id(data) }
+            .then { result ->
+                logger.debug { result }  // 출력: 900101-1******
+                assertEquals("900101-1******", result)
+            }
 
-        val v4 = PatternMasking.id("")
-        logger.debug { v4 }      // 출력: HelloWorld (변경 없음)
-        assertEquals("", v4)
+        TestCase.create<String, String, Unit>()
+            .given { "HelloWorld" }
+            .whens { data -> PatternMasking.id(data) }
+            .then { result ->
+                logger.debug { result }  // 출력: HelloWorld (변경 없음)
+                assertEquals("HelloWorld", result)
+            }
+
+        TestCase.create<String, String, Unit>()
+            .given { "" }
+            .whens { data -> PatternMasking.id(data) }
+            .then { result ->
+                logger.debug { result }  // 출력: '' (변경 없음)
+                assertEquals("", result)
+            }
     }
 
     @Test

@@ -1,6 +1,6 @@
 package com.snc.zero.test.testcase
 
-class TestCase<G, W, T> {
+class TestCase<G, W, T> private constructor() {
     private var givenData: G? = null
     private var whenResult: W? = null
     private var caughtException: Throwable? = null
