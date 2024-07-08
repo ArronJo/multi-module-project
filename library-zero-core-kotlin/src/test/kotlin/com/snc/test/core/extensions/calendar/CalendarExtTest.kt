@@ -125,7 +125,17 @@ class CalendarExtTest : BaseJUnit5Test() {
         // given
         val data = "20240402175932"
         // when
-        val v1 = data.toCalendar("yyyyMMddHHmmss")
+        val v1 = data.toCalendar("yyyyMMddHHmm")
+        // then
+        logger.debug { "String toCalendar 결과: $data -> ${v1.toStrings()}" }
+    }
+
+    @Test
+    fun `String toCalendar 테스트 3`() {
+        // given
+        val data = "20240402175932"
+        // when
+        val v1 = data.toCalendar("yyyyMMddHH")
         // then
         logger.debug { "String toCalendar 결과: $data -> ${v1.toStrings()}" }
     }

@@ -1,9 +1,9 @@
 package com.snc.zero.core.extensions.calendar
 
+import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
-import java.util.Locale
+import java.util.*
+import kotlin.math.min
 
 fun Calendar.setYear(year: Int) {
     this[Calendar.YEAR] = year
@@ -135,9 +135,16 @@ fun Calendar.diff(endDateTime: Calendar): Long {
 }
 
 fun String.toCalendar(pattern: String = "yyyyMMddHHmmss"): Calendar {
-    val format = SimpleDateFormat(pattern, Locale.getDefault())
-    val date: Date = format.parse(this) as Date
-    return date.toCalendar()
+    val sdf = SimpleDateFormat(pattern)
+    val calendar = Calendar.getInstance()
+    try {
+        val date = sdf.parse(this.substring(0, min(pattern.length, this.length)))
+        calendar.time = date
+
+    } catch (e: ParseException) {
+        e.printStackTrace()
+    }
+    return calendar
 }
 
 fun Date.toCalendar(): Calendar {
