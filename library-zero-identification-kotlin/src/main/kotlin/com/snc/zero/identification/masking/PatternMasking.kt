@@ -46,7 +46,8 @@ object PatternMasking {
             val groups = matchResult.groupValues.drop(1).filter { it.isNotEmpty() }
             if (4 == groups.size) {
                 return "${groups[0]}-****-****-${groups[3]}"  // 16자리 카드
-            } else if (3 == groups.size) {
+            }
+            if (3 == groups.size) {
                 return "${groups[0]}-******-${groups[2]}"     // 15자리 카드 (American Express)
             }
         }
