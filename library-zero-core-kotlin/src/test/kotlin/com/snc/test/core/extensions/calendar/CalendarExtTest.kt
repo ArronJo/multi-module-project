@@ -141,6 +141,16 @@ class CalendarExtTest : BaseJUnit5Test() {
     }
 
     @Test
+    fun `String toCalendar 예외 1`() {
+        // given
+        val data = "2024"
+        // when
+        val v1 = data.toCalendar("yyyyMMddHH")
+        // then
+        logger.debug { "String toCalendar 결과: $data -> ${v1.toStrings()}" }
+    }
+
+    @Test
     fun `Date toCalendar 테스트`() {
         // given
         val data = Date()
