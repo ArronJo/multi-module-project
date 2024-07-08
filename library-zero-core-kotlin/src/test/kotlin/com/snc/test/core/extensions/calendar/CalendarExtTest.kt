@@ -46,6 +46,18 @@ class CalendarExtTest : BaseJUnit5Test() {
     }
 
     @Test
+    fun `Calendar 연산 1`() {
+        val c = Calendar.getInstance()
+            .setYear(2024)
+            .setMonth(2)
+            .setDay(14)
+        logger.debug { "${c.getDay()}, ${c.getLastDayOfMonth()}" }
+
+        c.endOfMonth()
+        logger.debug { "${c.getDay()}, ${c.getLastDayOfMonth()}" }
+    }
+
+    @Test
     fun `Calendar 날짜 표현`() {
         // given
         val cal = Calendar.getInstance()
