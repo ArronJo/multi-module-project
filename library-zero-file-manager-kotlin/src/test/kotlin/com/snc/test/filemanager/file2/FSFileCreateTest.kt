@@ -15,6 +15,10 @@ private val logger = TLogging.logger { }
 
 class FSFileCreateTest : BaseJUnit5Test() {
 
+    companion object {
+        private const val PATH_USR_BIN = "/usr/bin"
+    }
+
     private lateinit var parent: File
     private lateinit var dir: File
 
@@ -68,7 +72,7 @@ class FSFileCreateTest : BaseJUnit5Test() {
 
     @Test
     fun `FSFile create or overwrite 4`() {
-        val file = File("/usr/bin", "create4.txt")
+        val file = File(PATH_USR_BIN, "create4.txt")
         val e = assertThrows(
             IOException::class.java
         ) {
@@ -80,7 +84,7 @@ class FSFileCreateTest : BaseJUnit5Test() {
 
     @Test
     fun `FSFile create or overwrite 5-1`() {
-        val file = File("/usr/bin", "aaa")
+        val file = File(PATH_USR_BIN, "aaa")
         val e = assertThrows(
             IOException::class.java
         ) {
@@ -92,7 +96,7 @@ class FSFileCreateTest : BaseJUnit5Test() {
 
     @Test
     fun `FSFile create or overwrite 5-2`() {
-        val file = File("/usr/bin", "mail")
+        val file = File(PATH_USR_BIN, "mail")
         val e = assertThrows(
             IOException::class.java
         ) {
@@ -140,7 +144,7 @@ class FSFileCreateTest : BaseJUnit5Test() {
 
     @Test
     fun `FSFile create or overwrite 5-6`() {
-        val file = File("/usr/bin", "5-6.txt")
+        val file = File(PATH_USR_BIN, "5-6.txt")
         val e = assertThrows(
             IOException::class.java
         ) {

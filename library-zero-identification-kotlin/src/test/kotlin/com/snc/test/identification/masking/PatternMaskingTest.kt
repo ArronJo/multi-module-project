@@ -11,6 +11,10 @@ private val logger = TLogging.logger { }
 @Suppress("NonAsciiCharacters")
 class PatternMaskingTest : BaseJUnit5Test() {
 
+    companion object {
+        private const val MASKED_REG_NO = "900101-1******"
+    }
+
     @Test
     fun `패턴 마스킹 - 주민등록번호`() {
         TestCase.create<String, String, Unit>()
@@ -18,7 +22,7 @@ class PatternMaskingTest : BaseJUnit5Test() {
             .whens { data -> PatternMasking.id(data)}
             .then { result ->
                 logger.debug { result }  // 출력: 900101-1******
-                assertEquals("900101-1******", result)
+                assertEquals(MASKED_REG_NO, result)
             }
 
         TestCase.create<String, String, Unit>()
@@ -26,7 +30,7 @@ class PatternMaskingTest : BaseJUnit5Test() {
             .whens { data -> PatternMasking.id(data) }
             .then { result ->
                 logger.debug { result }  // 출력: 900101-1******
-                assertEquals("900101-1******", result)
+                assertEquals(MASKED_REG_NO, result)
             }
 
         TestCase.create<String, String, Unit>()
@@ -34,7 +38,7 @@ class PatternMaskingTest : BaseJUnit5Test() {
             .whens { data -> PatternMasking.id(data) }
             .then { result ->
                 logger.debug { result }  // 출력: 900101-1******
-                assertEquals("900101-1******", result)
+                assertEquals(MASKED_REG_NO, result)
             }
 
         TestCase.create<String, String, Unit>()

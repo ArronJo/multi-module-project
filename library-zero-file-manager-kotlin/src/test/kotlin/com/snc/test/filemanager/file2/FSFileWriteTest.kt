@@ -16,6 +16,10 @@ private val logger = TLogging.logger { }
 @Suppress("NonAsciiCharacters")
 class FSFileWriteTest : BaseJUnit5Test() {
 
+    companion object {
+        private const val MSG_WILL_BE_AN_ERROR = "에러 나겟지?"
+    }
+
     private lateinit var parent: File
     private lateinit var dir: File
 
@@ -129,7 +133,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
             IOException::class.java
         ) {
             FSFile.create(file, overwrite = true)
-            FSFile.write(file, "에러 나겟지?".toByteArray())
+            FSFile.write(file, MSG_WILL_BE_AN_ERROR.toByteArray())
         }
         logger.debug { "write Exception : ${e.message}" }
         assertNotEquals(e.message, "")
@@ -142,7 +146,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
             IOException::class.java
         ) {
             FSFile.create(file, overwrite = true)
-            FSFile.write(file, "에러 나겟지?".toByteArray())
+            FSFile.write(file, MSG_WILL_BE_AN_ERROR.toByteArray())
         }
         logger.debug { "write Exception : ${e.message}" }
         assertNotEquals(e.message, "")
@@ -155,7 +159,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
             IOException::class.java
         ) {
             FSFile.create(file, overwrite = true)
-            FSFile.write(file, "에러 나겟지?".toByteArray())
+            FSFile.write(file, MSG_WILL_BE_AN_ERROR.toByteArray())
         }
         logger.debug { "write Exception : ${e.message}" }
         assertNotEquals(e.message, "")
@@ -168,7 +172,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
             IOException::class.java
         ) {
             FSFile.create(file, overwrite = true)
-            FSFile.write(file, "에러 나겟지?".toByteArray())
+            FSFile.write(file, MSG_WILL_BE_AN_ERROR.toByteArray())
         }
         logger.debug { "write Exception : ${e.message}" }
         assertNotEquals(e.message, "")
@@ -181,7 +185,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
             IOException::class.java
         ) {
             FSFile.create(file, overwrite = true)
-            FSFile.write(file, "에러 나겟지?".toByteArray())
+            FSFile.write(file, MSG_WILL_BE_AN_ERROR.toByteArray())
         }
         logger.debug { "write Exception : ${e.message}" }
         assertNotEquals(e.message, "")

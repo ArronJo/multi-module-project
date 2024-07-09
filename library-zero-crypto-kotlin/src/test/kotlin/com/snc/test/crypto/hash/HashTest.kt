@@ -13,6 +13,9 @@ private val logger = TLogging.logger { }
 class HashTest : BaseJUnit5Test() {
 
     companion object {
+
+        private const val MSG_EMPTY_KEY = "Empty key"
+
         private lateinit var key: String
 
         @JvmStatic
@@ -44,7 +47,7 @@ class HashTest : BaseJUnit5Test() {
             Hash.with(Hash.Algo.HmacSHA224).key("").digest(data).toHexString()
         }
         // then
-        assertEquals("Empty key", e.message)
+        assertEquals(MSG_EMPTY_KEY, e.message)
     }
 
     @Test
@@ -69,7 +72,7 @@ class HashTest : BaseJUnit5Test() {
             Hash.with(Hash.Algo.HmacSHA256).key("").digest(data).toHexString()
         }
         // then
-        assertEquals("Empty key", e.message)
+        assertEquals(MSG_EMPTY_KEY, e.message)
     }
 
     @Test
@@ -94,7 +97,7 @@ class HashTest : BaseJUnit5Test() {
             Hash.with(Hash.Algo.HmacSHA384).key("").digest(data).toHexString()
         }
         // then
-        assertEquals("Empty key", e.message)
+        assertEquals(MSG_EMPTY_KEY, e.message)
     }
 
     @Test
@@ -119,7 +122,7 @@ class HashTest : BaseJUnit5Test() {
             Hash.with(Hash.Algo.HmacSHA512).key("").digest(data).toHexString()
         }
         // then
-        assertEquals("Empty key", e.message)
+        assertEquals(MSG_EMPTY_KEY, e.message)
     }
 
     @Test

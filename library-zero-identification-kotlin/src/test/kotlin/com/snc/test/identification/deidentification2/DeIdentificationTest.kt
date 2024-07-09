@@ -11,6 +11,11 @@ private val logger = TLogging.logger { }
 @Suppress("NonAsciiCharacters")
 class DeIdentificationTest : BaseJUnit5Test() {
 
+    companion object {
+        private const val MSG_A_MAN_BORN_IN_THE_80S = "80년대생 남자"
+        private const val MSG_A_WOMAN_BORN_IN_THE_80S = "80년대생 여자"
+    }
+
     @Test
     fun `가명처리 (Pseudonymization) - 이름 1-1`() {
         // given
@@ -98,19 +103,19 @@ class DeIdentificationTest : BaseJUnit5Test() {
         val v9 = DeIdentification.DataReduction.regNo(regNo9)
         // then
         logger.debug { "regNo: $regNo1 -> $v1" }
-        assertEquals("80년대생 남자", v1)
+        assertEquals(MSG_A_MAN_BORN_IN_THE_80S, v1)
 
         logger.debug { "regNo: $regNo3 -> $v3" }
-        assertEquals("80년대생 남자", v3)
+        assertEquals(MSG_A_MAN_BORN_IN_THE_80S, v3)
 
         logger.debug { "regNo: $regNo5 -> $v5" }
-        assertEquals("80년대생 남자", v5)
+        assertEquals(MSG_A_MAN_BORN_IN_THE_80S, v5)
 
         logger.debug { "regNo: $regNo7 -> $v7" }
-        assertEquals("80년대생 남자", v7)
+        assertEquals(MSG_A_MAN_BORN_IN_THE_80S, v7)
 
         logger.debug { "regNo: $regNo9 -> $v9" }
-        assertEquals("80년대생 남자", v9)
+        assertEquals(MSG_A_MAN_BORN_IN_THE_80S, v9)
     }
 
     @Test
@@ -129,19 +134,19 @@ class DeIdentificationTest : BaseJUnit5Test() {
         val v0 = DeIdentification.DataReduction.regNo(regNo0)
         // then
         logger.debug { "regNo: $regNo2 -> $v2" }
-        assertEquals("80년대생 여자", v2)
+        assertEquals(MSG_A_WOMAN_BORN_IN_THE_80S, v2)
 
         logger.debug { "regNo: $regNo4 -> $v4" }
-        assertEquals("80년대생 여자", v4)
+        assertEquals(MSG_A_WOMAN_BORN_IN_THE_80S, v4)
 
         logger.debug { "regNo: $regNo6 -> $v6" }
-        assertEquals("80년대생 여자", v6)
+        assertEquals(MSG_A_WOMAN_BORN_IN_THE_80S, v6)
 
         logger.debug { "regNo: $regNo8 -> $v8" }
-        assertEquals("80년대생 여자", v8)
+        assertEquals(MSG_A_WOMAN_BORN_IN_THE_80S, v8)
 
         logger.debug { "regNo: $regNo0 -> $v0" }
-        assertEquals("80년대생 여자", v0)
+        assertEquals(MSG_A_WOMAN_BORN_IN_THE_80S, v0)
     }
 
     @Test
