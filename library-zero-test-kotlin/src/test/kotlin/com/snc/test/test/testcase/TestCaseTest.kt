@@ -58,7 +58,37 @@ class TestCaseTest : BaseJUnit5Test() {
                     assertEquals(11, result)
                 }
         } catch (e: AssertionError) {
-            println("Test 3 failed as expected: ${e.message}")
+            println("Test failed as expected: ${e.message}")
+        }
+    }
+
+    @Test
+    fun `TestCase 클래스 테스트 - 실패 케이스 (의도적으로 실패하는 테스트) 2`() {
+        try {
+            TestCase.create<Int, Int, Unit>()
+                .given {
+                    5
+                }.catch { e ->
+                    println("catch: ${e.message}")
+                }
+        } catch (e: AssertionError) {
+            println("Test failed as expected: ${e.message}")
+        }
+    }
+
+    @Test
+    fun `TestCase 클래스 테스트 - 실패 케이스 (의도적으로 실패하는 테스트) 3`() {
+        try {
+            TestCase.create<Int, Int, Unit>()
+                .given {
+                    5
+                }.whens {
+                    throw AssertionError("test test")
+                }.then { result ->
+                    println(result)
+                }
+        } catch (e: AssertionError) {
+            println("Test failed as expected: ${e.message}")
         }
     }
 }
