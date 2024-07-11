@@ -40,6 +40,37 @@ kotlin {
     }
 }
 
+//sourceSets {
+//    getByName("main") {
+//        java.srcDirs("src/main/java", "src/main/kotlin")
+//        resources.srcDirs("src/main/res")
+//    }
+//    getByName("test") {
+//        java.srcDirs("src/test/java", "src/test/kotlin")
+//        resources.srcDirs("src/test/res")
+//    }
+//}
+
+sourceSets {
+    val main by getting {
+        java {
+            setSrcDirs(listOf("src/main/java"))
+        }
+        resources {
+            setSrcDirs(listOf("src/main/resources"))
+        }
+    }
+    val test by getting {
+        java {
+            setSrcDirs(listOf("src/test/java"))
+        }
+        resources {
+            setSrcDirs(listOf("src/test/resources"))
+        }
+    }
+}
+
+
 
 ///////////////////////////////////////////////////////////
 tasks.register("allProjectDependencies") {
@@ -72,22 +103,7 @@ tasks.register("allProjectDependencies") {
 
 subprojects {
     apply(plugin = "java")
-
-    tasks.register<DependencyReportTask>("allDependencies") {
-        description = "Inject dependencies into subprojects."
-        group = JavaBasePlugin.DOCUMENTATION_GROUP
-        // 특정 구성(configuration)의 의존성만 보고 싶다면,
-        //configurations = setOf(project.configurations.getByName("compileClasspath"))
-    }
-    // HTML 보고서를 생성하고 싶다면, 다음과 같이 설정할 수 있습니다:
-    tasks.register<HtmlDependencyReportTask>("htmlDependencyReport") {
-        description = "Generates the HTML documentation for this project."
-        group = JavaBasePlugin.DOCUMENTATION_GROUP
-        reports {
-            html.required.set(true)
-            html.outputLocation.set(file("${layout.buildDirectory}/reports/dependencies"))
-        }
-    }
+    apply(plugin = "jacoco")
 
     repositories {
         mavenCentral()
@@ -107,8 +123,66 @@ subprojects {
         }
     }
 
+    tasks.register<DependencyReportTask>("allDependencies") {
+        description = "Inject dependencies into subprojects."
+        group = JavaBasePlugin.DOCUMENTATION_GROUP
+        // 특정 구성(configuration)의 의존성만 보고 싶다면,
+        //configurations = setOf(project.configurations.getByName("compileClasspath"))
+    }
+    // HTML 보고서를 생성하고 싶다면, 다음과 같이 설정할 수 있습니다:
+    tasks.register<HtmlDependencyReportTask>("htmlDependencyReport") {
+        description = "Generates the HTML documentation for this project."
+        group = JavaBasePlugin.DOCUMENTATION_GROUP
+        reports {
+            html.required.set(true)
+            html.outputLocation.set(file("${layout.buildDirectory}/reports/dependencies"))
+        }
+    }
+
     tasks.test {
         useJUnitPlatform()
+        finalizedBy(tasks.jacocoTestReport, tasks.jacocoTestCoverageVerification)
+    }
+
+    tasks.jacocoTestReport {
+        dependsOn(tasks.test)
+
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+            csv.required.set(false)
+            //html.outputLocation.set(file("${layout.buildDirectory}/reports/jacoco"))
+        }
+    }
+
+    tasks.jacocoTestCoverageVerification {
+        violationRules {
+            rule {
+                enabled = true
+                element = "CLASS"
+
+                // 적용 할 패키지(기본은 전체)
+                // includes = []
+
+                limit {
+                    counter = "BRANCH"
+                    value = "COVEREDRATIO"
+                    minimum = 0.80.toBigDecimal()
+                }
+
+                limit {
+                    counter = "LINE"
+                    value = "COVEREDRATIO"
+                    minimum = 0.80.toBigDecimal()
+                }
+
+                limit {
+                    counter = "LINE"
+                    value = "TOTALCOUNT"
+                    maximum = 200.toBigDecimal()
+                }
+            }
+        }
     }
 }
 
