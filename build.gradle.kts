@@ -144,7 +144,8 @@ subprojects {
         useJUnitPlatform()
 
         jacoco {
-            excludes.add("com/snc/test/test/**")
+            //excludes.add("com/snc/test/test/**")
+            //exclude("**/BaseJUnit5Test*.class")
         }
     }
 
@@ -157,6 +158,17 @@ subprojects {
             csv.required.set(false)
             //html.outputLocation.set(file("${layout.buildDirectory}/reports/jacoco"))
         }
+
+        //additionalClassDirs(files("build/classes/kotlin/main"))
+        //additionalSourceDirs(files("src/main/kotlin"))
+        //executionData(files("build/jacoco/test.exec"))
+
+        classDirectories.setFrom(
+            sourceSets.main.get().output.asFileTree.matching {
+                exclude("com/snc/zero/test/base/**")
+                //exclude("**/BaseJUnit5Test*.class")
+            }
+        )
     }
 
     tasks.jacocoTestCoverageVerification {
