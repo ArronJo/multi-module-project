@@ -261,10 +261,8 @@ class HashTest : BaseJUnit5Test() {
     fun `Hash 테스트 1-3`() {
         // given
         // when
-        val v1 = Hash.Algo.values()
-        val v2 = Hash.Algo.entries.toTypedArray()
+        val v1 = Hash.Algo.entries.toTypedArray()
         // then
         assertNotEquals(Hash.Algo.SHA224, v1[0])
-        assertNotEquals(Hash.Algo.SHA224, v2[0])
     }
 }

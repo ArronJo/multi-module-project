@@ -148,15 +148,6 @@ class FakerTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `Enum 테스트 2-3`() {
-        // given
-        val v = Faker.ProviderType.values()
-        // when
-        assertEquals(Faker.ProviderType.KOREAN, v[0])
-        assertEquals(Faker.ProviderType.ENGLISH, v[1])
-    }
-
-    @Test
     fun `Enum 테스트 3`() {
         assertEquals(Faker.checkEnum(Faker.ProviderType.KOREAN), true)
         assertEquals(Faker.checkEnum(Faker.ProviderType.ENGLISH), false)
