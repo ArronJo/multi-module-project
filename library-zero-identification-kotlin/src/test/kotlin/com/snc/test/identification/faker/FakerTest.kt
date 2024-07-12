@@ -59,7 +59,7 @@ class FakerTest : BaseJUnit5Test() {
         // when
         var v1: Array<String> = arrayOf()
         for (i in 1..max) {
-            val r = getRandomInt(0, 1)
+            val r = getRandomInt(0, 9999) / 2
             if (r > 1) { logger.debug { "r : $r" } }
             val sex = if (r > 0) "F" else "M"
             val provider = if (r > 0) Faker.ProviderType.KOREAN else Faker.ProviderType.ENGLISH
@@ -92,6 +92,19 @@ class FakerTest : BaseJUnit5Test() {
 
     @Test
     fun `가명 만들기 Provider 3`() {
+        // given
+        val provider = when (getRandomInt(0, 1)) {
+            0 -> Faker.ProviderType.KOREAN
+            else -> Faker.ProviderType.ENGLISH
+        }
+        // when
+        val v1 = Faker.Name.fake(provider)
+        logger.debug { "fake name: ${v1.joinToString(separator = "")}" }
+        assertNotEquals("", v1.joinToString(separator = ""))
+    }
+
+    @Test
+    fun `가명 만들기 Provider - random`() {
         // given
         val provider = Faker.ProviderType.KOREAN
         // when
