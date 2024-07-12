@@ -3,33 +3,29 @@ package com.snc.zero.core.extensions.format
 import java.text.DecimalFormat
 
 fun Long.formatNumericalKoreanMoney(unit: String = "만"): String {
-    val c = when (unit) {
-        "경" -> { 16 }
-        "천조" -> { 15 }
-        "백조" -> { 14 }
-        "십조" -> { 13 }
-        "조" -> { 12 }
-        "천억" -> { 11 }
-        "백억" -> { 10 }
-        "십억" -> { 9 }
-        "억" -> { 8 }
-        "천만", "천만원" -> { 7 }
-        "백만", "백만원" -> { 6 }
-        "십만", "십만원" -> { 5 }
-        "만", "만원" -> { 4 }
-        "천", "천원" -> { 3 }
-        else -> { 0 }
-    }
+    val unitMap = mapOf(
+        "경" to 16, "천조" to 15, "백조" to 14, "십조" to 13, "조" to 12,
+        "천억" to 11, "백억" to 10, "십억" to 9, "억" to 8,
+        "천만" to 7, "천만원" to 7, "백만" to 6, "백만원" to 6,
+        "십만" to 5, "십만원" to 5, "만" to 4, "만원" to 4,
+        "천" to 3, "천원" to 3
+    )
 
-    var u = 1
-    for (i in 1..c) {
-        u *= 10
-    }
-    if (this >= u) {
+    val c = unitMap[unit] ?: 0
+    val u = calculateUnit(c)
+
+    return if (this >= u) {
         val n = this / u
-        return DecimalFormat("#,###,###").format(n) + unit
+        "${DecimalFormat("#,###,###").format(n)}$unit"
+    } else {
+        this.toString()
     }
-    return this.toString()
+}
+
+private fun calculateUnit(c: Int): Long {
+    var u = 1L
+    repeat(c) { u *= 10 }
+    return u
 }
 
 fun Long.formatWordKoreanMoney(): String {
