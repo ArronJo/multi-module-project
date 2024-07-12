@@ -36,6 +36,14 @@ open class BaseJUnit5Test {
         Assertions.assertNotEquals(unexpected, actual)
     }
 
+    fun assertTrue(condition: Boolean) {
+        Assertions.assertTrue(condition)
+    }
+
+    fun assertFalse(condition: Boolean) {
+        Assertions.assertFalse(condition)
+    }
+
     fun assertDoesNotThrow(executable: () -> Unit) {
         Assertions.assertDoesNotThrow(executable)
     }

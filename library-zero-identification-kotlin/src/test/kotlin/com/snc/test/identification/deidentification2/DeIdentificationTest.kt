@@ -240,4 +240,40 @@ class DeIdentificationTest : BaseJUnit5Test() {
         assertEquals("진◯◯", v)
     }
 
+    @Test
+    fun `name should not start with given first or last name initial`() {
+        val (generatedFirstName, generatedLastName) = DeIdentification.Pseudonymization.name("John", "Doe")
+        assertFalse(generatedFirstName.lowercase().startsWith("j"))
+        assertFalse(generatedLastName.lowercase().startsWith("d"))
+    }
+
+    @Test
+    fun `name should work for female names`() {
+        val (generatedFirstName, generatedLastName) = DeIdentification.Pseudonymization.name("Emma", "Watson", female = true)
+        assertFalse(generatedFirstName.lowercase().startsWith("e"))
+        assertFalse(generatedLastName.lowercase().startsWith("w"))
+        assertTrue(generatedFirstName.isNotEmpty())
+        assertTrue(generatedLastName.isNotEmpty())
+    }
+
+    @Test
+    fun `name should handle long names`() {
+        val (generatedFirstName, generatedLastName) = DeIdentification.Pseudonymization.name("Constantinopolis", "Charlemagneson")
+        assertFalse(generatedFirstName.lowercase().startsWith("c"))
+        assertFalse(generatedLastName.lowercase().startsWith("c"))
+    }
+
+    @Test
+    fun `name should handle names with special characters`() {
+        val (generatedFirstName, generatedLastName) = DeIdentification.Pseudonymization.name("Æon", "Übel")
+        assertFalse(generatedFirstName.lowercase().startsWith("æ"))
+        assertFalse(generatedLastName.lowercase().startsWith("ü"))
+    }
+
+    @Test
+    fun `name should handle single-character names`() {
+        val (generatedFirstName, generatedLastName) = DeIdentification.Pseudonymization.name("A", "B")
+        assertFalse(generatedFirstName.lowercase().startsWith("a"))
+        assertFalse(generatedLastName.lowercase().startsWith("b"))
+    }
 }

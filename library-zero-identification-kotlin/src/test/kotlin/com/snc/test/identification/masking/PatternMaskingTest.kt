@@ -145,4 +145,28 @@ class PatternMaskingTest : BaseJUnit5Test() {
         logger.debug { v6 }       // 출력: A* 10**
         assertEquals("A동 1****", v6)
     }
+
+    @Test
+    fun testCard() {
+        // 16자리 카드 번호 테스트
+        assertEquals("1234-****-****-3456", PatternMasking.card("1234567890123456"))
+        assertEquals("1234-****-****-3456", PatternMasking.card("1234-5678-9012-3456"))
+        assertEquals("1234-****-****-3456", PatternMasking.card("1234 5678 9012 3456"))
+
+        // 15자리 카드 번호 테스트 (American Express)
+        assertEquals("1234-******-12345", PatternMasking.card("123456789012345"))
+        assertEquals("1234-******-12345", PatternMasking.card("1234-567890-12345"))
+        assertEquals("1234-******-12345", PatternMasking.card("1234 567890 12345"))
+
+        // 잘못된 형식의 카드 번호 테스트
+        assertEquals("12345678901234", PatternMasking.card("12345678901234")) // 14자리
+        assertEquals("1234-****-****-3457", PatternMasking.card("1234567890123457")) // 17자리
+        assertEquals("abcdefghijklmnop", PatternMasking.card("abcdefghijklmnop")) // 문자열
+
+        // 빈 문자열 테스트
+        assertEquals("", PatternMasking.card(""))
+
+        // 공백 문자열 테스트
+        assertEquals("   ", PatternMasking.card("   "))
+    }
 }
