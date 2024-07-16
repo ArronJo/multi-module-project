@@ -1,6 +1,6 @@
 package com.snc.zero.identification.faker.provider.name
 
-object KoreanNameProvider : NameProvider() {
+class KoreanNameProvider : NameProvider() {
 
     init {
         firstNamesFemale.addAll(

@@ -6,7 +6,7 @@ import com.snc.zero.crypto.hash.sha3.SHAKE
 import java.nio.charset.Charset
 import kotlin.jvm.Throws
 
-class Hash(var algo: Algo) {
+class Hash private constructor(var algo: Algo) {
 
     private val msgEmptyKey = "Empty key"
     

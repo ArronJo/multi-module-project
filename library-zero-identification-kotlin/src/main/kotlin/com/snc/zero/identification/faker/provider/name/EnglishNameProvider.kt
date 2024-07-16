@@ -1,6 +1,6 @@
 package com.snc.zero.identification.faker.provider.name
 
-object EnglishNameProvider : NameProvider() {
+class EnglishNameProvider : NameProvider() {
 
     init {
 

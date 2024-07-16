@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") version "2.0.0"
+    //kotlin("jvm") version "1.9.23"
     //id("java")
 
     // https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
@@ -22,7 +23,13 @@ repositories {
 }
 
 dependencies {
-
+//    val jupiterVersion = "5.10.2"
+//
+//    testImplementation(kotlin("test"))
+//    testImplementation( "org.junit.jupiter:junit-jupiter-api:$jupiterVersion")
+//
+//    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+//    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
 tasks.test {
@@ -37,6 +44,12 @@ kotlin {
     compilerOptions {
         languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.fromVersion(rootProject.extra["jvmTarget"] as String))
         apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.fromVersion(rootProject.extra["jvmTarget"] as String))
+    }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    compilerOptions {
+        freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
     }
 }
 

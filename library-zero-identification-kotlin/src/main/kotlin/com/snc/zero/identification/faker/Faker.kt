@@ -23,9 +23,9 @@ object Faker {
 
         private fun getProvider(type: ProviderType): NameProvider {
             return if (ProviderType.KOREAN == type) {
-                KoreanNameProvider
+                KoreanNameProvider()
             } else {
-                EnglishNameProvider
+                EnglishNameProvider()
             }
         }
 

@@ -2,7 +2,7 @@ package com.snc.zero.crypto.encoder
 
 import com.snc.zero.crypto.encoder.base64.Base64
 
-class Encoder(private var algo: Algo) {
+class Encoder private constructor(private var algo: Algo) {
 
     companion object {
 
