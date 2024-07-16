@@ -6,6 +6,7 @@ import java.util.*
 class FSFile private constructor() {
 
     companion object {
+
         private const val DEFAULT_BUFFER_SIZE = 8 * 1024    // 8kb
         private const val BUFFER_SIZE_1_MB = 1 * 1024 * 1024    // 1MB = 1024 * 1024 = 1048576
 
