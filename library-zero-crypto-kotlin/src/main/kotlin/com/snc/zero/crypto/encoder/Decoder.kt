@@ -6,7 +6,6 @@ class Decoder private constructor(private var algo: Algo) {
 
     companion object {
 
-        @JvmStatic
         fun with(algo: Algo = Algo.BASE64): Decoder {
             return Decoder(algo)
         }

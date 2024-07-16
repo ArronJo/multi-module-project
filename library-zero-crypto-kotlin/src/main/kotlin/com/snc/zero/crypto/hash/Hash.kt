@@ -12,7 +12,6 @@ class Hash private constructor(var algo: Algo) {
     
     companion object {
 
-        @JvmStatic
         fun with(algo: Algo = Algo.SHA256): Hash {
             return Hash(algo)
         }

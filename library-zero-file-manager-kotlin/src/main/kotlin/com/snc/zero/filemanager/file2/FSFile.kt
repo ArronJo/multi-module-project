@@ -9,7 +9,6 @@ class FSFile private constructor() {
         private const val DEFAULT_BUFFER_SIZE = 8 * 1024    // 8kb
         private const val BUFFER_SIZE_1_MB = 1 * 1024 * 1024    // 1MB = 1024 * 1024 = 1048576
 
-        @JvmStatic
         @Throws(IOException::class)
         fun create(file: File, overwrite: Boolean = false): Boolean {
             file.parentFile?.let {
@@ -21,7 +20,6 @@ class FSFile private constructor() {
             return file.createNewFile()
         }
 
-        @JvmStatic
         @Throws(IOException::class)
         private fun overwrite(file: File, overwrite: Boolean) {
             if (file.exists()) {
@@ -34,7 +32,6 @@ class FSFile private constructor() {
             }
         }
 
-        @JvmStatic
         @Throws(IOException::class)
         fun delete(file: File, ignore: Boolean = false): Boolean {
             if (!file.exists()) {
@@ -46,7 +43,6 @@ class FSFile private constructor() {
             return file.delete()
         }
 
-        @JvmStatic
         @Throws(IOException::class)
         fun read(
             file: File,
@@ -71,7 +67,6 @@ class FSFile private constructor() {
             return sb.toString().toByteArray()
         }
 
-        @JvmStatic
         @Throws(IOException::class)
         fun write(out: File, data: ByteArray): Int {
             var os: FileOutputStream? = null
@@ -97,13 +92,11 @@ class FSFile private constructor() {
             return offset
         }
 
-        @JvmStatic
         @Throws(IOException::class)
         fun copy(src: File, dst: File, overwrite: Boolean = false) {
             src.copyTo(target = dst, overwrite = overwrite)
         }
 
-        @JvmStatic
         fun closeQuietly(os: OutputStream?) {
             try {
                 os?.flush()
@@ -117,7 +110,6 @@ class FSFile private constructor() {
             }
         }
 
-        @JvmStatic
         fun closeQuietly(c: Closeable?) {
             try {
                 c?.close()

@@ -8,7 +8,6 @@ class Cipher private constructor(var algo: Algo = Algo.AES) {
 
     companion object {
 
-        @JvmStatic
         fun with(algo: Algo = Algo.AES): Cipher {
             return Cipher(algo)
         }

@@ -6,7 +6,6 @@ class Encoder private constructor(private var algo: Algo) {
 
     companion object {
 
-        @JvmStatic
         fun with(algo: Algo = Algo.BASE64): Encoder {
             return Encoder(algo)
         }
