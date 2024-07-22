@@ -237,6 +237,7 @@ tasks.jacocoTestReport {
 }
  */
 
+// for GitHub Action
 // https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
 sonar {
     properties {
