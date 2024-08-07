@@ -13,6 +13,8 @@
             <option value="$PROJECT_DIR$/library-zero-file-manager-kotlin" />
             <option value="$PROJECT_DIR$/library-zero-identification-kotlin" />
             <option value="$PROJECT_DIR$/library-zero-logger-kotlin" />
+            <option value="$PROJECT_DIR$/library-zero-markdown-kotlin" />
+            <option value="$PROJECT_DIR$/library-zero-pdfbox-kotlin" />
             <option value="$PROJECT_DIR$/library-zero-test-kotlin" />
             <option value="$PROJECT_DIR$/library-zero-validation-kotlin" />
             <option value="$PROJECT_DIR$/library-zero-xss-kotlin" />

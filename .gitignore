@@ -57,4 +57,6 @@ snyk_code.sh
 snyk_oss.sh
 
 ### etc ###
+library-zero-pdfbox-kotlin/
+library-zero-markdown-kotlin/
 README_*.md
