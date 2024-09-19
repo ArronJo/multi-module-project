@@ -10,6 +10,7 @@ property**/
 
 ### SonarScanner ###
 sonar-project.properties
+sonar.properties
 /.scannerwork
 
 ### IntelliJ IDEA ###

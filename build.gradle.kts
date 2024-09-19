@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.*
+
 plugins {
     kotlin("jvm") version "2.0.0"
     //kotlin("jvm") version "1.9.23"
@@ -237,12 +240,18 @@ tasks.jacocoTestReport {
 }
  */
 
+val sonarProperties = Properties()
+val sonarPropertiesFile = rootProject.file("sonar.properties")
+if (sonarPropertiesFile.exists()) {
+    sonarProperties.load(FileInputStream(sonarPropertiesFile))
+}
+
 // for GitHub Action
 // https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
 sonar {
     properties {
-        property("sonar.projectKey", System.getenv("SONAR_PROJECTKEY"))
-        property("sonar.organization", System.getenv("SONAR_ORGANIZATION"))
+        property("sonar.projectKey", (sonarProperties["projectKey"] as String?) ?: System.getenv("SONAR_PROJECTKEY"))
+        property("sonar.organization",  (sonarProperties["organization"] as String?) ?: System.getenv("SONAR_ORGANIZATION"))
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.coverage.exclusions", "**/generated/**, **/test/base/**")
     }
