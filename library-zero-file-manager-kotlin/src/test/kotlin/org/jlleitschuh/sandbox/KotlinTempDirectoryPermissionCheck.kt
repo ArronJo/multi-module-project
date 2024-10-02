@@ -22,7 +22,8 @@ import java.nio.file.Files
 class KotlinTempDirectoryPermissionCheck {
     @Test
     fun `kotlin check default directory permissions`() {
-        val dir = createTempDir()
+        val dir = kotlin.io.path.createTempDirectory(prefix = "tmp").toFile() // public inline fun createTempDirectory(prefix: String? = null, vararg attributes: FileAttribute<*>)
+        //val dir = createTempDir()   // public fun createTempDir(prefix: String = "tmp", suffix: String? = null, directory: File? = null): File
         println("dir: $dir")
         runLS(dir.parentFile, dir) // Prints drwxr-xr-x
     }
@@ -36,9 +37,10 @@ class KotlinTempDirectoryPermissionCheck {
 
     @Test
     fun `kotlin check default file permissions`() {
-        val file = createTempFile()
+        val file = kotlin.io.path.createTempFile(prefix = "tmp").toFile() // public inline fun createTempFile(prefix: String? = null, suffix: String? = null, vararg attributes: FileAttribute<*>)
+        //val file = createTempFile() // public fun createTempFile(prefix: String = "tmp", suffix: String? = null, directory: File? = null)
         println("file: $file")
-        runLS(file.parentFile, file) // Prints -rw-r--r--
+        runLS(file.parentFile, file) // (kotlin) Prints -rw-------  (java) Prints -rw-r--r--
     }
 
     @Test
