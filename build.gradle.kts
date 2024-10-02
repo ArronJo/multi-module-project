@@ -16,7 +16,7 @@ version = "1.0-beta"
 
 buildscript {
     extra.apply {
-        //set("javaVersion", JavaVersion.VERSION_17)
+        set("javaVersion", JavaVersion.VERSION_18)
         set("jvmTarget", "2.0")
     }
 }
@@ -39,9 +39,9 @@ tasks.test {
     useJUnitPlatform()
 }
 
-//java {
-//    sourceCompatibility = rootProject.extra["javaVersion"] as JavaVersion
-//}
+java {
+    sourceCompatibility = rootProject.extra["javaVersion"] as JavaVersion
+}
 
 kotlin {
     compilerOptions {
