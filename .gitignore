@@ -57,6 +57,9 @@ bin/
 snyk_code.sh
 snyk_oss.sh
 
+### OWASP Dependency-Check ###
+owasp_dependency-check.sh
+
 ### etc ###
 library-zero-pdfbox-kotlin/
 library-zero-markdown-kotlin/
