@@ -26,13 +26,10 @@ repositories {
 }
 
 dependencies {
-//    val jupiterVersion = "5.10.2"
-//
 //    testImplementation(kotlin("test"))
-//    testImplementation( "org.junit.jupiter:junit-jupiter-api:$jupiterVersion")
-//
-//    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-//    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+//    testImplementation(rootProject.libs.junit.jupiter.api)
+//    testRuntimeOnly(rootProject.libs.junit.platform.launcher)
+//    testRuntimeOnly(rootProject.libs.junit.jupiter.engine)
 }
 
 tasks.test {
