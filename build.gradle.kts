@@ -9,6 +9,12 @@ plugins {
     // https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
     id("jacoco")
     id("org.sonarqube") version "5.0.0.4638"
+
+    // https://wiki.owasp.org/images/b/bd/OWASP_Top_10-2017-ko.pdf
+    // https://rcan.net/149?category=998453
+    // https://github.com/dependency-check/dependency-check-sonar-plugin
+    // Dependency-check OWASP
+    id("org.owasp.dependencycheck") version "8.0.2"
 }
 
 group = "com.snc.zero"
@@ -26,11 +32,17 @@ repositories {
 }
 
 dependencies {
+    //implementation("org.owasp:dependency-check-gradle:5.3.0")
+
 //    testImplementation(kotlin("test"))
 //    testImplementation(rootProject.libs.junit.jupiter.api)
 //    testRuntimeOnly(rootProject.libs.junit.platform.launcher)
 //    testRuntimeOnly(rootProject.libs.junit.jupiter.engine)
 }
+
+//dependencyCheck {
+//    format = org.owasp.dependencycheck.reporting.ReportGenerator.Format.ALL
+//}
 
 tasks.test {
     useJUnitPlatform()
@@ -52,6 +64,35 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
         freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
     }
 }
+
+tasks.register("allProjectDependencies") {
+    group = "help"
+    description = "Displays dependencies for all projects"
+
+    doLast {
+        val targetProp = project.layout.buildDirectory.file("all-dependencies.txt")
+        val outputFile = targetProp.get().asFile
+        println("outputFile.parentFile: ${outputFile.parentFile}")
+        if (!outputFile.parentFile.exists()) {
+            outputFile.parentFile.mkdirs()
+        }
+        outputFile.createNewFile()
+
+        outputFile.bufferedWriter().use { writer ->
+            subprojects.forEach { subproject ->
+                writer.write("\n${subproject.name} dependencies:\n")
+                subproject.configurations.forEach { configuration ->
+                    writer.write("\n${configuration.name}\n")
+                    configuration.dependencies.forEach { dependency ->
+                        writer.write("  ${dependency.group}:${dependency.name}:${dependency.version}\n")
+                    }
+                }
+            }
+        }
+        println("Dependencies written to ${outputFile.absolutePath}")
+    }
+}
+
 
 //sourceSets {
 //    getByName("main") {
@@ -84,39 +125,12 @@ sourceSets {
 }
 
 
-
 ///////////////////////////////////////////////////////////
-tasks.register("allProjectDependencies") {
-    group = "help"
-    description = "Displays dependencies for all projects"
-
-    doLast {
-        val targetProp = project.layout.buildDirectory.file("all-dependencies.txt")
-        val outputFile = targetProp.get().asFile
-        println("outputFile.parentFile: ${outputFile.parentFile}")
-        if (!outputFile.parentFile.exists()) {
-            outputFile.parentFile.mkdirs()
-        }
-        outputFile.createNewFile()
-
-        outputFile.bufferedWriter().use { writer ->
-            subprojects.forEach { subproject ->
-                writer.write("\n${subproject.name} dependencies:\n")
-                subproject.configurations.forEach { configuration ->
-                    writer.write("\n${configuration.name}\n")
-                    configuration.dependencies.forEach { dependency ->
-                        writer.write("  ${dependency.group}:${dependency.name}:${dependency.version}\n")
-                    }
-                }
-            }
-        }
-        println("Dependencies written to ${outputFile.absolutePath}")
-    }
-}
-
+// Sub-Projects Settings
 subprojects {
     apply(plugin = "java")
     apply(plugin = "jacoco")
+    apply(plugin= "org.owasp.dependencycheck")
 
     repositories {
         mavenCentral()
@@ -242,15 +256,30 @@ val sonarPropertiesFile = rootProject.file("sonar.properties")
 if (sonarPropertiesFile.exists()) {
     sonarProperties.load(FileInputStream(sonarPropertiesFile))
 }
+//println("sonarProperties: $sonarProperties")
 
 // for GitHub Action
 // https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
+// Task 'sonarqube' is deprecated. Use 'sonar' instead.
 sonar {
     properties {
-        property("sonar.projectKey", (sonarProperties["projectKey"] as String?) ?: System.getenv("SONAR_PROJECTKEY"))
-        property("sonar.organization",  (sonarProperties["organization"] as String?) ?: System.getenv("SONAR_ORGANIZATION"))
+        val sonarProjectKey = (sonarProperties["sonar.projectKey"] as String?) ?: System.getenv("SONAR_PROJECTKEY")
+        val sonarOrganization = (sonarProperties["sonar.organization"] as String?) ?: System.getenv("SONAR_ORGANIZATION")
+        val sonarToken = (sonarProperties["sonar.token"] as String?) ?: System.getenv("SONAR_TOKEN")
+
+        println("-sonarProjectKey: $sonarProjectKey")
+        println("-sonarOrganization: $sonarOrganization")
+        println("-sonarToken: $sonarToken")
+
+        property("sonar.projectKey", sonarProjectKey)
+        property("sonar.organization", sonarOrganization)
+        property("SONAR_TOKEN", sonarToken)
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.coverage.exclusions", "**/generated/**, **/test/base/**")
+
+        // Sonarqube와 통합하려면 다음과 같이 설정할 수 있습니다:
+        //property("sonar.dependencyCheck.jsonReportPath", "build/reports/dependency-check-report.json")
+        //property("sonar.dependencyCheck.htmlReportPath", "build/reports/dependency-check-report.html")
     }
 }
 
