@@ -12,7 +12,7 @@ repositories {
 
 dependencies {
     implementation(project(":library-zero-logger-kotlin"))
-    implementation("com.github.ben-manes.caffeine:caffeine:3.1.8")
+    implementation(libs.cache.caffeine)
 
     testImplementation(project(":library-zero-test-kotlin"))
     testImplementation(libs.junit.jupiter)

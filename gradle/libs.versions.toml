@@ -1,25 +1,32 @@
 [versions]
 junit-jupiter = "5.10.2"
 testng = "7.9.0"
-jsoup = "1.16.1"
 logback-classic = "1.4.14"
 kotlin-logging-jvm = "5.1.0"
+jsoup = "1.16.1"
 bouncycastle-bcprov = "1.78.1"
 google-gson = "2.10.1"
+caffeine = "3.1.8"
+
 
 [libraries]
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
-
 testng = { module = "org.testng:testng", version.ref = "testng" }
+
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-classic" }
 kotlin-logging-jvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging-jvm" }
+
 bouncycastle-bcprov = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncycastle-bcprov" }
 google-gson = { module = "com.google.code.gson:gson", version.ref = "google-gson" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 
+cache-caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version.ref = "caffeine" }
+
+
 [bundles]
+
 
 [plugins]

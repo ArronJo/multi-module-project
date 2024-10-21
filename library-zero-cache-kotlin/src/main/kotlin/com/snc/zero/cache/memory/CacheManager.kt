@@ -21,7 +21,6 @@ object CacheManager {
     fun put(key: String, value: Any, duration: Long = 10 * 60, timeUnit: TimeUnit = TimeUnit.SECONDS) {
         val expiryTime = System.currentTimeMillis() + timeUnit.toMillis(duration)
         cache.put(key, CacheValue(value, expiryTime))
-        //cache.put(key, value)
     }
 
     // 값 가져오기
@@ -33,7 +32,6 @@ object CacheManager {
             cache.invalidate(key) // 유효 기간이 만료되었으면 캐시에서 삭제
             null // 만료된 값은 null 반환
         }
-        //return cache.getIfPresent(key)
     }
 
     // 값 삭제
