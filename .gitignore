@@ -60,6 +60,7 @@ snyk_*.sh
 
 ### OWASP Dependency-Check ###
 owasp_dependency-check.sh
+dependency-check.properties
 
 ### etc ###
 library-zero-pdfbox-kotlin/
