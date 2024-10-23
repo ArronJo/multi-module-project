@@ -56,8 +56,7 @@ bin/
 
 ### Snyk ###
 .dccache
-snyk_code.sh
-snyk_oss.sh
+snyk_*.sh
 
 ### OWASP Dependency-Check ###
 owasp_dependency-check.sh
