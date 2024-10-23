@@ -252,7 +252,7 @@ tasks.jacocoTestReport {
  */
 
 val sonarProperties = Properties()
-val sonarPropertiesFile = rootProject.file("sonar.properties")
+val sonarPropertiesFile = rootProject.file("sonar-project.properties")
 if (sonarPropertiesFile.exists()) {
     sonarProperties.load(FileInputStream(sonarPropertiesFile))
 }
@@ -265,16 +265,19 @@ sonar {
     properties {
         val sonarProjectKey = (sonarProperties["sonar.projectKey"] as String?) ?: System.getenv("SONAR_PROJECTKEY")
         val sonarOrganization = (sonarProperties["sonar.organization"] as String?) ?: System.getenv("SONAR_ORGANIZATION")
+        val sonarHost = (sonarProperties["sonar.host.url"] as String?) ?: "https://sonarcloud.io"
         val sonarToken = (sonarProperties["sonar.token"] as String?) ?: System.getenv("SONAR_TOKEN")
 
-        println("-sonarProjectKey: $sonarProjectKey")
-        println("-sonarOrganization: $sonarOrganization")
-        println("-sonarToken: $sonarToken")
+        //println("-sonarProjectKey: $sonarProjectKey")
+        //println("-sonarOrganization: $sonarOrganization")
+        //println("-sonarToken: $sonarToken")
 
         property("sonar.projectKey", sonarProjectKey)
         property("sonar.organization", sonarOrganization)
         property("SONAR_TOKEN", sonarToken)
-        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.login", sonarToken)
+        property("sonar.host.url", sonarHost)
+
         property("sonar.coverage.exclusions", "**/generated/**, **/test/base/**")
 
         // Sonarqube와 통합하려면 다음과 같이 설정할 수 있습니다:
