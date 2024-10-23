@@ -13,8 +13,7 @@ sonar-project.properties
 sonar.properties
 .sonar.properties
 /.scannerwork
-sonar_quality.sh
-sonar_start.sh
+sonar_*.sh
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
