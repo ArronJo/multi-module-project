@@ -9,8 +9,8 @@ property**/
 .kotlin/
 
 ### SonarScanner ###
-sonar-project.properties
 sonar.properties
+sonar-project.properties
 .sonar.properties
 /.scannerwork
 sonar_*.sh
