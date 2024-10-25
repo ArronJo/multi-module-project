@@ -2,13 +2,13 @@ import java.io.FileInputStream
 import java.util.*
 
 plugins {
-    kotlin("jvm") version "2.0.0"
-    //kotlin("jvm") version "1.9.23"
+    kotlin("jvm") version "2.0.0"   // "1.9.23"
     //id("java")
 
+    // checck latest version
     // https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
     id("jacoco")
-    id("org.sonarqube") version "5.0.0.4638"
+    id("org.sonarqube") version "5.1.0.4882"
 
     // https://wiki.owasp.org/images/b/bd/OWASP_Top_10-2017-ko.pdf
     // https://rcan.net/149?category=998453
@@ -274,8 +274,8 @@ sonar {
 
         property("sonar.projectKey", sonarProjectKey)
         property("sonar.organization", sonarOrganization)
-        property("SONAR_TOKEN", sonarToken)
-        property("sonar.login", sonarToken)
+        property("sonar.token", sonarToken)
+        //property("sonar.login", sonarToken)   // The property 'sonar.login' is deprecated and will be removed in the future. Please use the 'sonar.token' property instead when passing a token.
         property("sonar.host.url", sonarHost)
 
         property("sonar.coverage.exclusions", "**/generated/**, **/test/base/**")
