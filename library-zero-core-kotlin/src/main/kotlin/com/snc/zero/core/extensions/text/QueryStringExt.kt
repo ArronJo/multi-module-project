@@ -27,8 +27,8 @@ fun String.queryStringToMap(): HashMap<String, String> {
     val map = HashMap<String, String>()
     val qs = str.split("&")
     for (s in qs) {
-        val p = s.split("=")
-        map[p[0]] = p[1]
+        val arr = s.split("=")
+        map[arr[0]] = arr[1]
     }
     return map
 }

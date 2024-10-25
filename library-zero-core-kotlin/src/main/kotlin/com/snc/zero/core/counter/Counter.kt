@@ -5,9 +5,10 @@ class Counter {
     private val countMap = hashMapOf<String, Int>()
 
     fun put(key: String) {
-        var value = countMap[key]
+        val value = countMap[key]
         if (null == value) {
-            value = 0
+            countMap[key] = 1
+            return
         }
         countMap[key] = value + 1
     }

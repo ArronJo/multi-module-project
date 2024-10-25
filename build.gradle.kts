@@ -272,11 +272,14 @@ sonar {
         //println("-sonarOrganization: $sonarOrganization")
         //println("-sonarToken: $sonarToken")
 
+        property("sonar.sourceEncoding", "UTF-8")
         property("sonar.projectKey", sonarProjectKey)
         property("sonar.organization", sonarOrganization)
         property("sonar.token", sonarToken)
         //property("sonar.login", sonarToken)   // The property 'sonar.login' is deprecated and will be removed in the future. Please use the 'sonar.token' property instead when passing a token.
         property("sonar.host.url", sonarHost)
+
+        property("sonar.java.binaries", "${layout.buildDirectory}/classes")
 
         property("sonar.coverage.exclusions", "**/generated/**, **/test/base/**")
 
