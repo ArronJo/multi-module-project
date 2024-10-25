@@ -8,13 +8,6 @@ property**/
 ### kotlin 2.0 ###
 .kotlin/
 
-### SonarScanner ###
-sonar.properties
-sonar-project.properties
-.sonar.properties
-/.scannerwork
-sonar_*.sh
-
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
@@ -54,12 +47,19 @@ bin/
 ### Mac OS ###
 .DS_Store
 
+### Shell ###
+shell_*.sh
+
+### SonarScanner ###
+sonar.properties
+sonar-project.properties
+.sonar.properties
+/.scannerwork
+
 ### Snyk ###
 .dccache
-snyk_*.sh
 
 ### OWASP Dependency-Check ###
-owasp_dependency-check.sh
 dependency-check.properties
 
 ### etc ###
