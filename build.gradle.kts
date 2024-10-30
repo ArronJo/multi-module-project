@@ -18,6 +18,7 @@ plugins {
 
     // https://github.com/JLLeitschuh/ktlint-gradle
     // https://plugins.gradle.org/plugin/org.jlleitschuh.gradle.ktlint
+    // https://pinterest.github.io/ktlint/0.49.1/rules/experimental/#multiline-expression-wrapping
     //alias(libs.plugins.ktlint) // id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
 }
 
