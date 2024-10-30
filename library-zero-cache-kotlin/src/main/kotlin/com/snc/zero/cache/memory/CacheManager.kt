@@ -9,11 +9,14 @@ import java.util.concurrent.TimeUnit
  * Caffeine은 특히 메모리 캐시와 관련된 여러 기능을 제공하여, 높은 성능과 효율성을 제공합니다.
  */
 object CacheManager {
+    data class CacheValue<T>(
+        val value: T,
+        val expiryTime: Long
+    )
 
-    data class CacheValue<T>(val value: T, val expiryTime: Long)
-
-    private val cache = Caffeine.newBuilder()
-        //.expireAfterWrite(10, TimeUnit.MINUTES) // 10분 후 만료
+    //.expireAfterWrite(10, TimeUnit.MINUTES) // 10분 후 만료
+    private val cache = Caffeine
+        .newBuilder()
         .maximumSize(100) // 최대 100개의 항목 저장
         .build<String, CacheValue<Any>>()
 

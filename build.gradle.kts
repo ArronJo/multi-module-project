@@ -2,19 +2,23 @@ import java.io.FileInputStream
 import java.util.*
 
 plugins {
-    kotlin("jvm") version "2.0.0"   // "1.9.23"
-    //id("java")
+    kotlin("jvm") version "2.0.0" // "1.9.23"
+    // id("java")
 
     // checck latest version
     // https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
     id("jacoco")
-    id("org.sonarqube") version "5.1.0.4882"
+    alias(libs.plugins.sonarqube) // id("org.sonarqube") version "5.1.0.4882"
 
     // https://wiki.owasp.org/images/b/bd/OWASP_Top_10-2017-ko.pdf
     // https://rcan.net/149?category=998453
     // https://github.com/dependency-check/dependency-check-sonar-plugin
     // Dependency-check OWASP
-    id("org.owasp.dependencycheck") version "8.0.2"
+    alias(libs.plugins.dependencycheck) // id("org.owasp.dependencycheck") version "8.0.2"
+
+    // https://github.com/JLLeitschuh/ktlint-gradle
+    // https://plugins.gradle.org/plugin/org.jlleitschuh.gradle.ktlint
+    //alias(libs.plugins.ktlint) // id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
 }
 
 group = "com.snc.zero"
@@ -93,7 +97,6 @@ tasks.register("allProjectDependencies") {
     }
 }
 
-
 //sourceSets {
 //    getByName("main") {
 //        java.srcDirs("src/main/java", "src/main/kotlin")
@@ -124,133 +127,32 @@ sourceSets {
     }
 }
 
-
 ///////////////////////////////////////////////////////////
-// Sub-Projects Settings
-subprojects {
-    apply(plugin = "java")
-    apply(plugin = "jacoco")
-    apply(plugin= "org.owasp.dependencycheck")
-
-    repositories {
-        mavenCentral()
-    }
-
-    dependencies {
-        if (name != "library-zero-test-kotlin") {
-            evaluationDependsOn(":library-zero-test-kotlin")
-            dependencies {
-                add("implementation", project(":library-zero-test-kotlin"))
-            }
-        }
-        dependencies {
-            testImplementation(rootProject.libs.junit.jupiter)
-            testRuntimeOnly(rootProject.libs.junit.platform.launcher)
-            testRuntimeOnly(rootProject.libs.junit.jupiter.engine)
-        }
-    }
-
-    tasks.register<DependencyReportTask>("allDependencies") {
-        description = "Inject dependencies into subprojects."
-        group = JavaBasePlugin.DOCUMENTATION_GROUP
-        // 특정 구성(configuration)의 의존성만 보고 싶다면,
-        //configurations = setOf(project.configurations.getByName("compileClasspath"))
-    }
-    // HTML 보고서를 생성하고 싶다면, 다음과 같이 설정할 수 있습니다:
-    tasks.register<HtmlDependencyReportTask>("htmlDependencyReport") {
-        description = "Generates the HTML documentation for this project."
-        group = JavaBasePlugin.DOCUMENTATION_GROUP
-        reports {
-            html.required.set(true)
-            html.outputLocation.set(file("${layout.buildDirectory}/reports/dependencies"))
-        }
-    }
-
-    tasks.test {
-        finalizedBy(tasks.jacocoTestReport, tasks.jacocoTestCoverageVerification)
-        useJUnitPlatform()
-
-        jacoco {
-            //excludes.add("com/snc/test/test/**")
-            //exclude("**/BaseJUnit5Test*.class")
-        }
-    }
-
-    tasks.jacocoTestReport {
-        dependsOn(tasks.test)
-
-        reports {
-            xml.required.set(true)
-            html.required.set(true)
-            csv.required.set(false)
-            //html.outputLocation.set(file("${layout.buildDirectory}/reports/jacoco"))
-        }
-
-        //additionalClassDirs(files("build/classes/kotlin/main"))
-        //additionalSourceDirs(files("src/main/kotlin"))
-        //executionData(files("build/jacoco/test.exec"))
-
-        classDirectories.setFrom(
-            sourceSets.main.get().output.asFileTree.matching {
-                exclude("com/snc/zero/test/base/**")
-                //exclude("**/BaseJUnit5Test*.class")
-            }
-        )
-    }
-
-    tasks.jacocoTestCoverageVerification {
-        /*
-        violationRules {
-            rule {
-                enabled = true
-                element = "CLASS"
-
-                // 적용 할 패키지(기본은 전체)
-                // includes = []
-
-                limit {
-                    counter = "BRANCH"
-                    value = "COVEREDRATIO"
-                    minimum = 0.50.toBigDecimal()
-                }
-
-                limit {
-                    counter = "LINE"
-                    value = "COVEREDRATIO"
-                    minimum = 0.50.toBigDecimal()
-                }
-
-                limit {
-                    counter = "LINE"
-                    value = "TOTALCOUNT"
-                    maximum = 200.toBigDecimal()
-                }
-            }
-        }
-         */
-    }
-}
-
-
-///////////////////////////////////////////////////////////
-// https://github.com/jacoco/jacoco/releases
+// Jacoco
+//
+// -Getting Started: https://docs.gradle.org/current/userguide/jacoco_plugin.html
+//                   https://yeoonjae.tistory.com/entry/Project-Gradle-Build-%EC%8B%9C-JaCoCo-%EC%97%B0%EB%8F%99%ED%95%98%EA%B8%B0
+// -Release: https://github.com/jacoco/jacoco/releases
 jacoco {
     toolVersion = "0.8.12"
+    //reportsDirectory = layout.buildDirectory.dir("customJacocoReportDir")
 }
 /*
 tasks.test {
-    useJUnitPlatform()
     finalizedBy(tasks.jacocoTestReport)
 }
 
 tasks.jacocoTestReport {
     reports {
         xml.required.set(true)
+        html.required.set(true)
     }
     dependsOn(tasks.test)
 }
  */
 
+///////////////////////////////////////////////////////////
+// SonarQube
 val sonarProperties = Properties()
 val sonarPropertiesFile = rootProject.file("sonar-project.properties")
 if (sonarPropertiesFile.exists()) {
@@ -291,8 +193,8 @@ sonar {
 
 System.setProperty("sonar.gradle.skipCompile", "true")
 
-
 ///////////////////////////////////////////////////////////
+// Shell
 tasks.register<Exec>("deleteDSStoreShellScript") {
     description = "This is a shell task that deletes the '.DS_Store' file when building a project."
     group = JavaBasePlugin.BUILD_TASK_NAME
@@ -305,4 +207,120 @@ tasks.register<Exec>("deleteDSStoreShellScript") {
 
 tasks.named("compileJava") {
     dependsOn("deleteDSStoreShellScript")
+}
+
+///////////////////////////////////////////////////////////
+// Sub-Projects Settings
+subprojects {
+    apply(plugin = "java")
+    apply(plugin = "jacoco")
+    apply(plugin = "org.owasp.dependencycheck")
+    //apply(plugin = "org.jlleitschuh.gradle.ktlint")
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        if (name != "library-zero-test-kotlin") {
+            evaluationDependsOn(":library-zero-test-kotlin")
+            dependencies {
+                add("implementation", project(":library-zero-test-kotlin"))
+            }
+        }
+        dependencies {
+            testImplementation(rootProject.libs.junit.jupiter)
+            testRuntimeOnly(rootProject.libs.junit.platform.launcher)
+            testRuntimeOnly(rootProject.libs.junit.jupiter.engine)
+        }
+    }
+
+    // Optionally configure plugin
+    //configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+    //    debug.set(true)
+    //}
+
+    tasks.register<DependencyReportTask>("allDependencies") {
+        description = "Inject dependencies into subprojects."
+        group = JavaBasePlugin.DOCUMENTATION_GROUP
+        // 특정 구성(configuration)의 의존성만 보고 싶다면,
+        //configurations = setOf(project.configurations.getByName("compileClasspath"))
+    }
+    // HTML 보고서를 생성하고 싶다면, 다음과 같이 설정할 수 있습니다:
+    tasks.register<HtmlDependencyReportTask>("htmlDependencyReport") {
+        description = "Generates the HTML documentation for this project."
+        group = JavaBasePlugin.DOCUMENTATION_GROUP
+        reports {
+            html.required.set(true)
+            html.outputLocation.set(file("${layout.buildDirectory}/reports/dependencies"))
+        }
+    }
+
+    tasks.test {
+        useJUnitPlatform()
+    }
+
+    tasks.test {
+        // 실행순서 : test -> jacocoTestReport -> jacocoTestCoverageVerification
+        finalizedBy(tasks.jacocoTestReport, tasks.jacocoTestCoverageVerification)
+
+        jacoco {
+            //excludes.add("com/snc/test/test/**")
+            //exclude("**/BaseJUnit5Test*.class")
+        }
+    }
+
+    tasks.jacocoTestReport {
+        dependsOn(tasks.test)
+
+        reports {
+            xml.required.set(true)
+            html.required.set(true)
+            csv.required.set(false)
+            //html.outputLocation.set(file("${layout.buildDirectory}/reports/jacoco"))
+        }
+
+        //additionalClassDirs(files("build/classes/kotlin/main"))
+        //additionalSourceDirs(files("src/main/kotlin"))
+        //executionData(files("build/jacoco/test.exec"))
+
+        classDirectories.setFrom(
+            sourceSets.main.get().output.asFileTree.matching {
+                exclude("com/snc/zero/test/base/**")
+                //exclude("**/BaseJUnit5Test*.class")
+            },
+        )
+    }
+
+    tasks.jacocoTestCoverageVerification {
+        /*
+        violationRules {
+            rule {
+                enabled = true
+                element = "CLASS"
+
+                // 적용 할 패키지(기본은 전체)
+                // includes = []
+
+                limit {
+                    counter = "BRANCH"
+                    value = "COVEREDRATIO"
+                    minimum = 0.50.toBigDecimal()
+                }
+
+                limit {
+                    counter = "LINE"
+                    value = "COVEREDRATIO"
+                    minimum = 0.50.toBigDecimal()
+                }
+
+                limit {
+                    counter = "LINE"
+                    value = "TOTALCOUNT"
+                    maximum = 200.toBigDecimal()
+                }
+            }
+        }
+         */
+    }
 }

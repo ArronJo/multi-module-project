@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit
 private val logger = TLogging.logger { }
 
 class CacheManagerTest : BaseJUnit5Test() {
-
     @Test
     fun `Caffeine Cache - Test 1`() {
         // 캐시에 데이터 저장

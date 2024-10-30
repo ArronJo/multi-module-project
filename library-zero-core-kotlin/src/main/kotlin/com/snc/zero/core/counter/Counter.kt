@@ -1,7 +1,6 @@
 package com.snc.zero.core.counter
 
 class Counter {
-
     private val countMap = hashMapOf<String, Int>()
 
     fun put(key: String) {

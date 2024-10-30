@@ -10,43 +10,43 @@ fun Calendar.setYear(year: Int): Calendar {
     return this
 }
 
-fun Calendar.setMonth(month: Int): Calendar  {
+fun Calendar.setMonth(month: Int): Calendar {
     this[Calendar.MONTH] = month - 1
     return this
 }
 
-fun Calendar.setDay(day: Int): Calendar  {
+fun Calendar.setDay(day: Int): Calendar {
     this[Calendar.DAY_OF_MONTH] = day
     return this
 }
 
-fun Calendar.setHour(hour: Int): Calendar  {
+fun Calendar.setHour(hour: Int): Calendar {
     this[Calendar.HOUR_OF_DAY] = hour
     return this
 }
 
-fun Calendar.setMinute(minute: Int): Calendar  {
+fun Calendar.setMinute(minute: Int): Calendar {
     this[Calendar.MINUTE] = minute
     return this
 }
 
-fun Calendar.setSecond(second: Int): Calendar  {
+fun Calendar.setSecond(second: Int): Calendar {
     this[Calendar.SECOND] = second
     return this
 }
 
-fun Calendar.setMillisecond(millisecond: Int): Calendar  {
+fun Calendar.setMillisecond(millisecond: Int): Calendar {
     this[Calendar.MILLISECOND] = millisecond
     return this
 }
 
-fun Calendar.startOfMonth(): Calendar  {
+fun Calendar.startOfMonth(): Calendar {
     this.setDay(1)
     this.startOfDay()
     return this
 }
 
-fun Calendar.startOfDay(): Calendar  {
+fun Calendar.startOfDay(): Calendar {
     this.setHour(0)
     this.setMonth(0)
     this.setSecond(0)
@@ -54,14 +54,14 @@ fun Calendar.startOfDay(): Calendar  {
     return this
 }
 
-fun Calendar.endOfMonth(): Calendar  {
+fun Calendar.endOfMonth(): Calendar {
     val v = this.getLastDayOfMonth()
     this.setDay(v)
     endOfDay()
     return this
 }
 
-fun Calendar.endOfDay(): Calendar  {
+fun Calendar.endOfDay(): Calendar {
     this.setHour(23)
     this.setMinute(59)
     this.setSecond(59)
@@ -69,43 +69,43 @@ fun Calendar.endOfDay(): Calendar  {
     return this
 }
 
-fun Calendar.addYear(amount: Int): Calendar  {
+fun Calendar.addYear(amount: Int): Calendar {
     val v = this.getYear()
     this.setYear(v + amount)
     return this
 }
 
-fun Calendar.addMonth(amount: Int): Calendar  {
+fun Calendar.addMonth(amount: Int): Calendar {
     val v = this.getMonth()
     this.setMonth(v + amount)
     return this
 }
 
-fun Calendar.addDay(amount: Int): Calendar  {
+fun Calendar.addDay(amount: Int): Calendar {
     val v = this.getDay()
     this.setDay(v + amount)
     return this
 }
 
-fun Calendar.addHour(amount: Int): Calendar  {
+fun Calendar.addHour(amount: Int): Calendar {
     val v = this.getHour()
     this.setHour(v + amount)
     return this
 }
 
-fun Calendar.addMinute(amount: Int): Calendar  {
+fun Calendar.addMinute(amount: Int): Calendar {
     val v = this.getMinute()
     this.setMinute(v + amount)
     return this
 }
 
-fun Calendar.addSecond(amount: Int): Calendar  {
+fun Calendar.addSecond(amount: Int): Calendar {
     val v = this.getSecond()
     this.setSecond(v + amount)
     return this
 }
 
-fun Calendar.addMillisecond(amount: Int): Calendar  {
+fun Calendar.addMillisecond(amount: Int): Calendar {
     val v = this.getMillisecond()
     this.setMillisecond(v + amount)
     return this
@@ -158,7 +158,6 @@ fun String.toCalendar(pattern: String = "yyyyMMddHHmmss"): Calendar {
     try {
         val date = sdf.parse(this.substring(0, min(pattern.length, this.length)))
         calendar.time = date
-
     } catch (e: ParseException) {
         e.printStackTrace()
     }
