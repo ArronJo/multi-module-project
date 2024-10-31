@@ -5,21 +5,34 @@ root = true
 
 # noinspection EditorConfigKeyCorrectness
 [*]
+charset = utf-8
 end_of_line = lf
 insert_final_newline = true
+#indent_size = 4
+#indent_style = space
+#max_line_length = 120
+#tab_width = 4
+#trim_trailing_whitespace = true
+#ij_continuation_indent_size = 8
 ktlint_code_style = intellij_idea
-ktlint_standard_wrapping = disabled
+#ktlint_standard_wrapping = disabled
+
+# noinspection EditorConfigKeyCorrectness
+#[*.gradle.kts]
+#ktlint = disabled
 
 # noinspection EditorConfigKeyCorrectness
 [*.{kt,kts}]
+# Imports must be ordered in lexicographic order without any empty lines in-between with "java", "javax", "kotlin" and aliases in the end (standard:import-ordering)
+ktlint_standard_import-ordering = disabled
+
 # Wildcard import (cannot be auto-corrected) (standard:no-wildcard-imports)
 ktlint_standard_no-wildcard-imports = disabled
 
 # (standard:filename)
 ktlint_standard_filename = disabled
 
-# Imports must be ordered in lexicographic order without any empty lines in-between with "java", "javax", "kotlin" and aliases in the end (standard:import-ordering)
-ktlint_standard_import-ordering = disabled
+#ktlint_standard_annotation = disabled
 
 # Skipping rule(s) which are depending on a rule which is not loaded.
 # Please check if you need to add additional rule sets before creating an issue.
@@ -59,3 +72,9 @@ ktlint_standard_discouraged-comment-location = disabled
 # Argument should be on a separate line (unless all arguments can fit a single line) (standard:argument-list-wrapping)
 # Missing newline before ")"
 #ktlint_standard_argument-list-wrapping = disabled
+
+#[*.{yml,yaml}]
+#indent_size = 2
+
+#[*.{md,mdx}]
+#trim_trailing_whitespace = false

@@ -141,7 +141,7 @@ ktlint {
     verbose.set(true)
     android.set(false)
     outputToConsole.set(true) // 콘솔 출력 활성화
-    //ignoreFailures.set(true) // 검사 실패 시 빌드 실패하도록 설정
+    //ignoreFailures.set(true)  // true: 오류 무시하고 계속 진행
     //enableExperimentalRules.set(true) // 실험적 규칙 활성화
 
     filter {
