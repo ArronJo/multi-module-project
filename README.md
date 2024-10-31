@@ -21,8 +21,10 @@
 
 ---
 ## 코드 품질 및 테스트 커버리지를 관리
-- Jacoco
-  - JaCoCo (Java Code Coverage)는 코드 커버리지 도구
+- Ktlint
+    코드 스타일을 검사하고, 맞춰주는 도구
+- Jacoco (Java Code Coverage)
+  - 자바 코드 커버리지 도구
 - SonarCloud
   - 클라우드 기반 (정적 코드 분석) 코드 품질 분석 및 보안 분석 도구
 
