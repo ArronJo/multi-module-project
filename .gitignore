@@ -64,6 +64,7 @@ dependency-check.properties
 
 ### docs ###
 *.md
+!README.md
 
 ### sub-proejct ###
 library-zero-pdfbox-kotlin/
