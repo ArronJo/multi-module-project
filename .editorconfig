@@ -17,12 +17,16 @@ insert_final_newline = true
 ktlint_code_style = intellij_idea
 #ktlint_standard_wrapping = disabled
 
+
 # noinspection EditorConfigKeyCorrectness
 #[*.gradle.kts]
 #ktlint = disabled
 
+
 # noinspection EditorConfigKeyCorrectness
 [*.{kt,kts}]
+#ktlint_experimental = enabled
+
 # Imports must be ordered in lexicographic order without any empty lines in-between with "java", "javax", "kotlin" and aliases in the end (standard:import-ordering)
 ktlint_standard_import-ordering = disabled
 

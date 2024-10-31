@@ -1,5 +1,5 @@
 [versions]
-ktlint = "12.0.3"
+ktlint = "12.1.1" # https://plugins.gradle.org/plugin/org.jlleitschuh.gradle.ktlint
 sonarqube = "5.1.0.4882"
 dependencycheck = "8.0.2"
 

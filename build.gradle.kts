@@ -18,7 +18,6 @@ plugins {
 
     // https://github.com/JLLeitschuh/ktlint-gradle
     // https://plugins.gradle.org/plugin/org.jlleitschuh.gradle.ktlint
-    // https://pinterest.github.io/ktlint/0.49.1/rules/experimental/#multiline-expression-wrapping
     alias(libs.plugins.ktlint) // id("org.jlleitschuh.gradle.ktlint") version "12.0.3"
 }
 
@@ -134,10 +133,10 @@ sourceSets {
 
 ///////////////////////////////////////////////////////////
 // KtLint
-// https://github.com/JLLeitschuh/ktlint-gradle
-//configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-ktlint {
-    version.set("1.0.1")
+// -GitHyb: https://github.com/JLLeitschuh/ktlint-gradle
+// -Rule: https://pinterest.github.io/ktlint/latest/rules/standard/
+ktlint { //configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+    version.set("1.4.0") // CLI 최신버전 확인: https://pinterest.github.io/ktlint/latest/
     verbose.set(true)
     android.set(false)
     outputToConsole.set(true) // 콘솔 출력 활성화
@@ -146,16 +145,22 @@ ktlint {
 
     filter {
         //exclude("**/generated/**") // 생성된 코드 제외
+        //exclude("**/build/**") // 생성된 코드 제외
+        //exclude("**/*Test.kt") // 특정 파일 제외
         //include("**/kotlin/**") // kotlin 소스만 포함
     }
 
-    // 룰 커스터마이징
     reporters {
-        //reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
-        //reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
         reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.HTML)
     }
 }
+
+// 특정 task에서만 오류 무시:
+//tasks.withType<org.jlleitschuh.gradle.ktlint.tasks.KtLintCheckTask> {
+//    ignoreFailures = true
+//}
 
 ///////////////////////////////////////////////////////////
 // Jacoco
@@ -233,6 +238,8 @@ tasks.register<Exec>("deleteDSStoreShellScript") {
     } else {
         commandLine("sh", "./del_ds_store.sh")
     }
+
+    //delete file('src/main/generated') // 인텔리제이 Annotation processor 생성물 생성 위치
 }
 
 tasks.named("compileJava") {
@@ -251,6 +258,14 @@ subprojects {
         mavenCentral()
     }
 
+    ktlint {
+        reporters {
+            reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
+            reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+            reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.HTML)
+        }
+    }
+
     dependencies {
         if (name != "library-zero-test-kotlin") {
             evaluationDependsOn(":library-zero-test-kotlin")
@@ -263,17 +278,6 @@ subprojects {
             testRuntimeOnly(rootProject.libs.junit.platform.launcher)
             testRuntimeOnly(rootProject.libs.junit.jupiter.engine)
         }
-    }
-
-    // Optionally configure plugin
-    //configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-    ktlint {
-        version.set("1.0.1")
-        verbose.set(true)
-        android.set(false)
-        outputToConsole.set(true) // 콘솔 출력 활성화
-        //ignoreFailures.set(true) // 검사 실패 시 빌드 실패하도록 설정
-        //enableExperimentalRules.set(true) // 실험적 규칙 활성화
     }
 
     tasks.register<DependencyReportTask>("allDependencies") {
