@@ -2,12 +2,15 @@
 root = true
 
 # https://pinterest.github.io/ktlint/0.49.1/rules/standard/
+
+# noinspection EditorConfigKeyCorrectness
 [*]
 end_of_line = lf
 insert_final_newline = true
 ktlint_code_style = intellij_idea
 ktlint_standard_wrapping = disabled
 
+# noinspection EditorConfigKeyCorrectness
 [*.{kt,kts}]
 # Wildcard import (cannot be auto-corrected) (standard:no-wildcard-imports)
 ktlint_standard_no-wildcard-imports = disabled
