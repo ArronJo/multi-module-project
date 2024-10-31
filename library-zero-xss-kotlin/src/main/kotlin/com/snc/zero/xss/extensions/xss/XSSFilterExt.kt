@@ -5,7 +5,7 @@ import org.jsoup.safety.Safelist
 
 fun String.cleanXSS(jsoup: Boolean = false): String {
     return if (jsoup) {
-    	Jsoup.clean(this, Safelist.relaxed().preserveRelativeLinks(true))
+        Jsoup.clean(this, Safelist.relaxed().preserveRelativeLinks(true))
     } else {
         this.replace("(?i)<script(.*?)</script>".toRegex(), "")
             .replace("(?i)javascript:".toRegex(), "")

@@ -26,7 +26,7 @@ class DecoderTest : BaseJUnit5Test() {
     @Test
     fun `Decode To Base64 (Safe URL)`() {
         // given
-        val data = "U3BlY2lhbCBjaGFyczogw7vDu8O/IGhlcmUu"   // -> "Special chars: ûÿ here."
+        val data = "U3BlY2lhbCBjaGFyczogw7vDu8O/IGhlcmUu" // -> "Special chars: ûÿ here."
         // when
         val v1 = Decoder.with(Decoder.Algo.BASE64).decode(data)
         val v2 = java.util.Base64.getDecoder().decode(data)

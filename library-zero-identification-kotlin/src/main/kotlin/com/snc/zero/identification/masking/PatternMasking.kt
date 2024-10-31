@@ -28,8 +28,8 @@ object PatternMasking {
         if (matchResult != null) {
             val (first, middle, last) = matchResult.destructured
             return "${first.take(2)}${"*".repeat(first.length - 2)}-" +
-                    "${"*".repeat(middle.length)}-" +
-                    "${"*".repeat(last.length - 2)}${last.takeLast(2)}"
+                "${"*".repeat(middle.length)}-" +
+                "${"*".repeat(last.length - 2)}${last.takeLast(2)}"
         }
         return str
     }
@@ -45,9 +45,9 @@ object PatternMasking {
         if (matchResult != null) {
             val groups = matchResult.groupValues.drop(1).filter { it.isNotEmpty() }
             return if (groups.size >= 4) {
-                "${groups[0]}-****-****-${groups[3]}"  // 16자리 카드
+                "${groups[0]}-****-****-${groups[3]}" // 16자리 카드
             } else {
-                "${groups[0]}-******-${groups[2]}"     // 15자리 카드 (American Express)
+                "${groups[0]}-******-${groups[2]}" // 15자리 카드 (American Express)
             }
         }
         return str

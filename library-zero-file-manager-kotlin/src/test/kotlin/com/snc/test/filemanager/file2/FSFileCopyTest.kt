@@ -24,7 +24,7 @@ class FSFileCopyTest : BaseJUnit5Test() {
 
         val projectRoot = Paths.get("").toAbsolutePath()
         println("Project Root Directory: $projectRoot")
-        parent = "${projectRoot}/build/xxx".toFile()
+        parent = "$projectRoot/build/xxx".toFile()
         dir = "$parent/tcc".toFile()
     }
 
@@ -35,8 +35,8 @@ class FSFileCopyTest : BaseJUnit5Test() {
         //val e = assertThrows(
         //    IOException::class.java
         //) {
-            FSFile.create(src, overwrite = true)
-            FSFile.copy(src, dst, overwrite = true)
+        FSFile.create(src, overwrite = true)
+        FSFile.copy(src, dst, overwrite = true)
         //}
         //logger.debug { "${e.message}" }
         //assertNotEquals(e.message, "")

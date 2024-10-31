@@ -52,7 +52,7 @@ class Base64Test : BaseJUnit5Test() {
     @Test
     fun `Decode To Base64 (Safe URL) 변환`() {
         // given
-        val data = "U3BlY2lhbCBjaGFyczogw7vDu8O/IGhlcmUu"   // -> "Special chars: ûÿ here."
+        val data = "U3BlY2lhbCBjaGFyczogw7vDu8O/IGhlcmUu" // -> "Special chars: ûÿ here."
         // when
         val v1 = String(Base64.decode(data))
         val v2 = String(java.util.Base64.getDecoder().decode(data))

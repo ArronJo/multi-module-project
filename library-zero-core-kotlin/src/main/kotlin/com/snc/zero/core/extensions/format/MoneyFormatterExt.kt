@@ -29,15 +29,15 @@ private fun calculateUnit(c: Int): Long {
 }
 
 fun Long.formatWordKoreanMoney(): String {
-    val han1 = arrayOf( "", "일", "이", "삼", "사", "오", "육", "칠", "팔", "구" )
-    val han2 = arrayOf( "", "십", "백", "천" )
-    val han3 = arrayOf( "", "만", "억", "조", "경" )
+    val han1 = arrayOf("", "일", "이", "삼", "사", "오", "육", "칠", "팔", "구")
+    val han2 = arrayOf("", "십", "백", "천")
+    val han3 = arrayOf("", "만", "억", "조", "경")
 
     val sb = StringBuilder()
     val str = this.toString()
     val len = str.length
     for (i in (len - 1) downTo 1) {
-        val s = str.substring(len-i-1, len-i)
+        val s = str.substring(len - i - 1, len - i)
         val v = Integer.parseInt(s)
         sb.append(han1[v])
         if (v > 0) {

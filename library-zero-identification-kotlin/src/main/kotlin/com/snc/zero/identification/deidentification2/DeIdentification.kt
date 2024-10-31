@@ -10,8 +10,8 @@ object DeIdentification {
             var v: Array<String>
             while (true) {
                 v = Faker.Name.fake(provider, female)
-                if (!v[0].lowercase().startsWith(firstName.substring(0, 1).lowercase())
-                    && !v[1].lowercase().startsWith(lastName.substring(0, 1).lowercase())
+                if (!v[0].lowercase().startsWith(firstName.substring(0, 1).lowercase()) &&
+                    !v[1].lowercase().startsWith(lastName.substring(0, 1).lowercase())
                 ) {
                     break
                 }

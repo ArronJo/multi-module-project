@@ -9,7 +9,6 @@ object Faker {
     enum class ProviderType {
         KOREAN,
         ENGLISH
-        ;
     }
 
     fun checkEnum(type: ProviderType): Boolean {

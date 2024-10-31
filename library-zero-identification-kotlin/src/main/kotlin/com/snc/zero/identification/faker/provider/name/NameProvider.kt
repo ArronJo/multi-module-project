@@ -23,7 +23,6 @@ open class NameProvider {
         return target[getRandomInt(max = target.size - 1)]
     }
 
-
     private val random = SplittableRandom()
 
     private fun getRandomInt(min: Int = 0, max: Int): Int {

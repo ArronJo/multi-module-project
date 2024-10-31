@@ -4,7 +4,7 @@ import com.snc.zero.crypto.hash.base.BaseHash
 import org.bouncycastle.crypto.digests.SHAKEDigest
 import java.nio.charset.Charset
 
-object SHAKE: BaseHash() {
+object SHAKE : BaseHash() {
 
     fun shake128(msg: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
         return digest(msg, 128, salt, iterationCount, charSet)

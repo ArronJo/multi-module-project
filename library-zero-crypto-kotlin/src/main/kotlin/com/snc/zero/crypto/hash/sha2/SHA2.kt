@@ -6,7 +6,7 @@ import java.security.MessageDigest
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
-object SHA2: BaseHash() {
+object SHA2 : BaseHash() {
 
     fun hmacSHA224(msg: String, key: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
         return digest(msg, key, 224, salt, iterationCount, charSet)

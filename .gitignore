@@ -62,7 +62,9 @@ sonar-project.properties
 ### OWASP Dependency-Check ###
 dependency-check.properties
 
-### etc ###
+### docs ###
+*.md
+
+### sub-proejct ###
 library-zero-pdfbox-kotlin/
 library-zero-markdown-kotlin/
-README_*.md

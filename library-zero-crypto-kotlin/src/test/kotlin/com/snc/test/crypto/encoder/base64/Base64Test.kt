@@ -27,10 +27,14 @@ class Base64Test : BaseJUnit5Test() {
     fun `Encode To Base64 변환 2`() {
         // given
         val data = listOf(
-            //"ÿ", "û",
-            //"M", "Ma", "Man",
-            "Ma\u007e","Ma\u007f",
-            )
+            //"ÿ",
+            //"û",
+            //"M",
+            //"Ma",
+            //"Man",
+            "Ma\u007e",
+            "Ma\u007f",
+        )
         // when
         for (input in data) {
             val v = Base64.encode(input.toByteArray())
@@ -48,7 +52,7 @@ class Base64Test : BaseJUnit5Test() {
         val v2 = String(java.util.Base64.getEncoder().encode(data.toByteArray()))
         // then
         // Safe URL Base64 인코딩 처리되면서  "/" -> "_" 로 변경되므로 값이 다르게 표현된다.
-        logger.debug { "Base64 encoded 1: $v1" }  // "U3BlY2lhbCBjaGFyczogw7vDu8O_IGhlcmUu"
+        logger.debug { "Base64 encoded 1: $v1" } // "U3BlY2lhbCBjaGFyczogw7vDu8O_IGhlcmUu"
         logger.debug { "Base64 encoded 2: $v2" } // "U3BlY2lhbCBjaGFyczogw7vDu8O/IGhlcmUu"
         assertNotEquals(v1, v2)
     }

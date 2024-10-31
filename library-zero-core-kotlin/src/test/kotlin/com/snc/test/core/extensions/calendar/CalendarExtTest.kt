@@ -92,6 +92,7 @@ class CalendarExtTest : BaseJUnit5Test() {
         // then
         logger.debug { "Calendar diff 결과: ${cal.diff(cal2)}" }
     }
+
     @Test
     fun `Calendar start day of month`() {
         // given

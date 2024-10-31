@@ -36,7 +36,7 @@ class CipherTest : BaseJUnit5Test() {
             .transform(transform)
             .encrypt(data.toByteArray())
         // then
-        logger.debug { "AES encrypt [$transform]: $enc" }   // NY8CIRn5Ni6AOxb7g7qtmg==
+        logger.debug { "AES encrypt [$transform]: $enc" } // NY8CIRn5Ni6AOxb7g7qtmg==
 
         val v = Cipher.with(Cipher.Algo.AES)
             .key(key, iv)
@@ -59,7 +59,7 @@ class CipherTest : BaseJUnit5Test() {
             .transform(transform)
             .encrypt(data.toByteArray())
         // then
-        logger.debug { "AES encrypt [$transform]: $enc" }   // o4dICw2KpRvvWwgVbKj0yA==
+        logger.debug { "AES encrypt [$transform]: $enc" } // o4dICw2KpRvvWwgVbKj0yA==
 
         val v = Cipher.with(Cipher.Algo.AES)
             .key(key, iv)
@@ -82,7 +82,7 @@ class CipherTest : BaseJUnit5Test() {
             .transform(transform)
             .encrypt(data.toByteArray())
         // then
-        logger.debug { "AES encrypt [$transform]: $enc" }   // NY8CIRn5
+        logger.debug { "AES encrypt [$transform]: $enc" } // NY8CIRn5
 
         val v = Cipher.with(Cipher.Algo.AES)
             .key(key, iv)
@@ -105,7 +105,7 @@ class CipherTest : BaseJUnit5Test() {
             .transform(transform)
             .encrypt(data.toByteArray())
         // then
-        logger.debug { "AES encrypt [$transform]: $enc" }   // NY8CIRn5
+        logger.debug { "AES encrypt [$transform]: $enc" } // NY8CIRn5
 
         val v = Cipher.with(Cipher.Algo.AES)
             .key(key, iv)

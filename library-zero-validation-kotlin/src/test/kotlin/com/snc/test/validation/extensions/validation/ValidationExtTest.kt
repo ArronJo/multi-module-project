@@ -107,6 +107,7 @@ class ValidationExtTest : BaseJUnit5Test() {
         logger.debug { "영소로 구성되어 있느냐 결과: $v1 : $data" }
         assertEquals(true, v1)
     }
+
     @Test
     fun `영대로 구성되어 있느냐`() {
         // given

@@ -23,13 +23,13 @@ class MathExtTest : BaseJUnit5Test() {
         val v4 = number.roundToDecimalPlaces(4)
         val v5 = number.roundToDecimalPlaces(5)
 
-        logger.debug { "Rounded to -1 decimal places: $vm1" }  // 0.0
-        logger.debug { "Rounded to 0 decimal places: $v0" }    // 4.0
-        logger.debug { "Rounded to 1 decimal places: $v1" }    // 3.6
-        logger.debug { "Rounded to 2 decimal places: $v2" }    // 3.56
-        logger.debug { "Rounded to 3 decimal places: $v3" }    // 3.556
-        logger.debug { "Rounded to 4 decimal places: $v4" }    // 3.5556
-        logger.debug { "Rounded to 5 decimal places: $v5" }    // 3.55555
+        logger.debug { "Rounded to -1 decimal places: $vm1" } // 0.0
+        logger.debug { "Rounded to 0 decimal places: $v0" } // 4.0
+        logger.debug { "Rounded to 1 decimal places: $v1" } // 3.6
+        logger.debug { "Rounded to 2 decimal places: $v2" } // 3.56
+        logger.debug { "Rounded to 3 decimal places: $v3" } // 3.556
+        logger.debug { "Rounded to 4 decimal places: $v4" } // 3.5556
+        logger.debug { "Rounded to 5 decimal places: $v5" } // 3.55555
 
         // then
         assertEquals(0.0, vm1)

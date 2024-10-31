@@ -24,7 +24,7 @@ class FSDirectoryTest : BaseJUnit5Test() {
 
         val projectRoot = Paths.get("").toAbsolutePath()
         println("Project Root Directory: $projectRoot")
-        parent = "${projectRoot}/build/zzz".toFile()
+        parent = "$projectRoot/build/zzz".toFile()
         dir = "$parent/aaa/bbb/ccc/ddd/eee/fff/ggg".toFile()
     }
 

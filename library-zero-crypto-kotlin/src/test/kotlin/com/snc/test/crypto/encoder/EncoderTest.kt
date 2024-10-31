@@ -31,7 +31,7 @@ class EncoderTest : BaseJUnit5Test() {
         val v = Encoder.with(Encoder.Algo.BASE64).encode(data.toByteArray())
         val v2 = String(java.util.Base64.getEncoder().encode(data.toByteArray()))
         // then
-        logger.debug { "Base64 encoded 1: $v" }  // "U3BlY2lhbCBjaGFyczogw7vDu8O_IGhlcmUu"
+        logger.debug { "Base64 encoded 1: $v" } // "U3BlY2lhbCBjaGFyczogw7vDu8O_IGhlcmUu"
         logger.debug { "Base64 encoded 2: $v2" } // "U3BlY2lhbCBjaGFyczogw7vDu8O/IGhlcmUu"
         assertNotEquals(v, v2)
     }

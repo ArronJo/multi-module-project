@@ -1,32 +1,58 @@
 # https://editorconfig.org/
 root = true
 
+# https://pinterest.github.io/ktlint/0.49.1/rules/standard/
 [*]
 end_of_line = lf
 insert_final_newline = true
+ktlint_code_style = intellij_idea
+ktlint_standard_wrapping = disabled
 
-# noinspection EditorConfigKeyCorrectness
-[*.gradle.kts]
-ktlint = disabled
-
-# noinspection EditorConfigKeyCorrectness
 [*.{kt,kts}]
-ktlint_standard_annotation = disabled
-ktlint_standard_binary-expression-wrapping = disabled
-ktlint_function_signature_rule_force_multiline_when_parameter_count_greater_or_equal_than = unset
+# Wildcard import (cannot be auto-corrected) (standard:no-wildcard-imports)
 ktlint_standard_no-wildcard-imports = disabled
-ij_kotlin_allow_trailing_comma = true
-ij_kotlin_allow_trailing_comma_on_call_site = true
-ktlint_argument_list_wrapping_ignore_when_parameter_count_greater_or_equal_than = 8
-ktlint_standard_parameter-wrapping = disabled
-ktlint_standard_property-wrapping = disabled
-ktlint_experimental = enabled
-ij_kotlin_line_break_after_multiline_when_entry = false
 
-# Appended
-#ktlint_standard_chain-wrapping = disabled
-ktlint_standard_comment-spacing = disabled
-ktlint_standard_curly-spacing = disabled
+# (standard:filename)
+ktlint_standard_filename = disabled
+
+# Imports must be ordered in lexicographic order without any empty lines in-between with "java", "javax", "kotlin" and aliases in the end (standard:import-ordering)
+ktlint_standard_import-ordering = disabled
+
+# Skipping rule(s) which are depending on a rule which is not loaded.
+# Please check if you need to add additional rule sets before creating an issue.
+#   - Rule with id 'RuleId(value=standard:trailing-comma-on-call-site)' requires rule with id 'RuleId(value=standard:wrapping)' to be loaded
+#   - Rule with id 'RuleId(value=standard:trailing-comma-on-declaration-site)' requires rule with id 'RuleId(value=standard:wrapping)' to be loaded
 ktlint_standard_trailing-comma-on-call-site = disabled
 ktlint_standard_trailing-comma-on-declaration-site = disabled
-ktlint_standard_multiline-expression-wrapping = disabled
+
+# Missing space after // (standard:comment-spacing)
+ktlint_standard_comment-spacing = disabled
+
+# Unexpected blank line(s) before "}" (standard:no-blank-line-before-rbrace)
+ktlint_standard_no-blank-line-before-rbrace = disabled
+
+# Missing newline before '}' (standard:statement-wrapping)
+ktlint_standard_statement-wrapping = disabled
+
+# A comment in a 'value_argument_list' is only allowed when placed on a separate line (cannot be auto-corrected) (standard:discouraged-comment-location)
+ktlint_standard_discouraged-comment-location = disabled
+
+######################################
+# Allowed
+
+# File must end with a newline (\n) (standard:final-newline)
+#ktlint_standard_final-newline = disabled
+
+# Unnecessary long whitespace (standard:no-multi-spaces)
+#ktlint_standard_no-multi-spaces = disabled
+
+# Unexpected spacing after "(" (standard:paren-spacing)
+#ktlint_standard_paren-spacing = disabled
+
+# Trailing space(s) (standard:no-trailing-spaces)
+#ktlint_standard_no-trailing-spaces = disabled
+
+# 이 옵션이 영향도가 좀 크네...
+# Argument should be on a separate line (unless all arguments can fit a single line) (standard:argument-list-wrapping)
+# Missing newline before ")"
+#ktlint_standard_argument-list-wrapping = disabled

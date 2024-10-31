@@ -1,9 +1,9 @@
 import java.io.FileInputStream
-import java.util.*
+import java.util.Properties
 
 plugins {
     kotlin("jvm") version "2.0.0" // "1.9.23"
-    // id("java")
+    //id("java")
 
     // checck latest version
     // https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
@@ -19,7 +19,7 @@ plugins {
     // https://github.com/JLLeitschuh/ktlint-gradle
     // https://plugins.gradle.org/plugin/org.jlleitschuh.gradle.ktlint
     // https://pinterest.github.io/ktlint/0.49.1/rules/experimental/#multiline-expression-wrapping
-    //alias(libs.plugins.ktlint) // id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
+    alias(libs.plugins.ktlint) // id("org.jlleitschuh.gradle.ktlint") version "12.0.3"
 }
 
 group = "com.snc.zero"
@@ -34,15 +34,19 @@ buildscript {
 
 repositories {
     mavenCentral()
+    maven("https://oss.sonatype.org/content/repositories/snapshots")
+    maven {
+        url = uri("https://plugins.gradle.org/m2/")
+    }
 }
 
 dependencies {
     //implementation("org.owasp:dependency-check-gradle:5.3.0")
 
-//    testImplementation(kotlin("test"))
-//    testImplementation(rootProject.libs.junit.jupiter.api)
-//    testRuntimeOnly(rootProject.libs.junit.platform.launcher)
-//    testRuntimeOnly(rootProject.libs.junit.jupiter.engine)
+    //testImplementation(kotlin("test"))
+    //testImplementation(rootProject.libs.junit.jupiter.api)
+    //testRuntimeOnly(rootProject.libs.junit.platform.launcher)
+    //testRuntimeOnly(rootProject.libs.junit.jupiter.engine)
 }
 
 //dependencyCheck {
@@ -125,6 +129,31 @@ sourceSets {
         resources {
             setSrcDirs(listOf("src/test/resources"))
         }
+    }
+}
+
+///////////////////////////////////////////////////////////
+// KtLint
+// https://github.com/JLLeitschuh/ktlint-gradle
+//configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+ktlint {
+    version.set("1.0.1")
+    verbose.set(true)
+    android.set(false)
+    outputToConsole.set(true) // 콘솔 출력 활성화
+    //ignoreFailures.set(true) // 검사 실패 시 빌드 실패하도록 설정
+    //enableExperimentalRules.set(true) // 실험적 규칙 활성화
+
+    filter {
+        //exclude("**/generated/**") // 생성된 코드 제외
+        //include("**/kotlin/**") // kotlin 소스만 포함
+    }
+
+    // 룰 커스터마이징
+    reporters {
+        //reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
+        //reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
+        reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.HTML)
     }
 }
 
@@ -216,7 +245,7 @@ subprojects {
     apply(plugin = "java")
     apply(plugin = "jacoco")
     apply(plugin = "org.owasp.dependencycheck")
-    //apply(plugin = "org.jlleitschuh.gradle.ktlint")
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
 
     repositories {
         mavenCentral()
@@ -238,8 +267,14 @@ subprojects {
 
     // Optionally configure plugin
     //configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-    //    debug.set(true)
-    //}
+    ktlint {
+        version.set("1.0.1")
+        verbose.set(true)
+        android.set(false)
+        outputToConsole.set(true) // 콘솔 출력 활성화
+        //ignoreFailures.set(true) // 검사 실패 시 빌드 실패하도록 설정
+        //enableExperimentalRules.set(true) // 실험적 규칙 활성화
+    }
 
     tasks.register<DependencyReportTask>("allDependencies") {
         description = "Inject dependencies into subprojects."

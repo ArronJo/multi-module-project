@@ -4,7 +4,7 @@ import com.snc.zero.crypto.hash.base.BaseHash
 import org.bouncycastle.crypto.digests.SHA3Digest
 import java.nio.charset.Charset
 
-object SHA3: BaseHash() {
+object SHA3 : BaseHash() {
 
     fun sha224(msg: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
         return digest(msg, 224, salt, iterationCount, charSet)
