@@ -1,12 +1,15 @@
 package com.snc.zero.core.extensions.text
 
+import java.util.*
+import kotlin.collections.HashMap
+
 fun <T> Map<String, T>.toQueryString(): String {
     val sb = StringBuilder()
     for ((key, value) in this) {
         if (sb.isNotEmpty()) {
             sb.append("&")
         }
-        sb.append(String.format("%s=%s", key, value))
+        sb.append(String.format(Locale.getDefault(), "%s=%s", key, value))
     }
     return sb.toString()
 }

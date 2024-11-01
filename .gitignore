@@ -62,6 +62,9 @@ sonar-project.properties
 ### OWASP Dependency-Check ###
 dependency-check.properties
 
+### detekt ###
+config/detekt/
+
 ### docs ###
 *.md
 !README.md

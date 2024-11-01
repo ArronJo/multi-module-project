@@ -1,9 +1,12 @@
 package com.snc.zero.core.extensions.calendar
 
+import com.snc.zero.logger.jvm.TLogging
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.min
+
+private val logger = TLogging.logger { }
 
 fun Calendar.setYear(year: Int): Calendar {
     this[Calendar.YEAR] = year
@@ -159,7 +162,7 @@ fun String.toCalendar(pattern: String = "yyyyMMddHHmmss"): Calendar {
         val date = sdf.parse(this.substring(0, min(pattern.length, this.length)))
         calendar.time = date
     } catch (e: ParseException) {
-        e.printStackTrace()
+        logger.error { e }
     }
     return calendar
 }

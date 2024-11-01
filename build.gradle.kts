@@ -2,7 +2,7 @@ import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
-    kotlin("jvm") version "2.0.0" // "1.9.23"
+    kotlin("jvm") version "2.0.0" // id("org.jetbrains.kotlin.jvm") version "1.9.23"
     //id("java")
 
     // checck latest version
@@ -19,10 +19,14 @@ plugins {
     // https://github.com/JLLeitschuh/ktlint-gradle
     // https://plugins.gradle.org/plugin/org.jlleitschuh.gradle.ktlint
     alias(libs.plugins.ktlint) // id("org.jlleitschuh.gradle.ktlint") version "12.0.3"
+
+    // 규칙 충돌 관리를 위해 detekt 는 off 하도록 한다.
+    // https://github.com/detekt/detekt
+    //alias(libs.plugins.detekt) // id("io.gitlab.arturbosch.detekt") version "1.23.7"
 }
 
 group = "com.snc.zero"
-version = "1.0-beta"
+version = "0.1-beta"
 
 buildscript {
     extra.apply {
@@ -33,10 +37,10 @@ buildscript {
 
 repositories {
     mavenCentral()
-    maven("https://oss.sonatype.org/content/repositories/snapshots")
-    maven {
-        url = uri("https://plugins.gradle.org/m2/")
-    }
+    //maven("https://oss.sonatype.org/content/repositories/snapshots")
+    //maven {
+    //    url = uri("https://plugins.gradle.org/m2/")
+    //}
 }
 
 dependencies {
@@ -135,7 +139,8 @@ sourceSets {
 // KtLint
 // -GitHyb: https://github.com/JLLeitschuh/ktlint-gradle
 // -Rule: https://pinterest.github.io/ktlint/latest/rules/standard/
-ktlint { //configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+//configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
+ktlint {
     version.set("1.4.0") // CLI 최신버전 확인: https://pinterest.github.io/ktlint/latest/
     verbose.set(true)
     android.set(false)
@@ -253,6 +258,7 @@ subprojects {
     apply(plugin = "jacoco")
     apply(plugin = "org.owasp.dependencycheck")
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
+    //apply(plugin = "io.gitlab.arturbosch.detekt")
 
     repositories {
         mavenCentral()
@@ -363,4 +369,29 @@ subprojects {
         }
          */
     }
+
+//    detekt {
+//        //buildUponDefaultConfig = true // preconfigure defaults
+//        //allRules = false // activate all available (even unstable) rules.
+//        // https://detekt.dev/docs/introduction/configurations/
+//        //config.setFrom("$projectDir/config/detekt.yml") // point to your custom config defining rules to run, overwriting default behavior
+//        //baseline = file("$projectDir/config/baseline.xml") // a way of suppressing issues before introducing detekt
+//    }
+//
+//    tasks.withType<Detekt>().configureEach {
+//        reports {
+//            html.required.set(true) // observe findings in your browser with structure and code snippets
+//            xml.required.set(false) // checkstyle like format mainly for integrations like Jenkins
+//            sarif.required.set(false) // standardized SARIF format (https://sarifweb.azurewebsites.net/) to support integrations with GitHub Code Scanning
+//            md.required.set(true) // simple Markdown format
+//        }
+//    }
+//
+//    // Kotlin DSL
+//    tasks.withType<Detekt>().configureEach {
+//        jvmTarget = "1.8"
+//    }
+//    tasks.withType<DetektCreateBaselineTask>().configureEach {
+//        jvmTarget = "1.8"
+//    }
 }

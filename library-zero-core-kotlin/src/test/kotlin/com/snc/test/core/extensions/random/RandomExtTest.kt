@@ -37,7 +37,7 @@ class RandomExtTest : BaseJUnit5Test() {
             val v1 = randomInt(bound = 10)
             counter.put(v1.toString())
             // then
-            logger.debug { "Random Int 결과 - 1: $v1" }
+            logger.debug { "Random Int 결과 - 1 [$i]: $v1" }
         }
         logger.debug { "Random Int 결과 - 1: Counter[${counter.size()}, ${counter.total()}] : $counter" }
     }
@@ -50,7 +50,7 @@ class RandomExtTest : BaseJUnit5Test() {
             val v1 = randomInt(0, 2)
             counter.put(v1.toString())
             // then
-            logger.debug { "Random Int 결과 - 2: $v1" }
+            logger.debug { "Random Int 결과 - 2 [$i]: $v1" }
         }
         logger.debug { "Random Int 결과 - 2: Counter[${counter.size()}, ${counter.total()}] : $counter" }
     }
@@ -63,7 +63,7 @@ class RandomExtTest : BaseJUnit5Test() {
             val v1 = randomInt(10, 40)
             counter.put(v1.toString())
             // then
-            logger.debug { "Random Int 결과 - 3: $v1" }
+            logger.debug { "Random Int 결과 - 3 [$i]: $v1" }
         }
         logger.debug { "Random Int 결과 - 3: Counter[${counter.size()}, ${counter.total()}] : $counter" }
     }
@@ -120,7 +120,7 @@ class RandomExtTest : BaseJUnit5Test() {
         for (i in 1..max) {
             val v1 = randomString(len, isHangul = true)
             // then
-            logger.debug { "Random String 결과: $v1" }
+            logger.debug { "Random String 결과 [$i]: $v1" }
         }
     }
 
@@ -133,7 +133,7 @@ class RandomExtTest : BaseJUnit5Test() {
             val v1 = data.getRandomItem()
             counter.put(v1)
             // then
-            logger.debug { "Random Draw Item 결과: $v1" }
+            logger.debug { "Random Draw Item 결과 [$i]: $v1" }
         }
         logger.debug { "Random Draw Item 결과: Counter[${counter.size()}, ${counter.total()}] : $counter" }
     }
@@ -174,7 +174,7 @@ class RandomExtTest : BaseJUnit5Test() {
                 counter.put(it)
             }
             // then
-            logger.debug { "Weighted Random Drawing 결과: $v1" }
+            logger.debug { "Weighted Random Drawing 결과 [$i]: $v1" }
         }
         logger.debug { "Weighted Random Drawing 결과: Counter[${counter.size()}, ${counter.total()}] : $counter" }
     }
