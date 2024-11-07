@@ -47,8 +47,9 @@ bin/
 ### Mac OS ###
 .DS_Store
 
-### Shell ###
+### Command ###
 shell_*.sh
+py_*.py
 
 ### SonarScanner ###
 sonar.properties
@@ -68,6 +69,7 @@ config/detekt/
 ### docs ###
 *.md
 !README.md
+*.mmd
 
 ### sub-proejct ###
 library-zero-pdfbox-kotlin/

@@ -65,6 +65,12 @@ java {
 }
 
 kotlin {
+    sourceSets.all {
+        println("Source set: $name")
+        println("Depends on: ${dependsOn.joinToString(", ") { it.name }}")
+        println("---")
+    }
+
     compilerOptions {
         languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.fromVersion(rootProject.extra["jvmTarget"] as String))
         apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.fromVersion(rootProject.extra["jvmTarget"] as String))
@@ -370,28 +376,32 @@ subprojects {
          */
     }
 
-//    detekt {
-//        //buildUponDefaultConfig = true // preconfigure defaults
-//        //allRules = false // activate all available (even unstable) rules.
-//        // https://detekt.dev/docs/introduction/configurations/
-//        //config.setFrom("$projectDir/config/detekt.yml") // point to your custom config defining rules to run, overwriting default behavior
-//        //baseline = file("$projectDir/config/baseline.xml") // a way of suppressing issues before introducing detekt
-//    }
-//
-//    tasks.withType<Detekt>().configureEach {
-//        reports {
-//            html.required.set(true) // observe findings in your browser with structure and code snippets
-//            xml.required.set(false) // checkstyle like format mainly for integrations like Jenkins
-//            sarif.required.set(false) // standardized SARIF format (https://sarifweb.azurewebsites.net/) to support integrations with GitHub Code Scanning
-//            md.required.set(true) // simple Markdown format
-//        }
-//    }
-//
-//    // Kotlin DSL
-//    tasks.withType<Detekt>().configureEach {
-//        jvmTarget = "1.8"
-//    }
-//    tasks.withType<DetektCreateBaselineTask>().configureEach {
-//        jvmTarget = "1.8"
-//    }
+    //++
+    /*
+    detekt {
+        //buildUponDefaultConfig = true // preconfigure defaults
+        //allRules = false // activate all available (even unstable) rules.
+        // https://detekt.dev/docs/introduction/configurations/
+        //config.setFrom("$projectDir/config/detekt.yml") // point to your custom config defining rules to run, overwriting default behavior
+        //baseline = file("$projectDir/config/baseline.xml") // a way of suppressing issues before introducing detekt
+    }
+
+    tasks.withType<Detekt>().configureEach {
+        reports {
+            html.required.set(true) // observe findings in your browser with structure and code snippets
+            xml.required.set(false) // checkstyle like format mainly for integrations like Jenkins
+            sarif.required.set(false) // standardized SARIF format (https://sarifweb.azurewebsites.net/) to support integrations with GitHub Code Scanning
+            md.required.set(true) // simple Markdown format
+        }
+    }
+
+    // Kotlin DSL
+    tasks.withType<Detekt>().configureEach {
+        jvmTarget = "1.8"
+    }
+    tasks.withType<DetektCreateBaselineTask>().configureEach {
+        jvmTarget = "1.8"
+    }
+     */
+    //--
 }

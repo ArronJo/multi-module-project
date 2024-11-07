@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "com.snc.zero"
-version = "1.0-beta"
+version = "0.1-beta"
 
 repositories {
     mavenCentral()
