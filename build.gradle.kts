@@ -143,7 +143,7 @@ sourceSets {
 
 ///////////////////////////////////////////////////////////
 // KtLint
-// -GitHyb: https://github.com/JLLeitschuh/ktlint-gradle
+// -GitHub: https://github.com/JLLeitschuh/ktlint-gradle
 // -Rule: https://pinterest.github.io/ktlint/latest/rules/standard/
 //configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
 ktlint {
