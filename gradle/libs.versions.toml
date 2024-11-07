@@ -12,6 +12,7 @@ jsoup = "1.16.1"
 bouncycastle-bcprov = "1.78.1"
 google-gson = "2.10.1"
 caffeine = "3.1.8"
+jackson-kotlin = "2.17.1"
 
 [libraries]
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
@@ -28,6 +29,8 @@ google-gson = { module = "com.google.code.gson:gson", version.ref = "google-gson
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 
 cache-caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version.ref = "caffeine" }
+
+json-jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson-kotlin" }
 
 [bundles]
 
