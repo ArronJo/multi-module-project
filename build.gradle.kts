@@ -2,8 +2,9 @@ import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
-    kotlin("jvm") version "2.0.0" // id("org.jetbrains.kotlin.jvm") version "1.9.23"
     //id("java")
+    kotlin("jvm") version "2.0.0" // id("org.jetbrains.kotlin.jvm") version "1.9.23"
+    kotlin("plugin.serialization") version "1.8.0"
 
     // checck latest version
     // https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
@@ -265,6 +266,7 @@ subprojects {
     apply(plugin = "org.owasp.dependencycheck")
     apply(plugin = "org.jlleitschuh.gradle.ktlint")
     //apply(plugin = "io.gitlab.arturbosch.detekt")
+    apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
 
     repositories {
         mavenCentral()
