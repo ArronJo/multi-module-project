@@ -256,7 +256,6 @@ Added new "xss" module.
 
 ### 2024-04-23
 
-
 Updated "core" module.
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : 신규 확장 함수 추가
   - (Int, Long).padStart()
@@ -275,3 +274,16 @@ Added new "test" module.
 ### 2024-04-21
 문서 최초 생성
 - ![new](https://img.shields.io/badge/New-blue.svg) kotlin 확장 함수를 기반으로 하는 라이브러리를 만들어보자. 
+
+
+### 2024-12-02
+신규 모듈 추가
+- ![new](https://img.shields.io/badge/New-blue.svg) 여러가지 작업 중인 모듈들 추가
+  - library-zero-age-kotlin/
+  - library-zero-e2e-kotlin/
+  - library-zero-hangul-kotlin/
+  - library-zero-jackson-kotlin/
+  - library-zero-pdfbox-kotlin/
+  - library-zero-pdfbox3-kotlin/
+  - library-zero-markdown-kotlin/
+  - library-zero-prizedraw-kotlin/
