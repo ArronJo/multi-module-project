@@ -71,10 +71,6 @@ config/detekt/
 !README.md
 *.mmd
 
-### sub-proejct ###
-library-zero-age-kotlin/
-library-zero-hangul-kotlin/
-library-zero-jackson-kotlin/
-library-zero-pdfbox-kotlin/
-library-zero-markdown-kotlin/
-library-zero-prizedraw-kotlin/
+### etc ###
+mermaid_diagrams/
+analysis_output/
