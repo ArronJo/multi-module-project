@@ -60,7 +60,7 @@ abstract class AbsMaskingSerializer<T> : JsonSerializer<T>() {
             phonePattern.matches(str) -> {
                 val matchResult = phonePattern.find(str)
                 if (matchResult != null) {
-                    val (prefix, middle, last) = matchResult.destructured
+                    val (prefix, _, last) = matchResult.destructured
                     "$prefix-****-$last"
                 } else {
                     str

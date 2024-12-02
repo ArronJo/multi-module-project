@@ -15,6 +15,8 @@ class PdfToSvgConverterTest : BaseJUnit5Test() {
     @Test
     fun `PDF 를 SVG 파일로 추출`() {
         val converter = PdfToSvgConverter()
+
+        logger.debug { "inputPdf: $inputPdf" }
         converter.convert(inputPdf)
     }
 }
