@@ -6,6 +6,7 @@ dependencycheck = "8.0.2"
 
 junit-jupiter = "5.10.2"
 testng = "7.9.0"
+
 logback-classic = "1.5.13"
 kotlin-logging-jvm = "5.1.0"
 jsoup = "1.16.1"
