@@ -75,3 +75,5 @@ config/detekt/
 mermaid_diagrams/
 analysis_output/
 */output_svgs/
+library-zero-rd-solution-kotlin/
+library-zero-servlet-kotlin/
