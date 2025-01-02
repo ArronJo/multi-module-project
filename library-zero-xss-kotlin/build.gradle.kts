@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+
 plugins {
     kotlin("jvm")
     id("jacoco")
@@ -27,7 +29,7 @@ dependencies {
 
 kotlin {
     compilerOptions {
-        languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.fromVersion(rootProject.extra["jvmTarget"] as String))
-        apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.fromVersion(rootProject.extra["jvmTarget"] as String))
+        languageVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
+        apiVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
     }
 }

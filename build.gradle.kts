@@ -1,12 +1,13 @@
 import java.io.FileInputStream
 import java.util.Properties
+import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
     //id("java")
-    kotlin("jvm") version "2.0.0" // id("org.jetbrains.kotlin.jvm") version "1.9.23"
+    kotlin("jvm") version "2.1.0" // id("org.jetbrains.kotlin.jvm") version "2.0.0" "1.9.23"
     kotlin("plugin.serialization") version "1.8.0"
 
-    // checck latest version
+    // Check latest version
     // https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
     id("jacoco")
     alias(libs.plugins.sonarqube) // id("org.sonarqube") version "5.1.0.4882"
@@ -32,7 +33,7 @@ version = "0.1-beta"
 buildscript {
     extra.apply {
         set("javaVersion", JavaVersion.VERSION_18)
-        set("jvmTarget", "2.0")
+        set("kotlinVersion", "2.0") // id("org.jetbrains.kotlin.jvm") version "2.0.0" 버전 참고
     }
 }
 
@@ -73,8 +74,8 @@ kotlin {
     }
 
     compilerOptions {
-        languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.fromVersion(rootProject.extra["jvmTarget"] as String))
-        apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.fromVersion(rootProject.extra["jvmTarget"] as String))
+        languageVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
+        apiVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
     }
 }
 
