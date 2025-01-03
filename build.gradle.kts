@@ -33,7 +33,7 @@ version = "0.1-beta"
 buildscript {
     extra.apply {
         set("javaVersion", JavaVersion.VERSION_18)
-        set("kotlinVersion", "2.0") // id("org.jetbrains.kotlin.jvm") version "2.0.0" 버전 참고
+        set("kotlinVersion", "2.1") // id("org.jetbrains.kotlin.jvm") version "2.0.0" 버전 참고
     }
 }
 
@@ -77,6 +77,8 @@ kotlin {
         languageVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
         apiVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
     }
+
+    println("[kotlin-compilerOptions] KotlinVersion = " + rootProject.extra["kotlinVersion"] as String + " --> " + KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String) + " --- " + KotlinVersion.KOTLIN_2_1 + " : " + KotlinVersion.fromVersion("2.1"))
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
