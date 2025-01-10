@@ -49,6 +49,18 @@ ktlint_standard_trailing-comma-on-declaration-site = disabled
 # Missing space after // (standard:comment-spacing)
 ktlint_standard_comment-spacing = disabled
 
+# 주석 관련
+# 주석 경고 비활성화
+#ktlint_standard_commented-code = disabled
+#ktlint_standard_no-consecutive-comments = disabled
+#ktlint_standard_no-unused-imports = disabled
+# 주석 줄바꿈 경고 비활성화
+#ktlint_standard_comment-wrapping = disabled
+# EOL 주석 경고 비활성화
+#ktlint_standard_no-empty-first-line-in-method-block = disabled
+# 모든 주석 관련 규칙 비활성화
+#ktlint_standard = disabled
+
 # Unexpected blank line(s) before "}" (standard:no-blank-line-before-rbrace)
 ktlint_standard_no-blank-line-before-rbrace = disabled
 
