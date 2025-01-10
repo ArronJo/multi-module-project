@@ -12,6 +12,7 @@ repositories {
 }
 
 dependencies {
+    implementation(libs.logback.core)
     implementation(libs.logback.classic)
     implementation(libs.kotlin.logging.jvm)
 }

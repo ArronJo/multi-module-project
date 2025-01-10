@@ -1,4 +1,5 @@
 [versions]
+kotlin-bom = "2.1.0" # https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-bom
 ktlint = "12.1.1" # https://plugins.gradle.org/plugin/org.jlleitschuh.gradle.ktlint
 #detekt = "1.23.7"  # https://github.com/detekt/detekt
 sonarqube = "5.1.0.4882"
@@ -7,6 +8,7 @@ dependencycheck = "8.0.2"
 junit-jupiter = "5.10.2"
 testng = "7.9.0"
 
+logback-core = "1.5.13"
 logback-classic = "1.5.13"
 kotlin-logging-jvm = "5.1.0"
 jsoup = "1.16.1"
@@ -18,12 +20,14 @@ kotlinx-serialization-json = "1.5.0"
 kotlinx-datetime = "0.4.0"
 
 [libraries]
+kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin-bom" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
-junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit-jupiter" }
+#junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
 testng = { module = "org.testng:testng", version.ref = "testng" }
 
+logback-core = { module = "ch.qos.logback:logback-core", version.ref = "logback-core" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-classic" }
 kotlin-logging-jvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging-jvm" }
 
