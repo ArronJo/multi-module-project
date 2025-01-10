@@ -1,10 +1,11 @@
 import java.io.FileInputStream
 import java.util.Properties
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     //id("java")
-    kotlin("jvm") version "2.1.0" // id("org.jetbrains.kotlin.jvm") version "2.0.0" "1.9.23"
+    kotlin("jvm") version "2.1.0" // id("org.jetbrains.kotlin.jvm") version "2.0.20" "1.9.23"
     kotlin("plugin.serialization") version "1.8.0"
 
     // Check latest version
@@ -46,6 +47,7 @@ repositories {
 }
 
 dependencies {
+    implementation(platform(rootProject.libs.kotlin.bom))
     //implementation("org.owasp:dependency-check-gradle:5.3.0")
 
     //testImplementation(kotlin("test"))
@@ -64,6 +66,7 @@ tasks.test {
 
 java {
     sourceCompatibility = rootProject.extra["javaVersion"] as JavaVersion
+    targetCompatibility = rootProject.extra["javaVersion"] as JavaVersion
 }
 
 kotlin {
@@ -81,11 +84,17 @@ kotlin {
     println("[kotlin-compilerOptions] KotlinVersion = " + rootProject.extra["kotlinVersion"] as String + " --> " + KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String) + " --- " + KotlinVersion.KOTLIN_2_1 + " : " + KotlinVersion.fromVersion("2.1"))
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
         freeCompilerArgs.add("-opt-in=kotlin.RequiresOptIn")
+        freeCompilerArgs.add("-opt-in=kotlin.ExperimentalStdlibApi")
     }
 }
+
+//val compileTestKotlin: KotlinCompile by tasks
+//compileTestKotlin.compilerOptions {
+//    languageVersion.set(KotlinVersion.KOTLIN_2_1)
+//}
 
 tasks.register("allProjectDependencies") {
     group = "help"
@@ -113,6 +122,29 @@ tasks.register("allProjectDependencies") {
         }
         println("Dependencies written to ${outputFile.absolutePath}")
     }
+}
+
+// 직접적인 의존성이 아닌 취약점이라면, dependencyResolutionManagement를 사용하여 강제로 버전을 올릴 수 있습니다:
+// Server-side Request Forgery (SSRF) [Low Severity][https://security.snyk.io/vuln/SNYK-JAVA-CHQOSLOGBACK-8539865]
+// in ch.qos.logback:logback-core@1.3.14
+//    introduced by com.pinterest.ktlint:ktlint-cli@1.5.0
+//      > ch.qos.logback:logback-classic@1.3.14
+//      > ch.qos.logback:logback-core@1.3.14
+//configurations.all {
+//    resolutionStrategy.eachDependency {
+//        if (requested.group == "ch.qos.logback" && requested.name == "logback-classic") {
+//            useVersion("1.5.13")
+//            because("Fix for CVE vulnerability")
+//        }
+//    }
+//}
+
+// logback 버전 강제화 (force):
+configurations.all {
+    resolutionStrategy.force(
+        "ch.qos.logback:logback-core:1.5.0",
+        "ch.qos.logback:logback-classic:1.5.0"
+    )
 }
 
 //sourceSets {
@@ -148,10 +180,15 @@ sourceSets {
 ///////////////////////////////////////////////////////////
 // KtLint
 // -GitHub: https://github.com/JLLeitschuh/ktlint-gradle
+//          https://github.com/pinterest/ktlint
 // -Rule: https://pinterest.github.io/ktlint/latest/rules/standard/
+//
+//dependencies {
+//    ktlint("com.pinterest.ktlint:ktlint-cli:1.5.0")
+//}
 //configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
 ktlint {
-    version.set("1.4.0") // CLI 최신버전 확인: https://pinterest.github.io/ktlint/latest/
+    version.set("1.5.0") // CLI 최신버전 확인: https://pinterest.github.io/ktlint/latest/
     verbose.set(true)
     android.set(false)
     outputToConsole.set(true) // 콘솔 출력 활성화
