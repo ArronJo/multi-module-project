@@ -1,7 +1,8 @@
+# .editorconfig
+#
 # https://editorconfig.org/
-root = true
-
 # https://pinterest.github.io/ktlint/0.49.1/rules/standard/
+root = true
 
 # noinspection EditorConfigKeyCorrectness
 [*]
