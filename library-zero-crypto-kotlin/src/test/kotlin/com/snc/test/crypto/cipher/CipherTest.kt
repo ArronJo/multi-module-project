@@ -2,8 +2,12 @@ package com.snc.test.crypto.cipher
 
 import com.snc.zero.crypto.cipher.Cipher
 import com.snc.zero.crypto.cipher.aes.AES
+import com.snc.zero.crypto.cipher.rsa.RSA
+import com.snc.zero.crypto.cipher.rsa.RSAException
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
+import com.snc.zero.crypto.extensions.cipher.encryptRSA
+import com.snc.zero.crypto.extensions.cipher.decryptRSA
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 
@@ -137,5 +141,43 @@ class CipherTest : BaseJUnit5Test() {
         val dec = Cipher.with().algo(Cipher.Algo.AES).key(key, iv).decrypt(enc)
         val plainText = String(dec)
         assertEquals(data, plainText)
+    }
+
+    @Test
+    fun `Cipher RSA 테스트 1-1`() {
+        // 새로운 RSA 키쌍 생성
+        val rsa = RSA()
+
+        // 암호화할 데이터
+        val originalText = "안녕하세요! 이것은 테스트 메시지입니다."
+
+        // 방법 1: 일반적인 방식으로 암호화/복호화
+        val encrypted = rsa.encrypt(originalText)
+        println("암호화된 텍스트: $encrypted")
+
+        val decrypted = rsa.decrypt(encrypted)
+        println("복호화된 텍스트: $decrypted")
+
+        // 방법 2: 확장 함수를 사용한 암호화/복호화
+        val encryptedWithExtension = originalText.encryptRSA(rsa)
+        val decryptedWithExtension = encryptedWithExtension.decryptRSA(rsa)
+
+        // 키 저장을 위한 내보내기
+        val publicKeyStr = rsa.exportPublicKey()
+        val privateKeyStr = rsa.exportPrivateKey()
+
+        // 저장된 키로 새 인스턴스 생성
+        val importedPublicKey = RSA.importPublicKey(publicKeyStr)
+        val importedPrivateKey = RSA.importPrivateKey(privateKeyStr)
+        val rsa2 = RSA(importedPublicKey, importedPrivateKey)
+
+        // try-catch를 사용한 예외 처리
+        try {
+            val encryptedText = originalText.encryptRSA(rsa2)
+            val decryptedText = encryptedText.decryptRSA(rsa2)
+            println("성공적으로 암호화/복호화 되었습니다. $decryptedText")
+        } catch (e: RSAException) {
+            println("RSA 처리 중 오류 발생: ${e.message}")
+        }
     }
 }

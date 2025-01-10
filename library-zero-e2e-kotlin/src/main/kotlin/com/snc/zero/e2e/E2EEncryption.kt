@@ -1,14 +1,14 @@
 package com.snc.zero.e2e
 
 import java.security.*
+import java.security.spec.PKCS8EncodedKeySpec
+import java.security.spec.X509EncodedKeySpec
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
-import javax.crypto.spec.IvParameterSpec
+import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.SecretKeySpec
-import java.security.spec.X509EncodedKeySpec
-import java.security.spec.PKCS8EncodedKeySpec
 import kotlin.text.Charsets.UTF_8
 
 /**
@@ -52,14 +52,14 @@ class E2EEncryption {
 
     // RSA로 AES 키 암호화
     fun encryptAESKey(aesKey: SecretKey, publicKey: PublicKey): ByteArray {
-        val cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
+        val cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding")
         cipher.init(Cipher.ENCRYPT_MODE, publicKey)
         return cipher.doFinal(aesKey.encoded)
     }
 
     // RSA로 AES 키 복호화
     fun decryptAESKey(encryptedAESKey: ByteArray, privateKey: PrivateKey): SecretKey {
-        val cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding")
+        val cipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding")
         cipher.init(Cipher.DECRYPT_MODE, privateKey)
         val decryptedKey = cipher.doFinal(encryptedAESKey)
         return SecretKeySpec(decryptedKey, "AES")
@@ -67,10 +67,20 @@ class E2EEncryption {
 
     // AES로 메시지 암호화
     fun encryptMessage(message: String, secretKey: SecretKey): Pair<ByteArray, ByteArray> {
-        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey)
-        val iv = cipher.iv
+        val gcmIvLength = 12
+        val gcmTagLength = 128
+
+        val iv = ByteArray(gcmIvLength).apply {
+            SecureRandom().nextBytes(this)
+        }
+
+        val gcmSpec = GCMParameterSpec(gcmTagLength, iv)
+
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey, gcmSpec)
+
         val encryptedMessage = cipher.doFinal(message.toByteArray(UTF_8))
+
         return Pair(encryptedMessage, iv)
     }
 
@@ -80,9 +90,13 @@ class E2EEncryption {
         secretKey: SecretKey,
         iv: ByteArray
     ): String {
-        val cipher = Cipher.getInstance("AES/CBC/PKCS5Padding")
-        val ivSpec = IvParameterSpec(iv)
-        cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec)
+        val gcmTagLength = 128
+        val gcmSpec = GCMParameterSpec(gcmTagLength, iv)
+
+
+        val cipher = Cipher.getInstance("AES/GCM/NoPadding")
+        cipher.init(Cipher.DECRYPT_MODE, secretKey, gcmSpec)
+
         val decryptedMessage = cipher.doFinal(encryptedMessage)
         return String(decryptedMessage, UTF_8)
     }
