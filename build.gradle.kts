@@ -33,7 +33,7 @@ version = "0.1-beta"
 
 buildscript {
     extra.apply {
-        set("javaVersion", JavaVersion.VERSION_18)
+        set("javaVersion", JavaVersion.VERSION_23)
         set("kotlinVersion", "2.1") // id("org.jetbrains.kotlin.jvm") version "2.0.0" 버전 참고
     }
 }
