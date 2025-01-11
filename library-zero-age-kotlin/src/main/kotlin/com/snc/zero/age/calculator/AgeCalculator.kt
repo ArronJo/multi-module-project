@@ -68,9 +68,9 @@ class AgeCalculator private constructor() {
 
             val seniorityDate = birthDate.clone() as Calendar
             seniorityDate.add(Calendar.YEAR, manAge)
-            seniorityDate.set(Calendar.MONTH, birthDate.get(Calendar.MONTH))
+            seniorityDate[Calendar.MONTH] = birthDate[Calendar.MONTH]
             seniorityDate.add(Calendar.MONTH, 6)
-            seniorityDate.set(Calendar.DATE, birthDate.get(Calendar.DATE))
+            seniorityDate[Calendar.DATE] = birthDate[Calendar.DATE]
             if (targetDate == seniorityDate || targetDate.after(seniorityDate)) {
                 insAge++
                 seniorityDate.add(Calendar.YEAR, 1)
