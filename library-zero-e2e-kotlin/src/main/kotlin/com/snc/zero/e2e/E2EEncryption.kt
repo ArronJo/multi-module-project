@@ -93,7 +93,6 @@ class E2EEncryption {
         val gcmTagLength = 128
         val gcmSpec = GCMParameterSpec(gcmTagLength, iv)
 
-
         val cipher = Cipher.getInstance("AES/GCM/NoPadding")
         cipher.init(Cipher.DECRYPT_MODE, secretKey, gcmSpec)
 
