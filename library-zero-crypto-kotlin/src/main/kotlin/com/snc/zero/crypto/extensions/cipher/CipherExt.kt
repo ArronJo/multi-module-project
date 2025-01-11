@@ -7,7 +7,7 @@ fun String.encrypt(
     algo: Cipher.Algo = Cipher.Algo.AES,
     key: String,
     iv: String,
-    transform: String = "AES/CBC/PKCS5Padding"
+    transform: String = "AES/GCM/NoPadding" // "AES/CBC/PKCS5Padding"
 ): String {
     return Cipher.with(algo)
         .key(key, iv)
@@ -21,7 +21,7 @@ fun String.decrypt(
     algo: Cipher.Algo = Cipher.Algo.AES,
     key: String,
     iv: String,
-    transform: String = "AES/CBC/PKCS5Padding"
+    transform: String = "AES/GCM/NoPadding" // "AES/CBC/PKCS5Padding"
 ): String {
     return String(
         Cipher.with(algo)
