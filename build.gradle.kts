@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     //id("java")
-    kotlin("jvm") version "2.1.0" // id("org.jetbrains.kotlin.jvm") version "2.0.20" "1.9.23"
+    kotlin("jvm") version "2.0.21" // id("org.jetbrains.kotlin.jvm") version "2.1.0" "2.0.22" "1.9.23"
     kotlin("plugin.serialization") version "1.8.0"
 
     // Check latest version
@@ -33,8 +33,9 @@ version = "0.1-beta"
 
 buildscript {
     extra.apply {
-        set("javaVersion", JavaVersion.VERSION_23)
-        set("kotlinVersion", "2.1") // id("org.jetbrains.kotlin.jvm") version "2.0.0" 버전 참고
+        // Gradle JVM : File > Settings > Build, Execution, Deployment > Build Tools > Gradle > "Gradle JVM"
+        set("javaVersion", JavaVersion.VERSION_17)
+        set("kotlinVersion", "2.0") // org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0
     }
 }
 
