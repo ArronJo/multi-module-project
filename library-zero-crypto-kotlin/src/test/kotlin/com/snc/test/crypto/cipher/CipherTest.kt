@@ -161,6 +161,7 @@ class CipherTest : BaseJUnit5Test() {
         // 방법 2: 확장 함수를 사용한 암호화/복호화
         val encryptedWithExtension = originalText.encryptRSA(rsa)
         val decryptedWithExtension = encryptedWithExtension.decryptRSA(rsa)
+        println("복호화: $decryptedWithExtension")
 
         // 키 저장을 위한 내보내기
         val publicKeyStr = rsa.exportPublicKey()

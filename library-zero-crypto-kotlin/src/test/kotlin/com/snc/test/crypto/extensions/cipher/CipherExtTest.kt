@@ -22,7 +22,8 @@ class CipherExtTest : BaseJUnit5Test() {
         super.beforeEach(testInfo)
 
         data1 = "qwerty|qwerty|qwerty|qwerty|qwerty|qwerty|qwerty|qwerty|qwerty|qwerty|qwerty|qwerty|qwerty|qwerty"
-        data2 = "DSgrqTvXG5vEWah1iLfxhSh_mnAIZ8Z9_S-lkp1Ut-IzRlS55xk78viRoPA9v4tdCAKPGMtcSRmQ20DmLfIsRFClqvewaN3-BC8UD3tpDNRkDZm0e8-hmmDDugIKq8rwlDYIOskwW2DKfD1Kt2tJUQ=="
+        //data2 = "DSgrqTvXG5vEWah1iLfxhSh_mnAIZ8Z9_S-lkp1Ut-IzRlS55xk78viRoPA9v4tdCAKPGMtcSRmQ20DmLfIsRFClqvewaN3-BC8UD3tpDNRkDZm0e8-hmmDDugIKq8rwlDYIOskwW2DKfD1Kt2tJUQ=="
+        data2 = "279_jXnpcRoMTEaBSfd6-dYpocGcnDzT14exezEf_ubt3rzDBQoijvMCXsPNsLFCPXa70CfxwJc7GYnZtUQz_CNa3Y0mreLbI6WwhixWgQJZc1LR1jgkfZLvxe3fLCSrE6-1leav5gOXdpSYI5I8_gE="
     }
 
     @Test
