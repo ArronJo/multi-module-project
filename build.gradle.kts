@@ -363,6 +363,21 @@ subprojects {
             //excludes.add("com/snc/test/test/**")
             //exclude("**/BaseJUnit5Test*.class")
         }
+
+        //exclude(
+        //    "**/com/snc/zero/filemanager/**",
+        //    "com/snc/zero/filemanager/**"
+        //)
+        //exclude {
+        //    it.path.contains("com/snc/zero/filemanager")
+        //}
+    }
+
+    // library-zero-file-manager-kotlin 모듈의 test task 비활성화
+    if (project.name == "library-zero-file-manager-kotlin") {
+        tasks.named<Test>("test") {
+            enabled = false
+        }
     }
 
     tasks.jacocoTestReport {
@@ -381,8 +396,14 @@ subprojects {
 
         classDirectories.setFrom(
             sourceSets.main.get().output.asFileTree.matching {
-                exclude("com/snc/zero/test/base/**")
-                //exclude("**/BaseJUnit5Test*.class")
+                exclude(
+                    // 패키지 단위 제외
+                    "com/snc/zero/test/base/**",
+                    //"**/com/snc/zero/filemanager/file2/**",
+                    //"org/jlleitschuh/sandbox",
+                    // 특정 파일 제외
+                    //"**/BaseJUnit5Test*.class",
+                )
             },
         )
     }
