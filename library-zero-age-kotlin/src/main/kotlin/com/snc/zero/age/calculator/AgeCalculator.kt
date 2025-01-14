@@ -49,6 +49,7 @@ class AgeCalculator private constructor() {
             monthOfTarget: Int,
             dayOfTarget: Int,
         ): Array<String> {
+            logger.info { "calculateManInsAge: Date = $yearOfBirth-$monthOfBirth-$dayOfBirth" }
             val birthDate = Calendar.getInstance()
             val targetDate = Calendar.getInstance()
             birthDate[yearOfBirth, monthOfBirth - 1] = 1

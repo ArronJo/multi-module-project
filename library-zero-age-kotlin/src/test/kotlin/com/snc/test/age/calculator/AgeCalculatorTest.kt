@@ -88,5 +88,11 @@ class AgeCalculatorTest : BaseJUnit5Test() {
     fun `calculateManInsAge TDD 지키자`() {
         AgeCalculator.calculateManInsAge("123456", "123456")
         AgeCalculator.calculateManInsAge("701205", "700101")
+
+        AgeCalculator.calculateInsAge(
+            LocalDate.of(1970, 1, 1),
+            LocalDate.of(2024, 8, 8)
+        )
+        AgeCalculator.calculateManInsAge(1978, 1, 1, 1970, 8, 8)
     }
 }
