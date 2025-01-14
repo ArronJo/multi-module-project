@@ -83,4 +83,10 @@ class AgeCalculatorTest : BaseJUnit5Test() {
         // then
         logger.debug { "통합 계산 ChatGPT ${manAge.toStrings()}" }
     }
+
+    @Test
+    fun `calculateManInsAge TDD 지키자`() {
+        AgeCalculator.calculateManInsAge("123456", "123456")
+        AgeCalculator.calculateManInsAge("701205", "700101")
+    }
 }
