@@ -53,6 +53,6 @@ configurations.all {
 
 tasks.named("clean") {
     doFirst {
-        delete("${projectDir}/out")
+        delete("$projectDir/out")
     }
 }

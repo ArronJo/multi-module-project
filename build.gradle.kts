@@ -144,6 +144,14 @@ sourceSets {
     }
 }
 
+// logback 버전 강제화 (force):
+configurations.all {
+    resolutionStrategy.force(
+        "ch.qos.logback:logback-core:1.5.0",
+        "ch.qos.logback:logback-classic:1.5.0"
+    )
+}
+
 ///////////////////////////////////////////////////////////
 // KtLint
 // -GitHub: https://github.com/JLLeitschuh/ktlint-gradle
