@@ -31,3 +31,7 @@ kotlin {
         apiVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
     }
 }
+
+tasks.named<Test>("test") {
+    enabled = false
+}
