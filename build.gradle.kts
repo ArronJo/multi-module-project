@@ -125,44 +125,10 @@ tasks.register("allProjectDependencies") {
     }
 }
 
-// 직접적인 의존성이 아닌 취약점이라면, dependencyResolutionManagement를 사용하여 강제로 버전을 올릴 수 있습니다:
-// Server-side Request Forgery (SSRF) [Low Severity][https://security.snyk.io/vuln/SNYK-JAVA-CHQOSLOGBACK-8539865]
-// in ch.qos.logback:logback-core@1.3.14
-//    introduced by com.pinterest.ktlint:ktlint-cli@1.5.0
-//      > ch.qos.logback:logback-classic@1.3.14
-//      > ch.qos.logback:logback-core@1.3.14
-//configurations.all {
-//    resolutionStrategy.eachDependency {
-//        if (requested.group == "ch.qos.logback" && requested.name == "logback-classic") {
-//            useVersion("1.5.13")
-//            because("Fix for CVE vulnerability")
-//        }
-//    }
-//}
-
-// logback 버전 강제화 (force):
-configurations.all {
-    resolutionStrategy.force(
-        "ch.qos.logback:logback-core:1.5.0",
-        "ch.qos.logback:logback-classic:1.5.0"
-    )
-}
-
-//sourceSets {
-//    getByName("main") {
-//        java.srcDirs("src/main/java", "src/main/kotlin")
-//        resources.srcDirs("src/main/res")
-//    }
-//    getByName("test") {
-//        java.srcDirs("src/test/java", "src/test/kotlin")
-//        resources.srcDirs("src/test/res")
-//    }
-//}
-
 sourceSets {
     val main by getting {
         java {
-            setSrcDirs(listOf("src/main/java"))
+            setSrcDirs(listOf("src/main/java", "src/main/kotlin"))
         }
         resources {
             setSrcDirs(listOf("src/main/resources"))
@@ -170,7 +136,7 @@ sourceSets {
     }
     val test by getting {
         java {
-            setSrcDirs(listOf("src/test/java"))
+            setSrcDirs(listOf("src/test/java", "src/test/kotlin"))
         }
         resources {
             setSrcDirs(listOf("src/test/resources"))
