@@ -48,3 +48,9 @@ kotlin {
 //        })
 //    )
 //}
+
+tasks.named("clean") {
+    doFirst {
+        delete("${projectDir}/out")
+    }
+}

@@ -89,8 +89,8 @@ class AgeCalculator private constructor() {
 
         /**
          * 비추천
+         * @Deprecated("calculateManInsAge(Int, Int, Int, Int, Int, Int) instead")
          */
-        @Deprecated("calculateManInsAge(Int, Int, Int, Int, Int, Int) instead")
         @JvmStatic
         fun calculateManInsAge(birthDate: String, targetDate: String): Array<Int> {
             if (birthDate.length != 8 || targetDate.length != 8) {

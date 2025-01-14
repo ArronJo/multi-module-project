@@ -13,10 +13,21 @@ class PdfToSvgConverterTest : BaseJUnit5Test() {
     private val inputPdf = "./docs/input/CMS00017.pdf"
 
     @Test
-    fun `PDF 를 SVG 파일로 추출`() {
+    fun `PDF 를 SVG 파일로 추출 - 정상`() {
         val converter = PdfToSvgConverter()
-
         logger.debug { "inputPdf: $inputPdf" }
         converter.convert(inputPdf)
+    }
+
+    @Test
+    fun `PDF 를 SVG 파일로 추출 - PDF 타입 아님`() {
+        val converter = PdfToSvgConverter()
+        converter.convert("./docs/input/text.txt")
+    }
+
+    @Test
+    fun `PDF 를 SVG 파일로 추출 - 파일 미 존재`() {
+        val converter = PdfToSvgConverter()
+        converter.convert("./docs/input/t.pdf")
     }
 }

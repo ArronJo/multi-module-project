@@ -50,3 +50,9 @@ configurations.all {
         "ch.qos.logback:logback-classic:1.5.0"
     )
 }
+
+tasks.named("clean") {
+    doFirst {
+        delete("${projectDir}/out")
+    }
+}

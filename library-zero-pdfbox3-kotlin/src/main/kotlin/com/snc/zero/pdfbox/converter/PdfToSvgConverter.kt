@@ -303,8 +303,3 @@ class PdfToSvgConverter {
         }
     }
 }
-
-fun main() {
-    val converter = PdfToSvgConverter()
-    converter.convert("./doc/input/CMS00017.pdf")
-}
