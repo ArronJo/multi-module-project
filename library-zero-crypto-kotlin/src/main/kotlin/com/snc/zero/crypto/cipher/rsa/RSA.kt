@@ -69,6 +69,7 @@ class RSA {
             val encrypted = cipher.doFinal(plainText.toByteArray())
             Base64.getEncoder().encodeToString(encrypted)
         } catch (e: Exception) {
+            println("암호화 중 오류가 발생했습니다. $e")
             throw RSAException("암호화 중 오류가 발생했습니다", e)
         }
     }
@@ -83,6 +84,7 @@ class RSA {
             val decrypted = cipher.doFinal(Base64.getDecoder().decode(encryptedText))
             String(decrypted)
         } catch (e: Exception) {
+            println("복호화 중 오류가 발생했습니다. $e")
             throw RSAException("복호화 중 오류가 발생했습니다", e)
         }
     }

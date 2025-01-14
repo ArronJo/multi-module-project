@@ -2,14 +2,17 @@ package com.snc.test.crypto.cipher
 
 import com.snc.zero.crypto.cipher.Cipher
 import com.snc.zero.crypto.cipher.aes.AES
+import com.snc.zero.crypto.cipher.aes.SecureAES
 import com.snc.zero.crypto.cipher.rsa.RSA
 import com.snc.zero.crypto.cipher.rsa.RSAException
+import com.snc.zero.crypto.extensions.cipher.decryptRSA
+import com.snc.zero.crypto.extensions.cipher.encryptRSA
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
-import com.snc.zero.crypto.extensions.cipher.encryptRSA
-import com.snc.zero.crypto.extensions.cipher.decryptRSA
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import java.security.SecureRandom
+import javax.crypto.spec.SecretKeySpec
 
 private val logger = TLogging.logger { }
 
@@ -180,5 +183,38 @@ class CipherTest : BaseJUnit5Test() {
         } catch (e: RSAException) {
             println("RSA 처리 중 오류 발생: ${e.message}")
         }
+    }
+
+    @Test
+    fun `Cipher RSA 테스트 2 - encrypt 데이터가 큰 경우`() {
+        assertThrows(RSAException::class.java) {
+            val rsa = RSA()
+            rsa.encrypt("매우 큰 데이터".repeat(1000))
+        }
+    }
+
+    @Test
+    fun `Cipher RSA 테스트 3 - decrypt Base64 디코딩 실패`() {
+        assertThrows(RSAException::class.java) {
+            val rsa = RSA()
+            rsa.decrypt("잘못된Base64==")
+        }
+    }
+
+    @Test
+    fun `Cipher SecureAES 테스트 1 - enc dec`() {
+        val key = ByteArray(32).apply {
+            SecureRandom().nextBytes(this)
+        }
+        val data = "새로운 암호화 모듈이 잘 동작하는지 한번 봅시다."
+        val secretKey = SecretKeySpec(key, "AES")
+
+        val cipher1 = SecureAES()
+        val encrypted = cipher1.encrypt(data.toByteArray(), secretKey)
+
+        val cipher2 = SecureAES()
+        val plainBytes = cipher2.decrypt(encrypted, secretKey)
+
+        println(String(plainBytes))
     }
 }

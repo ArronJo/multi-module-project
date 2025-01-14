@@ -68,6 +68,8 @@ class MaskingAnnotationTest : BaseJUnit5Test() {
             nestedObject = NestedObject("9001011234567", 100),
             enumField = SampleEnum.VALUE1
         )
+        logger.debug { complexData.toString() }
+
         logger.debug { objectMapper.writeValueAsString(complexData) }
 
         val sensitiveData = SensitiveData("secret1", "secret2", 42, NestedObject("a", 1))

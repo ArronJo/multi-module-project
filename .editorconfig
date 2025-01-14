@@ -16,7 +16,6 @@ insert_final_newline = true
 #trim_trailing_whitespace = true
 #ij_continuation_indent_size = 8
 ktlint_code_style = intellij_idea
-#ktlint_standard_wrapping = disabled
 
 
 # noinspection EditorConfigKeyCorrectness
@@ -72,6 +71,13 @@ ktlint_standard_discouraged-comment-location = disabled
 
 #  Property name should start with a lowercase letter and use camel case (standard:property-naming)
 #ktlint_standard_property-naming = disabled
+
+# Missing newline after "(",  Missing newline before ")"
+ktlint_standard_wrapping = disabled
+
+# Multi-line이면 NewLine에서 시작
+#ktlint_standard_string-template-indent = disabled
+#ktlint_standard_multiline-expression-wrapping = disabled
 
 ######################################
 # Allowed

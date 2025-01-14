@@ -341,6 +341,7 @@ subprojects {
         // 특정 구성(configuration)의 의존성만 보고 싶다면,
         //configurations = setOf(project.configurations.getByName("compileClasspath"))
     }
+
     // HTML 보고서를 생성하고 싶다면, 다음과 같이 설정할 수 있습니다:
     tasks.register<HtmlDependencyReportTask>("htmlDependencyReport") {
         description = "Generates the HTML documentation for this project."
@@ -353,32 +354,17 @@ subprojects {
 
     tasks.test {
         useJUnitPlatform()
-    }
 
-    tasks.test {
         // 실행순서 : test -> jacocoTestReport -> jacocoTestCoverageVerification
         finalizedBy(tasks.jacocoTestReport, tasks.jacocoTestCoverageVerification)
-
-        jacoco {
-            //excludes.add("com/snc/test/test/**")
-            //exclude("**/BaseJUnit5Test*.class")
-        }
-
-        //exclude(
-        //    "**/com/snc/zero/filemanager/**",
-        //    "com/snc/zero/filemanager/**"
-        //)
-        //exclude {
-        //    it.path.contains("com/snc/zero/filemanager")
-        //}
     }
 
-    // library-zero-file-manager-kotlin 모듈의 test task 비활성화
-    if (project.name == "library-zero-file-manager-kotlin") {
-        tasks.named<Test>("test") {
-            enabled = false
-        }
-    }
+    //// library-zero-file-manager-kotlin 모듈의 test task 비활성화
+    //if (project.name == "library-zero-file-manager-kotlin") {
+    //    tasks.named<Test>("test") {
+    //        enabled = false
+    //    }
+    //}
 
     tasks.jacocoTestReport {
         dependsOn(tasks.test)
@@ -393,19 +379,6 @@ subprojects {
         //additionalClassDirs(files("build/classes/kotlin/main"))
         //additionalSourceDirs(files("src/main/kotlin"))
         //executionData(files("build/jacoco/test.exec"))
-
-        classDirectories.setFrom(
-            sourceSets.main.get().output.asFileTree.matching {
-                exclude(
-                    // 패키지 단위 제외
-                    "com/snc/zero/test/base/**",
-                    //"**/com/snc/zero/filemanager/file2/**",
-                    //"org/jlleitschuh/sandbox",
-                    // 특정 파일 제외
-                    //"**/BaseJUnit5Test*.class",
-                )
-            },
-        )
     }
 
     tasks.jacocoTestCoverageVerification {

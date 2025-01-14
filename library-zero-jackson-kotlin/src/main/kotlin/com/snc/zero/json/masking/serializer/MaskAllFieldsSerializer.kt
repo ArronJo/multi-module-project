@@ -15,7 +15,7 @@ class MaskAllFieldsSerializer : AbsMaskingSerializer<Any?>() {
             obj::class.java.declaredFields.forEach { field ->
                 field.isAccessible = true
                 gen.writeFieldName(field.name)
-                val fieldValue = field.get(obj)
+                val fieldValue = field[obj]
                 gen.writeObject(maskIfNeeded(fieldValue))
             }
         }

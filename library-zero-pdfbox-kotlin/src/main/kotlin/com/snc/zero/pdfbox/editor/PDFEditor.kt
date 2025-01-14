@@ -26,7 +26,7 @@ class PDFEditor private constructor() {
 
         private val logger = TLogging.logger { }
 
-        private fun mkdirs(filepath: String) {
+        fun mkdirs(filepath: String) {
             // output 디렉토리 경로 생성
             val outputDir = File(filepath).parentFile
 
@@ -36,8 +36,8 @@ class PDFEditor private constructor() {
             } else {
                 // output 디렉토리가 있으면 내부 파일들 삭제
                 outputDir.listFiles()?.forEach { file ->
-                    if (file.isFile) {
-                        file.delete()
+                    if (file.isFile && !file.delete()) {
+                        println("delete failed...")
                     }
                 }
             }
@@ -198,7 +198,7 @@ class PDFEditor private constructor() {
         /**
          * 특정 페이지를 PDF 로 저장
          */
-        private fun writePDF(outputPath: String, document: PDDocument, cropPages: MutableSet<Int>) {
+        private fun writePDF(outputPath: String, document: PDDocument, cropPages: Set<Int>) {
             mkdirs(outputPath)
 
             //++ 하이라이트된 페이지만 포함하는 새 문서 생성
@@ -209,6 +209,7 @@ class PDFEditor private constructor() {
                     newDocument.addPage(newPage)
 
                     // 페이지의 내용과 리소스를 복사
+                    @Suppress("DEPRECATION") // Kotlin에서는 @Suppress 사용
                     PDPageContentStream(
                         newDocument,
                         newPage,

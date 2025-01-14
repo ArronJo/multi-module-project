@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
     kotlin("jvm")
+    //id("jacoco")
 }
 
 group = "com.snc.zero"
@@ -32,3 +33,18 @@ kotlin {
         apiVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
     }
 }
+
+//tasks.jacocoTestReport {
+//    classDirectories.setFrom(
+//        files(classDirectories.files.map {
+//            fileTree(it) {
+//                exclude(
+//                    // 특정 파일 제외
+//                    //"**/BaseJUnit5Test.kt", "**/BaseJUnit5Test.class",
+//                    // 특정 패키지 제외
+//                    "com/snc/zero/test/base/**"
+//                )
+//            }
+//        })
+//    )
+//}

@@ -21,6 +21,7 @@ abstract class AbsMaskingSerializer<T> : JsonSerializer<T>() {
             this::class.java.isArray -> Array(java.lang.reflect.Array.getLength(this)) { i ->
                 maskIfNeeded(java.lang.reflect.Array.get(this, i))
             }
+
             else -> makeMaskedObject(obj)
         }
     }
@@ -45,7 +46,8 @@ abstract class AbsMaskingSerializer<T> : JsonSerializer<T>() {
         val idPattern = """^(\d{6})[-]?(\d{7})$""".toRegex()
         val phonePattern = """^(01[016789])[-]?(\d{3,4})[-]?(\d{4})$""".toRegex()
         val accountPattern = """^(\d{2,6})[-]?(\d{2,6})[-]?(\d{2,6})$""".toRegex()
-        val cardPattern = """^(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})$|^(\d{4})[-\s]?(\d{6})[-\s]?(\d{5})$""".toRegex()
+        val cardPattern =
+            """^(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})$|^(\d{4})[-\s]?(\d{6})[-\s]?(\d{5})$""".toRegex()
 
         return when {
             idPattern.matches(str) -> {
@@ -57,6 +59,7 @@ abstract class AbsMaskingSerializer<T> : JsonSerializer<T>() {
                     str
                 }
             }
+
             phonePattern.matches(str) -> {
                 val matchResult = phonePattern.find(str)
                 if (matchResult != null) {
@@ -66,6 +69,7 @@ abstract class AbsMaskingSerializer<T> : JsonSerializer<T>() {
                     str
                 }
             }
+
             accountPattern.matches(str) -> {
                 val matchResult = accountPattern.find(str)
                 if (matchResult != null) {
@@ -77,6 +81,7 @@ abstract class AbsMaskingSerializer<T> : JsonSerializer<T>() {
                     str
                 }
             }
+
             cardPattern.matches(str) -> {
                 val matchResult = cardPattern.find(str)
                 if (matchResult != null) {
@@ -90,6 +95,7 @@ abstract class AbsMaskingSerializer<T> : JsonSerializer<T>() {
                     str
                 }
             }
+
             else -> str
         }
     }

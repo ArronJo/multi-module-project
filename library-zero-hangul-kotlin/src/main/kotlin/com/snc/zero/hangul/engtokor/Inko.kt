@@ -82,7 +82,7 @@ class Inko(private var allowDoubleConsonant: Boolean = false) {
                 group.last().add(h)
             }
 
-            fun connect(e: MutableList<Char>): String {
+            fun connect(e: List<Char>): String {
                 val w = e.joinToString("")
                 return when {
                     connectableConsonant.containsKey(w) -> connectableConsonant.getValue(w)
@@ -110,7 +110,7 @@ class Inko(private var allowDoubleConsonant: Boolean = false) {
         var tmp = mutableListOf<Int>()
 
         fun flush() {
-            if (tmp.size > 0) result.add(combine(tmp))
+            if (tmp.isNotEmpty()) result.add(combine(tmp))
             tmp.clear()
         }
 
@@ -171,7 +171,7 @@ class Inko(private var allowDoubleConsonant: Boolean = false) {
         }
     }
 
-    private fun isVowel(e: Char) = korIndex[e]!! >= firstMoeum
+    private fun isVowel(e: Char) = korIndex[e]?.let { it >= firstMoeum } ?: false
 
     private fun generate(args: List<Int>): Char {
         return generate(args[0], args[1], args[2])
