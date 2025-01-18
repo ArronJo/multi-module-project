@@ -35,6 +35,6 @@ kotlin {
     }
 }
 
-tasks.named<Test>("test") {
-    enabled = false
-}
+//tasks.named<Test>("test") {
+//    enabled = false
+//}

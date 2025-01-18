@@ -14,8 +14,7 @@ repositories {
 
 dependencies {
     implementation(project(":library-zero-logger-kotlin"))
-
-    implementation("com.vladsch.flexmark:flexmark-all:0.64.8")
+    implementation(libs.markdown.flexmark)
 
     testImplementation(project(":library-zero-test-kotlin"))
     testImplementation(libs.junit.jupiter)
@@ -30,3 +29,7 @@ kotlin {
         apiVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
     }
 }
+
+//tasks.named<Test>("test") {
+//    enabled = false
+//}

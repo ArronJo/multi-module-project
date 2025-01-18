@@ -15,8 +15,7 @@ repositories {
 dependencies {
     implementation(project(":library-zero-logger-kotlin"))
 
-    implementation("org.apache.pdfbox:pdfbox:3.0.1")
-    //implementation("org.apache.pdfbox:pdfbox-tools:2.0.24")
+    implementation(libs.pdfbox.v3)
 
     testImplementation(project(":library-zero-test-kotlin"))
     testImplementation(libs.junit.jupiter)
@@ -38,6 +37,6 @@ tasks.named("clean") {
     }
 }
 
-tasks.named<Test>("test") {
-    enabled = false
-}
+//tasks.named<Test>("test") {
+//    enabled = false
+//}

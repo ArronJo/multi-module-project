@@ -42,7 +42,6 @@ class HangulCharsets private constructor() {
                 unicode[i] = str.codePointAt(i)
                 buff.append(String.format(Locale.getDefault(), "U+%04x", unicode[i]))
             }
-            //println(buff.toString())
             return unicode
         }
 
@@ -57,7 +56,8 @@ class HangulCharsets private constructor() {
         const val HANGUL_AREA = "\\u00B7\\u119E\\u11A2\\u2022\\u2024\\u2025\\u2219\\u302E\\u318D" // "·ᆞᆢ•․‥∙〮ㆍ"
         const val HANGUL_COMPATIBILITY = "\\uAC00-\\uD7A3" // "가-힣"
 
-        //const val PATTERN_HANGUL = "[$HANGUL_CHO$HANGUL_JUNG$HANGUL_JONG$HANGUL_JUNG$HANGUL_AREA$HANGUL_COMPATIBILITY]+"
+        // 한글 패턴 총 집합 정규식
+        const val PATTERN_HANGUL = "[$HANGUL_CHO$HANGUL_JUNG$HANGUL_JONG$HANGUL_JUNG$HANGUL_AREA$HANGUL_COMPATIBILITY]+"
 
         /*
             SpoqaHanSansNeo 에서 한글 입력 Automata 를 위한 구현 폰트들로 2,350 자 정도 된다.

@@ -48,85 +48,113 @@ class EngToKor {
                         nJung = -1
                         nCho = choData.indexOf(korKeys[p])
                     } else { // 종성이다
-                        if (nJong == -1) { // 종성 입력 중
-                            nJong = jongData.indexOf(korKeys[p])
-                            if (nJong == -1) { // 종성이 아니라 초성이다
+                        when {
+                            nJong == -1 -> { // 종성 입력 중
+                                nJong = jongData.indexOf(korKeys[p])
+                                if (nJong == -1) { // 종성이 아니라 초성이다
+                                    res += makeHangul(nCho, nJung, nJong)
+                                    nCho = choData.indexOf(korKeys[p])
+                                    nJung = -1
+                                }
+                            }
+                            nJong == 0 && p == 9 -> { // ㄳ
+                                nJong = 2
+                            }
+                            nJong == 3 && p == 12 -> { // ㄵ
+                                nJong = 4
+                            }
+                            nJong == 3 && p == 18 -> { // ㄶ
+                                nJong = 5
+                            }
+                            nJong == 7 && p == 0 -> { // ㄺ
+                                nJong = 8
+                            }
+                            nJong == 7 && p == 6 -> { // ㄻ
+                                nJong = 9
+                            }
+                            nJong == 7 && p == 7 -> { // ㄼ
+                                nJong = 10
+                            }
+                            nJong == 7 && p == 9 -> { // ㄽ
+                                nJong = 11
+                            }
+                            nJong == 7 && p == 16 -> { // ㄾ
+                                nJong = 12
+                            }
+                            nJong == 7 && p == 17 -> { // ㄿ
+                                nJong = 13
+                            }
+                            nJong == 7 && p == 18 -> { // ㅀ
+                                nJong = 14
+                            }
+                            nJong == 16 && p == 9 -> { // ㅄ
+                                nJong = 17
+                            }
+                            else -> { // 종성 입력 끝, 초성으로
                                 res += makeHangul(nCho, nJung, nJong)
                                 nCho = choData.indexOf(korKeys[p])
                                 nJung = -1
+                                nJong = -1
                             }
-                        } else if (nJong == 0 && p == 9) { // ㄳ
-                            nJong = 2
-                        } else if (nJong == 3 && p == 12) { // ㄵ
-                            nJong = 4
-                        } else if (nJong == 3 && p == 18) { // ㄶ
-                            nJong = 5
-                        } else if (nJong == 7 && p == 0) { // ㄺ
-                            nJong = 8
-                        } else if (nJong == 7 && p == 6) { // ㄻ
-                            nJong = 9
-                        } else if (nJong == 7 && p == 7) { // ㄼ
-                            nJong = 10
-                        } else if (nJong == 7 && p == 9) { // ㄽ
-                            nJong = 11
-                        } else if (nJong == 7 && p == 16) { // ㄾ
-                            nJong = 12
-                        } else if (nJong == 7 && p == 17) { // ㄿ
-                            nJong = 13
-                        } else if (nJong == 7 && p == 18) { // ㅀ
-                            nJong = 14
-                        } else if (nJong == 16 && p == 9) { // ㅄ
-                            nJong = 17
-                        } else { // 종성 입력 끝, 초성으로
-                            res += makeHangul(nCho, nJung, nJong)
-                            nCho = choData.indexOf(korKeys[p])
-                            nJung = -1
-                            nJong = -1
                         }
                     }
                 } else { // 초성 또는 (단/복)자음이다
-                    if (nCho == -1) { // 초성 입력 시작
-                        if (nJong != -1) { // 복자음 후 초성
-                            res += jongData[nJong]
-                            nJong = -1
+                    when {
+                        nCho == -1 -> { // 초성 입력 시작
+                            if (nJong != -1) { // 복자음 후 초성
+                                res += jongData[nJong]
+                                nJong = -1
+                            }
+                            nCho = choData.indexOf(korKeys[p])
                         }
-                        nCho = choData.indexOf(korKeys[p])
-                    } else if (nCho == 0 && p == 9) { // ㄳ
-                        nCho = -1
-                        nJong = 2
-                    } else if (nCho == 2 && p == 12) { // ㄵ
-                        nCho = -1
-                        nJong = 4
-                    } else if (nCho == 2 && p == 18) { // ㄶ
-                        nCho = -1
-                        nJong = 5
-                    } else if (nCho == 5 && p == 0) { // ㄺ
-                        nCho = -1
-                        nJong = 8
-                    } else if (nCho == 5 && p == 6) { // ㄻ
-                        nCho = -1
-                        nJong = 9
-                    } else if (nCho == 5 && p == 7) { // ㄼ
-                        nCho = -1
-                        nJong = 10
-                    } else if (nCho == 5 && p == 9) { // ㄽ
-                        nCho = -1
-                        nJong = 11
-                    } else if (nCho == 5 && p == 16) { // ㄾ
-                        nCho = -1
-                        nJong = 12
-                    } else if (nCho == 5 && p == 17) { // ㄿ
-                        nCho = -1
-                        nJong = 13
-                    } else if (nCho == 5 && p == 18) { // ㅀ
-                        nCho = -1
-                        nJong = 14
-                    } else if (nCho == 7 && p == 9) { // ㅄ
-                        nCho = -1
-                        nJong = 17
-                    } else { // 단자음을 연타
-                        res += choData[nCho]
-                        nCho = choData.indexOf(korKeys[p])
+                        nCho == 0 && p == 9 -> { // ㄳ
+                            nCho = -1
+                            nJong = 2
+                        }
+                        nCho == 2 && p == 12 -> { // ㄵ
+                            nCho = -1
+                            nJong = 4
+                        }
+                        nCho == 2 && p == 18 -> { // ㄶ
+                            nCho = -1
+                            nJong = 5
+                        }
+                        nCho == 5 && p == 0 -> { // ㄺ
+                            nCho = -1
+                            nJong = 8
+                        }
+                        nCho == 5 && p == 6 -> { // ㄻ
+                            nCho = -1
+                            nJong = 9
+                        }
+                        nCho == 5 && p == 7 -> { // ㄼ
+                            nCho = -1
+                            nJong = 10
+                        }
+                        nCho == 5 && p == 9 -> { // ㄽ
+                            nCho = -1
+                            nJong = 11
+                        }
+                        nCho == 5 && p == 16 -> { // ㄾ
+                            nCho = -1
+                            nJong = 12
+                        }
+                        nCho == 5 && p == 17 -> { // ㄿ
+                            nCho = -1
+                            nJong = 13
+                        }
+                        nCho == 5 && p == 18 -> { // ㅀ
+                            nCho = -1
+                            nJong = 14
+                        }
+                        nCho == 7 && p == 9 -> { // ㅄ
+                            nCho = -1
+                            nJong = 17
+                        }
+                        else -> { // 단자음을 연타
+                            res += choData[nCho]
+                            nCho = choData.indexOf(korKeys[p])
+                        }
                     }
                 }
             } else { // 모음
@@ -193,31 +221,41 @@ class EngToKor {
                     nJung = -1
                     nJong = -1
                 }
-                if (nJung == -1) { // 중성 입력 중
-                    nJung = jungData.indexOf(korKeys[p])
-                } else if (nJung == 8 && p == 19) { // ㅘ
-                    nJung = 9
-                } else if (nJung == 8 && p == 20) { // ㅙ
-                    nJung = 10
-                } else if (nJung == 8 && p == 32) { // ㅚ
-                    nJung = 11
-                } else if (nJung == 13 && p == 23) { // ㅝ
-                    nJung = 14
-                } else if (nJung == 13 && p == 24) { // ㅞ
-                    nJung = 15
-                } else if (nJung == 13 && p == 32) { // ㅟ
-                    nJung = 16
-                } else if (nJung == 18 && p == 32) { // ㅢ
-                    nJung = 19
-                } else { // 조합 안되는 모음 입력
-                    if (nCho != -1) { // 초성+중성 후 중성
-                        res += makeHangul(nCho, nJung, nJong)
-                        nCho = -1
-                    } else { // 중성 후 중성
-                        res += jungData[nJung]
+                when {
+                    nJung == -1 -> { // 중성 입력 중
+                        nJung = jungData.indexOf(korKeys[p])
                     }
-                    nJung = -1
-                    res += korKeys[p]
+                    nJung == 8 && p == 19 -> { // ㅘ
+                        nJung = 9
+                    }
+                    nJung == 8 && p == 20 -> { // ㅙ
+                        nJung = 10
+                    }
+                    nJung == 8 && p == 32 -> { // ㅚ
+                        nJung = 11
+                    }
+                    nJung == 13 && p == 23 -> { // ㅝ
+                        nJung = 14
+                    }
+                    nJung == 13 && p == 24 -> { // ㅞ
+                        nJung = 15
+                    }
+                    nJung == 13 && p == 32 -> { // ㅟ
+                        nJung = 16
+                    }
+                    nJung == 18 && p == 32 -> { // ㅢ
+                        nJung = 19
+                    }
+                    else -> { // 조합 안되는 모음 입력
+                        if (nCho != -1) { // 초성+중성 후 중성
+                            res += makeHangul(nCho, nJung, nJong)
+                            nCho = -1
+                        } else { // 중성 후 중성
+                            res += jungData[nJung]
+                        }
+                        nJung = -1
+                        res += korKeys[p]
+                    }
                 }
             }
         }

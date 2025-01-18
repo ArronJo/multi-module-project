@@ -49,54 +49,44 @@ abstract class AbsMaskingSerializer<T> : JsonSerializer<T>() {
         val cardPattern =
             """^(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})$|^(\d{4})[-\s]?(\d{6})[-\s]?(\d{5})$""".toRegex()
 
-        return when {
-            idPattern.matches(str) -> {
-                val matchResult = idPattern.find(str)
-                if (matchResult != null) {
-                    val (birthDate, personalNum) = matchResult.destructured
-                    "$birthDate-${personalNum.take(1)}******"
-                } else {
-                    str
-                }
+        if (idPattern.matches(str)) {
+            val matchResult = idPattern.find(str)
+            if (matchResult != null) {
+                val (birthDate, personalNum) = matchResult.destructured
+                return "$birthDate-${personalNum.take(1)}******"
             }
-
-            phonePattern.matches(str) -> {
-                val matchResult = phonePattern.find(str)
-                if (matchResult != null) {
-                    val (prefix, _, last) = matchResult.destructured
-                    "$prefix-****-$last"
-                } else {
-                    str
-                }
-            }
-
-            accountPattern.matches(str) -> {
-                val matchResult = accountPattern.find(str)
-                if (matchResult != null) {
-                    val (first, middle, last) = matchResult.destructured
-                    "${first.take(2)}${"*".repeat(first.length - 2)}-" +
-                        "${"*".repeat(middle.length)}-" +
-                        "${"*".repeat(last.length - 2)}${last.takeLast(2)}"
-                } else {
-                    str
-                }
-            }
-
-            cardPattern.matches(str) -> {
-                val matchResult = cardPattern.find(str)
-                if (matchResult != null) {
-                    val groups = matchResult.groupValues.drop(1).filter { it.isNotEmpty() }
-                    when (groups.size) {
-                        4 -> "${groups[0]}-****-****-${groups[3]}" // 16자리 카드
-                        3 -> "${groups[0]}-******-${groups[2]}" // 15자리 카드 (American Express)
-                        else -> str
-                    }
-                } else {
-                    str
-                }
-            }
-
-            else -> str
         }
+
+        if (phonePattern.matches(str)) {
+            val matchResult = phonePattern.find(str)
+            if (matchResult != null) {
+                val (prefix, _, last) = matchResult.destructured
+                return "$prefix-****-$last"
+            }
+        }
+
+        if (accountPattern.matches(str)) {
+            val matchResult = accountPattern.find(str)
+            if (matchResult != null) {
+                val (first, middle, last) = matchResult.destructured
+                return "${first.take(2)}${"*".repeat(first.length - 2)}-" +
+                    "${"*".repeat(middle.length)}-" +
+                    "${"*".repeat(last.length - 2)}${last.takeLast(2)}"
+            }
+        }
+
+        if (cardPattern.matches(str)) {
+            val matchResult = cardPattern.find(str)
+            if (matchResult != null) {
+                val groups = matchResult.groupValues.drop(1).filter { it.isNotEmpty() }
+                return when (groups.size) {
+                    4 -> "${groups[0]}-****-****-${groups[3]}" // 16자리 카드
+                    3 -> "${groups[0]}-******-${groups[2]}" // 15자리 카드 (American Express)
+                    else -> str
+                }
+            }
+        }
+
+        return str
     }
 }

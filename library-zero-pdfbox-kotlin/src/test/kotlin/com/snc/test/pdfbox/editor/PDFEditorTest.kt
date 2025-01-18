@@ -89,6 +89,14 @@ class PDFEditorTest : BaseJUnit5Test() {
         val newDirPath = "test/new/directory/file.txt"
         PDFEditor.mkdirs(newDirPath)
         println("Case 1: 새 디렉토리 생성 - ${File(newDirPath).parentFile.exists()}")
+        File(newDirPath).parentFile.apply {
+            mkdirs()
+            File(this, "test1.txt").createNewFile()
+            File(this, "test2.txt").createNewFile()
+        }
+
+        PDFEditor.mkdirs(newDirPath)
+        println("Case 1: 새 디렉토리 한번 더 생성 - ${File(newDirPath).parentFile.exists()}")
 
         // Case 2: 디렉토리가 있고 내부가 비어있는 경우
         val emptyDirPath = "test/empty/directory/file.txt"

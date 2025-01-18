@@ -74,7 +74,7 @@ class Inko(private var allowDoubleConsonant: Boolean = false) {
             arrayOf(1, 1, 4, 4) // 10, 자모모자자
         )
 
-        fun combine(arr: MutableList<Int>): String {
+        fun combine(arr: List<Int>): String {
             val group = mutableListOf<MutableList<Char>>()
             for (i in 0 until arr.size) {
                 val h = kor[arr[i]]

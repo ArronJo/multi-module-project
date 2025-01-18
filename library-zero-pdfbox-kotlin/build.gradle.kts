@@ -15,8 +15,8 @@ repositories {
 dependencies {
     implementation(project(":library-zero-logger-kotlin"))
 
-    implementation("org.apache.pdfbox:pdfbox:2.0.24")
-    implementation("org.apache.pdfbox:pdfbox-tools:2.0.24")
+    implementation(libs.pdfbox.v2)
+    implementation(libs.pdfbox.tools.v2)
 
     testImplementation(project(":library-zero-test-kotlin"))
     testImplementation(libs.junit.jupiter)
@@ -31,3 +31,7 @@ kotlin {
         apiVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
     }
 }
+
+//tasks.named<Test>("test") {
+//    enabled = false
+//}

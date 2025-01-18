@@ -14,6 +14,7 @@ import org.apache.pdfbox.text.PDFTextStripperByArea
 import org.apache.pdfbox.text.TextPosition
 import java.awt.geom.Rectangle2D
 import java.io.File
+import javax.annotation.processing.Generated
 
 /**
  * Kotlin을 사용하여 PDF 문서 내 특정 위치를 찾아 하이라이트 처리하는 방법을 알려드리겠습니다.
@@ -36,6 +37,7 @@ class PDFEditor private constructor() {
             } else {
                 // output 디렉토리가 있으면 내부 파일들 삭제
                 outputDir.listFiles()?.forEach { file ->
+                    @Generated
                     if (file.isFile && !file.delete()) {
                         println("delete failed...")
                     }
@@ -82,7 +84,6 @@ class PDFEditor private constructor() {
                     stripper.endPage = pageNo + 1
                     val content = stripper.getText(document)
                     val tmp = content.replace(Regex("\\r?\\n"), "")
-                    //logger.info { "content = \n$content" }
 
                     textToHighlight.forEach {
                         if (tmp.indexOf(it, ignoreCase = true) != -1) {
@@ -110,7 +111,6 @@ class PDFEditor private constructor() {
                 for (pageIndex in 0 until document.numberOfPages) {
                     val stripper = object : PDFTextStripperByArea() {
                         override fun writeString(text: String, textPositions: List<TextPosition>) {
-                            //logger.info { "text = $text" }
                             textToFind.forEach {
                                 if (text.contains(it, ignoreCase = true)) {
                                     val matchStart = text.indexOf(it, ignoreCase = true)
@@ -230,9 +230,7 @@ class PDFEditor private constructor() {
                 }
                 newDocument.save(outputPath)
             }
-
             //||
-
             /*
             PDDocument().use { newDocument ->
                 val layerUtility = LayerUtility(newDocument)

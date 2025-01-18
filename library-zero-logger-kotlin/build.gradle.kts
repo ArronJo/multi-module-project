@@ -56,3 +56,7 @@ tasks.named("clean") {
         delete("$projectDir/out")
     }
 }
+
+//tasks.named<Test>("test") {
+//    enabled = false
+//}

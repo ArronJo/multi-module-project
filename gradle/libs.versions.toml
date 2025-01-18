@@ -19,6 +19,11 @@ jackson-kotlin = "2.17.1"
 kotlinx-serialization-json = "1.5.0"
 kotlinx-datetime = "0.4.0"
 
+pdfbox-3 = "3.0.1"
+pdfbox-2 = "2.0.24"
+
+flexmark = "0.64.8"
+
 [libraries]
 kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin-bom" }
 junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit-jupiter" }
@@ -40,6 +45,12 @@ cache-caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version.re
 json-jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson-kotlin" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
+
+pdfbox-v3 = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox-3" }
+pdfbox-v2 = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox-2" }
+pdfbox-tools-v2 = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox-2" }
+
+markdown-flexmark = { module = "com.vladsch.flexmark:flexmark-all", version.ref = "flexmark" }
 
 [bundles]
 

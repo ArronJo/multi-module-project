@@ -34,6 +34,10 @@ kotlin {
     }
 }
 
+//tasks.named<Test>("test") {
+//    enabled = false
+//}
+
 tasks.jacocoTestReport {
     classDirectories.setFrom(
         files(classDirectories.files.map {
