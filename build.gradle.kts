@@ -288,6 +288,11 @@ subprojects {
     }
 
     ktlint {
+        version.set("1.5.0")
+        verbose.set(true)
+        android.set(false)
+        outputToConsole.set(true)
+
         reporters {
             reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
             reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)

@@ -79,6 +79,19 @@ ktlint_standard_wrapping = disabled
 #ktlint_standard_string-template-indent = disabled
 #ktlint_standard_multiline-expression-wrapping = disabled
 
+# Function body should be replaced with body expression (standard:function-expression-body)
+ktlint_standard_function-expression-body = disabled
+
+# A comment inside or on same line after a 'value_parameter' is not allowed.
+# It may be placed on a separate line above. (cannot be auto-corrected) (standard:value-parameter-comment)
+ktlint_standard_value-parameter-comment = disabled
+
+# Newline expected before operand in multiline condition (standard:condition-wrapping)
+ktlint_standard_condition-wrapping = disabled
+
+# First line of body expression fits on same line as function signature (standard:function-signature)
+ktlint_standard_function-signature = disabled
+
 ######################################
 # Allowed
 
