@@ -39,7 +39,7 @@ class ToStringExtTest : BaseJUnit5Test() {
     @Test
     fun `Print - IntArray`() {
         // given
-        val data = arrayOf(1,2,3,4)
+        val data = arrayOf(1, 2, 3, 4)
         // when
         val v1 = data.print()
         // then
