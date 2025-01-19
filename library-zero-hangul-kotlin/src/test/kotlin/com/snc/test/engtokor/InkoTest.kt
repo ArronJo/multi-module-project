@@ -2,6 +2,9 @@ package com.snc.test.engtokor
 
 import com.snc.zero.core.extensions.text.toStrings
 import com.snc.zero.hangul.engtokor.Inko
+import com.snc.zero.hangul.engtokor.Inko.Companion.asEnglish
+import com.snc.zero.hangul.engtokor.Inko.Companion.asKorean
+import com.snc.zero.hangul.engtokor.Inko.Companion.asKoreanWithDoubleConsonant
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Test
 
@@ -174,5 +177,12 @@ class InkoTest : BaseJUnit5Test() {
         assertEquals(inko.ko2en("ㄳ"), "rt")
         assertEquals(inko.ko2en("ㄻㄳㄲ"), "fartR")
         assertEquals(inko.ko2en("ㅁㄴㅇㄻㄴㅇㄹ"), "asdfasdf")
+    }
+
+    @Test
+    fun testInko2() {
+        println("rtrt".asKorean)
+        println("rtrt".asKoreanWithDoubleConsonant)
+        println("ㅏㅐㄱㄷㅁ".asEnglish)
     }
 }
