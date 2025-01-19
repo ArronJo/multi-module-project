@@ -33,3 +33,13 @@ kotlin {
         apiVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
     }
 }
+
+tasks.named("clean") {
+    doFirst {
+        delete("$projectDir/out")
+    }
+}
+
+//tasks.named<Test>("test") {
+//    enabled = false
+//}

@@ -32,6 +32,12 @@ kotlin {
     }
 }
 
+tasks.named("clean") {
+    doFirst {
+        delete("$projectDir/out")
+    }
+}
+
 //tasks.named<Test>("test") {
 //    enabled = false
 //}
