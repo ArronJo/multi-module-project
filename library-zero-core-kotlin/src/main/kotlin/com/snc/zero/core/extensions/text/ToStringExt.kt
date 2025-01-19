@@ -3,7 +3,7 @@ package com.snc.zero.core.extensions.text
 import com.snc.zero.core.extensions.format.formatDateTime
 import java.util.*
 
-fun <T> Array<T>.toStrings(): String {
+fun <T> Array<T>.print(): String {
     val sb = StringBuilder()
     for (v in this) {
         if (sb.isNotEmpty()) {
@@ -16,7 +16,7 @@ fun <T> Array<T>.toStrings(): String {
     return sb.toString()
 }
 
-fun ByteArray.toStrings(): String {
+fun ByteArray.print(): String {
     val sb = StringBuilder()
     for (v in this) {
         if (sb.isNotEmpty()) {
@@ -29,6 +29,11 @@ fun ByteArray.toStrings(): String {
     return sb.toString()
 }
 
-fun Calendar.toStrings(): String {
+fun IntArray.print(): String {
+    return this.contentToString()
+    //return this.joinToString(prefix = "[", separator = ",", postfix = "]")
+}
+
+fun Calendar.print(): String {
     return this.formatDateTime("yyyyMMddHHmmss")
 }

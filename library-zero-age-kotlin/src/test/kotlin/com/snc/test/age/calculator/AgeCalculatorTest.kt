@@ -2,7 +2,7 @@ package com.snc.test.age.calculator
 
 import com.snc.zero.age.calculator.AgeCalculator
 import com.snc.zero.core.extensions.text.padStart
-import com.snc.zero.core.extensions.text.toStrings
+import com.snc.zero.core.extensions.text.print
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.BeforeEach
@@ -65,7 +65,7 @@ class AgeCalculatorTest : BaseJUnit5Test() {
         // when
         val manAge = AgeCalculator.calculateManInsAge(birthDate, currentDate)
         // then
-        logger.debug { "통합 계산: ${manAge.toStrings()}" }
+        logger.debug { "통합 계산: ${manAge.print()}" }
     }
 
     @Test
@@ -81,7 +81,7 @@ class AgeCalculatorTest : BaseJUnit5Test() {
             dayOfTarget
         )
         // then
-        logger.debug { "통합 계산 ChatGPT ${manAge.toStrings()}" }
+        logger.debug { "통합 계산 ChatGPT ${manAge.print()}" }
     }
 
     @Test

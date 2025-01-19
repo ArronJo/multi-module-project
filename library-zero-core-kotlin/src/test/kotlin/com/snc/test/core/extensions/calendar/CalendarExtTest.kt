@@ -2,7 +2,7 @@ package com.snc.test.core.extensions.calendar
 
 import com.snc.zero.core.extensions.calendar.*
 import com.snc.zero.core.extensions.format.formatDateTime
-import com.snc.zero.core.extensions.text.toStrings
+import com.snc.zero.core.extensions.text.print
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Test
@@ -66,9 +66,9 @@ class CalendarExtTest : BaseJUnit5Test() {
         val v2 = cal.formatDateTime("yyyy-MM-dd")
         val v3 = cal.formatDateTime("yyyy-MM-dd HH:mm:ss")
         // then
-        logger.debug { "Calendar 날짜 표현: ${cal.toStrings()} -> $v1" }
-        logger.debug { "Calendar 날짜 표현: ${cal.toStrings()} -> $v2" }
-        logger.debug { "Calendar 날짜 표현: ${cal.toStrings()} -> $v3" }
+        logger.debug { "Calendar 날짜 표현: ${cal.print()} -> $v1" }
+        logger.debug { "Calendar 날짜 표현: ${cal.print()} -> $v2" }
+        logger.debug { "Calendar 날짜 표현: ${cal.print()} -> $v3" }
     }
 
     @Test
@@ -130,7 +130,7 @@ class CalendarExtTest : BaseJUnit5Test() {
         // when
         val v1 = data.toCalendar()
         // then
-        logger.debug { "String toCalendar 결과: $data -> ${v1.toStrings()}" }
+        logger.debug { "String toCalendar 결과: $data -> ${v1.print()}" }
     }
 
     @Test
@@ -140,7 +140,7 @@ class CalendarExtTest : BaseJUnit5Test() {
         // when
         val v1 = data.toCalendar("yyyyMMddHHmm")
         // then
-        logger.debug { "String toCalendar 결과: $data -> ${v1.toStrings()}" }
+        logger.debug { "String toCalendar 결과: $data -> ${v1.print()}" }
     }
 
     @Test
@@ -150,7 +150,7 @@ class CalendarExtTest : BaseJUnit5Test() {
         // when
         val v1 = data.toCalendar("yyyyMMddHH")
         // then
-        logger.debug { "String toCalendar 결과: $data -> ${v1.toStrings()}" }
+        logger.debug { "String toCalendar 결과: $data -> ${v1.print()}" }
     }
 
     @Test
@@ -160,7 +160,7 @@ class CalendarExtTest : BaseJUnit5Test() {
         // when
         val v1 = data.toCalendar("yyyyMMddHH")
         // then
-        logger.debug { "String toCalendar 결과: $data -> ${v1.toStrings()}" }
+        logger.debug { "String toCalendar 결과: $data -> ${v1.print()}" }
     }
 
     @Test
@@ -170,6 +170,6 @@ class CalendarExtTest : BaseJUnit5Test() {
         // when
         val v1 = data.toCalendar()
         // then
-        logger.debug { "Date toCalendar 결과: $data -> ${v1.toStrings()}" }
+        logger.debug { "Date toCalendar 결과: $data -> ${v1.print()}" }
     }
 }

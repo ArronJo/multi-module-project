@@ -1,6 +1,6 @@
 package com.snc.test.engtokor
 
-import com.snc.zero.core.extensions.text.toStrings
+import com.snc.zero.core.extensions.text.print
 import com.snc.zero.hangul.engtokor.Inko
 import com.snc.zero.hangul.engtokor.Inko.Companion.asEnglish
 import com.snc.zero.hangul.engtokor.Inko.Companion.asKorean
@@ -40,10 +40,10 @@ class InkoTest : BaseJUnit5Test() {
         assertEquals(inko.generate(14, 15, 13), '췚')
 
         // detach
-        assertEquals(inko.detach('님').toStrings(), arrayOf(2, 41, -1, 6, -1).toStrings())
-        assertEquals(inko.detach('가').toStrings(), arrayOf(0, 28, -1, -1, -1).toStrings())
-        assertEquals(inko.detach('뷁').toStrings(), arrayOf(7, 38, 33, 5, 0).toStrings())
-        assertEquals(inko.detach('없').toStrings(), arrayOf(11, 32, -1, 7, 9).toStrings())
+        assertEquals(inko.detach('님').print(), arrayOf(2, 41, -1, 6, -1).print())
+        assertEquals(inko.detach('가').print(), arrayOf(0, 28, -1, -1, -1).print())
+        assertEquals(inko.detach('뷁').print(), arrayOf(7, 38, 33, 5, 0).print())
+        assertEquals(inko.detach('없').print(), arrayOf(11, 32, -1, 7, 9).print())
 
         // english > korean (allowDoubleConsonant: false)
         assertEquals(inko.en2ko("dkssud"), "안녕")

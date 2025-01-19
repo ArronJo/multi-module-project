@@ -1,7 +1,7 @@
 package com.snc.test.core.extensions.text
 
 import com.snc.zero.core.extensions.text.toBytes
-import com.snc.zero.core.extensions.text.toStrings
+import com.snc.zero.core.extensions.text.print
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Test
@@ -19,7 +19,7 @@ class ByteExtTest : BaseJUnit5Test() {
         val b = data.toBytes()
         val v = String(b)
         // then
-        logger.debug { "toBytes 1: data -> ${b.toStrings()} -> $v" }
+        logger.debug { "toBytes 1: data -> ${b.print()} -> $v" }
         assertEquals("abcdefABCDEF", v)
     }
 
@@ -31,7 +31,7 @@ class ByteExtTest : BaseJUnit5Test() {
         val b = data.toBytes()
         val v = String(b)
         // then
-        logger.debug { "toBytes 2: data -> ${b.toStrings()} -> $v" }
+        logger.debug { "toBytes 2: data -> ${b.print()} -> $v" }
         assertEquals("1234567890", v)
     }
 
@@ -43,7 +43,7 @@ class ByteExtTest : BaseJUnit5Test() {
         val b = data.toBytes()
         val v = String(b)
         // then
-        logger.debug { "toBytes 3: data -> ${b.toStrings()} -> $v" }
+        logger.debug { "toBytes 3: data -> ${b.print()} -> $v" }
         assertEquals(" !@#\$%^&*()", v)
     }
 }
