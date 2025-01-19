@@ -55,7 +55,7 @@ tasks.jacocoTestReport {
                     "**/EngToKor.kt",
                     "**/EngToKor.class",
                     // 특정 패키지 제외
-                    //"com/example/package/**",
+                    "com/snc/zero/hangul/engtokor/**",
                 )
             }
         })
