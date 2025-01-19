@@ -113,4 +113,13 @@ class HangulDecomposeTest : BaseJUnit5Test() {
         // then
         logger.debug { "한글 $data 분해 결과: $v1" }
     }
+
+    @Test
+    fun `한글 분해해보자`() {
+        logger.debug { HangulDecompose.decompose('ㄱ') }
+        logger.debug { HangulDecompose.decompose('가') }
+        logger.debug { HangulDecompose.decompose('간') }
+        logger.debug { HangulDecompose.decompose('갆') }
+        logger.debug { HangulDecompose.decompose('a') }
+    }
 }
