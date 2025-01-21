@@ -32,6 +32,8 @@
 ---
 ## Release Note
 
+### 2025년에도 계속 된다...
+
 ### 2024-07-04
 
 Updated the "test" module.
