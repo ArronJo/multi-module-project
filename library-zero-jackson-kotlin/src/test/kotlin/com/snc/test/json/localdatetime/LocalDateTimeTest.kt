@@ -1,6 +1,6 @@
 package com.snc.test.json.localdatetime
 
-import LocalDateTimeAsDateSerializer
+import com.snc.zero.json.localdatetime.serializer.LocalDateTimeAsDateSerializer
 import com.snc.zero.test.base.BaseJUnit5Test
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
