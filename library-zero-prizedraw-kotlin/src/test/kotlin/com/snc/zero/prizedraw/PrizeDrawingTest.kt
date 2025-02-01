@@ -1,4 +1,5 @@
-import com.snc.zero.prizedraw.PrizeDrawing
+package com.snc.zero.prizedraw
+
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Test
 

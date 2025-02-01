@@ -76,7 +76,7 @@ class Inko(private var allowDoubleConsonant: Boolean = false) {
 
         fun combine(arr: List<Int>): String {
             val group = mutableListOf<MutableList<Char>>()
-            for (i in 0 until arr.size) {
+            for (i in arr.indices) { //for (i in 0 until arr.size) {
                 val h = kor[arr[i]]
                 if (i == 0 || isVowel(group.last()[0]) != isVowel(h)) group.add(mutableListOf())
                 group.last().add(h)

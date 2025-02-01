@@ -10,7 +10,7 @@ import com.snc.zero.json.masking.serializer.MaskFieldSerializer
 /**
  * Jackson JSON Annotation 인터셉터
  *
- * usage)
+ * usage:
  *
  *  val objectMapper = ObjectMapper().apply {
  *      registerKotlinModule()

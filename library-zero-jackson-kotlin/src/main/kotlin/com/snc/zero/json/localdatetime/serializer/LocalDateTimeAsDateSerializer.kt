@@ -1,3 +1,5 @@
+package com.snc.zero.json.localdatetime.serializer
+
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind
