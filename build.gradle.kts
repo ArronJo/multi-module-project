@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     //id("java")
-    kotlin("jvm") version "2.0.21" // id("org.jetbrains.kotlin.jvm") version "2.1.0" "2.0.22" "1.9.23"
+    kotlin("jvm") version "2.1.0" // id("org.jetbrains.kotlin.jvm") version "2.1.0" "2.0.22" "1.9.23"
     kotlin("plugin.serialization") version "1.8.0"
 
     // Check latest version
@@ -49,12 +49,26 @@ repositories {
 
 dependencies {
     implementation(platform(rootProject.libs.kotlin.bom))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.1.0")
+    implementation("org.jetbrains.kotlin:kotlin-build-tools-impl:2.1.0")
+    //implementation("com.pinterest.ktlint:ktlint-cli:1.5.0")
+    //implementation("ch.qos.logback:logback-classic:1.5.13")
+    //implementation("ch.qos.logback:logback-core:1.5.13")
     //implementation("org.owasp:dependency-check-gradle:5.3.0")
 
     //testImplementation(kotlin("test"))
     //testImplementation(rootProject.libs.junit.jupiter.api)
     //testRuntimeOnly(rootProject.libs.junit.platform.launcher)
     //testRuntimeOnly(rootProject.libs.junit.jupiter.engine)
+}
+
+// 버전 강제화 (force):
+configurations.all {
+    resolutionStrategy {
+        // logback 버전 강제화
+        force("ch.qos.logback:logback-core:1.5.13")
+        force("ch.qos.logback:logback-classic:1.5.13")
+    }
 }
 
 //dependencyCheck {
@@ -144,23 +158,12 @@ sourceSets {
     }
 }
 
-// logback 버전 강제화 (force):
-configurations.all {
-    resolutionStrategy.force(
-        "ch.qos.logback:logback-core:1.5.0",
-        "ch.qos.logback:logback-classic:1.5.0"
-    )
-}
-
 ///////////////////////////////////////////////////////////
 // KtLint
 // -GitHub: https://github.com/JLLeitschuh/ktlint-gradle
 //          https://github.com/pinterest/ktlint
 // -Rule: https://pinterest.github.io/ktlint/latest/rules/standard/
 //
-//dependencies {
-//    ktlint("com.pinterest.ktlint:ktlint-cli:1.5.0")
-//}
 //configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
 ktlint {
     version.set("1.5.0") // CLI 최신버전 확인: https://pinterest.github.io/ktlint/latest/

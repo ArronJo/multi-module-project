@@ -4,9 +4,9 @@ package com.snc.zero.personalinfo
  * PersonalInfoRegex 객체 내에 다양한 개인정보 항목에 대한 정규식을 정의하고 있습니다.
  *
  * 각 정규식의 용도는 다음과 같습니다:
- *  - residentRegistrationNumber: 주민등록번호
+ *  - residentRegistrationNumber: 주민등록번호 (예: 123456-1234567, 1234561234567)
  *  - foreignerRegistrationNumber: 외국인등록번호
- *  - driverLicenseNumber: 운전면허번호
+ *  - driverLicenseNumber: 운전면허번호 (예: 11-12-345678-90)
  *  - passportNumber: 여권번호
  *  - mobilePhoneNumber: 휴대폰 번호
  *  - emailAddress: 이메일 주소
@@ -15,13 +15,13 @@ package com.snc.zero.personalinfo
  *  - ipAddress: IP 주소
  */
 object PersonalInfoRegex {
-    // 주민등록번호
-    val residentRegistrationNumber = Regex("""^\d{6}-[1-4]\d{6}$""")
+    // 주민등록번호 (South Korean Resident Registration Number)
+    val residentRegistrationNumber = Regex("""^\d{6}-?[1-4|90]\d{6}$""")
 
     // 외국인등록번호
     val foreignerRegistrationNumber = Regex("""^\d{6}-[5-8]\d{6}$""")
 
-    // 운전면허번호
+    // 운전면허번호 (South Korean Driver’s License Number)
     val driverLicenseNumber = Regex("""^\d{2}-\d{2}-\d{6}-\d{2}$""")
 
     // 여권번호

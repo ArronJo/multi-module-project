@@ -68,8 +68,8 @@ config/detekt/
 
 ### docs ###
 *.md
-!README.md
 *.mmd
+!README.md
 
 ### etc ###
 mermaid_diagrams/

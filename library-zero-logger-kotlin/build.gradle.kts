@@ -34,22 +34,22 @@ kotlin {
 //    introduced by com.pinterest.ktlint:ktlint-cli@1.5.0
 //      > ch.qos.logback:logback-classic@1.3.14
 //      > ch.qos.logback:logback-core@1.3.14
-configurations.all {
-    resolutionStrategy.eachDependency {
-        if (requested.group == "ch.qos.logback" &&
-            (requested.name == "logback-classic" || requested.name == "logback-core")) {
-            useVersion("1.5.13")
-            because("Fix for CVE vulnerability")
-        }
-    }
-}
+//configurations.all {
+//    resolutionStrategy.eachDependency {
+//        if (requested.group == "ch.qos.logback" &&
+//            (requested.name == "logback-classic" || requested.name == "logback-core")) {
+//            useVersion("1.5.13")
+//            because("Fix for CVE vulnerability")
+//        }
+//    }
+//}
 
 // logback 버전 강제화 (force):
 //configurations.all {
-//    resolutionStrategy.force(
-//        "ch.qos.logback:logback-core:1.5.13",
-//        "ch.qos.logback:logback-classic:1.5.13"
-//    )
+//    resolutionStrategy {
+//        force("ch.qos.logback:logback-core:1.5.13")
+//        force("ch.qos.logback:logback-classic:1.5.13")
+//    }
 //}
 
 tasks.named("clean") {

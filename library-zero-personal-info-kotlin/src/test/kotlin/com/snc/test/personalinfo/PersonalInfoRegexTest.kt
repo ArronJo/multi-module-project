@@ -11,7 +11,7 @@ class PersonalInfoRegexTest : BaseJUnit5Test() {
         assertTrue(PersonalInfoRegex.residentRegistrationNumber.matches("900101-1234567"))
         assertTrue(PersonalInfoRegex.residentRegistrationNumber.matches("000101-4234567"))
         assertFalse(PersonalInfoRegex.residentRegistrationNumber.matches("900101-5234567"))
-        assertFalse(PersonalInfoRegex.residentRegistrationNumber.matches("9001011234567"))
+        assertFalse(PersonalInfoRegex.residentRegistrationNumber.matches("9001015234567"))
     }
 
     @Test
