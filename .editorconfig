@@ -1,7 +1,12 @@
 # .editorconfig
-#
-# https://editorconfig.org/
+
+# Reference
 # https://pinterest.github.io/ktlint/dev-snapshot/rules/configuration-ktlint/
+
+# Web Editor
+# https://editorconfig.org/
+
+# 변수 시작
 root = true
 
 # noinspection EditorConfigKeyCorrectness
