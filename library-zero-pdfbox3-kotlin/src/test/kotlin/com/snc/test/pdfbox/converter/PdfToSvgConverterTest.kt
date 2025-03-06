@@ -11,8 +11,6 @@ private val logger = TLogging.logger { }
 @Suppress("NonAsciiCharacters")
 class PdfToSvgConverterTest : BaseJUnit5Test() {
 
-    //private val inputPdf = "./docs/input/CMS00017.pdf"
-
     @Test
     fun `PDF 를 SVG 파일로 추출 - 정상`() {
         //val inputPdf = File(this::class.java.classLoader.getResource("input/CMS00017.pdf")!!.toURI())
