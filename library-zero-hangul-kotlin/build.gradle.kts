@@ -44,20 +44,20 @@ tasks.named("clean") {
 //    enabled = false
 //}
 
-tasks.jacocoTestReport {
-    classDirectories.setFrom(
-        files(classDirectories.files.map {
-            fileTree(it) {
-                exclude(
-                    // 특정 파일 제외
-                    "**/Inko.kt",
-                    "**/Inko.class",
-                    "**/EngToKor.kt",
-                    "**/EngToKor.class",
-                    // 특정 패키지 제외
-                    "com/snc/zero/hangul/engtokor/**",
-                )
-            }
-        })
-    )
-}
+//tasks.jacocoTestReport {
+//    classDirectories.setFrom(
+//        files(classDirectories.files.map {
+//            fileTree(it) {
+//                exclude(
+//                    // 특정 파일 제외
+//                    "**/Inko.kt",
+//                    "**/Inko.class",
+//                    "**/EngToKor.kt",
+//                    "**/EngToKor.class",
+//                    // 특정 패키지 제외
+//                    "com/snc/zero/hangul/engtokor/**",
+//                )
+//            }
+//        })
+//    )
+//}

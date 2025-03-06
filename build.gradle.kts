@@ -49,11 +49,8 @@ repositories {
 
 dependencies {
     implementation(platform(rootProject.libs.kotlin.bom))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.1.0")
-    implementation("org.jetbrains.kotlin:kotlin-build-tools-impl:2.1.0")
-    //implementation("com.pinterest.ktlint:ktlint-cli:1.5.0")
-    //implementation("ch.qos.logback:logback-classic:1.5.13")
-    //implementation("ch.qos.logback:logback-core:1.5.13")
+    implementation(rootProject.libs.kotlin.stdlib)
+    implementation(rootProject.libs.kotlin.build.tools.impl)
     //implementation("org.owasp:dependency-check-gradle:5.3.0")
 
     //testImplementation(kotlin("test"))
