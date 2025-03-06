@@ -179,7 +179,7 @@ class PDFEditor private constructor() {
 
             PDDocument.load(File(inputPath)).use { document ->
                 val splitter = Splitter()
-                val pages = splitter.split(document)
+                val pages: List<PDDocument> = splitter.split(document)
 
                 PDDocument().use { newDocument ->
                     // 페이지 추출 (1-based index)

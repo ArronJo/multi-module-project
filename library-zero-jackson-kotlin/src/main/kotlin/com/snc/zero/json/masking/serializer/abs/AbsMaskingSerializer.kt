@@ -46,8 +46,10 @@ abstract class AbsMaskingSerializer<T> : JsonSerializer<T>() {
         val idPattern = """^(\d{6})[-]?(\d{7})$""".toRegex()
         val phonePattern = """^(01[016789])[-]?(\d{3,4})[-]?(\d{4})$""".toRegex()
         val accountPattern = """^(\d{2,6})[-]?(\d{2,6})[-]?(\d{2,6})$""".toRegex()
-        val cardPattern =
-            """^(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})$|^(\d{4})[-\s]?(\d{6})[-\s]?(\d{5})$""".toRegex()
+        //val cardPattern =
+        //    """^(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})$|^(\d{4})[-\s]?(\d{6})[-\s]?(\d{5})$""".toRegex()
+        val cardPattern = """^\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}$|^\d{4}[-\s]?\d{6}[-\s]?\d{5}$""".toRegex()
+
 
         if (idPattern.matches(str)) {
             val matchResult = idPattern.find(str)
