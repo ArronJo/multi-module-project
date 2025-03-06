@@ -45,6 +45,15 @@ class InkoTest : BaseJUnit5Test() {
         assertEquals(inko.detach('뷁').print(), arrayOf(7, 38, 33, 5, 0).print())
         assertEquals(inko.detach('없').print(), arrayOf(11, 32, -1, 7, 9).print())
 
+        val detachArray = listOf(
+            '와', '왜', '외', '워', '웨', '위', '긔',
+            '핛', '핝', '핞', '핡', '핢', '핣', '핤', '핥', '핧', '힚',
+            'ㅘ', 'ㅙ', 'ㅚ', 'ㅝ', 'ㅞ', 'ㅟ', 'ㅢ'
+        )
+        detachArray.forEach {
+            inko.detach(it).print()
+        }
+
         // english > korean (allowDoubleConsonant: false)
         assertEquals(inko.en2ko("dkssud"), "안녕")
         assertEquals(inko.en2ko("dkssudgktpdy"), "안녕하세요")
