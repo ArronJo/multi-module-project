@@ -150,18 +150,21 @@ class PdfToSvgConverter {
         return OutputFolders(pdfDir, htmlDir, svgDir)
     }
 
-    private fun validatePaths(pdfPath: Path, folders: OutputFolders): Boolean {
-        // pdf2svg 명령어 존재 확인
-        try {
-            ProcessBuilder("pdf2svg", "--version")
-                .redirectOutput(ProcessBuilder.Redirect.PIPE)
-                .redirectError(ProcessBuilder.Redirect.PIPE)
-                .start()
-        } catch (e: Exception) {
-            println("에러: pdf2svg가 설치되지 않았습니다. 'brew install pdf2svg' 명령어로 설치해주세요.")
-            return false
-        }
+    //private fun validatePdf2svg(): Boolean {
+    //    // pdf2svg 명령어 존재 확인
+    //    try {
+    //        ProcessBuilder("pdf2svg", "--version")
+    //            .redirectOutput(ProcessBuilder.Redirect.PIPE)
+    //            .redirectError(ProcessBuilder.Redirect.PIPE)
+    //            .start()
+    //    } catch (e: Exception) {
+    //        println("에러: pdf2svg가 설치되지 않았습니다. 'brew install pdf2svg' 명령어로 설치해주세요.\n\n$e")
+    //        return false
+    //    }
+    //    return true
+    //}
 
+    private fun validatePaths(pdfPath: Path, folders: OutputFolders): Boolean {
         // PDF 파일 검증
         if (!pdfPath.exists()) {
             println("에러: PDF 파일을 찾을 수 없습니다: $pdfPath")
@@ -243,13 +246,14 @@ class PdfToSvgConverter {
     // 입력 파일 경로를 모듈 기준으로 처리하는 함수
     private fun resolveInputPath(relativePath: String): Path {
         val moduleRoot = getModuleRootPath()
-        println("모듈 루트 경로: $moduleRoot")
-
         return moduleRoot.resolve(relativePath).normalize()
     }
 
     fun convert(pdfPath: String) {
         val startTime = Instant.now()
+
+        val moduleRoot = getModuleRootPath()
+        println("모듈 루트 경로: $moduleRoot")
 
         // 모듈 기준 경로로 변환
         val pdfFilePath = resolveInputPath(pdfPath)
@@ -264,8 +268,15 @@ class PdfToSvgConverter {
         // 출력 디렉토리도 모듈 기준으로 설정
         val outputBase = resolveInputPath("build/output_svgs")
         val folders = getOutputFolders(pdfFilePath, outputBase.toString())
+        println("출력 디렉토리: $folders")
 
         try {
+            //println("Pdf2svg 설치 체크")
+            //if (validatePdf2svg()) {
+            //    return
+            //}
+
+            println("PDF 파일 경로 체크")
             if (!validatePaths(pdfFilePath, folders)) {
                 return
             }

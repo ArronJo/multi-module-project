@@ -13,6 +13,7 @@ class PdfToSvgConverterTest : BaseJUnit5Test() {
 
     @Test
     fun `PDF 를 SVG 파일로 추출 - 정상`() {
+        // 에러: pdf2svg가 설치되지 않았습니다. 'brew install pdf2svg' 명령어로 설치해주세요.
         //val inputPdf = File(this::class.java.classLoader.getResource("input/CMS00017.pdf")!!.toURI())
         val inputPdf = Paths.get(ClassLoader.getSystemResource("input/CMS00017.pdf")!!.toURI())
         val converter = PdfToSvgConverter()
