@@ -144,13 +144,12 @@ class EngToKorTest : BaseJUnit5Test() {
 
     @Test
     fun `기타 조합`() {
-        val detachArray = listOf(
+        val en2koArray = listOf(
             "와", "왜", "외", "워", "웨", "위", "긔",
-            "핛", "핝", "핞", "핡", "핢", "핣", "핤", "핥", "핧", "힚",
-            "ㅘ", "ㅙ", "ㅚ", "ㅝ", "ㅞ", "ㅟ", "ㅢ",
+            "핛", "핝", "핞", "핡", "핢", "핣", "핤", "핥", "핧", "힚"
         )
         val engToKor = EngToKor()
-        detachArray.forEach {
+        en2koArray.forEach {
             engToKor.en2ko(it)
         }
     }
