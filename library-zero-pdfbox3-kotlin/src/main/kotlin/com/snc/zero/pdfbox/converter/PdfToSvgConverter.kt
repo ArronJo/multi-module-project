@@ -266,7 +266,9 @@ class PdfToSvgConverter {
         val folders = getOutputFolders(pdfFilePath, outputBase.toString())
 
         try {
-            if (!validatePaths(pdfFilePath, folders)) return
+            if (!validatePaths(pdfFilePath, folders)) {
+                return
+            }
 
             println("PDF 파일 로딩 중... ($pdfFilePath)")
 
