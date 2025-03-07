@@ -150,19 +150,18 @@ class PdfToSvgConverter {
         return OutputFolders(pdfDir, htmlDir, svgDir)
     }
 
-    //private fun validatePdf2svg(): Boolean {
-    //    // pdf2svg 명령어 존재 확인
-    //    try {
-    //        ProcessBuilder("pdf2svg", "--version")
-    //            .redirectOutput(ProcessBuilder.Redirect.PIPE)
-    //            .redirectError(ProcessBuilder.Redirect.PIPE)
-    //            .start()
-    //    } catch (e: Exception) {
-    //        println("에러: pdf2svg가 설치되지 않았습니다. 'brew install pdf2svg' 명령어로 설치해주세요.\n\n$e")
-    //        return false
-    //    }
-    //    return true
-    //}
+    private fun validatePdf2svg() {
+        // pdf2svg 명령어 존재 확인
+        try {
+            // 설치 명령어: brew install pdf2svg
+            ProcessBuilder("pdf2svg", "--version")
+                .redirectOutput(ProcessBuilder.Redirect.PIPE)
+                .redirectError(ProcessBuilder.Redirect.PIPE)
+                .start()
+        } catch (e: Exception) {
+            println("에러: pdf2svg가 설치되지 않았습니다. 'brew install pdf2svg' 명령어로 설치해주세요.\n\n$e")
+        }
+    }
 
     private fun validatePaths(pdfPath: Path, folders: OutputFolders): Boolean {
         // PDF 파일 검증
@@ -271,10 +270,8 @@ class PdfToSvgConverter {
         println("출력 디렉토리: $folders")
 
         try {
-            //println("Pdf2svg 설치 체크")
-            //if (validatePdf2svg()) {
-            //    return
-            //}
+            println("Pdf2svg 설치 체크")
+            validatePdf2svg()
 
             println("PDF 파일 경로 체크")
             if (!validatePaths(pdfFilePath, folders)) {
@@ -293,10 +290,11 @@ class PdfToSvgConverter {
                 print("\r페이지 변환 중: $pageNum/$totalPages")
 
                 val outputPath = folders.svgDir.resolve("page_%03d.svg".format(pageNum))
-                if (convertPdfPageToSvg(pdfFilePath, outputPath, pageNum)) {
-                    val fileSize = Files.size(outputPath) / 1024 // KB로 변환
-                    println(" (${fileSize}KB)")
+                if (!convertPdfPageToSvg(pdfFilePath, outputPath, pageNum)) {
+                    break
                 }
+                val fileSize = Files.size(outputPath) / 1024 // KB로 변환
+                println(" (${fileSize}KB)")
             }
 
             // HTML 뷰어 생성
