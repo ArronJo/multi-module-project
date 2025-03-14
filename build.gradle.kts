@@ -273,6 +273,17 @@ tasks.named("compileJava") {
     dependsOn("deleteDSStoreShellScript")
 }
 
+tasks.register("clear") {
+    doLast {
+        val buildDir = project.layout.buildDirectory.asFile.get()
+        println("Deleting build directory: $buildDir")
+
+        // Recursively delete the build folder
+        buildDir.deleteRecursively()
+    }
+}
+
+
 ///////////////////////////////////////////////////////////
 // Sub-Projects Settings
 subprojects {
