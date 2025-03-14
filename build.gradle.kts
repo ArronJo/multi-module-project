@@ -26,6 +26,11 @@ plugins {
     // 규칙 충돌 관리를 위해 detekt 는 off 하도록 한다.
     // https://github.com/detekt/detekt
     //alias(libs.plugins.detekt) // id("io.gitlab.arturbosch.detekt") version "1.23.7"
+
+    // SBOM 생성
+    // 명령어: `./gradlew cyclonedxBom`
+    // 취약점검사: `trivy sbom ./build/reports/bom.json`
+    id("org.cyclonedx.bom") version "1.7.4"
 }
 
 group = "com.snc.zero"
@@ -282,7 +287,6 @@ tasks.register("clear") {
         buildDir.deleteRecursively()
     }
 }
-
 
 ///////////////////////////////////////////////////////////
 // Sub-Projects Settings
