@@ -279,7 +279,7 @@ tasks.named("compileJava") {
     dependsOn("deleteDSStoreShellScript")
 }
 
-tasks.register("clear") {
+tasks.register("clean") {
     doLast {
         val buildDir = project.layout.buildDirectory.asFile.get()
         println("Deleting build directory: $buildDir")
