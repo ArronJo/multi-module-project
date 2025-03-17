@@ -28,10 +28,13 @@ plugins {
     //alias(libs.plugins.detekt) // id("io.gitlab.arturbosch.detekt") version "1.23.7"
 
     // SBOM 생성
+    // https://plugins.gradle.org/plugin/org.cyclonedx.bom
     // 명령어: `./gradlew cyclonedxBom`
     // 취약점검사: `trivy sbom ./build/reports/bom.json`
+    // https://github.com/CycloneDX/cyclonedx-gradle-plugin
     // https://scribesecurity.com/ko/sbom/sample-sbom/#sbom-samples
-    id("org.cyclonedx.bom") version "1.7.4"
+    // https://mvnrepository.com/artifact/org.cyclonedx.bom/org.cyclonedx.bom.gradle.plugin
+    id("org.cyclonedx.bom") version "2.2.0" //"1.7.4"
 }
 
 group = "com.snc.zero"
