@@ -30,6 +30,7 @@ plugins {
     // SBOM 생성
     // 명령어: `./gradlew cyclonedxBom`
     // 취약점검사: `trivy sbom ./build/reports/bom.json`
+    // https://scribesecurity.com/ko/sbom/sample-sbom/#sbom-samples
     id("org.cyclonedx.bom") version "1.7.4"
 }
 
