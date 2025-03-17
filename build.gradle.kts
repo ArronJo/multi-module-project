@@ -275,14 +275,19 @@ tasks.register<Exec>("deleteDSStoreShellScript") {
     //delete file('src/main/generated') // 인텔리제이 Annotation processor 생성물 생성 위치
 }
 
+
 tasks.named("compileJava") {
     dependsOn("deleteDSStoreShellScript")
 }
 
-tasks.register("clean") {
+// Cannot add task 'clean' as a task with that name already exists.
+//tasks.register("clean") { }
+tasks.named("clean") {
     doLast {
         val buildDir = project.layout.buildDirectory.asFile.get()
+        println("##############################")
         println("Deleting build directory: $buildDir")
+        println("##############################")
 
         // Recursively delete the build folder
         buildDir.deleteRecursively()
