@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+    //`kotlin-dsl`
     //id("java")
     kotlin("jvm") version "2.1.0" // id("org.jetbrains.kotlin.jvm") version "2.1.0" "2.0.22" "1.9.23"
     kotlin("plugin.serialization") version "1.8.0"
@@ -277,7 +278,6 @@ tasks.register<Exec>("deleteDSStoreShellScript") {
 
     //delete file('src/main/generated') // 인텔리제이 Annotation processor 생성물 생성 위치
 }
-
 
 tasks.named("compileJava") {
     dependsOn("deleteDSStoreShellScript")
