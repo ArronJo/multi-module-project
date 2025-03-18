@@ -14,7 +14,9 @@
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         th { background-color: #f4f4f4; }
-    </style>
+        #depends-on { padding-inline-start: 16px; margin-block-start: 8px; margin-block-end: 8px; }
+        #depends-on > li { margin-top: 12px }
+        #depends-on > li:last-child { margin-bottom: 0 }
     </style>
 </head>
 <body>
@@ -30,7 +32,9 @@
     <table>
         <thead>
         <tr>
-            <th>Component</th>
+            <th>Package</th>
+            <th>Version</th>
+            <th>BOM-Ref</th>
             <th>Depends On</th>
         </tr>
         </thead>
@@ -39,6 +43,7 @@
 </div>
 <script>
     let zoom;
+    let sbomDataGlobal;
 
     document.getElementById('upload').addEventListener('change', function(event) {
         const file = event.target.files[0];
@@ -47,6 +52,7 @@
         const reader = new FileReader();
         reader.onload = function(e) {
             const sbomData = JSON.parse(e.target.result);
+            sbomDataGlobal = sbomData;
             visualizeGraph(sbomData);
             displayDependencies(sbomData);
         };
@@ -150,13 +156,38 @@
         d3.select("svg").transition().call(zoom.scaleBy, 0.8);
     }
 
+    function getComponentDetails(bomRef, sbomData) {
+        // Find the component in the SBOM data
+        const component = sbomData.components.find(c => c["bom-ref"] === bomRef);
+        if (!component) return { name: "Unknown", package: "Unknown", version: "Unknown" };
+
+        return {
+            name: component.name || "Unknown",
+            package: component.purl || component.group || "Unknown",
+            group: component.group || "Unknown",
+            version: component.version || "Unknown"
+        };
+    }
+
     function displayDependencies(sbomData) {
         const tableBody = document.getElementById("dependency-table-body");
         tableBody.innerHTML = "";
+
         (sbomData.dependencies || []).forEach(dep => {
+            const details = getComponentDetails(dep.ref, sbomData);
             const row = `<tr>
+                <td>${details.group}/${details.name}</td>
+                <td>${details.version}</td>
                 <td>${dep.ref}</td>
-                <td>${dep.dependsOn?.join(", ") || "None"}</td>
+                <!--<td>${dep.dependsOn?.join("<br>") || "None"}</td>-->
+                <td>
+                  ${dep.dependsOn ?
+                                `<ul id="depends-on">
+                      ${dep.dependsOn.map(item => `<li>${item}</li>`).join('')}
+                    </ul>` :
+                                'None'
+                            }
+                </td>
             </tr>`;
             tableBody.innerHTML += row;
         });
