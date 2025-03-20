@@ -35,7 +35,7 @@ plugins {
     // https://github.com/CycloneDX/cyclonedx-gradle-plugin
     // https://scribesecurity.com/ko/sbom/sample-sbom/#sbom-samples
     // https://mvnrepository.com/artifact/org.cyclonedx.bom/org.cyclonedx.bom.gradle.plugin
-    id("org.cyclonedx.bom") version "2.2.0" //"1.7.4"
+    alias(libs.plugins.cyclonedx) // id("org.cyclonedx.bom") version "2.2.0"
 }
 
 group = "com.snc.zero"

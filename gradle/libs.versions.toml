@@ -1,9 +1,10 @@
 [versions]
 kotlin-bom = "2.1.0" # https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-bom
-ktlint = "12.1.1" # https://plugins.gradle.org/plugin/org.jlleitschuh.gradle.ktlint
+ktlint = "12.2.0" # https://plugins.gradle.org/plugin/org.jlleitschuh.gradle.ktlint
 #detekt = "1.23.7"  # https://github.com/detekt/detekt
 sonarqube = "5.1.0.4882"
 dependencycheck = "8.0.2"
+cyclonedx = "2.2.0" # "1.7.4" # https://plugins.gradle.org/plugin/org.cyclonedx.bom
 
 junit-jupiter = "5.10.2"
 testng = "7.9.0"
@@ -60,4 +61,6 @@ markdown-flexmark = { module = "com.vladsch.flexmark:flexmark-all", version.ref 
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 #detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 sonarqube = { id ="org.sonarqube", version.ref = "sonarqube" }
+cyclonedx = { id ="org.cyclonedx.bom", version.ref = "cyclonedx" }
+
 dependencycheck = { id = "org.owasp.dependencycheck", version.ref = "dependencycheck" }
