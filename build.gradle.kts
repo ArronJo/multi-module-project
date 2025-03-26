@@ -36,6 +36,9 @@ plugins {
     // https://scribesecurity.com/ko/sbom/sample-sbom/#sbom-samples
     // https://mvnrepository.com/artifact/org.cyclonedx.bom/org.cyclonedx.bom.gradle.plugin
     alias(libs.plugins.cyclonedx) // id("org.cyclonedx.bom") version "2.2.0"
+
+    // 오픈 소스 라이선스 리포트 만들기
+    alias(libs.plugins.license.report) // id("com.github.jk1.dependency-license-report") version "2.5"
 }
 
 group = "com.snc.zero"

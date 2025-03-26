@@ -5,6 +5,7 @@ ktlint = "12.2.0" # https://plugins.gradle.org/plugin/org.jlleitschuh.gradle.ktl
 sonarqube = "5.1.0.4882"
 dependencycheck = "8.0.2"
 cyclonedx = "2.2.0" # "1.7.4" # https://plugins.gradle.org/plugin/org.cyclonedx.bom
+license-report = "2.5"
 
 junit-jupiter = "5.10.2"
 testng = "7.9.0"
@@ -24,6 +25,8 @@ pdfbox-3 = "3.0.1"
 pdfbox-2 = "2.0.24"
 
 flexmark = "0.64.8"
+
+passay = "1.6.6"
 
 [libraries]
 kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin-bom" }
@@ -55,6 +58,8 @@ pdfbox-tools-v2 = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox-2
 
 markdown-flexmark = { module = "com.vladsch.flexmark:flexmark-all", version.ref = "flexmark" }
 
+passay = { module = "org.passay:passay", version.ref = "passay" }
+
 [bundles]
 
 [plugins]
@@ -62,5 +67,7 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 #detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 sonarqube = { id ="org.sonarqube", version.ref = "sonarqube" }
 cyclonedx = { id ="org.cyclonedx.bom", version.ref = "cyclonedx" }
+
+license-report = { id = "com.github.jk1.dependency-license-report", version.ref = "license-report" }
 
 dependencycheck = { id = "org.owasp.dependencycheck", version.ref = "dependencycheck" }

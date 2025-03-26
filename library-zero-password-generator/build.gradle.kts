@@ -14,7 +14,7 @@ repositories {
 
 dependencies {
     implementation(project(":library-zero-logger-kotlin"))
-    implementation("org.passay:passay:1.6.6")
+    implementation(libs.passay)
 
     testImplementation(project(":library-zero-test-kotlin"))
     testImplementation(libs.junit.jupiter)
