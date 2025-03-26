@@ -25,6 +25,8 @@ pdfbox-2 = "2.0.24"
 
 flexmark = "0.64.8"
 
+passay = "1.6.6"
+
 [libraries]
 kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin-bom" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin-bom" }
@@ -54,6 +56,8 @@ pdfbox-v2 = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox-2" }
 pdfbox-tools-v2 = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox-2" }
 
 markdown-flexmark = { module = "com.vladsch.flexmark:flexmark-all", version.ref = "flexmark" }
+
+passay = { module = "org.passay:passay", version.ref = "passay" }
 
 [bundles]
 
