@@ -4,6 +4,7 @@ property**/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+gradle/verification-metadata.xml
 
 ### kotlin 2.0 ###
 .kotlin/
