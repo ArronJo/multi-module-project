@@ -1,4 +1,4 @@
-import org.gradle.api.artifacts.verification.DependencyVerificationMode as VerificationMode
+//import org.gradle.api.artifacts.verification.DependencyVerificationMode as VerificationMode
 import java.io.FileInputStream
 import java.util.Properties
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
