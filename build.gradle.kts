@@ -81,6 +81,13 @@ configurations.all {
     }
 }
 
+// Gradle을 사용할 때, dependency verification 의존성 검증 기능을 비활성화 조치.
+configurations.all {
+    resolutionStrategy {
+        disableDependencyVerification() // Sensitive: dependency verification is disabled
+    }
+}
+
 //dependencyCheck {
 //    format = org.owasp.dependencycheck.reporting.ReportGenerator.Format.ALL
 //}
