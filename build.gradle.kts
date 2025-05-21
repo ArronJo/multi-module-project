@@ -289,6 +289,9 @@ tasks.named("compileJava") {
 // Cannot add task 'clean' as a task with that name already exists.
 //tasks.register("clean") { }
 tasks.named("clean") {
+    doFirst {
+        delete("$projectDir/out")
+    }
     doLast {
         val buildDir = project.layout.buildDirectory.asFile.get()
         println("##############################")
