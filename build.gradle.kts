@@ -1,3 +1,4 @@
+import org.gradle.api.artifacts.verification.DependencyVerificationMode as VerificationMode
 import java.io.FileInputStream
 import java.util.Properties
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
@@ -88,6 +89,17 @@ configurations.all {
     }
 }
 
+//dependencyLocking {
+//    lockAllConfigurations()
+//}
+//
+//dependencyVerification {
+//    configuration {
+//        // 의존성 검증 비활성화
+//        verificationMode.set(VerificationMode.DISABLED)
+//    }
+//}
+
 //dependencyCheck {
 //    format = org.owasp.dependencycheck.reporting.ReportGenerator.Format.ALL
 //}
@@ -156,6 +168,7 @@ tasks.register("allProjectDependencies") {
     }
 }
 
+/*
 sourceSets {
     val main by getting {
         java {
@@ -174,6 +187,7 @@ sourceSets {
         }
     }
 }
+ */
 
 ///////////////////////////////////////////////////////////
 // KtLint
