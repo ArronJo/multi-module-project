@@ -296,6 +296,7 @@ System.setProperty("sonar.gradle.skipCompile", "true")
 tasks.named("clean") {
     doFirst {
         delete("$projectDir/out")
+        delete("$projectDir/gradle/verification-metadata.xml")
     }
     doLast {
         val buildDir = project.layout.buildDirectory.asFile.get()
