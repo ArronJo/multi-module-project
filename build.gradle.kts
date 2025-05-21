@@ -290,7 +290,26 @@ sonar {
 System.setProperty("sonar.gradle.skipCompile", "true")
 
 ///////////////////////////////////////////////////////////
-// Shell
+// clean Task 에 커스텀 Task 추가
+// Cannot add task 'clean' as a task with that name already exists.
+//tasks.register("clean") { }
+tasks.named("clean") {
+    doFirst {
+        delete("$projectDir/out")
+    }
+    doLast {
+        val buildDir = project.layout.buildDirectory.asFile.get()
+        println("##############################")
+        println("Deleting build directory: $buildDir")
+        println("##############################")
+
+        // Recursively delete the build folder
+        buildDir.deleteRecursively()
+    }
+}
+
+///////////////////////////////////////////////////////////
+// compileJava 사전 Task
 tasks.register<Exec>("deleteDSStoreShellScript") {
     description = "This is a shell task that deletes the '.DS_Store' file when building a project."
     group = JavaBasePlugin.BUILD_TASK_NAME
@@ -307,21 +326,31 @@ tasks.named("compileJava") {
     dependsOn("deleteDSStoreShellScript")
 }
 
-// Cannot add task 'clean' as a task with that name already exists.
-//tasks.register("clean") { }
-tasks.named("clean") {
-    doFirst {
-        delete("$projectDir/out")
-    }
-    doLast {
-        val buildDir = project.layout.buildDirectory.asFile.get()
-        println("##############################")
-        println("Deleting build directory: $buildDir")
-        println("##############################")
+///////////////////////////////////////////////////////////
+// 빌드 이후 후속 Task
+// 의존성 검증 메타데이터 생성 task 정의
+tasks.register<Exec>("generateVerificationMetadata") {
+    group = "verification"
+    description = "모든 하위 프로젝트 빌드 완료 후 의존성 검증 메타데이터 파일 생성"
 
-        // Recursively delete the build folder
-        buildDir.deleteRecursively()
+    // 프로젝트 루트 디렉토리에서 실행
+    workingDir = projectDir
+
+    // OS에 따라 적절한 명령어 설정
+    if (System.getProperty("os.name").lowercase().contains("windows")) {
+        commandLine("cmd", "/c", "gradlew", "--write-verification-metadata", "sha256")
+    } else {
+        commandLine("./gradlew", "--write-verification-metadata", "sha256")
     }
+
+    doLast {
+        println("의존성 검증 메타데이터가 생성되었습니다.")
+    }
+}
+
+// root build task가 완료된 후 generateVerificationMetadata task 실행
+tasks.named("build") {
+    finalizedBy("generateVerificationMetadata")
 }
 
 ///////////////////////////////////////////////////////////
