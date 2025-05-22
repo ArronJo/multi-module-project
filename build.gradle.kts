@@ -96,17 +96,21 @@ java {
 }
 
 kotlin {
-    jvmToolchain(17)
-}
-
-kotlin {
     sourceSets.all {
         println("Source set: $name")
         println("Depends on: ${dependsOn.joinToString(", ") { it.name }}")
         println("---")
     }
 
+    // JVM 버전을 지정합니다
+    // Kotlin 코드를 컴파일하고 실행할 때 사용할 Java 툴체인을 설정
+    // 실제로 Java 17 JDK를 사용하여 바이트코드를 생성
+    // 컴파일러, 실행 환경 모두 Java 17을 사용
+    jvmToolchain(17)
+
     compilerOptions {
+        // Kotlin 언어 기능, API 버전 설정
+        // 일반적으로 jvmToolchain(17)만 설정하면 충분하며, Kotlin 언어 버전은 사용 중인 Kotlin 플러그인 버전에 따라 자동으로 결정됩니다.
         languageVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
         apiVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
     }
