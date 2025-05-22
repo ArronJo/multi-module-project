@@ -7,7 +7,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     //`kotlin-dsl`
     //id("java")
-    kotlin("jvm") version "2.1.0" // id("org.jetbrains.kotlin.jvm") version "2.1.0" "2.0.22" "1.9.23"
+    kotlin("jvm") version "2.1.20" // id("org.jetbrains.kotlin.jvm") version "2.1.0" "2.0.22" "1.9.23"
     kotlin("plugin.serialization") version "1.8.0"
 
     // Check latest version
@@ -82,25 +82,6 @@ configurations.all {
     }
 }
 
-// Gradle을 사용할 때, dependency verification 의존성 검증 기능을 비활성화 조치.
-//configurations.all {
-//    resolutionStrategy {
-//        // Sensitive: dependency verification is disabled
-//        disableDependencyVerification()
-//    }
-//}
-
-//dependencyLocking {
-//    lockAllConfigurations()
-//}
-//
-//dependencyVerification {
-//    configuration {
-//        // 의존성 검증 비활성화
-//        verificationMode.set(VerificationMode.DISABLED)
-//    }
-//}
-
 //dependencyCheck {
 //    format = org.owasp.dependencycheck.reporting.ReportGenerator.Format.ALL
 //}
@@ -112,6 +93,10 @@ tasks.test {
 java {
     sourceCompatibility = rootProject.extra["javaVersion"] as JavaVersion
     targetCompatibility = rootProject.extra["javaVersion"] as JavaVersion
+}
+
+kotlin {
+    jvmToolchain(17)
 }
 
 kotlin {
