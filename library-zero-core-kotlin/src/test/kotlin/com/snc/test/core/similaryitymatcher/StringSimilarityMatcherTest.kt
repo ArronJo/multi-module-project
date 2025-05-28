@@ -8,8 +8,13 @@ import org.junit.jupiter.api.Test
 class StringSimilarityMatcherTest : BaseJUnit5Test() {
 
     private var data: List<String> = listOf(
-        "salary", "mysalard", "mysalaygood", "sadary",
-        "payback", "sblbry", "wowsblarywow"
+        "salary",
+        "mysalard",
+        "mysalaygood",
+        "sadary",
+        "payback",
+        "sblbry",
+        "wowsblarywow"
     )
 
     private val matcher = StringSimilarityMatcher()
@@ -25,7 +30,10 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
         println("=== 레벤슈타인 유사도 (최소 0.3) ===")
         println("-Usage: findSimilarStrings( ..., SimilarityMethod.LEVENSHTEIN )")
         val levenshteinResults = matcher.findSimilarStrings(
-            data, target, 0.3, StringSimilarityMatcher.SimilarityMethod.LEVENSHTEIN
+            data,
+            target,
+            0.3,
+            StringSimilarityMatcher.SimilarityMethod.LEVENSHTEIN
         )
         levenshteinResults.forEach { result ->
             println("${result.text}: ${String.format("%.3f", result.similarity)}")
@@ -35,7 +43,10 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
         println("=== 자카드 유사도 (최소 0.3) ===")
         println("-Usage: findSimilarStrings( ..., SimilarityMethod.JACCARD )")
         val jaccardResults = matcher.findSimilarStrings(
-            data, target, 0.3, StringSimilarityMatcher.SimilarityMethod.JACCARD
+            data,
+            target,
+            0.3,
+            StringSimilarityMatcher.SimilarityMethod.JACCARD
         )
         jaccardResults.forEach { result ->
             println("${result.text}: ${String.format("%.3f", result.similarity)}")
@@ -45,7 +56,10 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
         println("=== 코사인 유사도 (최소 0.3) ===")
         println("-Usage: findSimilarStrings( ..., SimilarityMethod.COSINE )")
         val cosineResults = matcher.findSimilarStrings(
-            data, target, 0.3, StringSimilarityMatcher.SimilarityMethod.COSINE
+            data,
+            target,
+            0.3,
+            StringSimilarityMatcher.SimilarityMethod.COSINE
         )
         cosineResults.forEach { result ->
             println("${result.text}: ${String.format("%.3f", result.similarity)}")

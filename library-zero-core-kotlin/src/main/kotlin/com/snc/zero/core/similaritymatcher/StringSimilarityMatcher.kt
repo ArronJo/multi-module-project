@@ -30,9 +30,9 @@ data class PositionDifferenceResult(
 )
 
 enum class MatchType {
-    EXACT_LENGTH,      // 같은 길이 문자열 매칭
-    SUBSTRING,         // 원본 문자열에서 타겟을 부분 문자열로 찾음
-    REVERSE_SUBSTRING  // 타겟에서 원본을 부분 문자열로 찾음
+    EXACT_LENGTH, // 같은 길이 문자열 매칭
+    SUBSTRING, // 원본 문자열에서 타겟을 부분 문자열로 찾음
+    REVERSE_SUBSTRING // 타겟에서 원본을 부분 문자열로 찾음
 }
 
 class StringSimilarityMatcher {
@@ -52,8 +52,8 @@ class StringSimilarityMatcher {
             for (j in 1..len2) {
                 val cost = if (s1[i - 1] == s2[j - 1]) 0 else 1
                 dp[i][j] = minOf(
-                    dp[i - 1][j] + 1,      // 삭제
-                    dp[i][j - 1] + 1,      // 삽입
+                    dp[i - 1][j] + 1, // 삭제
+                    dp[i][j - 1] + 1, // 삽입
                     dp[i - 1][j - 1] + cost // 교체
                 )
             }
@@ -102,8 +102,11 @@ class StringSimilarityMatcher {
             norm2 += f2 * f2
         }
 
-        return if (norm1 == 0.0 || norm2 == 0.0) 0.0
-        else dotProduct / (kotlin.math.sqrt(norm1) * kotlin.math.sqrt(norm2))
+        return if (norm1 == 0.0 || norm2 == 0.0) {
+            0.0
+        } else {
+            dotProduct / (kotlin.math.sqrt(norm1) * kotlin.math.sqrt(norm2))
+        }
     }
 
     /**
@@ -190,7 +193,7 @@ class StringSimilarityMatcher {
 
             if (similarity >= minSimilarity) {
                 SimilarityResult(text, similarity, method.name)
-            } else null
+            } else { null }
         }.sortedByDescending { it.similarity }
     }
 
@@ -209,7 +212,7 @@ class StringSimilarityMatcher {
             val diffCount = differentCharCount(target, text)
             if (diffCount <= maxDifferentChars) {
                 text to diffCount
-            } else null
+            } else { null }
         }.sortedBy { it.second }
     }
 
@@ -228,7 +231,7 @@ class StringSimilarityMatcher {
             val result = optimalPositionBasedDifferences(target, text)
             if (result.differences <= maxDifferences) {
                 text to result.differences
-            } else null
+            } else { null }
         }.sortedBy { it.second }
     }
 
@@ -371,13 +374,13 @@ class StringSimilarityMatcher {
     }
 
     enum class SimilarityMethod {
-        LEVENSHTEIN,  // 편집 거리 기반
-        JACCARD,      // 집합 기반
-        COSINE        // 벡터 기반
+        LEVENSHTEIN, // 편집 거리 기반
+        JACCARD, // 집합 기반
+        COSINE // 벡터 기반
     }
 
     enum class DifferenceMethod {
-        FREQUENCY_BASED,   // 빈도 기반 (기존 방식)
-        POSITION_BASED     // 위치 기반 (새로운 방식)
+        FREQUENCY_BASED, // 빈도 기반 (기존 방식)
+        POSITION_BASED // 위치 기반 (새로운 방식)
     }
 }
