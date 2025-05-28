@@ -15,13 +15,13 @@ open class BaseJUnit5Test {
 
     @BeforeEach
     open fun beforeEach(testInfo: TestInfo) {
-        println("\nTask Case ${++count} -> ${testInfo.displayName}")
+        println("\n[S] Task Case ${++count} -> ${testInfo.displayName}")
         timer.start()
     }
 
     @AfterEach
     open fun afterEach(testInfo: TestInfo) {
-        println("Task Result $count elapse: ${timer.stop()}")
+        println("[E] Task Result $count elapse: ${timer.stop()}\n\n")
     }
 
     fun assertAll(vararg executables: Executable) {
