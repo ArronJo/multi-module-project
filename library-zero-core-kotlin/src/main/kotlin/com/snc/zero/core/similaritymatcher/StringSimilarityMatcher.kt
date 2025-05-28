@@ -286,141 +286,82 @@ class StringSimilarityMatcher {
         val results = mutableListOf<MatchResult>()
 
         for (text in data) {
-            val matchResult = findBestMatch(text, target, maxDifferences, includeSubstring, method)
-            if (matchResult != null) {
-                results.add(matchResult)
+            // 1. 완전 문자열 비교 (같은 길이)
+            if (text.length == target.length) {
+                val differences = when (method) {
+                    DifferenceMethod.POSITION_BASED -> countDifferences(text, target)
+                    DifferenceMethod.FREQUENCY_BASED -> differentCharCount(text, target)
+                }
+                if (differences <= maxDifferences) {
+                    results.add(
+                        MatchResult(
+                            originalString = text,
+                            matchedPart = text,
+                            matchType = MatchType.EXACT_LENGTH,
+                            differences = differences,
+                            startIndex = 0,
+                            differenceMethod = method
+                        )
+                    )
+                    continue
+                }
+            }
+
+            // 2. 다른 길이 문자열 비교 (위치 기반만 지원)
+            else if (method == DifferenceMethod.POSITION_BASED) {
+                val result = optimalPositionBasedDifferences(text, target)
+                if (result.differences <= maxDifferences) {
+                    results.add(
+                        MatchResult(
+                            originalString = text,
+                            matchedPart = if (text.length > target.length) result.alignedPart1 else text,
+                            matchType = MatchType.EXACT_LENGTH,
+                            differences = result.differences,
+                            startIndex = result.offset,
+                            differenceMethod = method
+                        )
+                    )
+                    continue
+                }
+            }
+
+            // 3. 부분 문자열 포함 검사 (타겟이 더 짧은 경우)
+            if (includeSubstring && target.length < text.length) {
+                val substringMatch = findSubstringWithDifferences(text, target, maxDifferences, method)
+                if (substringMatch != null) {
+                    results.add(
+                        MatchResult(
+                            originalString = text,
+                            matchedPart = substringMatch.substring,
+                            matchType = MatchType.SUBSTRING,
+                            differences = substringMatch.differences,
+                            startIndex = substringMatch.startIndex,
+                            differenceMethod = method
+                        )
+                    )
+                    continue
+                }
+            }
+
+            // 4. 반대 부분 문자열 검사 (타겟이 더 긴 경우)
+            if (includeSubstring && target.length > text.length) {
+                val substringMatch = findSubstringWithDifferences(target, text, maxDifferences, method)
+                if (substringMatch != null) {
+                    results.add(
+                        MatchResult(
+                            originalString = text,
+                            matchedPart = text,
+                            matchType = MatchType.REVERSE_SUBSTRING,
+                            differences = substringMatch.differences,
+                            startIndex = substringMatch.startIndex,
+                            differenceMethod = method
+                        )
+                    )
+                }
             }
         }
 
         return results.sortedBy { it.differences }
-    }
-
-    private fun findBestMatch(
-        text: String,
-        target: String,
-        maxDifferences: Int,
-        includeSubstring: Boolean,
-        method: DifferenceMethod
-    ): MatchResult? {
-        // 1. 완전 문자열 비교 (같은 길이)
-        if (text.length == target.length) {
-            return checkExactLengthMatch(text, target, maxDifferences, method)
-        }
-
-        // 2. 다른 길이 문자열 비교 (위치 기반만 지원)
-        if (method == DifferenceMethod.POSITION_BASED) {
-            val positionMatch = checkPositionBasedMatch(text, target, maxDifferences, method)
-            if (positionMatch != null) return positionMatch
-        }
-
-        // 3. 부분 문자열 검사
-        if (includeSubstring) {
-            return checkSubstringMatches(text, target, maxDifferences, method)
-        }
-
-        return null
-    }
-
-    private fun checkExactLengthMatch(
-        text: String,
-        target: String,
-        maxDifferences: Int,
-        method: DifferenceMethod
-    ): MatchResult? {
-        val differences = when (method) {
-            DifferenceMethod.POSITION_BASED -> countDifferences(text, target)
-            DifferenceMethod.FREQUENCY_BASED -> differentCharCount(text, target)
-        }
-
-        return if (differences <= maxDifferences) {
-            MatchResult(
-                originalString = text,
-                matchedPart = text,
-                matchType = MatchType.EXACT_LENGTH,
-                differences = differences,
-                startIndex = 0,
-                differenceMethod = method
-            )
-        } else null
-    }
-
-    private fun checkPositionBasedMatch(
-        text: String,
-        target: String,
-        maxDifferences: Int,
-        method: DifferenceMethod
-    ): MatchResult? {
-        val result = optimalPositionBasedDifferences(text, target)
-
-        return if (result.differences <= maxDifferences) {
-            MatchResult(
-                originalString = text,
-                matchedPart = if (text.length > target.length) result.alignedPart1 else text,
-                matchType = MatchType.EXACT_LENGTH,
-                differences = result.differences,
-                startIndex = result.offset,
-                differenceMethod = method
-            )
-        } else null
-    }
-
-    private fun checkSubstringMatches(
-        text: String,
-        target: String,
-        maxDifferences: Int,
-        method: DifferenceMethod
-    ): MatchResult? {
-        // 타겟이 더 짧은 경우 (타겟이 텍스트의 부분 문자열)
-        if (target.length < text.length) {
-            return checkTargetAsSubstring(text, target, maxDifferences, method)
-        }
-
-        // 타겟이 더 긴 경우 (텍스트가 타겟의 부분 문자열)
-        if (target.length > text.length) {
-            return checkTextAsSubstring(text, target, maxDifferences, method)
-        }
-
-        return null
-    }
-
-    private fun checkTargetAsSubstring(
-        text: String,
-        target: String,
-        maxDifferences: Int,
-        method: DifferenceMethod
-    ): MatchResult? {
-        val substringMatch = findSubstringWithDifferences(text, target, maxDifferences, method)
-
-        return if (substringMatch != null) {
-            MatchResult(
-                originalString = text,
-                matchedPart = substringMatch.substring,
-                matchType = MatchType.SUBSTRING,
-                differences = substringMatch.differences,
-                startIndex = substringMatch.startIndex,
-                differenceMethod = method
-            )
-        } else null
-    }
-
-    private fun checkTextAsSubstring(
-        text: String,
-        target: String,
-        maxDifferences: Int,
-        method: DifferenceMethod
-    ): MatchResult? {
-        val substringMatch = findSubstringWithDifferences(target, text, maxDifferences, method)
-
-        return if (substringMatch != null) {
-            MatchResult(
-                originalString = text,
-                matchedPart = text,
-                matchType = MatchType.REVERSE_SUBSTRING,
-                differences = substringMatch.differences,
-                startIndex = substringMatch.startIndex,
-                differenceMethod = method
-            )
-        } else null
     }
 
     enum class SimilarityMethod {

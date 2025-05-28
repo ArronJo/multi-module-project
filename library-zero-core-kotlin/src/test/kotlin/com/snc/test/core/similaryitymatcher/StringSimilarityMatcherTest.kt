@@ -80,6 +80,12 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
         val frequencyResults1 = matcher.findByDifferentCharCount(data, target, 4)
         frequencyResults1.forEach { (text, diffCount) ->
             println("  $text: $diffCount 개 차이")
+            when (text) {
+                "salary" -> assertEquals(diffCount, 0)
+                "mysalard" -> assertEquals(diffCount, 2)
+                "sadary" -> assertEquals(diffCount, 2)
+                "sblbry" -> assertEquals(diffCount, 4)
+            }
         }
         println()
 
@@ -87,6 +93,9 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
         val frequencyResults2 = matcher.findByDifferentCharCount(data, target, 1)
         frequencyResults2.forEach { (text, diffCount) ->
             println("$text: 다른 문자 $diffCount 개")
+            when (text) {
+                "salary" -> assertEquals(diffCount, 0)
+            }
         }
         println()
     }
@@ -111,6 +120,11 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
 
         substringResults.forEach { result ->
             println("${result.originalString} -> ${result.matchedPart} (차이: ${result.differences}개)")
+            when (result.originalString) {
+                "salary" -> assertEquals(result.differences, 0)
+                "sadary" -> assertEquals(result.differences, 2)
+                "sblbry" -> assertEquals(result.differences, 4)
+            }
         }
         println()
     }
@@ -129,6 +143,12 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
         println("위치 기반 결과:")
         positionResults.forEach { (text, diff) ->
             println("  $text: $diff 개 차이")
+            when (text) {
+                "salary" -> assertEquals(diff, 0)
+                "sadary" -> assertEquals(diff, 1)
+                "sblbry" -> assertEquals(diff, 2)
+                "mysalard" -> assertEquals(diff, 3)
+            }
         }
         println()
     }
@@ -157,6 +177,15 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
             println("  차이: ${result.differences}개 (${result.differenceMethod})")
             println("  타입: ${result.matchType}")
             println()
+
+            when (result.originalString) {
+                "salary" -> assertEquals(result.differences, 0)
+                "sadary" -> assertEquals(result.differences, 1)
+                "wowsblarywow" -> assertEquals(result.differences, 1)
+                "mysalaygood" -> assertEquals(result.differences, 2)
+                "sblbry" -> assertEquals(result.differences, 2)
+                "mysalard" -> assertEquals(result.differences, 3)
+            }
         }
 
         println("=== 위치 기반 (중간 문자열) 다른 알파벳 개수 기준 (최대 1개) ===")
@@ -170,6 +199,12 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
 
         substringResults.forEach { result ->
             println("${result.originalString} -> ${result.matchedPart} (차이: ${result.differences}개)")
+            when (result.originalString) {
+                "salary" -> assertEquals(result.differences, 0)
+                "mysalard" -> assertEquals(result.differences, 1)
+                "sadary" -> assertEquals(result.differences, 1)
+                "wowsblarywow" -> assertEquals(result.differences, 1)
+            }
         }
         println()
 
