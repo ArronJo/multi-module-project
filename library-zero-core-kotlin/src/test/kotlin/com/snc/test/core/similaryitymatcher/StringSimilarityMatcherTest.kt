@@ -142,6 +142,7 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
         println("타겟: '$target'")
         println()
 
+        println("=== 위치 기반 (중간 문자열) 다른 알파벳 개수 기준 (최대 3개) ===")
         val comprehensiveResults = matcher.findMatchingStrings(
             data = data,
             target = target,
@@ -158,6 +159,7 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
             println()
         }
 
+        println("=== 위치 기반 (중간 문자열) 다른 알파벳 개수 기준 (최대 1개) ===")
         val substringResults = matcher.findMatchingStrings(
             data = data,
             target = target,
@@ -167,6 +169,22 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
         )
 
         substringResults.forEach { result ->
+            println("${result.originalString} -> ${result.matchedPart} (차이: ${result.differences}개)")
+        }
+        println()
+
+        println("=== 위치 기반 (중간 문자열) 다른 알파벳 개수 기준 (target 이 긴 경우) ===")
+        val target2 = "abcdefghijklmnopqrstuvwxyz"
+        println("타겟: '$target2'")
+        val substringResults2 = matcher.findMatchingStrings(
+            data = data,
+            target = target2,
+            maxDifferences = 1,
+            includeSubstring = true,
+            method = StringSimilarityMatcher.DifferenceMethod.POSITION_BASED
+        )
+
+        substringResults2.forEach { result ->
             println("${result.originalString} -> ${result.matchedPart} (차이: ${result.differences}개)")
         }
         println()
