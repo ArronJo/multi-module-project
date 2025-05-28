@@ -341,7 +341,9 @@ class StringSimilarityMatcher {
                 startIndex = 0,
                 differenceMethod = method
             )
-        } else null
+        } else {
+            null
+        }
     }
 
     private fun checkPositionBasedMatch(
@@ -361,7 +363,9 @@ class StringSimilarityMatcher {
                 startIndex = result.offset,
                 differenceMethod = method
             )
-        } else null
+        } else {
+            null
+        }
     }
 
     private fun checkSubstringMatches(
@@ -400,7 +404,9 @@ class StringSimilarityMatcher {
                 startIndex = substringMatch.startIndex,
                 differenceMethod = method
             )
-        } else null
+        } else {
+            null
+        }
     }
 
     private fun checkTextAsSubstring(
@@ -420,7 +426,9 @@ class StringSimilarityMatcher {
                 startIndex = substringMatch.startIndex,
                 differenceMethod = method
             )
-        } else null
+        } else {
+            null
+        }
     }
 
     enum class SimilarityMethod {
