@@ -112,9 +112,8 @@ ktlint_standard_function-signature = disabled
 # Trailing space(s) (standard:no-trailing-spaces)
 #ktlint_standard_no-trailing-spaces = disabled
 
-# 이 옵션이 영향도가 좀 크네...
+# 모든 arguments는 single line 으로 위치해야 함. 이 옵션이 영향도가 좀 크네...
 # Argument should be on a separate line (unless all arguments can fit a single line) (standard:argument-list-wrapping)
-# Missing newline before ")"
 #ktlint_standard_argument-list-wrapping = disabled
 
 #[*.{yml,yaml}]

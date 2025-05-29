@@ -16,7 +16,7 @@ data class SubstringMatch(
 data class MatchResult(
     val originalString: String,
     val matchedPart: String,
-    val matchType: MatchType,
+    val matchType: StringSimilarityMatcher.MatchType,
     val differences: Int,
     val startIndex: Int,
     val differenceMethod: StringSimilarityMatcher.DifferenceMethod = StringSimilarityMatcher.DifferenceMethod.FREQUENCY_BASED
@@ -29,13 +29,32 @@ data class PositionDifferenceResult(
     val alignedPart2: String
 )
 
-enum class MatchType {
-    EXACT_LENGTH, // 같은 길이 문자열 매칭
-    SUBSTRING, // 원본 문자열에서 타겟을 부분 문자열로 찾음
-    REVERSE_SUBSTRING // 타겟에서 원본을 부분 문자열로 찾음
-}
-
 class StringSimilarityMatcher {
+
+    // 레벤슈타인 거리(Levenshtein Distance), 자카드 유사도(Jaccard Similarity), 코사인 유사도(Cosine Similarity)는
+    // 문자열이나 문서 간의 유사도 측정에 널리 사용되는 대표적인 거리/유사도 지표입니다.
+    // 요약 비교표
+    // | 지표		  | 입력 형태		   | 핵심 개념    | 순서 고려 | 사용 예시	              |
+    // |--------------|----------------|------------|---------|-----------------------|
+    // | Levenshtein  | 문자열		   | 편집 거리	|    (O)  | 오타 수정, 유사 문자열 비교 |
+    // | Jaccard	  | 집합			   | 교집합/합집합	|    (X)  |	중복 탐지, 클러스터링      |
+    // | Cosine		  | 벡터 (TF-IDF 등) | 방향 유사도	|    (X)  |	문서 유사도, 검색 시스템    |
+    enum class SimilarityMethod {
+        LEVENSHTEIN, // 편집 거리 기반
+        JACCARD, // 집합 기반
+        COSINE // 벡터 기반
+    }
+
+    enum class DifferenceMethod {
+        FREQUENCY_BASED, // 빈도 기반 (기존 방식)
+        POSITION_BASED // 위치 기반 (새로운 방식)
+    }
+
+    enum class MatchType {
+        EXACT_LENGTH, // 같은 길이 문자열 매칭
+        SUBSTRING, // 원본 문자열에서 타겟을 부분 문자열로 찾음
+        REVERSE_SUBSTRING // 타겟에서 원본을 부분 문자열로 찾음
+    }
 
     /**
      * 레벤슈타인 거리 계산
@@ -429,16 +448,5 @@ class StringSimilarityMatcher {
         } else {
             null
         }
-    }
-
-    enum class SimilarityMethod {
-        LEVENSHTEIN, // 편집 거리 기반
-        JACCARD, // 집합 기반
-        COSINE // 벡터 기반
-    }
-
-    enum class DifferenceMethod {
-        FREQUENCY_BASED, // 빈도 기반 (기존 방식)
-        POSITION_BASED // 위치 기반 (새로운 방식)
     }
 }

@@ -23,7 +23,7 @@ class HangulMatcherTest : BaseJUnit5Test() {
             "휴대폰인증 NICE 평가",
             "휴대폰인증NICE 인증",
             "휴대폰인증 KCB 평가 (not NICE))",
-            "현대해상은 전용선을 통해 VAN사(NICE)에 카드인증을 요청합니다."
+            "당사는 전용선을 통해 VAN사(NICE)에 카드인증을 요청합니다."
         )
         // when
         val keyword = "ㅈㅇㅅㅇㅌㅎv" // "ㅈ N", "ㅅㄱ"

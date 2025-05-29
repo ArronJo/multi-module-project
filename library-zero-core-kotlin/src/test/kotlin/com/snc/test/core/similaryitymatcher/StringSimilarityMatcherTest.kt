@@ -13,9 +13,13 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
         "mysalaygood",
         "sadary",
         "payback",
+        "laptop",
+        "notebook",
         "sblbry",
         "wowsblarywow"
     )
+
+    private val target = "salary"
 
     private val matcher = StringSimilarityMatcher()
 
@@ -23,16 +27,17 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
     fun `SimilarityMatcher 유사도 테스트 1`() {
         println("=== 유사도 테스트 1 ===")
 
-        val target = "salary"
         println("target: $target")
         println()
 
-        println("=== 레벤슈타인 유사도 (최소 0.3) ===")
+        val minSimilarity = 0.3
+
+        println("=== 레벤슈타인 유사도 (최소 $minSimilarity) ===")
         println("-Usage: findSimilarStrings( ..., SimilarityMethod.LEVENSHTEIN )")
         val levenshteinResults = matcher.findSimilarStrings(
             data,
             target,
-            0.3,
+            minSimilarity,
             StringSimilarityMatcher.SimilarityMethod.LEVENSHTEIN
         )
         levenshteinResults.forEach { result ->
@@ -40,12 +45,12 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
         }
         println()
 
-        println("=== 자카드 유사도 (최소 0.3) ===")
+        println("=== 자카드 유사도 (최소 $minSimilarity) ===")
         println("-Usage: findSimilarStrings( ..., SimilarityMethod.JACCARD )")
         val jaccardResults = matcher.findSimilarStrings(
             data,
             target,
-            0.3,
+            minSimilarity,
             StringSimilarityMatcher.SimilarityMethod.JACCARD
         )
         jaccardResults.forEach { result ->
@@ -53,12 +58,12 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
         }
         println()
 
-        println("=== 코사인 유사도 (최소 0.3) ===")
+        println("=== 코사인 유사도 (최소 $minSimilarity) ===")
         println("-Usage: findSimilarStrings( ..., SimilarityMethod.COSINE )")
         val cosineResults = matcher.findSimilarStrings(
             data,
             target,
-            0.3,
+            minSimilarity,
             StringSimilarityMatcher.SimilarityMethod.COSINE
         )
         cosineResults.forEach { result ->
@@ -72,13 +77,24 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
         println("=== 빈도 기반 차이 계산 테스트 1 ===")
         println("-Usage: findByDifferentCharCount()")
 
-        val target = "salary"
         println("타겟: '$target'")
         println()
 
         println("=== (빈도 기반) 다른 알파벳 개수 기준 (최대 4개) ===")
         val frequencyResults1 = matcher.findByDifferentCharCount(data, target, 4)
         frequencyResults1.forEach { (text, diffCount) ->
+            println("  $text: $diffCount 개 차이")
+            when (text) {
+                "salary" -> assertEquals(diffCount, 0)
+                "mysalard" -> assertEquals(diffCount, 2)
+                "sadary" -> assertEquals(diffCount, 2)
+            }
+        }
+        println()
+
+        println("=== (빈도 기반) 다른 알파벳 개수 기준 (최대 3개) ===")
+        val frequencyResults3 = matcher.findByDifferentCharCount(data, target)
+        frequencyResults3.forEach { (text, diffCount) ->
             println("  $text: $diffCount 개 차이")
             when (text) {
                 "salary" -> assertEquals(diffCount, 0)
@@ -105,7 +121,6 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
         println("=== 빈도 기반 차이 계산 테스트 2 ===")
         println("-Usage: findMatchingStrings( ..., DifferenceMethod.FREQUENCY_BASED )")
 
-        val target = "salary"
         println("타겟: '$target'")
         println()
 
@@ -134,7 +149,6 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
         println("=== 위치 기반 차이 계산 테스트 1 ===")
         println("-Usage: findByPositionDifferences()")
 
-        val target = "salary"
         println("타겟: '$target'")
         println()
 
@@ -158,7 +172,6 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
         println("=== 위치 기반 (중간 문자열) 차이 계산 테스트 2 ===")
         println("-Usage: findMatchingStrings( ..., DifferenceMethod.POSITION_BASED )")
 
-        val target = "salary"
         println("타겟: '$target'")
         println()
 
