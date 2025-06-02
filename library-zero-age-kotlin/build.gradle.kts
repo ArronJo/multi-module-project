@@ -14,7 +14,7 @@ repositories {
 
 dependencies {
     implementation(project(":library-zero-logger-kotlin"))
-    implementation(project(":library-zero-core-kotlin"))
+    implementation(project(":library-zero-extension-kotlin"))
 
     testImplementation(project(":library-zero-test-kotlin"))
     testImplementation(libs.junit.jupiter)

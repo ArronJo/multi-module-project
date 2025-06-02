@@ -1,6 +1,6 @@
 package com.snc.test.engtokor
 
-import com.snc.zero.core.extensions.text.print
+import com.snc.zero.extensions.text.print
 import com.snc.zero.hangul.engtokor.Inko
 import com.snc.zero.hangul.engtokor.Inko.Companion.asEnglish
 import com.snc.zero.hangul.engtokor.Inko.Companion.asKorean

@@ -17,6 +17,8 @@
             <option value="$PROJECT_DIR$/library-zero-core-kotlin" />
             <option value="$PROJECT_DIR$/library-zero-crypto-kotlin" />
             <option value="$PROJECT_DIR$/library-zero-e2e-kotlin" />
+            <option value="$PROJECT_DIR$/library-zero-etc-kotlin" />
+            <option value="$PROJECT_DIR$/library-zero-extension-kotlin" />
             <option value="$PROJECT_DIR$/library-zero-file-manager-kotlin" />
             <option value="$PROJECT_DIR$/library-zero-hangul-kotlin" />
             <option value="$PROJECT_DIR$/library-zero-identification-kotlin" />
@@ -28,6 +30,7 @@
             <option value="$PROJECT_DIR$/library-zero-pdfbox3-kotlin" />
             <option value="$PROJECT_DIR$/library-zero-personal-info-kotlin" />
             <option value="$PROJECT_DIR$/library-zero-prizedraw-kotlin" />
+            <option value="$PROJECT_DIR$/library-zero-similarity-kotlin" />
             <option value="$PROJECT_DIR$/library-zero-test-kotlin" />
             <option value="$PROJECT_DIR$/library-zero-validation-kotlin" />
             <option value="$PROJECT_DIR$/library-zero-xss-kotlin" />

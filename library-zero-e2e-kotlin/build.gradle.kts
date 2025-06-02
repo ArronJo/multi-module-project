@@ -14,7 +14,6 @@ repositories {
 
 dependencies {
     implementation(project(":library-zero-logger-kotlin"))
-    implementation(project(":library-zero-core-kotlin"))
     implementation(libs.bouncycastle.bcprov)
 
     testImplementation(project(":library-zero-test-kotlin"))
