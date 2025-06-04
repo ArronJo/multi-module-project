@@ -1,8 +1,8 @@
 package com.snc.test.age.calculator
 
 import com.snc.zero.age.calculator.AgeCalculator
-import com.snc.zero.extensions.text.padStart
-import com.snc.zero.extensions.text.print
+import com.snc.zero.extension.text.padStart
+import com.snc.zero.extension.text.print
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.BeforeEach

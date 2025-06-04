@@ -335,7 +335,7 @@ tasks.register<Exec>("generateVerificationMetadata") {
     }
 
     doLast {
-        println("의존성 검증 메타데이터가 생성되었습니다.")
+        println("\n의존성 검증 metadata가 생성되었습니다.")
     }
 }
 
