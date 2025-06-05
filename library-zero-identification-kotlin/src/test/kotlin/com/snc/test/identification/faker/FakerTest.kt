@@ -59,7 +59,7 @@ class FakerTest : BaseJUnit5Test() {
         // when
         var v1: Array<String> = arrayOf()
         for (i in 1..max) {
-            val r = getRandomInt(0, 9999) / 2
+            val r = getRandomInt(1, 9999) / 2
             if (r > 1) { logger.debug { "r : $r" } }
             val sex = if (r > 0) "F" else "M"
             val provider = if (r > 0) Faker.ProviderType.KOREAN else Faker.ProviderType.ENGLISH
