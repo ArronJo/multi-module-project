@@ -11,14 +11,32 @@ open class BaseJUnit5Test {
 
     companion object {
         var count = 0
+
+        /*
+        // 각 Class 실행 실행시
+        @JvmStatic
+        @BeforeAll
+        fun beforeClass() {
+            println("Before Class : $count")
+        }
+
+        // 각 Class 실행 종료시
+        @JvmStatic
+        @AfterAll
+        fun afterClass() {
+            println("After Class : $count")
+        }
+         */
     }
 
+    // 각 TestCase 실행 전
     @BeforeEach
     open fun beforeEach(testInfo: TestInfo) {
         println("\n[S] Task Case ${++count} -> ${testInfo.displayName}")
         timer.start()
     }
 
+    // 각 TestCase 실행 전
     @AfterEach
     open fun afterEach(testInfo: TestInfo) {
         println("[E] Task Result $count elapse: ${timer.stop()}\n\n")
@@ -29,6 +47,44 @@ open class BaseJUnit5Test {
     }
 
     fun assertEquals(expected: Any?, actual: Any?) {
+        Assertions.assertEquals(expected, actual)
+    }
+
+    fun <T : Enum<T>> assertEquals(expected: Enum<T>?, actual: Enum<T>?) {
+        Assertions.assertEquals(expected, actual)
+    }
+
+    fun assertEquals(expected: Objects?, actual: Objects?) {
+        Assertions.assertEquals(expected, actual)
+    }
+
+    fun <T> assertEquals(expected: Array<T>?, actual: Array<T>?) {
+        if (expected != null && actual != null) {
+            for (i in expected.indices) {
+                Assertions.assertEquals(expected[i], actual[i])
+            }
+        } else {
+            Assertions.assertEquals(expected, actual)
+        }
+    }
+
+    fun assertEquals(expected: Double?, actual: Double?) {
+        Assertions.assertEquals(expected, actual)
+    }
+
+    fun assertEquals(expected: Int?, actual: Int?) {
+        Assertions.assertEquals(expected, actual)
+    }
+
+    fun assertEquals(expected: String?, actual: String?) {
+        Assertions.assertEquals(expected, actual)
+    }
+
+    fun assertEquals(expected: Char?, actual: Char?) {
+        Assertions.assertEquals(expected, actual)
+    }
+
+    fun assertEquals(expected: Boolean?, actual: Boolean?) {
         Assertions.assertEquals(expected, actual)
     }
 
