@@ -4,6 +4,12 @@ import com.snc.zero.identification.faker.provider.name.EnglishNameProvider
 import com.snc.zero.identification.faker.provider.name.KoreanNameProvider
 import com.snc.zero.identification.faker.provider.name.NameProvider
 
+/**
+ * 가명 만들기
+ *
+ * @author mcharima5@gmail.com
+ * @since 2024
+ */
 object Faker {
 
     enum class ProviderType {

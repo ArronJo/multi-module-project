@@ -138,9 +138,11 @@ class ColorPaletteGenerator {
         println("--------|---------------|-----------------------|------------------")
 
         for (step in 100..900 step 100) {
-            val color = palette[step]!!
-            val colorPreview = getColorPreview(color)
-            println("$step\t|\t${color.toHex()}\t|\tRGB(${color.r}, ${color.g}, ${color.b})\t|\t$colorPreview")
+            val color = palette[step]
+            color?.let {
+                val colorPreview = getColorPreview(it)
+                println("$step\t|\t${color.toHex()}\t|\tRGB(${color.r}, ${color.g}, ${color.b})\t|\t$colorPreview")
+            }
         }
     }
 
@@ -161,8 +163,10 @@ class ColorPaletteGenerator {
         (0..2).forEach { row ->
             print("     ")
             for (step in 100..900 step 100) {
-                val color = palette[step]!!
-                print(getColorBlock(color))
+                val color = palette[step]
+                color?.let {
+                    print(getColorBlock(it))
+                }
             }
             println()
         }
@@ -170,9 +174,11 @@ class ColorPaletteGenerator {
         // HEX 값 표시
         print("     ")
         for (step in 100..900 step 100) {
-            val color = palette[step]!!
-            val hex = color.toHex()
-            print(" $hex")
+            val color = palette[step]
+            color?.let {
+                val hex = it.toHex()
+                print(" $hex")
+            }
         }
         println()
     }

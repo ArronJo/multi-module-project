@@ -2,6 +2,10 @@ package com.snc.zero.identification.faker.provider.name
 
 class KoreanNameProvider : NameProvider() {
 
+    // 이름, 성 순위
+    // https://en.wikipedia.org/wiki/List_of_Korean_surnames
+    // https://forebears.io/south-korea/surnames
+    // https://forebears.io/south-korea/forenames
     init {
         firstNamesFemale.addAll(
             arrayOf(

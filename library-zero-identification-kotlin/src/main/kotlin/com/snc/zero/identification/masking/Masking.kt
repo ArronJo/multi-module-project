@@ -3,6 +3,12 @@ package com.snc.zero.identification.masking
 import kotlin.math.max
 import kotlin.math.min
 
+/**
+ * 중요정보 마스킹
+ *
+ * @author mcharima5@gmail.com
+ * @since 2024
+ */
 object Masking {
 
     fun regNo(v: String): String {
