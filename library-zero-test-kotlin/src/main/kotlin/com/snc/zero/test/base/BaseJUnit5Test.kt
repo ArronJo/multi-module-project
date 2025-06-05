@@ -9,28 +9,27 @@ import org.junit.jupiter.api.function.Executable
 import java.util.Objects
 import java.util.SplittableRandom
 
+/**
+ * 각 Class 실행 실행시
+ * @JvmStatic
+ * @BeforeAll
+ * fun beforeClass() {
+ *  println("Before Class : $count")
+ * }
+ *
+ * 각 Class 실행 종료시
+ * @JvmStatic
+ * @AfterAll
+ * fun afterClass() {
+ *  println("After Class : $count")
+ * }
+ */
 open class BaseJUnit5Test {
 
     private val timer = TestTimer()
 
     companion object {
         var count = 0
-
-        /*
-        // 각 Class 실행 실행시
-        @JvmStatic
-        @BeforeAll
-        fun beforeClass() {
-            println("Before Class : $count")
-        }
-
-        // 각 Class 실행 종료시
-        @JvmStatic
-        @AfterAll
-        fun afterClass() {
-            println("After Class : $count")
-        }
-         */
     }
 
     // 각 TestCase 실행 전

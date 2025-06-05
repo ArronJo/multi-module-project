@@ -160,7 +160,7 @@ class ColorPaletteGenerator {
         println()
 
         // 컬러 블록 출력 (여러 줄로)
-        (0..2).forEach { row ->
+        (0..2).forEach { _ ->
             print("     ")
             for (step in 100..900 step 100) {
                 val color = palette[step]

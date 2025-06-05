@@ -13,8 +13,6 @@ fun String.isLowerCase(): Boolean {
 }
 
 fun String.isNumber(): Boolean {
-    //return this.all { char -> char.isDigit() }
-    //return this.matches("-?[0-9]+(\\.[0-9]+)?".toRegex())
     return this.matches("^\\d+$".toRegex())
 }
 
