@@ -13,6 +13,8 @@ fun String.isLowerCase(): Boolean {
 }
 
 fun String.isNumber(): Boolean {
+    //return this.all { char -> char.isDigit() }
+    //return this.matches("-?[0-9]+(\\.[0-9]+)?".toRegex())
     return this.matches("^\\d+$".toRegex())
 }
 
@@ -31,17 +33,18 @@ fun String.validate(isDigit: Boolean = false, isUpperCase: Boolean = false, isLo
     val conditions = arrayListOf<Boolean>()
 
     if (isDigit) {
-        conditions.add(this.any { it.isDigit() })
+        conditions.add(this.any { it.isDigit() }) // 숫자 포함
     }
     if (isUpperCase) {
-        conditions.add(this.any { it.isUpperCase() })
+        conditions.add(this.any { it.isUpperCase() }) // 영문 대문자 포함
     }
     if (isLowerCase) {
-        conditions.add(this.any { it.isLowerCase() })
+        conditions.add(this.any { it.isLowerCase() }) // 영문 소문자 포함
     }
     if (isSpecialChars) {
-        conditions.add(this.any { !it.isLetterOrDigit() })
+        conditions.add(this.any { !it.isLetterOrDigit() }) // 특수문자 포함 (영문자와 숫자를 제외한 문자)
     }
 
+    // 조건 중 true인 것의 개수를 세어 n 개 조건 이상인지 확인
     return conditions.count { it }
 }
