@@ -55,7 +55,7 @@ class XSSFilterExtTest : BaseJUnit5Test() {
             "당사 사정에 따라 일정이 변경될 수 있으며 변동 시 재공지하도록 하겠습니다.\"\n" +
                 "<br>\n" +
                 "오늘도 방문해주셔서 감사합니다.마지막test&gt;<b>&gt;xsstest</b>P Tag 테스트 &gt;\n" +
-                "<p>&gt;PPPPP</p>Font Tag 테스트 &gt;&gt;FFFFFFFF&gt;응???",
+                "<p>&gt;PPPPP</p>Font Tag 테스트 &gt;<font color=\"red\">&gt;FFFFFFFF</font>&gt;응???",
             v1
         )
     }
