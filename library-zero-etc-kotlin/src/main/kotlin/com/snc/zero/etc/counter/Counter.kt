@@ -1,7 +1,5 @@
 package com.snc.zero.etc.counter
 
-import kotlin.collections.iterator
-
 class Counter {
     private val countMap = hashMapOf<String, Int>()
 
