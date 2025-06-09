@@ -20,4 +20,12 @@ class HangulCharsetsTest : BaseJUnit5Test() {
         logger.info { HangulCharsets.unicode("가").print() }
         logger.info { HangulCharsets.unicode("핳").print() }
     }
+
+    @Test
+    fun `한글 출력 해보자`() {
+        logger.info { "PATTERN_HANGUL: ${HangulCharsets.PATTERN_HANGUL}" }
+        logger.info { "HANGUL_FILTER_2350: ${HangulCharsets.HANGUL_FILTER_2350}" }
+        logger.info { "HANGUL_FILTER_AUTOMATA: ${HangulCharsets.HANGUL_FILTER_AUTOMATA}" }
+        logger.info { "HANGUL_FILTER_DOCUMENT: ${HangulCharsets.HANGUL_FILTER_DOCUMENT}" }
+    }
 }

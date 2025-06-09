@@ -15,11 +15,10 @@ class HangulDecompose private constructor() {
             if (isCompatChoseong(c)) {
                 return c.toString()
             }
-            return if (isChoseong(c)) {
-                choseongToCompatChoseong(c).toString()
-            } else {
-                c.toString()
+            if (isChoseong(c)) {
+                return choseongToCompatChoseong(c).toString()
             }
+            return c.toString()
         }
 
         // 한글 자모 영역 초성을 한글 호환 자모 영역 문자로 변환

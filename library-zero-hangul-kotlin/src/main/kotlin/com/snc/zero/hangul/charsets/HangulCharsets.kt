@@ -2,6 +2,33 @@ package com.snc.zero.hangul.charsets
 
 import java.util.Locale
 
+/**
+ * https://www.unicode.org/charts/
+ *
+ * 0x3130 ~ 318E: Hangul Compatibility Jamo
+ * https://www.unicode.org/charts/PDF/U3130.pdf
+ * https://en.wikipedia.org/wiki/Hangul_Compatibility_Jamo
+ *
+ * 0x1100 ~ 11FF: Hangul Jamo
+ * https://www.unicode.org/charts/PDF/U1100.pdf
+ * https://en.wikipedia.org/wiki/Hangul_Jamo_(Unicode_block)
+ *
+ * 0xA960 ~ A97F: Hangul Jamo Extended-A
+ * https://www.unicode.org/charts/PDF/UA960.pdf
+ * https://en.wikipedia.org/wiki/Hangul_Jamo_Extended-A
+ *
+ * 0xAC00 ~ D7AF: Hangul Syllables
+ * https://www.unicode.org/charts/PDF/UAC00.pdf
+ * https://en.wikipedia.org/wiki/Hangul_Syllables
+ *
+ * 0xD7B0 ~ D7FF: Hangul Jamo Extended-B
+ * https://www.unicode.org/charts/PDF/UD7B0.pdf
+ * https://en.wikipedia.org/wiki/Hangul_Jamo_Extended-B
+ *
+ * 0xFF00 ~ FFEF: Halfwidth and Fullwidth Forms
+ * https://www.unicode.org/charts/PDF/UFF00.pdf
+ * https://en.wikipedia.org/wiki/Halfwidth_and_Fullwidth_Forms_(Unicode_block)
+ */
 class HangulCharsets private constructor() {
 
     companion object {
@@ -86,7 +113,7 @@ class HangulCharsets private constructor() {
                 "파팍팎판팓팔팖팜팝팟팠팡팤팥패팩팬팯팰팸팹팻팼팽퍄퍅퍼퍽펀펄펌펍펏펐펑페펙펜펠펨펩펫펭펴펵편펼폄폅폈평폐폘폡폣포폭폰폴폼폽폿퐁퐈퐉퐝푀푄표푠푤푭푯푸푹푼푿풀풂품풉풋풍풔풩퓌퓐퓔퓜퓟퓨퓬퓰퓸퓻퓽프픈플픔픕픗피픽핀필핌핍핏핑" +
                 "하학한할핥함합핫항핰핳해핵핸핻핼햄햅햇했행햏햐햔햣향허헉헌헐헒헗험헙헛헝헠헡헣헤헥헨헬헴헵헷헹헿혀혁현혈혐협혓혔형혜혠혤혭호혹혼홀홅홈홉홋홍홑화확환활홥홧홨황홰홱홴횃횅회획횐횔횝횟횡효횬횰횹횻횽후훅훈훌훑훔훕훗훙훠훤훨훰훵훼훽휀휄휑휘휙휜휠휨휩휫휭휴휵휸휼흄흇흉흐흑흔흖흗흘흙흝흠흡흣흥흩희흰흴흼흽힁히힉힌힐힘힙힛힝힣"
 
-        // 문자중 문서 내 사용하는 문자 만 추출
+        // 문자 중 '문서 내 사용'하는 문자만 추출
         const val HANGUL_FILTER_DOCUMENT =
             "가각간갇갈갉갊감갑값갓갔강갖갗같갚갛개객갠갤갬갭갯갰갱갸갹갼걀걋걍걔걘걜거걱건걷걸걺검겁것겄겅겆겉겊겋게겐겔겜겝겟겠겡겨격겪견겯결겸겹겻겼경곁계곈곌곕곗고곡곤곧골곪곬곯곰곱곳공곶과곽관괄괆괌괍괏광괘괜괠괩괬괭괴괵괸괼굄굅굇굉교굔굘굡굣구국군굳굴굵굶굻굼굽굿궁궂궈궉권궐궜궝궤궷귀귁귄귈귐귑귓규균귤그극근귿글긁금급긋긍긔기긱긴긷길긺김깁깃깅깆깊" +
                 "까깍깎깐깔깖깜깝깟깠깡깥깨깩깬깰깸깹깻깼깽꺄꺅꺌꺼꺽꺾껀껄껌껍껏껐껑께껙껜껨껫껭껴껸껼꼇꼈꼍꼐꼬꼭꼰꼲꼴꼼꼽꼿꽁꽂꽃꽈꽉꽐꽜꽝꽤꽥꽹꾀꾄꾈꾐꾑꾕꾜꾸꾹꾼꿀꿇꿈꿉꿋꿍꿎꿔꿜꿨꿩꿰꿱꿴꿸뀀뀁뀄뀌뀐뀔뀜뀝뀨끄끅끈끊끌끎끓끔끕끗끙끝끼끽낀낄낌낍낏낑" +
@@ -108,7 +135,7 @@ class HangulCharsets private constructor() {
                 "파팍팎판팔팖팜팝팟팠팡팥패팩팬팰팸팹팻팼팽퍄퍅퍼퍽펀펄펌펍펏펐펑페펙펜펠펨펩펫펭펴편펼폄폅폈평폐폘폡폣포폭폰폴폼폽폿퐁퐈퐝푀푄표푠푤푭푯푸푹푼푿풀풂품풉풋풍풔풩퓌퓐퓔퓜퓟퓨퓬퓰퓸퓻퓽프픈플픔픕픗피픽핀필핌핍핏핑" +
                 "하학한할핥함합핫항해핵핸핼햄햅햇했행햐향허헉헌헐헒험헙헛헝헤헥헨헬헴헵헷헹혀혁현혈혐협혓혔형혜혠혤혭호혹혼홀홅홈홉홋홍홑화확환활홧황홰홱홴횃횅회획횐횔횝횟횡효횬횰횹횻후훅훈훌훑훔훗훙훠훤훨훰훵훼훽휀휄휑휘휙휜휠휨휩휫휭휴휵휸휼흄흇흉흐흑흔흖흗흘흙흠흡흣흥흩희흰흴흼흽힁히힉힌힐힘힙힛힝"
 
-        // 문자중 한글 조합 중인 문자 만 추출
+        // 문자 중 '한글 조합 중'인 문자만 추출
         const val HANGUL_FILTER_AUTOMATA =
             "갋갣걥겷괐괞괢굠굥궴궸귕귬긂긇긓긜깄" +
                 "깯꺆꺍꺠껓껕꼉꼳꽅꽸꾤꾺꿘꿹꿿뀰뀼끨낻깯꺆꺍꺠껓껕꼉꼳꽅꽸꾤꾺꿘꿹꿿뀰뀼끨" +

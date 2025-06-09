@@ -115,11 +115,15 @@ class HangulDecomposeTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `한글 분해해보자`() {
+    fun `한글 분해 해보자`() {
+        logger.debug { HangulDecompose.decompose(0x1100.toChar()) }
         logger.debug { HangulDecompose.decompose('ㄱ') }
         logger.debug { HangulDecompose.decompose('가') }
         logger.debug { HangulDecompose.decompose('간') }
         logger.debug { HangulDecompose.decompose('갆') }
         logger.debug { HangulDecompose.decompose('a') }
+        logger.debug { HangulDecompose.decompose('Z') }
+        logger.debug { HangulDecompose.decompose('0') }
+        logger.debug { HangulDecompose.decompose('ㅏ') }
     }
 }
