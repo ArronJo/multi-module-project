@@ -67,8 +67,12 @@ class StringSimilarityMatcher {
         val len2 = s2.length
         val dp = Array(len1 + 1) { IntArray(len2 + 1) }
 
-        for (i in 0..len1) dp[i][0] = i
-        for (j in 0..len2) dp[0][j] = j
+        for (i in 0..len1) {
+            dp[i][0] = i
+        }
+        for (j in 0..len2) {
+            dp[0][j] = j
+        }
 
         for (i in 1..len1) {
             for (j in 1..len2) {
@@ -88,7 +92,9 @@ class StringSimilarityMatcher {
      */
     private fun levenshteinSimilarity(s1: String, s2: String): Double {
         val maxLen = maxOf(s1.length, s2.length)
-        if (maxLen == 0) return 1.0
+        if (maxLen == 0) {
+            return 1.0
+        }
         val distance = levenshteinDistance(s1, s2)
         return 1.0 - (distance.toDouble() / maxLen)
     }
@@ -101,7 +107,11 @@ class StringSimilarityMatcher {
         val set2 = s2.toSet()
         val intersection = set1.intersect(set2).size
         val union = set1.union(set2).size
-        return if (union == 0) 0.0 else intersection.toDouble() / union
+        return if (union == 0) {
+            0.0
+        } else {
+            intersection.toDouble() / union
+        }
     }
 
     /**
@@ -148,7 +158,9 @@ class StringSimilarityMatcher {
      * 두 같은 길이 문자열의 다른 문자 개수 계산
      */
     private fun countDifferences(s1: String, s2: String): Int {
-        if (s1.length != s2.length) return Int.MAX_VALUE
+        if (s1.length != s2.length) {
+            return Int.MAX_VALUE
+        }
         return s1.zip(s2).count { (c1, c2) -> c1 != c2 }
     }
 

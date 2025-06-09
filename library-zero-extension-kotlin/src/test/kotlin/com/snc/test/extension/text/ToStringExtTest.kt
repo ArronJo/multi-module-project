@@ -1,7 +1,6 @@
 package com.snc.test.extension.text
 
 import com.snc.zero.extension.text.print
-import com.snc.zero.extension.text.toPrettyString
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Test
@@ -49,14 +48,25 @@ class ToStringExtTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `Print - IntArray`() {
+    fun `Print - IntArray 1`() {
         // given
-        val data = arrayOf(1, 2, 3, 4)
+        val data = intArrayOf(1, 2, 3, 4)
         // when
         val v1 = data.print()
         // then
         logger.debug { "Print - IntArray 결과: $v1" }
         assertEquals("[1, 2, 3, 4]", v1)
+    }
+
+    @Test
+    fun `Print - IntArray 2`() {
+        // given
+        val data = intArrayOf()
+        // when
+        val v1 = data.print()
+        // then
+        logger.debug { "Print - IntArray 결과: $v1" }
+        assertEquals("[]", v1)
     }
 
     @Test
@@ -67,18 +77,5 @@ class ToStringExtTest : BaseJUnit5Test() {
         val v1 = data.print()
         // then
         logger.debug { "Print - Calendar 결과: $v1" }
-    }
-
-    @Test
-    fun `to Pretty String`() {
-        val data1 = """
-            { "a": "1", "b": 2 } 
-        """.trimIndent()
-        logger.debug { "toPrettyString -\n${data1.toPrettyString()}" }
-
-        val data2 = """
-            [ "a", "1", "b", 2 ] 
-        """.trimIndent()
-        logger.debug { "toPrettyString -\n${data2.toPrettyString()}" }
     }
 }

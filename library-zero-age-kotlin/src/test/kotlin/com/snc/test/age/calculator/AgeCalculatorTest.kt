@@ -5,6 +5,7 @@ import com.snc.zero.extension.text.padStart
 import com.snc.zero.extension.text.print
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
@@ -94,5 +95,73 @@ class AgeCalculatorTest : BaseJUnit5Test() {
             LocalDate.of(2024, 8, 8)
         )
         AgeCalculator.calculateManInsAge(1978, 1, 1, 1970, 8, 8)
+    }
+
+    @Test
+    fun `calculateManAge - 생일 지나지 않았을 경우`() {
+        val birthDate = LocalDate.of(2000, 6, 15)
+        val targetDate = LocalDate.of(2020, 6, 1)
+        val age = AgeCalculator.calculateManAge(birthDate, targetDate)
+        assertThat(age).isEqualTo(19)
+    }
+
+    @Test
+    fun `calculateManAge - 생일 지난 경우`() {
+        val birthDate = LocalDate.of(2000, 6, 1)
+        val targetDate = LocalDate.of(2020, 6, 15)
+        val age = AgeCalculator.calculateManAge(birthDate, targetDate)
+        assertThat(age).isEqualTo(20)
+    }
+
+    @Test
+    fun `calculateInsAge - 생일로부터 6개월 전`() {
+        val birthDate = LocalDate.of(2000, 1, 1)
+        val targetDate = LocalDate.of(2020, 6, 30)
+        val age = AgeCalculator.calculateInsAge(birthDate, targetDate)
+        assertThat(age).isEqualTo(20)
+    }
+
+    @Test
+    fun `calculateInsAge - 생일로부터 6개월 지남`() {
+        val birthDate = LocalDate.of(2000, 1, 1)
+        val targetDate = LocalDate.of(2020, 7, 2)
+        val age = AgeCalculator.calculateInsAge(birthDate, targetDate)
+        assertThat(age).isEqualTo(21)
+    }
+
+    @Test
+    fun `calculateManInsAge(Int) - 정상 입력`() {
+        val result = AgeCalculator.calculateManInsAge(1990, 5, 20, 2020, 6, 20)
+        assertAll(
+            { assertThat(result[0]).isEqualTo("30") }, // manAge
+            { assertThat(result[1]).isEqualTo("30") }, // insAge
+            { assertThat(result[2]).hasSize(8) }, // seniorityDate
+            { assertThat(result[3]).hasSize(8) }, // targetDate
+            { assertThat(result[4].toLong()).isGreaterThan(0L) } // difference
+        )
+    }
+
+    @Test
+    fun `calculateManInsAge(Int) - 존재하지 않는 날짜`() {
+        val result = AgeCalculator.calculateManInsAge(1990, 2, 30, 2020, 6, 20)
+        assertThat(result).isEmpty()
+    }
+
+    @Test
+    fun `calculateManInsAge(String) - 정상 입력`() {
+        val result = AgeCalculator.calculateManInsAge("19900520", "20200620")
+        assertThat(result).containsExactly(30, 30)
+    }
+
+    @Test
+    fun `calculateManInsAge(String) - 생일 전`() {
+        val result = AgeCalculator.calculateManInsAge("19900520", "20200519")
+        assertThat(result).containsExactly(29, 30)
+    }
+
+    @Test
+    fun `calculateManInsAge(String) - 잘못된 입력 길이`() {
+        val result = AgeCalculator.calculateManInsAge("1990520", "20200620")
+        assertThat(result).isEmpty()
     }
 }

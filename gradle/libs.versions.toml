@@ -8,6 +8,7 @@ cyclonedx = "2.2.0" # "1.7.4" # https://plugins.gradle.org/plugin/org.cyclonedx.
 license-report = "2.5"
 
 junit-jupiter = "5.10.2"
+assertj-core = "3.25.1"
 testng = "7.9.0"
 
 logback-core = "1.5.13"
@@ -39,6 +40,8 @@ junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "jun
 #junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
+assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj-core" }
+
 testng = { module = "org.testng:testng", version.ref = "testng" }
 
 logback-core = { module = "ch.qos.logback:logback-core", version.ref = "logback-core" }

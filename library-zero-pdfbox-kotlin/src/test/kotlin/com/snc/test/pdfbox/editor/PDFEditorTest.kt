@@ -3,6 +3,8 @@ package com.snc.test.pdfbox.editor
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.pdfbox.editor.PDFEditor
 import com.snc.zero.test.base.BaseJUnit5Test
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -141,5 +143,49 @@ class PDFEditorTest : BaseJUnit5Test() {
             File(this, "test2.txt").createNewFile()
         }
         PDFEditor.mkdirs(newDirPath)
+    }
+
+    private lateinit var tempDir: File
+
+    @BeforeEach
+    fun setup() {
+        tempDir = kotlin.io.path.createTempDirectory(prefix = "test-output").toFile()
+    }
+
+    @AfterEach
+    fun cleanup() {
+        tempDir.deleteRecursively()
+    }
+
+    @Test
+    fun `should create directory if not exists`() {
+        // given
+        val newDir = File(tempDir, "newdir/file.txt")
+        assertTrue(!newDir.parentFile.exists())
+
+        // when
+        PDFEditor.mkdirs(newDir.absolutePath)
+
+        // then
+        assertTrue(newDir.parentFile.exists())
+    }
+
+    @Test
+    fun `should delete files if directory already exists`() {
+        // given
+        val existingDir = File(tempDir, "existing")
+        existingDir.mkdirs()
+
+        val file1 = File(existingDir, "a.txt").apply { writeText("a") }
+        val file2 = File(existingDir, "b.txt").apply { writeText("b") }
+
+        assertTrue(file1.exists() && file2.exists())
+
+        // when
+        PDFEditor.mkdirs("${existingDir.absolutePath}/dummy.txt")
+
+        // then
+        assertTrue(existingDir.exists())
+        assertTrue(existingDir.listFiles()?.isEmpty() == true)
     }
 }
