@@ -62,7 +62,7 @@ class CustomTableAttributeProvider private constructor() : AttributeProvider {
                 "FencedCodeBlock" -> attributes.addValue("class", "custom-code-block")
                 "BlockQuote" -> attributes.addValue("class", "custom-quote")
                 "OrderedList" -> attributes.addValue("class", "custom-ordered-list")
-                else -> println(node.nodeName)
+                // else -> println(node.nodeName)
             }
         }
     }

@@ -2,6 +2,10 @@ package com.snc.zero.extension.format
 
 import java.text.DecimalFormat
 
+/**
+ * Numerical Notation (숫자 표기 방식)
+ * : 예시) "2,000만원"
+ */
 fun Long.formatNumericalKoreanMoney(unit: String = "만"): String {
     val unitMap = mapOf(
         "경" to 16, "천조" to 15, "백조" to 14, "십조" to 13, "조" to 12,
@@ -28,6 +32,10 @@ private fun calculateUnit(c: Int): Long {
     return u
 }
 
+/**
+ * Word Notation (문자 표기 방식)
+ * : 예시) "이천만원"
+ */
 fun Long.formatWordKoreanMoney(): String {
     val han1 = arrayOf("", "일", "이", "삼", "사", "오", "육", "칠", "팔", "구")
     val han2 = arrayOf("", "십", "백", "천")

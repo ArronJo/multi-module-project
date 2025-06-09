@@ -1,10 +1,11 @@
 package com.snc.test.extension.text
 
 import com.snc.zero.extension.text.print
+import com.snc.zero.extension.text.toPrettyString
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Test
-import java.util.Calendar
+import java.util.*
 
 private val logger = TLogging.logger { }
 
@@ -66,5 +67,18 @@ class ToStringExtTest : BaseJUnit5Test() {
         val v1 = data.print()
         // then
         logger.debug { "Print - Calendar 결과: $v1" }
+    }
+
+    @Test
+    fun `to Pretty String`() {
+        val data1 = """
+            { "a": "1", "b": 2 } 
+        """.trimIndent()
+        logger.debug { "toPrettyString -\n${data1.toPrettyString()}" }
+
+        val data2 = """
+            [ "a", "1", "b", 2 ] 
+        """.trimIndent()
+        logger.debug { "toPrettyString -\n${data2.toPrettyString()}" }
     }
 }

@@ -1,9 +1,37 @@
 package com.snc.zero.extension.random
 
 import java.util.*
-import kotlin.jvm.Throws
 import kotlin.math.ln
 
+/**
+ SecureRandom와 SplittableRandom는 둘 다 Java의 랜덤 숫자 생성 클래스이지만, 그 목적과 사용 사례가 다릅니다.
+ 다음은 이 두 클래스의 주요 차이점입니다:
+
+ SecureRandom: 보안이 중요한 경우에는 SecureRandom
+ - 목적: 보안과 암호화를 위해 사용되는 무작위 수 생성.
+ - 사용 사례: 암호화 키, 토큰 생성, 보안 관련 작업 등.
+ - 특징: 높은 엔트로피와 예측 불가능성을 보장하기 위해 암호학적으로 안전한 알고리즘을 사용.
+ - 알고리즘: SHA1PRNG, NativePRNG 등 다양한 암호학적 알고리즘을 사용.
+ - 시드: 기본적으로 시스템의 엔트로피 소스를 사용하며, 사용자가 제공하는 시드를 통해 초기화할 수도 있음.
+ - 성능: 보안성을 높이기 위해 성능이 다소 낮을 수 있음.
+ - 스레드 안전: 기본적으로 스레드 안전하나, 이는 성능 저하를 초래할 수 있음.
+ - SecureRandom: 보안 중심의 랜덤 숫자 생성기로, 암호화와 보안 작업에 적합.
+
+ SplittableRandom: 성능이 중요한 병렬 작업에서는 SplittableRandom
+ - 목적: 병렬 처리를 위해 설계된 고성능 난수 생성.
+ - 사용 사례: 병렬 스트림이나 포크-조인 프레임워크와 함께 사용.
+ - 특징: 높은 성능과 낮은 오버헤드를 제공하며, 스레드 간에 잘 분산됨. 보안이 아닌 성능에 최적화됨.
+ - 알고리즘: 메르센 트위스터와 같은 고성능의 비암호학적 난수 생성 알고리즘.
+ - 시드: 특정 패턴을 따르며, 병렬 환경에서 쉽게 분할할 수 있도록 설계됨.
+ - 성능: 병렬 처리를 위해 최적화되어 있어 성능이 매우 뛰어남.
+ - 스레드 안전: 기본적으로 스레드 안전하지 않음. 하지만, 병렬 스트림에서 각 스레드에 독립적인 SplittableRandom 인스턴스를 할당하여 사용하면 성능을 높일 수 있음.
+ - SplittableRandom: 성능 중심의 랜덤 숫자 생성기로, 병렬 처리 환경에서 높은 성능을 제공.
+ */
+
+/**
+ * 리스트 아이템 랜덤 추출
+ * 출처: https://jihunstudy.tistory.com/66
+ */
 @Throws(IllegalFormatException::class)
 fun <T> List<T>.getRandomItem(): T {
     val max = size - 1
@@ -12,6 +40,10 @@ fun <T> List<T>.getRandomItem(): T {
     return get(index)
 }
 
+/**
+ * 가중치 기반 랜덤 추출
+ * 출처: https://jihunstudy.tistory.com/66
+ */
 fun <T> MutableMap<T, Double>.getWeightedRandom(): T? {
     var result: T? = null
     var bestValue = Double.MAX_VALUE
@@ -26,11 +58,17 @@ fun <T> MutableMap<T, Double>.getWeightedRandom(): T? {
     return result
 }
 
+/**
+ * 랜덤 숫자 만들기 (min ~ (min + size - 1))
+ */
 fun randomInt(min: Int = 0, bound: Int): Int {
     val random = SplittableRandom()
     return random.nextInt(bound) + min
 }
 
+/**
+ * 랜던 문자열 만들기
+ */
 fun randomString(
     length: Int,
     isDigit: Boolean = false,
