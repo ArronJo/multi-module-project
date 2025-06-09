@@ -84,7 +84,7 @@ class PDFEditorTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun testMkdirs() {
+    fun `test mkdirs 1`() {
         // Case 1: 디렉토리가 없는 경우
         val newDirPath = "test/new/directory/file.txt"
         PDFEditor.mkdirs(newDirPath)
@@ -128,5 +128,18 @@ class PDFEditorTest : BaseJUnit5Test() {
 
         // 테스트 후 정리
         File("test").deleteRecursively()
+    }
+
+    @Test
+    fun `test mkdirs 2`() {
+        // Case 1: 디렉토리가 없는 경우
+        val newDirPath = "test/new/directory/file1.txt"
+        PDFEditor.mkdirs(newDirPath)
+        File(newDirPath).parentFile.apply {
+            mkdirs()
+            File(this, "test1.txt").createNewFile()
+            File(this, "test2.txt").createNewFile()
+        }
+        PDFEditor.mkdirs(newDirPath)
     }
 }
