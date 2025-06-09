@@ -114,7 +114,7 @@ class FSFileCopyTest : BaseJUnit5Test() {
 
     @Test
     fun `copy should handle large input`() {
-        val data = ByteArray(100_000) { (it % 256).toByte() }  // 100KB test data
+        val data = ByteArray(100_000) { (it % 256).toByte() } // 100KB test data
         val input = ByteArrayInputStream(data)
         val output = ByteArrayOutputStream()
 

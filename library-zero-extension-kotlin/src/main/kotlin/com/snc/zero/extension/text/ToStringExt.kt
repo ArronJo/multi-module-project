@@ -17,11 +17,9 @@ fun <T> Array<T>.print(): String {
 }
 
 fun CharArray.print(): String {
-    val byteArray =  this.map { it.code.toByte() }.toByteArray()
-    val hexString = byteArray.joinToString(", ", "[", "]") {
-        String.format("%02x", it)
+    return joinToString(", ", "[", "]") {
+        if (it.code in 0..127) "%02x".format(it.code) else "%04x".format(it.code)
     }
-    return hexString
 }
 
 fun ByteArray.print(): String {
