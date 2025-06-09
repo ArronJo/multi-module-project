@@ -14,7 +14,7 @@ private val logger = TLogging.logger { }
 class ListExtTest : BaseJUnit5Test() {
 
     @Test
-    fun `List get 테스트`() {
+    fun `List get 테스트 1`() {
         // given
         val data = arrayListOf("a", "b", "c", "d")
         // when
@@ -26,6 +26,12 @@ class ListExtTest : BaseJUnit5Test() {
         val v2 = data.get(20, "만원")
         logger.debug { "List get: $v2" }
         assertEquals(v2.toString(), "만원")
+    }
+
+    @Test
+    fun `List get 테스트 - Empty`() {
+        val arr = arrayListOf<String>()
+        logger.debug { "List get: ${arr.get(1, "XXX")}" }
     }
 
     @Test
