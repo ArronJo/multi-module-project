@@ -16,6 +16,14 @@ fun <T> Array<T>.print(): String {
     return sb.toString()
 }
 
+fun CharArray.print(): String {
+    val byteArray =  this.map { it.code.toByte() }.toByteArray()
+    val hexString = byteArray.joinToString(", ", "[", "]") {
+        String.format("%02x", it)
+    }
+    return hexString
+}
+
 fun ByteArray.print(): String {
     val sb = StringBuilder()
     for (v in this) {

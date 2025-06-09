@@ -25,14 +25,18 @@ class KotlinTempDirectoryPermissionCheck {
         val dir = kotlin.io.path.createTempDirectory(prefix = "tmp").toFile() // public inline fun createTempDirectory(prefix: String? = null, vararg attributes: FileAttribute<*>)
         //val dir = createTempDir()   // public fun createTempDir(prefix: String = "tmp", suffix: String? = null, directory: File? = null): File
         println("dir: $dir")
-        runLS(dir.parentFile, dir) // Prints drwxr-xr-x
+        dir.parentFile?.let {
+            runLS(it, dir) // Prints drwxr-xr-x
+        }
     }
 
     @Test
     fun `Files check default directory permissions`() {
         val dir = Files.createTempDirectory("random-directory")
         println("dir: $dir")
-        runLS(dir.toFile().parentFile, dir.toFile()) // Prints drwx------
+        dir.toFile().parentFile?.let {
+            runLS(it, dir.toFile()) // Prints drwx------
+        }
     }
 
     @Test
@@ -40,14 +44,18 @@ class KotlinTempDirectoryPermissionCheck {
         val file = kotlin.io.path.createTempFile(prefix = "tmp").toFile() // public inline fun createTempFile(prefix: String? = null, suffix: String? = null, vararg attributes: FileAttribute<*>)
         //val file = createTempFile() // public fun createTempFile(prefix: String = "tmp", suffix: String? = null, directory: File? = null)
         println("file: $file")
-        runLS(file.parentFile, file) // (kotlin) Prints -rw-------  (java) Prints -rw-r--r--
+        file.parentFile?.let {
+            runLS(it, file) // (kotlin) Prints -rw-------  (java) Prints -rw-r--r--
+        }
     }
 
     @Test
     fun `Files check default file permissions`() {
         val file = Files.createTempFile("random-file", ".txt")
         println("file: $file")
-        runLS(file.toFile().parentFile, file.toFile()) // Prints -rw-------
+        file.toFile().parentFile?.let {
+            runLS(it, file.toFile()) // Prints -rw-------
+        }
     }
 
     private fun runLS(file: File, lookingFor: File) {

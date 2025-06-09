@@ -26,6 +26,17 @@ class ToStringExtTest : BaseJUnit5Test() {
     }
 
     @Test
+    fun `Print - CharArray`() {
+        // given
+        val data = "Aa1가"
+        // when
+        val v1 = data.toCharArray().print()
+        // then
+        logger.debug { "Print - ByteArray 결과: $v1" }
+        assertEquals("[41, 61, 31, ea, b0, 80]", v1)
+    }
+
+    @Test
     fun `Print - ByteArray`() {
         // given
         val data = "Aa1가"
