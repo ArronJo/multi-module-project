@@ -156,7 +156,7 @@ fun Calendar.diff(endDateTime: Calendar): Long {
 }
 
 fun String.toCalendar(pattern: String = "yyyyMMddHHmmss"): Calendar {
-    val sdf = SimpleDateFormat(pattern)
+    val sdf = SimpleDateFormat(pattern, Locale.getDefault())
     val calendar = Calendar.getInstance()
     try {
         val date = sdf.parse(this.substring(0, min(pattern.length, this.length)))
