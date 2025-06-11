@@ -50,7 +50,6 @@ class EncoderExtTest : BaseJUnit5Test() {
         assertEquals("https://confluence.hanwhalife.com/pages/viewpage.action?pageId=68972232%EC%95%88", v2)
     }
 
-
     @Test
     fun `String 값이 URL 인코딩되어야 한다`() {
         val original = hashMapOf(
