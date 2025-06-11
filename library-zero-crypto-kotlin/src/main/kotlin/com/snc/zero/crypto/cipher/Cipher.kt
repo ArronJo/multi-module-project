@@ -1,24 +1,36 @@
 package com.snc.zero.crypto.cipher
 
 import com.snc.zero.crypto.cipher.aes.AES
+import com.snc.zero.crypto.cipher.rsa.RSA
 import com.snc.zero.crypto.encoder.Decoder
 import com.snc.zero.crypto.encoder.Encoder
+import java.security.Key
 
+/**
+ * 암호화 알고리즘
+ * (메소드 체이닝 (Method Chaining) 활용)
+ *
+ * @author mcharima5@gmail.com
+ * @since 2022
+ */
 class Cipher private constructor(var algo: Algo = Algo.AES) {
 
     companion object {
 
+        @JvmStatic
         fun with(algo: Algo = Algo.AES): Cipher {
             return Cipher(algo)
         }
     }
 
     enum class Algo {
-        AES
+        AES,
+        RSA
     }
 
     private var key: String = ""
     private var iv: String = ""
+    private var rsaKey: Key? = null
     private var transform: String = ""
 
     fun algo(algo: Algo): Cipher {
@@ -26,12 +38,20 @@ class Cipher private constructor(var algo: Algo = Algo.AES) {
         return this
     }
 
+    // for AES
     fun key(key: String, iv: String): Cipher {
         this.key = key
         this.iv = iv
         return this
     }
 
+    // for RSA
+    fun key(rsaKey: Key): Cipher {
+        this.rsaKey = rsaKey
+        return this
+    }
+
+    // for AES, RSA
     fun transform(transform: String): Cipher {
         this.transform = transform
         return this
@@ -47,6 +67,13 @@ class Cipher private constructor(var algo: Algo = Algo.AES) {
                 }
                 Encoder.with(Encoder.Algo.BASE64).encode(enc)
             }
+            Algo.RSA -> {
+                if (null == rsaKey) {
+                    throw IllegalArgumentException("Empty key")
+                }
+                val enc = RSA.encrypt(input, rsaKey!!, transform)
+                return Encoder.with(Encoder.Algo.BASE64).encode(enc)
+            }
         }
     }
 
@@ -59,6 +86,13 @@ class Cipher private constructor(var algo: Algo = Algo.AES) {
                 } else {
                     AES.decrypt(decoded, key, iv)
                 }
+            }
+            Algo.RSA -> {
+                if (null == rsaKey) {
+                    throw IllegalArgumentException("Empty key")
+                }
+                val decoded = Decoder.with(Decoder.Algo.BASE64).decode(input)
+                return RSA.decrypt(decoded, rsaKey!!, transform)
             }
         }
     }
