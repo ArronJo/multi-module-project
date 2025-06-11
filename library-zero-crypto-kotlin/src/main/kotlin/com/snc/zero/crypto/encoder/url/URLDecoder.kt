@@ -29,8 +29,8 @@ object URLDecoder {
 
     /**
      * path 이하 Decoding
+     * @Deprecated("Use decodeURI() instead")
      */
-    @Deprecated("Use decodeURI() instead")
     fun decodeURIPath(uri: Uri, charset: String = CHARSET): String {
         var s = "${uri.scheme}://${uri.host}"
         if (-1 != uri.port) {

@@ -40,7 +40,7 @@ object SHA2 : BaseHash() {
             md.update(salt.toByteArray(charSet))
         }
         var hashed = md.doFinal(msg.toByteArray(charSet))
-        (1..iterationCount).forEach { i ->
+        (1..iterationCount).forEach { _ ->
             md.reset()
             hashed = md.doFinal(hashed)
         }
@@ -84,7 +84,7 @@ object SHA2 : BaseHash() {
             md.update(salt.toByteArray(charSet))
         }
         var hashed = md.digest(msg.toByteArray(charSet))
-        (1..iterationCount).forEach { i ->
+        (1..iterationCount).forEach { _ ->
             md.reset()
             hashed = md.digest(hashed)
         }

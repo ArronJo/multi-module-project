@@ -68,9 +68,7 @@ class Cipher private constructor(var algo: Algo = Algo.AES) {
                 Encoder.with(Encoder.Algo.BASE64).encode(enc)
             }
             Algo.RSA -> {
-                if (null == rsaKey) {
-                    throw IllegalArgumentException("Empty key")
-                }
+                requireNotNull(rsaKey) { "Empty key" }
                 val enc = RSA.encrypt(input, rsaKey!!, transform)
                 return Encoder.with(Encoder.Algo.BASE64).encode(enc)
             }
@@ -88,9 +86,7 @@ class Cipher private constructor(var algo: Algo = Algo.AES) {
                 }
             }
             Algo.RSA -> {
-                if (null == rsaKey) {
-                    throw IllegalArgumentException("Empty key")
-                }
+                requireNotNull(rsaKey) { "Empty key" }
                 val decoded = Decoder.with(Decoder.Algo.BASE64).decode(input)
                 return RSA.decrypt(decoded, rsaKey!!, transform)
             }

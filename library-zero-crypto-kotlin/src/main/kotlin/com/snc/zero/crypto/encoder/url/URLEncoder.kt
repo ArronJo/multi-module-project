@@ -55,9 +55,9 @@ object URLEncoder {
 
     /**
      * path 이하 Encoding
+     * @Deprecated("Use encodeURI() instead")
      * ex) 'https://confluence.hanwhalife.com%2Fpages%2Fviewpage.action%3FpageId%3D68972232'
      */
-    @Deprecated("Use encodeURI() instead")
     fun encodeURIPath(uri: Uri, charset: String = CHARSET): String {
         var s = "${uri.scheme}://${uri.host}"
         if (-1 != uri.port) {

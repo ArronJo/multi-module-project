@@ -83,12 +83,10 @@ object Base62 {
             return false
         }
         for (e in bytes) {
-            if ('0'.code.toByte() > e || '9'.code.toByte() < e) {
-                if ('a'.code.toByte() > e || 'z'.code.toByte() < e) {
-                    if ('A'.code.toByte() > e || 'Z'.code.toByte() < e) {
-                        return false
-                    }
-                }
+            if (('0'.code.toByte() > e || '9'.code.toByte() < e) &&
+                ('a'.code.toByte() > e || 'z'.code.toByte() < e) &&
+                ('A'.code.toByte() > e || 'Z'.code.toByte() < e)) {
+                return false
             }
         }
         return true

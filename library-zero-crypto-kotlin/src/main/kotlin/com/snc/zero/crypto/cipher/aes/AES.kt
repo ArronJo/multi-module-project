@@ -43,32 +43,28 @@ import javax.crypto.spec.SecretKeySpec
  *     : https://velog.io/@kafkaaaa/Block-Cipher-Mode-%EB%B8%94%EB%9F%AD-%EC%95%94%ED%98%B8%ED%99%94-%EB%AA%A8%EB%93%9C-ECB-CBC-CFB-OFB-CTR-GCM
  *     : CBC, CTR, GCM
  *
+ * --------------------------------------
+ * (Snyk) 암호화 알고리즘 취약점 결과
+ * (Medium) Inadequate Padding for AES encryption
+ * Info: AES with CBC mode and PKCS5Padding (AES/CBC/PKCS5Padding)
+ * used in javax.crypto.Cipher.getInstance is vulnerable to padding oracle attacks.
+ * Consider using Galois/Counter Mode (algorithm AES/GCM/NoPadding).
+ *
+ * enum class Transform(val s: String) {
+ *  // 우선수위가 높은 수록 안전한 모드이다.
+ *  AES_GCM_NoPadding("AES/GCM/NoPadding"),         // (강추) 24년 기준 아직 취약점 없음
+ *  AES_CTR_NoPadding("AES/CTR/NoPadding"),
+ *  AES_CBC_PKCS5Padding("AES/CBC/PKCS5Padding"),
+ *  AES_CFB_PKCS5Padding("AES/CFB/PKCS5Padding"),   // (비추) CTR 모드를 사용하는 편이 나음
+ *  AES_ECB_PKCS5Padding("AES/ECB/PKCS5Padding")    // (비추) 취약점 존재
+ *  ;
+ *  fun getValue(): String { return s }
+ * }
+ *
  * @author mcharima5@gmail.com
  * @since 2022
  */
 object AES {
-
-    /*
-        [Snyk] 암호화 알고리즘 취약점 결과
-
-        [Medium] Inadequate Padding for AES encryption
-        Info: AES with CBC mode and PKCS5Padding (AES/CBC/PKCS5Padding)
-              used in javax.crypto.Cipher.getInstance is vulnerable to padding oracle attacks.
-              Consider using Galois/Counter Mode (algorithm AES/GCM/NoPadding).
-     */
-
-    /*
-    enum class Transform(val s: String) {
-        // 우선수위가 높은 수록 안전한 모드이다.
-        AES_GCM_NoPadding("AES/GCM/NoPadding"),         // [강추] 24년 기준 아직 취약점 없음
-        AES_CTR_NoPadding("AES/CTR/NoPadding"),
-        AES_CBC_PKCS5Padding("AES/CBC/PKCS5Padding"),
-        AES_CFB_PKCS5Padding("AES/CFB/PKCS5Padding"),   // [비추] CTR 모드를 사용하는 편이 나음
-        AES_ECB_PKCS5Padding("AES/ECB/PKCS5Padding")    // [비추] 취약점 존재
-        ;
-        fun getValue(): String { return s }
-    }
-     */
 
     fun encrypt(data: ByteArray, key: String, iv: String, transform: String = "AES/GCM/NoPadding"): ByteArray {
         val secretKey = SecretKeySpec(genKey(key), "AES")

@@ -3,7 +3,6 @@ package com.sun.toolkit
 import java.net.MalformedURLException
 
 class Uri(val uri: String) {
-
     var scheme: String = ""
     var hasAuthority: Boolean = false
     var host: String = ""
@@ -16,53 +15,89 @@ class Uri(val uri: String) {
     }
 
     private fun parse() {
-        var i: Int // index into URI
+        val schemeEnd = parseScheme()
+        val authorityEnd = parseAuthority(schemeEnd)
+        parsePathAndQuery(authorityEnd)
+    }
 
-        i = uri.indexOf(':') // parse scheme
-
-        if (i < 0) {
+    private fun parseScheme(): Int {
+        val colonIndex = uri.indexOf(':')
+        if (colonIndex < 0) {
             throw MalformedURLException("Invalid URI: $uri")
         }
-        scheme = uri.substring(0, i)
-        i++ // skip past ":"
+        scheme = uri.substring(0, colonIndex)
+        return colonIndex + 1
+    }
 
+    private fun parseAuthority(startIndex: Int): Int {
+        var i = startIndex
         hasAuthority = uri.startsWith("//", i)
-        if (hasAuthority) { // parse "//host:port"
-            i += 2 // skip past "//"
-            var slash: Int = uri.indexOf('/', i)
-            if (slash < 0) {
-                slash = uri.length
-            }
-            if (uri.startsWith("[", i)) { // at IPv6 literal
-                val brac: Int = uri.indexOf(']', i + 1)
-                if (brac < 0 || brac > slash) {
-                    throw MalformedURLException("Invalid URI: $uri")
-                }
-                host = uri.substring(i, brac + 1) // include brackets
-                i = brac + 1 // skip past "[...]"
-            } else { // at host name or IPv4
-                val colon: Int = uri.indexOf(':', i)
-                val hostEnd = if (colon < 0 || colon > slash) slash else colon
-                if (i < hostEnd) {
-                    host = uri.substring(i, hostEnd)
-                }
-                i = hostEnd // skip past host
-            }
-            if (i + 1 < slash &&
-                uri.startsWith(":", i)
-            ) { // parse port
-                i++ // skip past ":"
-                port = uri.substring(i, slash).toInt()
-            }
-            i = slash // skip to path
-        }
-        val qmark: Int = uri.indexOf('?', i) // look for query
 
-        if (qmark < 0) {
-            path = uri.substring(i)
+        if (!hasAuthority) {
+            return i
+        }
+
+        i += 2 // skip past "//"
+        val slash = findSlashOrEnd(i)
+        i = parseHost(i, slash)
+        parsePort(i, slash)
+
+        return slash
+    }
+
+    private fun findSlashOrEnd(startIndex: Int): Int {
+        val slash = uri.indexOf('/', startIndex)
+        return if (slash < 0) uri.length else slash
+    }
+
+    private fun parseHost(startIndex: Int, endIndex: Int): Int {
+        var i = startIndex
+
+        if (uri.startsWith("[", i)) {
+            i = parseIPv6Host(i, endIndex)
         } else {
-            path = uri.substring(i, qmark)
-            query = uri.substring(qmark)
+            i = parseRegularHost(i, endIndex)
+        }
+
+        return i
+    }
+
+    private fun parseIPv6Host(startIndex: Int, endIndex: Int): Int {
+        val bracketEnd = uri.indexOf(']', startIndex + 1)
+        if (bracketEnd < 0 || bracketEnd > endIndex) {
+            throw MalformedURLException("Invalid URI: $uri")
+        }
+        host = uri.substring(startIndex, bracketEnd + 1)
+        return bracketEnd + 1
+    }
+
+    private fun parseRegularHost(startIndex: Int, endIndex: Int): Int {
+        val colon = uri.indexOf(':', startIndex)
+        val hostEnd = if (colon < 0 || colon > endIndex) endIndex else colon
+
+        if (startIndex < hostEnd) {
+            host = uri.substring(startIndex, hostEnd)
+        }
+
+        return hostEnd
+    }
+
+    private fun parsePort(startIndex: Int, endIndex: Int): Int {
+        if (startIndex + 1 < endIndex && uri.startsWith(":", startIndex)) {
+            val portStart = startIndex + 1
+            port = uri.substring(portStart, endIndex).toInt()
+        }
+        return endIndex
+    }
+
+    private fun parsePathAndQuery(startIndex: Int) {
+        val questionMark = uri.indexOf('?', startIndex)
+
+        if (questionMark < 0) {
+            path = uri.substring(startIndex)
+        } else {
+            path = uri.substring(startIndex, questionMark)
+            query = uri.substring(questionMark)
         }
     }
 }
