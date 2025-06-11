@@ -1,6 +1,7 @@
 package com.snc.test.extension.text
 
 import com.snc.zero.extension.text.print
+import com.snc.zero.extension.text.printJSON
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Test
@@ -77,5 +78,12 @@ class ToStringExtTest : BaseJUnit5Test() {
         val v1 = data.print()
         // then
         logger.debug { "Print - Calendar 결과: $v1" }
+    }
+
+    @Test
+    fun `Print - JSON`() {
+        val str =
+            "{ \"user_agent\": { \"family\": \"Chrome Mobile WebView\", \"major\": \"56\", \"minor\": \"0\", \"patch\": \"2924\" }, \"os\": { \"Android\", \"major\": \"7\", \"minor\": \"0\", \"patch\": \"\", \"patch_minor\": \"\" }, \"device\": { \"family\": \"Samsung SM-P585N0\" } }"
+        println(str.printJSON(2))
     }
 }
