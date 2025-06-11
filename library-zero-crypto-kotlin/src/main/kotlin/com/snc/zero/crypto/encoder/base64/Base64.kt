@@ -1,5 +1,11 @@
 package com.snc.zero.crypto.encoder.base64
 
+/**
+ * Base64 (Url Safe)
+ *
+ * @author mcharima5@gmail.com
+ * @since 2022
+ */
 object Base64 {
 
     private val TABLE = charArrayOf(
@@ -10,7 +16,7 @@ object Base64 {
         'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n',
         'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
         'w', 'x', 'y', 'z', '0', '1', '2', '3',
-        '4', '5', '6', '7', '8', '9', '-', '_', // '+', '/'
+        '4', '5', '6', '7', '8', '9', '-', '_' // Base64 Url Safe ('+' '/' -> '-' '_')
     )
 
     fun encode(data: ByteArray): String {
@@ -35,7 +41,7 @@ object Base64 {
                 a = data[i].toInt()
                 result.append(TABLE[a shr 2 and 0x3f])
                 result.append(TABLE[a shl 4 and 0x30])
-                result.append("==")
+                result.append("==") // padding
             }
             2 -> {
                 a = data[i].toInt()
@@ -43,13 +49,17 @@ object Base64 {
                 result.append(TABLE[a shr 2 and 0x3f])
                 result.append(TABLE[(a shl 4 and 0x30) + (b shr 4 and 0x0f)])
                 result.append(TABLE[b shl 2 and 0x3c])
-                result.append("=")
+                result.append("=") // padding
             }
         }
         return result.toString()
     }
 
     fun decode(data: String): ByteArray {
+        //if (data.length() % 4 != 0) {
+        //	 throw (new Base64Exception());
+        //}
+
         var padding = if (data[data.length - 1] == '=') {
             1
         } else {
@@ -86,6 +96,15 @@ object Base64 {
             }
         }
         return result
+    }
+
+    fun getEncodedSize(plainText: String): Double {
+        val n = plainText.length.toDouble()
+        return if (n <= 0) {
+            0.toDouble()
+        } else {
+            n + 2 - (n + 2) % 3 / 3 * 4
+        }
     }
 
     private fun getByte(c: Char): Byte {

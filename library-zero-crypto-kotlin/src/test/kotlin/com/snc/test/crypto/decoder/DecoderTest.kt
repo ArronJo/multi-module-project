@@ -11,6 +11,17 @@ private val logger = TLogging.logger { }
 class DecoderTest : BaseJUnit5Test() {
 
     @Test
+    fun `Decode To Base62`() {
+        // given
+        val data = "hbWbdDh6qZs9HKMROfLt7E3ZruZ08wTiKbvkwhrDXN96CoC3qPFfMep6fezRcZf"
+        // when
+        val v = Decoder.with(Decoder.Algo.BASE62).decode(data)
+        // then
+        logger.debug { "Base62 decoded: $v" }
+        assertEquals(String(v), "asdsncynh 2984yhd89`yu8989189u9jqfdasjgfuiasgds")
+    }
+
+    @Test
     fun `Decode To Base64`() {
         // given
         val data = "YXNkc25jeW5oIDI5ODR5aGQ4OWB5dTg5ODkxODl1OWpxZmRhc2pnZnVpYXNnZHM="
@@ -34,6 +45,20 @@ class DecoderTest : BaseJUnit5Test() {
         logger.debug { "Base64 decoded v1: $v1" }
         logger.debug { "Base64 decoded v2: $v2" }
         assertEquals(String(v1), String(v2))
+    }
+
+    @Test
+    fun `Decode To URI`() {
+        // given
+        val data1 = "https://confluence.hanwhalife.com/pages/viewpage.action?pageId=68972232%EC%95%88"
+        // when
+        val v1 = Decoder.with(Decoder.Algo.URIComponent).decodeURI(data1)
+        val v2 = Decoder.with(Decoder.Algo.URI).decodeURI(data1)
+        // then
+        logger.debug { "URI decodeURIComponent: $v1" }
+        logger.debug { "URI decodeURI: $v2" }
+        assertEquals("https://confluence.hanwhalife.com/pages/viewpage.action?pageId=68972232안", v1)
+        assertEquals("https://confluence.hanwhalife.com/pages/viewpage.action?pageId=68972232안", v2)
     }
 
     @Test

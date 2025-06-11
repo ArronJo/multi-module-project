@@ -4,6 +4,12 @@ import com.snc.zero.crypto.hash.base.BaseHash
 import org.bouncycastle.crypto.digests.SHAKEDigest
 import java.nio.charset.Charset
 
+/**
+ * SHAKE 해시
+ *
+ * @author mcharima5@gmail.com
+ * @since 2022
+ */
 object SHAKE : BaseHash() {
 
     fun shake128(msg: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {

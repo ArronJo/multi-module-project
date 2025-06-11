@@ -6,6 +6,12 @@ import java.security.MessageDigest
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
+/**
+ * SHA-2 Group
+ *
+ * @author mcharima5@gmail.com
+ * @since 2022
+ */
 object SHA2 : BaseHash() {
 
     fun hmacSHA224(msg: String, key: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
@@ -34,11 +40,19 @@ object SHA2 : BaseHash() {
             md.update(salt.toByteArray(charSet))
         }
         var hashed = md.doFinal(msg.toByteArray(charSet))
-        for (i in 1..iterationCount) {
+        (1..iterationCount).forEach { i ->
             md.reset()
             hashed = md.doFinal(hashed)
         }
         return hashed
+    }
+
+    /**
+     * SHA-2 Group 에는 128 이 없다. 꼼수로 만들어본다.
+     * 128 크기로 만들고 싶다면 SHAKE128 을 사용하는 것이 더 좋다.
+     */
+    fun sha128(msg: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
+        return digest(msg, 128, salt, iterationCount, charSet)
     }
 
     fun sha224(msg: String, salt: String = "", iterationCount: Int = 0, charSet: Charset = Charsets.UTF_8): ByteArray {
@@ -59,23 +73,30 @@ object SHA2 : BaseHash() {
 
     fun digest(msg: String, bitLength: Int, salt: String, iterationCount: Int, charSet: Charset): ByteArray {
         checkBitLength(bitLength)
-        val alg = "SHA-$bitLength"
+        val alg = if (bitLength == 128) {
+            "SHA-256"
+        } else {
+            "SHA-$bitLength"
+        }
         val md = MessageDigest.getInstance(alg)
         md.reset()
         if (salt.isNotEmpty()) {
             md.update(salt.toByteArray(charSet))
         }
         var hashed = md.digest(msg.toByteArray(charSet))
-        for (i in 1..iterationCount) {
+        (1..iterationCount).forEach { i ->
             md.reset()
             hashed = md.digest(hashed)
+        }
+        if (bitLength == 128) {
+            return hashed.copyOf(16)
         }
         return hashed
     }
 
     private fun checkBitLength(bitLength: Int): Int {
         when (bitLength) {
-            224, 256, 384, 512 -> return bitLength
+            128, 224, 256, 384, 512 -> return bitLength
             else -> throw IllegalArgumentException("'bitLength' $bitLength not supported")
         }
     }

@@ -1,5 +1,6 @@
 package com.snc.test.crypto.hash.sha3
 
+import com.snc.zero.extension.random.randomString
 import com.snc.zero.extension.text.toHexString
 import com.snc.zero.crypto.hash.sha3.SHA3
 import com.snc.zero.logger.jvm.TLogging
@@ -23,6 +24,31 @@ class SHA3Test : BaseJUnit5Test() {
             max = 100
             key = "abc"
         }
+    }
+
+    @Test
+    fun `SHA3 - SHA128 테스트 - 미지원 알고리즘, 자체 구현`() {
+        // given
+        var data = "qwerty"
+        val ret = mutableListOf<String>()
+        // when
+        var v = ""
+        var d = -1
+        for (i in 1..max) {
+            data += randomString(1)
+            v = SHA3.sha128(data).toHexString()
+            // then
+            //logger.debug { "sha128: $v" }
+            if (ret.contains(v)) {
+                logger.debug { "duplicate [$i]: $v" }
+                d = i
+                break
+            }
+            ret.add(v)
+        }
+        // then
+        logger.debug { "SHA3.sha128: [$d] $v" }
+        //assertEquals("8dcccaaeab3b51c23c591638492cd5f2a7582b983a895efdfcc54543", v)
     }
 
     @Test

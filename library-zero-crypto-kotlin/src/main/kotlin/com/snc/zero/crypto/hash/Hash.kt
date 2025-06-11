@@ -6,12 +6,18 @@ import com.snc.zero.crypto.hash.sha3.SHAKE
 import java.nio.charset.Charset
 import kotlin.jvm.Throws
 
+/**
+ * Hash 알고리즘
+ * (메소드 체이닝 (Method Chaining) 활용)
+ *
+ * @author mcharima5@gmail.com
+ * @since 2022
+ */
 class Hash private constructor(var algo: Algo) {
-
     private val msgEmptyKey = "Empty key"
 
     companion object {
-
+        @JvmStatic
         fun with(algo: Algo = Algo.SHA256): Hash {
             return Hash(algo)
         }
@@ -66,58 +72,45 @@ class Hash private constructor(var algo: Algo) {
                 require(key.isNotEmpty()) { msgEmptyKey }
                 return SHA2.hmacSHA224(msg, key, salt, iterationCount, charSet)
             }
-
             Algo.HmacSHA256 -> {
                 require(key.isNotEmpty()) { msgEmptyKey }
                 return SHA2.hmacSHA256(msg, key, salt, iterationCount, charSet)
             }
-
             Algo.HmacSHA384 -> {
                 require(key.isNotEmpty()) { msgEmptyKey }
                 return SHA2.hmacSHA384(msg, key, salt, iterationCount, charSet)
             }
-
             Algo.HmacSHA512 -> {
                 require(key.isNotEmpty()) { msgEmptyKey }
                 return SHA2.hmacSHA512(msg, key, salt, iterationCount, charSet)
             }
-
             Algo.SHA224 -> {
                 SHA2.sha224(msg, salt, iterationCount, charSet)
             }
-
             Algo.SHA256 -> {
                 SHA2.sha256(msg, salt, iterationCount, charSet)
             }
-
             Algo.SHA384 -> {
                 SHA2.sha384(msg, salt, iterationCount, charSet)
             }
-
             Algo.SHA512 -> {
                 SHA2.sha512(msg, salt, iterationCount, charSet)
             }
-
             Algo.SHA3_224 -> {
                 SHA3.sha224(msg, salt, iterationCount, charSet)
             }
-
             Algo.SHA3_256 -> {
                 SHA3.sha256(msg, salt, iterationCount, charSet)
             }
-
             Algo.SHA3_384 -> {
                 SHA3.sha384(msg, salt, iterationCount, charSet)
             }
-
             Algo.SHA3_512 -> {
                 SHA3.sha512(msg, salt, iterationCount, charSet)
             }
-
             Algo.SHAKE128 -> {
                 SHAKE.shake128(msg, salt, iterationCount, charSet)
             }
-
             Algo.SHAKE256 -> {
                 SHAKE.shake256(msg, salt, iterationCount, charSet)
             }
