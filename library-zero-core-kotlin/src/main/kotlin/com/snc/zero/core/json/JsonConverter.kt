@@ -33,7 +33,7 @@ class JsonConverter private constructor() {
         @JvmStatic
         fun toJsonString(obj: Any): String {
             val gson = GsonBuilder()
-                //.serializeNulls()     // null 포함
+                .serializeNulls() // null 포함
                 .create()
             val jsonWriter = JsonWriter(StringWriter())
             jsonWriter.setIndent("  ")

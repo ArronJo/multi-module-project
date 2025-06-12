@@ -103,6 +103,14 @@ open class BaseJUnit5Test {
         Assertions.assertFalse(condition)
     }
 
+    fun assertNull(actual: Any?) {
+        Assertions.assertNull(actual)
+    }
+
+    fun assertNotNull(actual: Any?) {
+        Assertions.assertNotNull(actual)
+    }
+
     fun assertDoesNotThrow(executable: () -> Unit) {
         Assertions.assertDoesNotThrow(executable)
     }
