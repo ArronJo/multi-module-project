@@ -32,22 +32,26 @@ class Uri(val uri: String) {
     private fun parseAuthority(startIndex: Int): Int {
         var i = startIndex
         hasAuthority = uri.startsWith("//", i)
-
         if (!hasAuthority) {
             return i
         }
-
         i += 2 // skip past "//"
-        val slash = findSlashOrEnd(i)
-        i = parseHost(i, slash)
-        parsePort(i, slash)
-
-        return slash
+        val authorityEnd = findPathStartOrEnd(i)
+        i = parseHost(i, authorityEnd)
+        parsePort(i, authorityEnd)
+        return authorityEnd
     }
 
-    private fun findSlashOrEnd(startIndex: Int): Int {
-        val slash = uri.indexOf('/', startIndex)
-        return if (slash < 0) uri.length else slash
+    private fun findPathStartOrEnd(startIndex: Int): Int {
+        val slashIndex = uri.indexOf('/', startIndex)
+        val questionIndex = uri.indexOf('?', startIndex)
+
+        return when {
+            slashIndex >= 0 && questionIndex >= 0 -> minOf(slashIndex, questionIndex)
+            slashIndex >= 0 -> slashIndex
+            questionIndex >= 0 -> questionIndex
+            else -> uri.length
+        }
     }
 
     private fun parseHost(startIndex: Int, endIndex: Int): Int {

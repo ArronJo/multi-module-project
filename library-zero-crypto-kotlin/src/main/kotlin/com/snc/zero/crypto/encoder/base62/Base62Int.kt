@@ -48,35 +48,6 @@ object Base62Int {
         return result
     }
 
-    @JvmStatic
-    fun main(args: Array<String>) {
-        println("62^0 : 0                   : " + encode(0))
-        println("62^1 : 62                  : " + encode(62))
-        println("62^2 : 3,844               : " + encode(3844))
-        println("62^3 : 238,328             : " + encode(238328))
-        println("62^4 : 14,776,336          : " + encode(14776336))
-        println("62^5 : 916,132,832         : " + encode(916132832))
-        println("62^6 : 56,800,235,584      : " + encode(56800235584))
-        println("62^7 : 3,521,614,606,208   : " + encode(3521614606208))
-        println(" ~max: 218,340,105,584,895 : " + encode(218340105584895))
-        println("62^8 : 218,340,105,584,896 : " + encode(218340105584896))
-        println("MAX  : 9,223,372,036,854,775,807 : " + encode(Long.MAX_VALUE))
-        println()
-        println()
-
-        println("DTC회원(12자리)   : " + encode(102312345678L))
-        println("DTC회원(12자리): " + decode(encode(102312345678L)))
-
-        println("주민등록번호(13자리): " + encode(7911231234567L))
-        println("주민등록번호(13자리): " + decode(encode(7911231234567L)))
-        println()
-        println()
-
-        println("날짜: " + encode(today("yyyyMMddHHmmssSSS").toLong()))
-        println()
-        println()
-    }
-
     fun today(format: String = "yyyyMMdd"): String {
         val simpleDateFormat = SimpleDateFormat(format, Locale.getDefault())
         return simpleDateFormat.format(Calendar.getInstance().timeInMillis)

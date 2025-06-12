@@ -1,5 +1,6 @@
 package com.snc.test.crypto.encoder
 
+import com.snc.zero.crypto.encoder.Encoder.Algo
 import com.snc.zero.crypto.encoder.Encoder
 import com.snc.zero.crypto.encoder.base64.Base64
 import com.snc.zero.logger.jvm.TLogging
@@ -16,7 +17,7 @@ class EncoderTest : BaseJUnit5Test() {
         // given
         val data = "asdsncynh 2984yhd89`yu8989189u9jqfdasjgfuiasgds"
         // when
-        val v = Encoder.with(Encoder.Algo.BASE62).encode(data.toByteArray())
+        val v = Encoder.with(Algo.BASE62).encode(data.toByteArray())
         // then
         logger.debug { "Base62 encoded: $v" }
         assertEquals("hbWbdDh6qZs9HKMROfLt7E3ZruZ08wTiKbvkwhrDXN96CoC3qPFfMep6fezRcZf", v)
@@ -27,7 +28,7 @@ class EncoderTest : BaseJUnit5Test() {
         // given
         val data = "asdsncynh 2984yhd89`yu8989189u9jqfdasjgfuiasgds"
         // when
-        val v = Encoder.with(Encoder.Algo.BASE64).encode(data.toByteArray())
+        val v = Encoder.with(Algo.BASE64).encode(data.toByteArray())
         val v2 = java.util.Base64.getEncoder().encodeToString(data.toByteArray())
         // then
         logger.debug { "Base64 encoded 1: $v" }
@@ -40,7 +41,7 @@ class EncoderTest : BaseJUnit5Test() {
         // given
         val data = "Special chars: \u00fb\u00fb\u00ff here."
         // when
-        val v = Encoder.with(Encoder.Algo.BASE64).encode(data.toByteArray())
+        val v = Encoder.with(Algo.BASE64).encode(data.toByteArray())
         val v2 = Base64.encode(data.toByteArray())
         // then
         logger.debug { "Base64 encoded 1: $v" } // "U3BlY2lhbCBjaGFyczogw7vDu8O_IGhlcmUu"
@@ -53,8 +54,8 @@ class EncoderTest : BaseJUnit5Test() {
         // given
         val data = "https://confluence.hanwhalife.com/pages/viewpage.action?pageId=68972232안"
         // when
-        val v1 = Encoder.with(Encoder.Algo.URIComponent).encodeURI(data)
-        val v2 = Encoder.with(Encoder.Algo.URI).encodeURI(data)
+        val v1 = Encoder.with(Algo.URIComponent).encodeURI(data)
+        val v2 = Encoder.with(Algo.URI).encodeURI(data)
         // then
         logger.debug { "encodeURIComponent: $v1" }
         logger.debug { "encodeURI: $v2" }
@@ -67,7 +68,7 @@ class EncoderTest : BaseJUnit5Test() {
         // given
         val data = "aaaaa"
         // when
-        val v1 = Encoder.with().encode(data.toByteArray())
+        val v1 = Encoder.with(Algo.BASE64).encode(data.toByteArray())
         val v2 = String(java.util.Base64.getEncoder().encode(data.toByteArray()))
         // then
         assertEquals(v1, v2)

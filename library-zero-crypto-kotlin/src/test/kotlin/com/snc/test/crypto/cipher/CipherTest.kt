@@ -15,6 +15,7 @@ private val logger = TLogging.logger { }
 class CipherTest : BaseJUnit5Test() {
 
     private val pair = RSAKeyGen.genKeyPair(2048, SecureRandom("".repeat(16).toByteArray()))
+    private val pair2 = RSAKeyGen.genKeyPair(2048)
 
     companion object {
         private lateinit var key: String
@@ -152,6 +153,26 @@ class CipherTest : BaseJUnit5Test() {
             .key(pair.private)
             .decrypt(encrypted)
         // then
+        val plainText = String(v)
+        logger.debug { "RSA decrypt [$transform]: $plainText" }
+
+        assertEquals(data, plainText)
+    }
+
+    @Test
+    fun `RSA Encrypt Decrypt 2`() {
+        val transform = RSAKeyGen.TRANSFORM_RSA_ECB_OAEP_SHA256 // RSAKeyGen.TRANSFORM_RSA_ECB_OAEP
+        val data = "qwerty"
+        val encrypted = Cipher.with(Cipher.Algo.RSA)
+            .transform(transform)
+            .key(pair2.public)
+            .encrypt(data.toByteArray())
+        logger.debug { "RSA encrypt [$transform]: $encrypted" }
+
+        val v = Cipher.with(Cipher.Algo.RSA)
+            .transform(transform)
+            .key(pair2.private)
+            .decrypt(encrypted)
         val plainText = String(v)
         logger.debug { "RSA decrypt [$transform]: $plainText" }
 
