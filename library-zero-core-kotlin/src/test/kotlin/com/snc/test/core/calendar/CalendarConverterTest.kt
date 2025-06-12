@@ -42,10 +42,41 @@ class CalendarConverterTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `CalendarConverter toCalendar 변환 4`() {
+    fun `CalendarConverter dateString to Calendar 변환 1`() {
         assertThrows(IllegalArgumentException::class.java) {
             CalendarConverter.toCalendar("19")
         }
+    }
+
+    @Test
+    fun `CalendarConverter dateString to Calendar 변환 2`() {
+        assertThrows(IllegalArgumentException::class.java) {
+            CalendarConverter.toCalendar("1999")
+        }
+    }
+
+    @Test
+    fun `CalendarConverter dateString to Calendar 변환 3`() {
+        val c = CalendarConverter.toCalendar("500625")
+        logger.debug { "CalendarConverter toCalendar : $c" }
+    }
+
+    @Test
+    fun `CalendarConverter dateString to Calendar 변환 4`() {
+        val c = CalendarConverter.toCalendar("19500625")
+        logger.debug { "CalendarConverter toCalendar : $c" }
+    }
+
+    @Test
+    fun `CalendarConverter dateString to Calendar 변환 5`() {
+        val c = CalendarConverter.toCalendar("5006250500")
+        logger.debug { "CalendarConverter toCalendar : $c" }
+    }
+
+    @Test
+    fun `CalendarConverter dateString to Calendar 변환 6`() {
+        val c = CalendarConverter.toCalendar("195006250500")
+        logger.debug { "CalendarConverter toCalendar : $c" }
     }
 
     @Test
