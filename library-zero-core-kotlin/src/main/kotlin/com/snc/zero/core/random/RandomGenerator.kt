@@ -60,49 +60,60 @@ class RandomGenerator private constructor() {
             var start = startPos
             var end = endPos
             var count = countLen
-            if (count == 0) {
-                return ""
-            }
+            if (count == 0) return ""
             require(count >= 0) { "Requested random string length $count is less than 0." }
+
             if (start == 0 && end == 0) {
                 end = 123
                 start = 32
                 if (!letters && !numbers) {
                     start = 0
-                    end = 2147483647
+                    end = Int.MAX_VALUE
                 }
             }
 
             val buffer = CharArray(count)
             val gap = end - start
-            while (count-- != 0) {
+
+            while (count != 0) {
                 val ch: Char = if (chars == null) {
                     (random.nextInt(gap) + start).toChar()
                 } else {
                     chars[random.nextInt(gap) + start]
                 }
-                if ((letters && Character.isLetter(ch)) || (numbers && Character.isDigit(ch)) || (!letters && !numbers)) {
-                    if (ch.code in 56320..57343) if (count == 0) {
-                        ++count
-                    } else {
-                        buffer[count] = ch
-                        --count
-                        buffer[count] = (55296 + random.nextInt(128)).toChar()
-                    } else if (ch.code in 55296..56191) if (count == 0) {
-                        ++count
-                    } else {
-                        buffer[count] = (56320 + random.nextInt(128)).toChar()
-                        --count
-                        buffer[count] = ch
-                    } else if (ch.code in 56192..56319) {
-                        ++count
-                    } else {
-                        buffer[count] = ch
+
+                if ((letters && ch.isLetter()) || (numbers && ch.isDigit()) || (!letters && !numbers)) {
+                    when (ch.code) {
+                        in 0xDC00..0xDFFF -> { // Low surrogate
+                            if (count == 1) {
+                                continue // skip and try again
+                            }
+                            buffer[--count] = ch
+                            buffer[--count] = (0xD800 + random.nextInt(128)).toChar()
+                        }
+
+                        in 0xD800..0xDB7F -> { // High surrogate
+                            if (count == 1) {
+                                continue
+                            }
+                            buffer[--count] = (0xDC00 + random.nextInt(128)).toChar()
+                            buffer[--count] = ch
+                        }
+
+                        in 0xDB80..0xDBFF -> { // Invalid surrogate range
+                            continue
+                        }
+
+                        else -> {
+                            buffer[--count] = ch
+                        }
                     }
                 } else {
-                    ++count
+                    // character did not match letter/digit/non-filter rule → skip
+                    continue
                 }
             }
+
             return String(buffer)
         }
     }

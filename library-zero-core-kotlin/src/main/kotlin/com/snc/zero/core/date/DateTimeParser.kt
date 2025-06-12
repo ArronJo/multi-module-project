@@ -32,12 +32,12 @@ class DateTimeParser private constructor() {
             return String.format(
                 Locale.getDefault(),
                 "%04d%02d%02d%02d%02d%02d",
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH) + 1,
-                calendar.get(Calendar.DATE),
-                calendar.get(Calendar.HOUR_OF_DAY),
-                calendar.get(Calendar.MINUTE),
-                calendar.get(Calendar.SECOND)
+                calendar[Calendar.YEAR],
+                calendar[Calendar.MONTH] + 1,
+                calendar[Calendar.DATE],
+                calendar[Calendar.HOUR_OF_DAY],
+                calendar[Calendar.MINUTE],
+                calendar[Calendar.SECOND]
             )
         }
 

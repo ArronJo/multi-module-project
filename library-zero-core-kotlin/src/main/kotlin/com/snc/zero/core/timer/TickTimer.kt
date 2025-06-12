@@ -34,7 +34,7 @@ class TickTimer {
         return null == tickTimer
     }
 
-    interface OnTickTimerListener {
+    fun interface OnTickTimerListener {
         fun onTick()
     }
 }
