@@ -145,13 +145,4 @@ object Base62 {
         val prepared = translate(encoded, lookup)
         return convert(prepared, TARGET_BASE, STANDARD_BASE)
     }
-
-    @JvmStatic
-    fun main(args: Array<String>) {
-        val str = "abccde"
-        val encoded = String(encode(str.toByteArray()))
-        println("origin = $str")
-        println("encoded = $encoded")
-        println("decode = " + String(decode(encoded.toByteArray())))
-    }
 }
