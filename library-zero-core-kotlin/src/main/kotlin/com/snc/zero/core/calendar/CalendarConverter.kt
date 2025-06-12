@@ -25,7 +25,7 @@ class CalendarConverter private constructor() {
                 when (numbersOnly.length) {
                     6 -> {
                         // yyMMdd 형식
-                        val fullYear = 1900 +  numbersOnly.substring(0, 2).toInt()
+                        val fullYear = 1900 + numbersOnly.substring(0, 2).toInt()
                         calendar[Calendar.YEAR] = fullYear
                         calendar[Calendar.MONTH] = numbersOnly.substring(2, 4).toInt() - 1
                         calendar[Calendar.DAY_OF_MONTH] = numbersOnly.substring(4, 6).toInt()
@@ -42,9 +42,17 @@ class CalendarConverter private constructor() {
                         calendar[Calendar.MINUTE] = 0
                         calendar[Calendar.SECOND] = 0
                     }
+                    10 -> {
+                        // yyMMddHHmm 형식
+                        calendar[Calendar.YEAR] = 1900 + numbersOnly.substring(0, 2).toInt()
+                        calendar[Calendar.MONTH] = numbersOnly.substring(2, 4).toInt() - 1
+                        calendar[Calendar.DAY_OF_MONTH] = numbersOnly.substring(4, 6).toInt()
+                        calendar[Calendar.HOUR_OF_DAY] = numbersOnly.substring(6, 8).toInt()
+                        calendar[Calendar.MINUTE] = numbersOnly.substring(8, 10).toInt()
+                    }
                     12 -> {
                         // yyMMddHHmmss 형식
-                        val fullYear = 1900 +  numbersOnly.substring(0, 2).toInt()
+                        val fullYear = 1900 + numbersOnly.substring(0, 2).toInt()
                         calendar[Calendar.YEAR] = fullYear
                         calendar[Calendar.MONTH] = numbersOnly.substring(2, 4).toInt() - 1
                         calendar[Calendar.DAY_OF_MONTH] = numbersOnly.substring(4, 6).toInt()
