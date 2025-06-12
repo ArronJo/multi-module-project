@@ -14,9 +14,13 @@ repositories {
 
 dependencies {
     implementation(project(":library-zero-logger-kotlin"))
+    implementation(project(":library-zero-extension-kotlin"))
+    implementation(libs.google.gson)
+    implementation(libs.ua.parser)
 
     testImplementation(project(":library-zero-test-kotlin"))
     testImplementation(libs.junit.jupiter)
+    testImplementation(libs.mockito.kotlin)
 
     testRuntimeOnly(libs.junit.platform.launcher)
     testRuntimeOnly(libs.junit.jupiter.engine)
