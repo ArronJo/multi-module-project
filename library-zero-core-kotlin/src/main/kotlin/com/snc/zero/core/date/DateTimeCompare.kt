@@ -74,19 +74,5 @@ class DateTimeCompare private constructor() {
             val dstCalendar = CalendarConverter.toCalendar(dstDate)
             return betweenDays(srcCalendar, dstCalendar)
         }
-
-        @JvmStatic
-        fun main(args: Array<String>) {
-            // Date Serial 테스트
-            val srcDate = "20170215"
-            val dstDate = "20170309"
-
-            println("Date 비교: " + compare(srcDate, "<=", dstDate))
-            println("Date 비교: " + isBetweenDate(srcDate, "20170228", dstDate))
-
-            println("Date 남은 일자: " + betweenDays(srcDate, dstDate) + " 일")
-            println()
-            println()
-        }
     }
 }

@@ -42,6 +42,13 @@ class CalendarConverterTest : BaseJUnit5Test() {
     }
 
     @Test
+    fun `CalendarConverter toCalendar 변환 4`() {
+        assertThrows(IllegalArgumentException::class.java) {
+            CalendarConverter.toCalendar("19")
+        }
+    }
+
+    @Test
     fun `CalendarConverter toDateString 변환 1`() {
         // given
         val cal = java.util.Calendar.getInstance()

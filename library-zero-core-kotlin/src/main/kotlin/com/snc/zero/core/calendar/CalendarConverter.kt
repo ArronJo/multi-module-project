@@ -16,19 +16,67 @@ class CalendarConverter private constructor() {
 
         @JvmStatic
         fun toCalendar(dateString: String): Calendar {
+            // 입력 문자열에서 숫자만 추출
+            val numbersOnly = dateString.replace(Regex("[^0-9]"), "")
+
             val calendar = Calendar.getInstance()
-            calendar[Calendar.SECOND] =
-                if (dateString.length >= 14) dateString.substring(12, 14).toInt() else 0
-            calendar[Calendar.MINUTE] =
-                if (dateString.length >= 12) dateString.substring(10, 12).toInt() else 0
-            calendar[Calendar.HOUR_OF_DAY] =
-                if (dateString.length >= 10) dateString.substring(8, 10).toInt() else 0
-            calendar[Calendar.DAY_OF_MONTH] =
-                if (dateString.length >= 8) dateString.substring(6, 8).toInt() else 1
-            calendar[Calendar.MONTH] =
-                if (dateString.length >= 6) dateString.substring(4, 6).toInt() - 1 else 0
-            calendar[Calendar.YEAR] =
-                if (dateString.length >= 4) dateString.substring(0, 4).toInt() else 1900
+
+            try {
+                when (numbersOnly.length) {
+                    6 -> {
+                        // yyMMdd 형식
+                        val year = numbersOnly.substring(0, 2).toInt()
+                        val fullYear = if (year >= 50) 1900 + year else 2000 + year // 50 이상이면 19xx, 미만이면 20xx
+                        calendar[Calendar.YEAR] = fullYear
+                        calendar[Calendar.MONTH] = numbersOnly.substring(2, 4).toInt() - 1
+                        calendar[Calendar.DAY_OF_MONTH] = numbersOnly.substring(4, 6).toInt()
+                        calendar[Calendar.HOUR_OF_DAY] = 0
+                        calendar[Calendar.MINUTE] = 0
+                        calendar[Calendar.SECOND] = 0
+                    }
+                    8 -> {
+                        // yyyyMMdd 형식
+                        calendar[Calendar.YEAR] = numbersOnly.substring(0, 4).toInt()
+                        calendar[Calendar.MONTH] = numbersOnly.substring(4, 6).toInt() - 1
+                        calendar[Calendar.DAY_OF_MONTH] = numbersOnly.substring(6, 8).toInt()
+                        calendar[Calendar.HOUR_OF_DAY] = 0
+                        calendar[Calendar.MINUTE] = 0
+                        calendar[Calendar.SECOND] = 0
+                    }
+                    12 -> {
+                        // yyMMddHHmmss 형식
+                        val year = numbersOnly.substring(0, 2).toInt()
+                        val fullYear = if (year >= 50) 1900 + year else 2000 + year // 50 이상이면 19xx, 미만이면 20xx
+                        calendar[Calendar.YEAR] = fullYear
+                        calendar[Calendar.MONTH] = numbersOnly.substring(2, 4).toInt() - 1
+                        calendar[Calendar.DAY_OF_MONTH] = numbersOnly.substring(4, 6).toInt()
+                        calendar[Calendar.HOUR_OF_DAY] = numbersOnly.substring(6, 8).toInt()
+                        calendar[Calendar.MINUTE] = numbersOnly.substring(8, 10).toInt()
+                        calendar[Calendar.SECOND] = numbersOnly.substring(10, 12).toInt()
+                    }
+                    14 -> {
+                        // yyyyMMddHHmmss 형식
+                        calendar[Calendar.YEAR] = numbersOnly.substring(0, 4).toInt()
+                        calendar[Calendar.MONTH] = numbersOnly.substring(4, 6).toInt() - 1
+                        calendar[Calendar.DAY_OF_MONTH] = numbersOnly.substring(6, 8).toInt()
+                        calendar[Calendar.HOUR_OF_DAY] = numbersOnly.substring(8, 10).toInt()
+                        calendar[Calendar.MINUTE] = numbersOnly.substring(10, 12).toInt()
+                        calendar[Calendar.SECOND] = numbersOnly.substring(12, 14).toInt()
+                    }
+                    else -> {
+                        throw IllegalArgumentException("지원하지 않는 날짜 형식입니다. 6, 8, 12, 14자리만 지원합니다: $dateString (추출된 숫자: $numbersOnly)")
+                    }
+                }
+
+                // 밀리초는 항상 0으로 설정
+                calendar[Calendar.MILLISECOND] = 0
+
+            } catch (e: NumberFormatException) {
+                throw IllegalArgumentException("날짜 변환 중 오류가 발생했습니다: $dateString", e)
+            } catch (e: StringIndexOutOfBoundsException) {
+                throw IllegalArgumentException("날짜 문자열 형식이 올바르지 않습니다: $dateString", e)
+            }
+
             return calendar
         }
 
