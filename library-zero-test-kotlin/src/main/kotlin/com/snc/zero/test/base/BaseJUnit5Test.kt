@@ -1,13 +1,9 @@
 package com.snc.zero.test.base
 
 import com.snc.zero.test.timer.TestTimer
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.TestInfo
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.function.Executable
-import java.util.Objects
-import java.util.SplittableRandom
+import java.util.*
 
 /**
  * 각 Class 실행 실행시
@@ -89,6 +85,10 @@ open class BaseJUnit5Test {
 
     fun assertEquals(expected: Boolean?, actual: Boolean?) {
         Assertions.assertEquals(expected, actual)
+    }
+
+    fun assertEquals(expected: Int, actual: Int, message: String?) {
+        Assertions.assertEquals(expected, actual, message)
     }
 
     fun assertNotEquals(unexpected: Any?, actual: Any?) {

@@ -42,7 +42,12 @@ class DateTimeParser private constructor() {
         }
 
         @JvmStatic
-        fun today(format: String = "yyyyMMdd"): String {
+        fun today(): Calendar {
+            return Calendar.getInstance()
+        }
+
+        @JvmStatic
+        fun today(format: String): String {
             return DateTimeFormat.format(
                 Calendar.getInstance(),
                 outputFormat = format
@@ -50,14 +55,9 @@ class DateTimeParser private constructor() {
         }
 
         @JvmStatic
-        fun today2(format: String = "yyyyMMdd"): String {
+        fun today2(format: String): String {
             val simpleDateFormat = SimpleDateFormat(format, Locale.getDefault())
             return simpleDateFormat.format(Calendar.getInstance().timeInMillis)
-        }
-
-        @JvmStatic
-        fun today(): Calendar {
-            return Calendar.getInstance()
         }
 
         @JvmStatic
