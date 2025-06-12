@@ -18,26 +18,6 @@ class CalendarCompat private constructor(var cal: Calendar) {
         fun with(cal: Calendar = Calendar.getInstance()): CalendarCompat {
             return CalendarCompat(cal)
         }
-
-        @JvmStatic
-        fun main(args: Array<String>) {
-            println()
-            println()
-
-            val builder: CalendarCompat = with()
-            //builder.setCalendar("20200224")
-            System.out.printf(
-                Locale.getDefault(),
-                "오늘은 %4d.%d.%d 입니다. %s\n이번달 마지막일은 %d입니다.",
-                builder.getYear(),
-                builder.getMonth(),
-                builder.getDay(),
-                builder.toDateString("yyMMdd"),
-                builder.getLastDayOfMonth()
-            )
-            println()
-            println()
-        }
     }
 
     init {
@@ -120,7 +100,6 @@ class CalendarCompat private constructor(var cal: Calendar) {
         this.setMinute(59)
         this.setSecond(59)
         this.setMillisecond(999)
-        //addDay(1).setHour(0).setMinute(0).setSecond(0).addMillisecond(-1)
         return this
     }
 
@@ -198,12 +177,6 @@ class CalendarCompat private constructor(var cal: Calendar) {
 
     fun getLastDayOfMonth(): Int {
         return cal.getActualMaximum(Calendar.DAY_OF_MONTH)
-        //val c = (calendar.clone() as Calendar).apply {
-        //    add(Calendar.MONTH, 1)
-        //    set(Calendar.DAY_OF_MONTH, 1)
-        //    add(Calendar.DAY_OF_MONTH, -1)
-        //}
-        //return c.get(Calendar.DAY_OF_MONTH)
     }
 
     fun toDateString(format: String = "yyyyMMddHHmmss"): String {
