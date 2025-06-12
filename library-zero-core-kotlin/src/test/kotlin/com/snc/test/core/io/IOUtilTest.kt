@@ -1,12 +1,16 @@
 package com.snc.test.core.io
 
 import com.snc.zero.core.io.IOUtil
+import com.snc.zero.core.io.IOUtil.Companion.closeQuietly
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.Closeable
+import java.io.InputStream
+import java.io.OutputStream
 
+@Suppress("NonAsciiCharacters")
 class IOUtilTest : BaseJUnit5Test() {
 
     @Test
@@ -54,7 +58,7 @@ class IOUtilTest : BaseJUnit5Test() {
         }
 
         assertDoesNotThrow {
-            IOUtil.closeQuietly(closeable)
+            closeQuietly(closeable)
         }
         assertTrue(closed)
     }
@@ -64,5 +68,16 @@ class IOUtilTest : BaseJUnit5Test() {
         assertDoesNotThrow {
             IOUtil.gc()
         }
+    }
+
+    @Test
+    fun `closeQuietly null 테스트`() {
+        val `is`: InputStream? = null
+        val os: OutputStream? = null
+        val c: Closeable? = null
+
+        closeQuietly(`is`)
+        closeQuietly(os)
+        closeQuietly(c)
     }
 }

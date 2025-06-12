@@ -33,12 +33,5 @@ class StringUtil private constructor() {
         fun printJSON(arr: Array<String>): String {
             return arr.joinToString(prefix = "[", separator = "|", postfix = "]")
         }
-
-        @JvmStatic
-        fun main(args: Array<String>) {
-            println("API: ${arrayListOf("1", "2", "3").joinToString(prefix = "[", separator = "|", postfix = "]")}")
-            println("API: ${listOf("1", "2", "3").joinToString(prefix = "[", separator = "|", postfix = "]")}")
-            println()
-        }
     }
 }

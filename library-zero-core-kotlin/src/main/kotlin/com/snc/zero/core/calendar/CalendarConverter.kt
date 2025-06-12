@@ -21,67 +21,60 @@ class CalendarConverter private constructor() {
 
             val calendar = Calendar.getInstance()
 
-            try {
-                when (numbersOnly.length) {
-                    6 -> {
-                        // yyMMdd 형식
-                        val fullYear = 1900 + numbersOnly.substring(0, 2).toInt()
-                        calendar[Calendar.YEAR] = fullYear
-                        calendar[Calendar.MONTH] = numbersOnly.substring(2, 4).toInt() - 1
-                        calendar[Calendar.DAY_OF_MONTH] = numbersOnly.substring(4, 6).toInt()
-                        calendar[Calendar.HOUR_OF_DAY] = 0
-                        calendar[Calendar.MINUTE] = 0
-                        calendar[Calendar.SECOND] = 0
-                    }
-                    8 -> {
-                        // yyyyMMdd 형식
-                        calendar[Calendar.YEAR] = numbersOnly.substring(0, 4).toInt()
-                        calendar[Calendar.MONTH] = numbersOnly.substring(4, 6).toInt() - 1
-                        calendar[Calendar.DAY_OF_MONTH] = numbersOnly.substring(6, 8).toInt()
-                        calendar[Calendar.HOUR_OF_DAY] = 0
-                        calendar[Calendar.MINUTE] = 0
-                        calendar[Calendar.SECOND] = 0
-                    }
-                    10 -> {
-                        // yyMMddHHmm 형식
-                        calendar[Calendar.YEAR] = 1900 + numbersOnly.substring(0, 2).toInt()
-                        calendar[Calendar.MONTH] = numbersOnly.substring(2, 4).toInt() - 1
-                        calendar[Calendar.DAY_OF_MONTH] = numbersOnly.substring(4, 6).toInt()
-                        calendar[Calendar.HOUR_OF_DAY] = numbersOnly.substring(6, 8).toInt()
-                        calendar[Calendar.MINUTE] = numbersOnly.substring(8, 10).toInt()
-                    }
-                    12 -> {
-                        // yyMMddHHmmss 형식
-                        val fullYear = 1900 + numbersOnly.substring(0, 2).toInt()
-                        calendar[Calendar.YEAR] = fullYear
-                        calendar[Calendar.MONTH] = numbersOnly.substring(2, 4).toInt() - 1
-                        calendar[Calendar.DAY_OF_MONTH] = numbersOnly.substring(4, 6).toInt()
-                        calendar[Calendar.HOUR_OF_DAY] = numbersOnly.substring(6, 8).toInt()
-                        calendar[Calendar.MINUTE] = numbersOnly.substring(8, 10).toInt()
-                        calendar[Calendar.SECOND] = numbersOnly.substring(10, 12).toInt()
-                    }
-                    14 -> {
-                        // yyyyMMddHHmmss 형식
-                        calendar[Calendar.YEAR] = numbersOnly.substring(0, 4).toInt()
-                        calendar[Calendar.MONTH] = numbersOnly.substring(4, 6).toInt() - 1
-                        calendar[Calendar.DAY_OF_MONTH] = numbersOnly.substring(6, 8).toInt()
-                        calendar[Calendar.HOUR_OF_DAY] = numbersOnly.substring(8, 10).toInt()
-                        calendar[Calendar.MINUTE] = numbersOnly.substring(10, 12).toInt()
-                        calendar[Calendar.SECOND] = numbersOnly.substring(12, 14).toInt()
-                    }
-                    else -> {
-                        throw IllegalArgumentException("지원하지 않는 날짜 형식입니다. 6, 8, 12, 14자리만 지원합니다: $dateString (추출된 숫자: $numbersOnly)")
-                    }
+            when (numbersOnly.length) {
+                6 -> {
+                    // yyMMdd 형식
+                    val fullYear = 1900 + numbersOnly.substring(0, 2).toInt()
+                    calendar[Calendar.YEAR] = fullYear
+                    calendar[Calendar.MONTH] = numbersOnly.substring(2, 4).toInt() - 1
+                    calendar[Calendar.DAY_OF_MONTH] = numbersOnly.substring(4, 6).toInt()
+                    calendar[Calendar.HOUR_OF_DAY] = 0
+                    calendar[Calendar.MINUTE] = 0
+                    calendar[Calendar.SECOND] = 0
                 }
-
-                // 밀리초는 항상 0으로 설정
-                calendar[Calendar.MILLISECOND] = 0
-
-            } catch (e: NumberFormatException) {
-                throw IllegalArgumentException("날짜 변환 중 오류가 발생했습니다: $dateString", e)
-            } catch (e: StringIndexOutOfBoundsException) {
-                throw IllegalArgumentException("날짜 문자열 형식이 올바르지 않습니다: $dateString", e)
+                8 -> {
+                    // yyyyMMdd 형식
+                    calendar[Calendar.YEAR] = numbersOnly.substring(0, 4).toInt()
+                    calendar[Calendar.MONTH] = numbersOnly.substring(4, 6).toInt() - 1
+                    calendar[Calendar.DAY_OF_MONTH] = numbersOnly.substring(6, 8).toInt()
+                    calendar[Calendar.HOUR_OF_DAY] = 0
+                    calendar[Calendar.MINUTE] = 0
+                    calendar[Calendar.SECOND] = 0
+                }
+                10 -> {
+                    // yyMMddHHmm 형식
+                    calendar[Calendar.YEAR] = 1900 + numbersOnly.substring(0, 2).toInt()
+                    calendar[Calendar.MONTH] = numbersOnly.substring(2, 4).toInt() - 1
+                    calendar[Calendar.DAY_OF_MONTH] = numbersOnly.substring(4, 6).toInt()
+                    calendar[Calendar.HOUR_OF_DAY] = numbersOnly.substring(6, 8).toInt()
+                    calendar[Calendar.MINUTE] = numbersOnly.substring(8, 10).toInt()
+                }
+                12 -> {
+                    // yyMMddHHmmss 형식
+                    val fullYear = 1900 + numbersOnly.substring(0, 2).toInt()
+                    calendar[Calendar.YEAR] = fullYear
+                    calendar[Calendar.MONTH] = numbersOnly.substring(2, 4).toInt() - 1
+                    calendar[Calendar.DAY_OF_MONTH] = numbersOnly.substring(4, 6).toInt()
+                    calendar[Calendar.HOUR_OF_DAY] = numbersOnly.substring(6, 8).toInt()
+                    calendar[Calendar.MINUTE] = numbersOnly.substring(8, 10).toInt()
+                    calendar[Calendar.SECOND] = numbersOnly.substring(10, 12).toInt()
+                }
+                14 -> {
+                    // yyyyMMddHHmmss 형식
+                    calendar[Calendar.YEAR] = numbersOnly.substring(0, 4).toInt()
+                    calendar[Calendar.MONTH] = numbersOnly.substring(4, 6).toInt() - 1
+                    calendar[Calendar.DAY_OF_MONTH] = numbersOnly.substring(6, 8).toInt()
+                    calendar[Calendar.HOUR_OF_DAY] = numbersOnly.substring(8, 10).toInt()
+                    calendar[Calendar.MINUTE] = numbersOnly.substring(10, 12).toInt()
+                    calendar[Calendar.SECOND] = numbersOnly.substring(12, 14).toInt()
+                }
+                else -> {
+                    throw IllegalArgumentException("지원하지 않는 날짜 형식입니다. 6, 8, 10, 12, 14자리만 지원합니다: $dateString (추출된 숫자: $numbersOnly)")
+                }
             }
+
+            // 밀리초는 항상 0으로 설정
+            calendar[Calendar.MILLISECOND] = 0
 
             return calendar
         }

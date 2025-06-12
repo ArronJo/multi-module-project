@@ -80,6 +80,18 @@ class CalendarConverterTest : BaseJUnit5Test() {
     }
 
     @Test
+    fun `CalendarConverter dateString to Calendar 변환 7`() {
+        val c = CalendarConverter.toCalendar("19500625050014")
+        logger.debug { "CalendarConverter toCalendar : $c" }
+    }
+
+    @Test
+    fun `CalendarConverter dateString to Calendar Exception 1`() {
+        val c = CalendarConverter.toCalendar("19yy0625050014")
+        logger.debug { "CalendarConverter toCalendar : $c" }
+    }
+
+    @Test
     fun `CalendarConverter toDateString 변환 1`() {
         // given
         val cal = java.util.Calendar.getInstance()
