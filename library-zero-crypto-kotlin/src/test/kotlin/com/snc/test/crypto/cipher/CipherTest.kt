@@ -160,8 +160,48 @@ class CipherTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `RSA Encrypt Decrypt 2`() {
-        val transform = RSAKeyGen.TRANSFORM_RSA_ECB_OAEP_SHA256 // RSAKeyGen.TRANSFORM_RSA_ECB_OAEP
+    fun `RSA Encrypt Decrypt TRANSFORM - 1`() {
+        val transform = RSAKeyGen.TRANSFORM_RSA_ECB_OAEP_SHA256
+        val data = "qwerty"
+        val encrypted = Cipher.with(Cipher.Algo.RSA)
+            .transform(transform)
+            .key(pair2.public)
+            .encrypt(data.toByteArray())
+        logger.debug { "RSA encrypt [$transform]: $encrypted" }
+
+        val v = Cipher.with(Cipher.Algo.RSA)
+            .transform(transform)
+            .key(pair2.private)
+            .decrypt(encrypted)
+        val plainText = String(v)
+        logger.debug { "RSA decrypt [$transform]: $plainText" }
+
+        assertEquals(data, plainText)
+    }
+
+    @Test
+    fun `RSA Encrypt Decrypt TRANSFORM - 2`() {
+        val transform = RSAKeyGen.TRANSFORM_RSA_ECB_OAEP
+        val data = "qwerty"
+        val encrypted = Cipher.with(Cipher.Algo.RSA)
+            .transform(transform)
+            .key(pair2.public)
+            .encrypt(data.toByteArray())
+        logger.debug { "RSA encrypt [$transform]: $encrypted" }
+
+        val v = Cipher.with(Cipher.Algo.RSA)
+            .transform(transform)
+            .key(pair2.private)
+            .decrypt(encrypted)
+        val plainText = String(v)
+        logger.debug { "RSA decrypt [$transform]: $plainText" }
+
+        assertEquals(data, plainText)
+    }
+
+    @Test
+    fun `RSA Encrypt Decrypt TRANSFORM - 3`() {
+        val transform = RSAKeyGen.TRANSFORM_RSA_ECB_PKCS1
         val data = "qwerty"
         val encrypted = Cipher.with(Cipher.Algo.RSA)
             .transform(transform)

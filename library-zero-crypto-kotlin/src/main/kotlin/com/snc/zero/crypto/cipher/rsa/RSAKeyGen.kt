@@ -25,7 +25,7 @@ import java.security.spec.X509EncodedKeySpec
  */
 object RSAKeyGen {
 
-    // 다른 옵션: const val TRANSFORM_RSA_ECB_PKCS1 = "RSA/ECB/PKCS1Padding"
+    const val TRANSFORM_RSA_ECB_PKCS1 = "RSA/ECB/PKCS1Padding"
     const val TRANSFORM_RSA_ECB_OAEP = "RSA/ECB/OAEPPadding"
     const val TRANSFORM_RSA_ECB_OAEP_SHA256 = "RSA/ECB/OAEPWithSHA-256AndMGF1Padding"
 

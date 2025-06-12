@@ -7,7 +7,7 @@ import java.security.SecureRandom
  * 비밀번호 생성시
  * https://www.passay.org/reference/
  */
-class PwGenerator {
+class PwGenerator private constructor() {
     companion object {
         private val gen = PasswordGenerator(SecureRandom())
 

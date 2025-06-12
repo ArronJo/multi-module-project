@@ -31,6 +31,7 @@ class Base62IntTest : BaseJUnit5Test() {
         println()
 
         println("날짜: " + Base62Int.encode(Base62Int.today("yyyyMMddHHmmssSSS").toLong()))
+        println("날짜: " + Base62Int.encode(Base62Int.today().toLong()))
         println()
         println()
     }

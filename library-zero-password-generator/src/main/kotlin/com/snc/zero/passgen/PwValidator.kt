@@ -7,7 +7,7 @@ import org.passay.*
  * 비밀번호 검증기
  * https://www.passay.org/reference/
  */
-class PwValidator {
+class PwValidator private constructor() {
 
     companion object {
         fun validate(password: String): ValidateResult {

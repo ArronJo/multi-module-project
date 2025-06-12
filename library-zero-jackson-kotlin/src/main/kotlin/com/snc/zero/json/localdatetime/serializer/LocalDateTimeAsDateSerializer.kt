@@ -19,6 +19,7 @@ object LocalDateTimeAsDateSerializer : KSerializer<LocalDateTime> {
 
     override fun deserialize(decoder: Decoder): LocalDateTime {
         val string = decoder.decodeString()
-        return LocalDateTime.parse(string)
+        val parts = string.split("-").map { it.toInt() }
+        return LocalDateTime(parts[0], parts[1], parts[2], 0, 0)
     }
 }
