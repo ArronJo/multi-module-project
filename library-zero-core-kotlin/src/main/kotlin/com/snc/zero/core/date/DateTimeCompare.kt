@@ -14,7 +14,6 @@ class DateTimeCompare private constructor() {
 
     companion object {
 
-        @JvmStatic
         fun isBetweenDate(startDate: String, date: String, endDate: String): Int {
             if (compare(date, "<", startDate)) {
                 return -1
@@ -25,7 +24,6 @@ class DateTimeCompare private constructor() {
             return 0
         }
 
-        @JvmStatic
         fun compare(data1: String, sign: String, data2: String): Boolean {
             return when (sign) {
                 ">=" -> {
@@ -50,7 +48,6 @@ class DateTimeCompare private constructor() {
             }
         }
 
-        @JvmStatic
         fun betweenDays(startDate: Calendar, endDate: Calendar): Int {
             val start = startDate.timeInMillis
             val end = endDate.timeInMillis
@@ -68,7 +65,6 @@ class DateTimeCompare private constructor() {
             return presumedDays
         }
 
-        @JvmStatic
         fun betweenDays(srcDate: String, dstDate: String): Int {
             val srcCalendar = CalendarConverter.toCalendar(srcDate)
             val dstCalendar = CalendarConverter.toCalendar(dstDate)

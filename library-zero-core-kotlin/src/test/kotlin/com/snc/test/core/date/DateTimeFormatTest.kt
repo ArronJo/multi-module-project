@@ -469,8 +469,8 @@ class DateTimeFormatTest : BaseJUnit5Test() {
                 .filter { it.name == "format" }
 
             // Then
-            assertTrue(companionMethods.isNotEmpty())
             // Kotlin의 @JvmStatic으로 선언된 메서드들이 존재함을 확인
+            assertTrue(companionMethods.isNotEmpty())
         }
     }
 }

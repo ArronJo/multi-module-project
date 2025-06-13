@@ -16,7 +16,6 @@ private val logger = TLogging.logger { }
 class HashTest : BaseJUnit5Test() {
 
     companion object {
-
         private const val MSG_EMPTY_KEY = "Empty key"
 
         private lateinit var key: String

@@ -10,7 +10,6 @@ class StringUtil private constructor() {
 
     companion object {
 
-        @JvmStatic
         fun toString(arr: Array<String>): String {
             val buff = StringBuilder()
             buff.append("[")
@@ -24,12 +23,10 @@ class StringUtil private constructor() {
             return buff.toString()
         }
 
-        @JvmStatic
         fun join(arr: Array<String>, separator: CharSequence = ", ", prefix: CharSequence = "", postfix: CharSequence = ""): String {
             return arr.joinToString(prefix = prefix, separator = separator, postfix = postfix)
         }
 
-        @JvmStatic
         fun printJSON(arr: Array<String>): String {
             return arr.joinToString(prefix = "[", separator = "|", postfix = "]")
         }

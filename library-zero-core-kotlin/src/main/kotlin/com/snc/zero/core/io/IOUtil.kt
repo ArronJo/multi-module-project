@@ -14,7 +14,6 @@ class IOUtil private constructor() {
 
     companion object {
 
-        @JvmStatic
         fun closeQuietly(`is`: InputStream?) {
             try {
                 `is`?.close()
@@ -23,7 +22,6 @@ class IOUtil private constructor() {
             }
         }
 
-        @JvmStatic
         fun closeQuietly(os: OutputStream?) {
             try {
                 os?.flush()
@@ -37,7 +35,6 @@ class IOUtil private constructor() {
             }
         }
 
-        @JvmStatic
         fun closeQuietly(c: Closeable?) {
             try {
                 c?.close()
@@ -46,7 +43,6 @@ class IOUtil private constructor() {
             }
         }
 
-        @JvmStatic
         fun gc() {
             try {
                 System.gc()

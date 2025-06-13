@@ -16,7 +16,6 @@ class DateTimeFormat private constructor() {
 
     companion object {
 
-        @JvmStatic
         @Throws(ParseException::class)
         fun format(dateStr: String, inputFormat: String, outputFormat: String = "yyyyMMddHHmmss"): String {
             val input = SimpleDateFormat(inputFormat, Locale.getDefault())
@@ -25,14 +24,12 @@ class DateTimeFormat private constructor() {
             return output.format(date)
         }
 
-        @JvmStatic
         @Throws(ParseException::class)
         fun format(calendar: Calendar, outputFormat: String = "yyyyMMddHHmmss"): String {
             val dateString = DateTimeParser.toString(calendar)
             return format(dateString, "yyyyMMddHHmmss", outputFormat)
         }
 
-        @JvmStatic
         fun format(date: Date, outputFormat: String = "yyyyMMddHHmmss"): String {
             val formatter = SimpleDateFormat(outputFormat, Locale.getDefault())
             return formatter.format(date)

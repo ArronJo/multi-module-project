@@ -6,7 +6,6 @@ class HangulCompose private constructor() {
 
     companion object {
 
-        @JvmStatic
         fun compose(cho: Char, jung: Char? = null, jong: Char? = null): String {
             if (null == jung) { return cho.toString(); }
             val iCho = HangulCharsets.COMPAT_CHOSEONG_COLLECTION.indexOf(cho)

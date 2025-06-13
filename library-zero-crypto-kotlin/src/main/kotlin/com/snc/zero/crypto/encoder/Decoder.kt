@@ -13,8 +13,6 @@ import com.snc.zero.crypto.encoder.url.URLDecoder
 class Decoder private constructor(private var algo: Algo) {
 
     companion object {
-
-        @JvmStatic
         fun with(algo: Algo): Decoder {
             return Decoder(algo)
         }

@@ -13,15 +13,12 @@ class RandomGenerator private constructor() {
 
     companion object {
 
-        @JvmStatic
         private val RANDOM = SecureRandom.getInstance("SHA1PRNG")
 
-        @JvmStatic
         fun random(count: Int, letters: Boolean = true, numbers: Boolean = true): String {
             return random(count, 0, 0, letters, numbers, null, RANDOM)
         }
 
-        @JvmStatic
         fun randomNumber(count: Int): String {
             return random(
                 count,
@@ -34,7 +31,6 @@ class RandomGenerator private constructor() {
             )
         }
 
-        @JvmStatic
         fun randomKorean(count: Int): String {
             return random(
                 count,
@@ -47,7 +43,6 @@ class RandomGenerator private constructor() {
             )
         }
 
-        @JvmStatic
         fun random(
             countLen: Int,
             startPos: Int,

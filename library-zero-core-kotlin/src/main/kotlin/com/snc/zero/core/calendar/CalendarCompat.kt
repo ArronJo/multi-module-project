@@ -14,7 +14,6 @@ class CalendarCompat private constructor(var cal: Calendar) {
 
     companion object {
 
-        @JvmStatic
         fun with(cal: Calendar = Calendar.getInstance()): CalendarCompat {
             return CalendarCompat(cal)
         }

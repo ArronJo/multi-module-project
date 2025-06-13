@@ -14,7 +14,6 @@ class CalendarConverter private constructor() {
 
     companion object {
 
-        @JvmStatic
         fun toCalendar(dateString: String): Calendar {
             // 입력 문자열에서 숫자만 추출
             val numbersOnly = dateString.replace(Regex("[^0-9]"), "")
@@ -79,7 +78,6 @@ class CalendarConverter private constructor() {
             return calendar
         }
 
-        @JvmStatic
         fun toCalendar(year: Int, month: Int, day: Int): Calendar? {
             val calendar = Calendar.getInstance()
             calendar[Calendar.SECOND] = 0
@@ -91,12 +89,10 @@ class CalendarConverter private constructor() {
             return calendar
         }
 
-        @JvmStatic
         fun toCalendar(year: String, month: String, day: String): Calendar? {
             return toCalendar(year.toInt(), month.toInt(), day.toInt())
         }
 
-        @JvmStatic
         fun toDateString(calendar: Calendar, format: String): String {
             val simpleDateFormat = SimpleDateFormat(format, Locale.getDefault())
             return simpleDateFormat.format(calendar.timeInMillis)

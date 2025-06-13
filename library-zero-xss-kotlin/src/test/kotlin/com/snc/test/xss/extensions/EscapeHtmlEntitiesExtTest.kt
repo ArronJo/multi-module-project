@@ -15,7 +15,6 @@ private val logger = TLogging.logger { }
 class EscapeHtmlEntitiesExtTest : BaseJUnit5Test() {
 
     companion object {
-
         private lateinit var data1: String
         private lateinit var data2: String
 

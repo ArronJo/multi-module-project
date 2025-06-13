@@ -7,7 +7,6 @@ class HangulDecompose private constructor() {
 
     companion object {
 
-        @JvmStatic
         fun decompose(c: Char): String {
             if (isSyllable(c)) {
                 return decomposeCompat(c).joinToString(separator = "")
@@ -22,7 +21,6 @@ class HangulDecompose private constructor() {
         }
 
         // 한글 자모 영역 초성을 한글 호환 자모 영역 문자로 변환
-        @JvmStatic
         private fun choseongToCompatChoseong(c: Char): Char {
             // Hangul Jamo               | 한글 자모 영역     | 0x1100-0x11F9
             // Hangul Compatibility Jamo | 한글 호환 자모 영역 | 0x3130-0x318E
@@ -32,18 +30,15 @@ class HangulDecompose private constructor() {
         }
 
         // 한글 영역 (0xAC00-0xD7A3) 문자인가?
-        @JvmStatic
         private fun isSyllable(c: Char): Boolean {
             return c.code in HangulCharsets.HANGUL_SYLLABLES_BASE until HangulCharsets.HANGUL_SYLLABLES_END
         }
 
         // 한글 자모 영역 (0x1100-0x11F9) 문자인가?
-        @JvmStatic
         private fun isChoseong(c: Char): Boolean {
             return c.code in 0x1100..0x1112
         }
 
-        @JvmStatic
         private fun decomposeCompat(syllable: Char): Array<String> {
             val cho = getCompatChoseong(syllable).toString()
             val jung = getCompatJungseong(syllable).toString()
@@ -52,14 +47,12 @@ class HangulDecompose private constructor() {
         }
 
         // 한글 호환 자모 영역 (0x3130-0x318E) 문자인가?
-        @JvmStatic
         private fun isCompatChoseong(c: Char): Boolean {
             val index = Arrays.binarySearch(HangulCharsets.COMPAT_CHOSEONG_COLLECTION, c)
             return index >= 0
         }
 
         // 초성 문자 추출
-        @JvmStatic
         fun getCompatChoseong(syllable: Char): Char {
             val sylIndex = syllable.code - HangulCharsets.HANGUL_SYLLABLES_BASE
             val index = sylIndex / (HangulCharsets.JUNGSEONG_COUNT * HangulCharsets.JONGSEONG_COUNT)
@@ -67,7 +60,6 @@ class HangulDecompose private constructor() {
         }
 
         // 중성 문자 추출
-        @JvmStatic
         fun getCompatJungseong(syllable: Char): Char {
             val sylIndex = syllable.code - HangulCharsets.HANGUL_SYLLABLES_BASE
             val index = sylIndex % (HangulCharsets.JUNGSEONG_COUNT * HangulCharsets.JONGSEONG_COUNT) / HangulCharsets.JONGSEONG_COUNT
@@ -75,7 +67,6 @@ class HangulDecompose private constructor() {
         }
 
         // 종성 문자 추출
-        @JvmStatic
         fun getCompatJongseong(syllable: Char): Char {
             val sylIndex = syllable.code - HangulCharsets.HANGUL_SYLLABLES_BASE
             val index = sylIndex % HangulCharsets.JONGSEONG_COUNT

@@ -14,7 +14,6 @@ class FSDirectory private constructor() {
 
     companion object {
 
-        @JvmStatic
         fun create(dir: File, overwrite: Boolean = false): Boolean {
             if (dir.exists() && !overwrite) {
                 return false
@@ -22,7 +21,6 @@ class FSDirectory private constructor() {
             return dir.mkdirs()
         }
 
-        @JvmStatic
         fun delete(dir: File): Boolean {
             if (!dir.exists()) {
                 return false

@@ -12,14 +12,12 @@ class SecureAES private constructor() {
         private val gcmIvLength: Int = 12 // GCM 모드의 표준 IV 길이는 12바이트입니다
         private val gcmTagLength: Int = 128 // GCM 태그 길이 지정 (128비트)
 
-        @JvmStatic
         fun generateAESKey(): SecretKey {
             val keyGen = KeyGenerator.getInstance("AES")
             keyGen.init(256) // 256비트 키 생성
             return keyGen.generateKey()
         }
 
-        @JvmStatic
         @Throws(Exception::class)
         fun encrypt(plaintext: ByteArray?, key: SecretKey?): ByteArray {
             // 랜덤 IV(nonce) 생성
@@ -44,7 +42,6 @@ class SecureAES private constructor() {
             return encrypted
         }
 
-        @JvmStatic
         @Throws(Exception::class)
         fun decrypt(encrypted: ByteArray, key: SecretKey?): ByteArray {
             // IV 추출

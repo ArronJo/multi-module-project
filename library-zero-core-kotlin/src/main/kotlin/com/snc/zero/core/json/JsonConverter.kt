@@ -17,7 +17,6 @@ class JsonConverter private constructor() {
 
     companion object {
 
-        @JvmStatic
         fun <T> toObject(jsonString: String, clazz: Class<T>): T? {
             try {
                 val gson = GsonBuilder()
@@ -30,7 +29,6 @@ class JsonConverter private constructor() {
             return null
         }
 
-        @JvmStatic
         fun toJsonString(obj: Any): String {
             val gson = GsonBuilder()
                 .serializeNulls() // null 포함

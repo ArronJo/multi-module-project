@@ -17,7 +17,6 @@ class Hash private constructor(var algo: Algo) {
     private val msgEmptyKey = "Empty key"
 
     companion object {
-        @JvmStatic
         fun with(algo: Algo = Algo.SHA256): Hash {
             return Hash(algo)
         }

@@ -19,12 +19,10 @@ class AgeCalculator private constructor() {
 
     companion object {
 
-        @JvmStatic
         fun calculateManAge(birthDate: LocalDate, targetDate: LocalDate): Int {
             return Period.between(birthDate, targetDate).years
         }
 
-        @JvmStatic
         fun calculateInsAge(birthDate: LocalDate, targetDate: LocalDate): Int {
             var age = Period.between(birthDate, targetDate).years
             // 생일로부터 6개월이 지났는지 확인
@@ -40,7 +38,6 @@ class AgeCalculator private constructor() {
         /**
          * 추천
          */
-        @JvmStatic
         fun calculateManInsAge(
             yearOfBirth: Int,
             monthOfBirth: Int,
@@ -90,7 +87,6 @@ class AgeCalculator private constructor() {
          * 비추천
          * @Deprecated("calculateManInsAge(Int, Int, Int, Int, Int, Int) instead")
          */
-        @JvmStatic
         fun calculateManInsAge(birthDate: String, targetDate: String): Array<Int> {
             if (birthDate.length != 8 || targetDate.length != 8) {
                 return arrayOf()

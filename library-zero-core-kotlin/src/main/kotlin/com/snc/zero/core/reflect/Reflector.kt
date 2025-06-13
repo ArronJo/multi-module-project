@@ -16,7 +16,6 @@ class Reflector private constructor() {
 
     companion object {
 
-        @JvmStatic
         @Throws(IllegalArgumentException::class)
         fun getMethod(instance: Any, methodName: String): Method? {
             val methods = instance.javaClass.declaredMethods
@@ -29,7 +28,6 @@ class Reflector private constructor() {
             return null
         }
 
-        @JvmStatic
         @Throws(InvocationTargetException::class, IllegalAccessException::class)
         operator fun invoke(instance: Any, method: Method, vararg param: Any?) {
             method.isAccessible = true

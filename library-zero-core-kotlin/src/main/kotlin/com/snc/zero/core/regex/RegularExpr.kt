@@ -74,7 +74,6 @@ class RegularExpr private constructor() {
         /**
          * 정규식 조건에 일치하는가?
          */
-        @JvmStatic
         fun matches(regularExpression: String, content: String): Boolean {
             return Pattern.matches(regularExpression, content)
         }
@@ -82,7 +81,6 @@ class RegularExpr private constructor() {
         /**
          * 정규식에 해당하는 문자열 추출
          */
-        @JvmStatic
         fun find(regularExpression: String, input: String): Array<String> {
             val ret = LinkedList<String>()
             try {
