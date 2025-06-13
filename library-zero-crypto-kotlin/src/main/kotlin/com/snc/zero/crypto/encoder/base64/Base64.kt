@@ -60,6 +60,10 @@ object Base64 {
         //	 throw (new Base64Exception());
         //}
 
+        if (data.isEmpty()) {
+            return ByteArray(0)
+        }
+
         var padding = if (data[data.length - 1] == '=') {
             1
         } else {
@@ -98,13 +102,9 @@ object Base64 {
         return result
     }
 
-    fun getEncodedSize(plainText: String): Double {
-        val n = plainText.length.toDouble()
-        return if (n <= 0) {
-            0.toDouble()
-        } else {
-            n + 2 - (n + 2) % 3 / 3 * 4
-        }
+    fun getEncodedSize(plainText: String): Int {
+        val length = plainText.toByteArray().size
+        return ((length + 2) / 3) * 4
     }
 
     private fun getByte(c: Char): Byte {

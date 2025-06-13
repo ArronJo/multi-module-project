@@ -5,9 +5,10 @@ import com.snc.zero.crypto.encoder.base64.Base64.encode
 import com.snc.zero.crypto.encoder.base64.Base64.getEncodedSize
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
-import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.nio.charset.Charset
+import java.nio.charset.StandardCharsets
 
 private val logger = TLogging.logger { }
 
@@ -128,4 +129,66 @@ class Base64Test : BaseJUnit5Test() {
 //
 //        //assertNotEquals(v1, v2)
 //    }
+
+    private fun encodeAndDecode(input: String) {
+        val encoded = encode(input.toByteArray(StandardCharsets.UTF_8))
+        val decoded = decode(encoded).toString(StandardCharsets.UTF_8)
+        assertEquals(input, decoded, "Base64 encode-decode failed for input: $input")
+    }
+
+    @Test
+    fun `encode-decode with no padding (length divisible by 3)`() {
+        val input = "abc" // length = 3
+        val encoded = encode(input.toByteArray())
+        assertFalse(encoded.contains("="), "Should not contain padding")
+        encodeAndDecode(input)
+    }
+
+    @Test
+    fun `encode-decode with one padding character (length 나머지 3 == 2)`() {
+        val input = "abcd" // length = 4
+        val encoded = encode(input.toByteArray())
+        println(encoded)
+        assertTrue(encoded.endsWith("=="), "Should end with one padding character")
+        encodeAndDecode(input)
+    }
+
+    @Test
+    fun `encode-decode with two padding characters (length 나머지 3 == 1)`() {
+        val input = "ab" // length = 2
+        val encoded = encode(input.toByteArray())
+        println(encoded)
+        assertTrue(encoded.endsWith("="), "Should end with two padding characters")
+        encodeAndDecode(input)
+    }
+
+    @Test
+    fun `encode-decode empty string`() {
+        val input = ""
+        val encoded = encode(input.toByteArray())
+        val decoded = decode(encoded).toString(StandardCharsets.UTF_8)
+        assertEquals("", decoded)
+    }
+
+    @Test
+    fun `encode-decode long random text`() {
+        val input = "Kotlin is fun and concise. Let's test with a longer sentence to ensure everything works well!"
+        encodeAndDecode(input)
+    }
+
+    @Test
+    fun `encoded size calculation test`() {
+        val plainText = "foobar"
+        val expectedSize = 8 // "foobar" → 6 bytes → ceil(6 / 3) * 4 = 8
+        val actualSize = getEncodedSize(plainText)
+        assertEquals(expectedSize, actualSize)
+    }
+
+    @Test
+    fun `decode known Base64 string with padding`() {
+        val original = "hello"
+        val encoded = encode(original.toByteArray()) // should be: aGVsbG8=
+        val decoded = decode(encoded).toString(StandardCharsets.UTF_8)
+        assertEquals(original, decoded)
+    }
 }

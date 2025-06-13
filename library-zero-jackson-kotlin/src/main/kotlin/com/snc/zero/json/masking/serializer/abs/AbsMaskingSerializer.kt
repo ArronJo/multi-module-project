@@ -41,58 +41,48 @@ abstract class AbsMaskingSerializer<T> : JsonSerializer<T>() {
         }
         return constructor.callBy(args)
     }
-
     private fun masking(str: String): String {
         val idPattern = """^(\d{6})[-]?(\d{7})$""".toRegex()
         val phonePattern = """^(01[016789])[-]?(\d{3,4})[-]?(\d{4})$""".toRegex()
         val accountPattern = """^(\d{2,6})[-]?(\d{2,6})[-]?(\d{2,6})$""".toRegex()
-        // Kept the Two Main Patterns
-        // - \d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4} → Matches standard 16-digit card numbers.
-        // - \d{4}[-\s]?\d{6}[-\s]?\d{5} → Matches 15-digit card numbers.
         val cardPattern = """^(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})$|^(\d{4})[-\s]?(\d{6})[-\s]?(\d{5})$""".toRegex()
 
-        if (idPattern.matches(str)) {
-            val matchResult = idPattern.find(str)
-            if (matchResult != null) {
-                val (birthDate, personalNum) = matchResult.destructured
-                return "$birthDate-${personalNum.take(1)}******"
+        return when {
+            idPattern.matches(str) -> idPattern.find(str)?.let { match ->
+                val (birthDate, personalNum) = match.destructured
+                "$birthDate-${personalNum.take(1)}******"
             }
-        }
 
-        if (phonePattern.matches(str)) {
-            val matchResult = phonePattern.find(str)
-            if (matchResult != null) {
-                val (prefix, _, last) = matchResult.destructured
-                return "$prefix-****-$last"
+            phonePattern.matches(str) -> phonePattern.find(str)?.let { match ->
+                val (prefix, _, last) = match.destructured
+                "$prefix-****-$last"
             }
-        }
 
-        if (cardPattern.matches(str)) {
-            val matchResult = cardPattern.find(str)
-            if (matchResult != null) {
-                // 두 개의 패턴이 OR(|)로 묶여 있으므로 두 그룹 패턴 중 하나만 매칭됨
-                return if (matchResult.groupValues[1].isNotEmpty()) {
-                    // 16자리 카드번호: 그룹 1~4 사용
-                    "${matchResult.groupValues[1]}-****-****-${matchResult.groupValues[4]}"
-                } else if (matchResult.groupValues[5].isNotEmpty()) {
-                    // 15자리 카드번호: 그룹 5~7 사용
-                    "${matchResult.groupValues[5]}-******-${matchResult.groupValues[7]}"
-                } else {
-                    str
-                }
-            }
-        }
+            cardPattern.matches(str) -> maskCard(str, cardPattern)
 
-        if (accountPattern.matches(str)) {
-            val matchResult = accountPattern.find(str)
-            if (matchResult != null) {
-                val (first, middle, last) = matchResult.destructured
-                return "${first.take(2)}${"*".repeat(first.length - 2)}-" +
+            accountPattern.matches(str) -> accountPattern.find(str)?.let { match ->
+                val (first, middle, last) = match.destructured
+                "${first.take(2)}${"*".repeat(first.length - 2)}-" +
                     "${"*".repeat(middle.length)}-" +
                     "${"*".repeat(last.length - 2)}${last.takeLast(2)}"
             }
-        }
 
-        return str
+            else -> str
+        } ?: str
+    }
+
+    private fun maskCard(str: String, pattern: Regex): String {
+        val matchResult = pattern.find(str) ?: return str
+        return when {
+            matchResult.groupValues[1].isNotEmpty() -> {
+                // 16자리 카드
+                "${matchResult.groupValues[1]}-****-****-${matchResult.groupValues[4]}"
+            }
+            matchResult.groupValues[5].isNotEmpty() -> {
+                // 15자리 카드
+                "${matchResult.groupValues[5]}-******-${matchResult.groupValues[7]}"
+            }
+            else -> str
+        }
     }
 }
