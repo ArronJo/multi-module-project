@@ -2,6 +2,7 @@ package com.snc.test.similarity.matcher
 
 import com.snc.zero.similarity.matcher.StringSimilarityMatcher
 import com.snc.zero.test.base.BaseJUnit5Test
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 @Suppress("NonAsciiCharacters")

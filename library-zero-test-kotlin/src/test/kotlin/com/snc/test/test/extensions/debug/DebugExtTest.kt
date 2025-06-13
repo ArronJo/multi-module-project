@@ -3,6 +3,7 @@ package com.snc.test.test.extensions.debug
 import com.snc.zero.test.base.BaseJUnit5Test
 import com.snc.zero.test.extensions.debug.displayInSeconds
 import com.snc.zero.test.testcase.TestCase
+import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
 import kotlin.math.max
 

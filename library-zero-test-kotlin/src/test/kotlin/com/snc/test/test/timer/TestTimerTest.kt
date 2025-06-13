@@ -3,6 +3,7 @@ package com.snc.test.test.timer
 import com.snc.zero.test.base.BaseJUnit5Test
 import com.snc.zero.test.testcase.TestCase
 import com.snc.zero.test.timer.TestTimer
+import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
 
 @Suppress("NonAsciiCharacters")

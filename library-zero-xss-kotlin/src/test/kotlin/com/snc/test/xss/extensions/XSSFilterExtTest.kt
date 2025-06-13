@@ -5,6 +5,7 @@ import com.snc.zero.test.base.BaseJUnit5Test
 import com.snc.zero.xss.extensions.xss.cleanXSS
 import org.jsoup.Jsoup
 import org.jsoup.safety.Safelist
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 

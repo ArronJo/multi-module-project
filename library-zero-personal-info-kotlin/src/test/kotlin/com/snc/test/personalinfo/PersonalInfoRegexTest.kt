@@ -2,6 +2,8 @@ package com.snc.test.personalinfo
 
 import com.snc.zero.personalinfo.PersonalInfoRegex
 import com.snc.zero.test.base.BaseJUnit5Test
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class PersonalInfoRegexTest : BaseJUnit5Test() {

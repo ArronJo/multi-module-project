@@ -2,6 +2,8 @@ package com.snc.test.test.testcase
 
 import com.snc.zero.test.base.BaseJUnit5Test
 import com.snc.zero.test.testcase.TestCase
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 
 @Suppress("NonAsciiCharacters")

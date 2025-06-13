@@ -8,6 +8,7 @@ import com.snc.zero.validation.extensions.validation.isLowerCase
 import com.snc.zero.validation.extensions.validation.isNumber
 import com.snc.zero.validation.extensions.validation.isUpperCase
 import com.snc.zero.validation.extensions.validation.validate
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
