@@ -62,12 +62,16 @@ object URLEncoder {
         if (-1 != uri.port) {
             s += ":${uri.port}"
         }
-        s += URLEncoder.encode(uri.path, charset)
+
+        val encodedPath = URLEncoder.encode(uri.path, charset)
+        s += encodedPath
+
         uri.query?.let {
             if (it.isNotEmpty()) {
-                s += URLEncoder.encode(it, charset)
+                s += "%3F" + URLEncoder.encode(it, charset) // `?` 인코딩 후 추가
             }
         }
+
         return s
     }
 }

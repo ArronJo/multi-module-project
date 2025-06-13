@@ -31,4 +31,81 @@ class URLEncoderTest : BaseJUnit5Test() {
             "https://confluence.hanwhalife.com/pages/viewpage.action?pageId=68972232%EC%95%88"
         )
     }
+
+    @Test
+    fun `encodeURIComponent should encode reserved characters`() {
+        val input = "param=value&another=value"
+        val expected = "param%3Dvalue%26another%3Dvalue"
+        val actual = URLEncoder.encodeURIComponent(input)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `encodeURIComponent should encode unicode characters`() {
+        val input = "안녕하세요"
+        val expected = "%EC%95%88%EB%85%95%ED%95%98%EC%84%B8%EC%9A%94"
+        val actual = URLEncoder.encodeURIComponent(input)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `encodeURI should not encode reserved URI characters`() {
+        val input = "https://example.com/page?id=123&name=test"
+        val expected = "https://example.com/page?id=123&name=test"
+        val actual = URLEncoder.encodeURI(input)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `encodeURI should encode unsafe characters`() {
+        val input = "https://example.com/안녕"
+        val expected = "https://example.com/%EC%95%88%EB%85%95"
+        val actual = URLEncoder.encodeURI(input)
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `encodeURIPath should encode path and query`() {
+        val uri = java.net.URI("https://example.com/pages/viewpage.action?pageId=12345&title=안녕")
+        val result = URLEncoder.encodeURIPath(uri)
+        println(result)
+        assert(result.contains("%2Fpages%2Fviewpage.action"))
+        assert(result.contains("%3FpageId%3D12345%26title%3D%EC%95%88%EB%85%95"))
+    }
+
+    @Test
+    fun `encodeURIComponent with special characters`() {
+        val input = "!@#\$%^&*()_+-={}[]|\\:;'<>?,./"
+        val expected = URLEncoder.encodeURIComponent(input)
+        val actual = java.net.URLEncoder.encode(input, "utf-8")
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun `encodeURI should pass through ASCII and safe characters`() {
+        val input = "abc123-_.!~*'()"
+        val actual = URLEncoder.encodeURI(input)
+        assertEquals(input, actual)
+    }
+
+    @Test
+    fun `encodeURI with mix of safe and unsafe characters`() {
+        val input = "https://example.com/경로?파라미터=값"
+        val actual = URLEncoder.encodeURI(input)
+        assert(actual.contains("%EC%9D%84") || actual.contains("%EA%B2%BD"))
+    }
+
+    @Test
+    fun `encodeURIPath should handle URI without query`() {
+        val uri = java.net.URI("https://example.com/경로")
+        val encoded = URLEncoder.encodeURIPath(uri)
+        assert(encoded.contains("%EC%9D%84") || encoded.contains("%EA%B2%BD"))
+    }
+
+    @Test
+    fun `encodeURIPath should handle URI with port`() {
+        val uri = java.net.URI("https://example.com:8080/경로")
+        val encoded = URLEncoder.encodeURIPath(uri)
+        assert(encoded.contains(":8080"))
+    }
 }

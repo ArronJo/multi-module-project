@@ -383,4 +383,60 @@ class DateTimeCompareTest : BaseJUnit5Test() {
             assertFalse(result3)
         }
     }
+
+    @Test
+    fun `compare string dates with various operators`() {
+        assertTrue(DateTimeCompare.compare("2025-06-13", "<", "2025-06-14"))
+        assertTrue(DateTimeCompare.compare("2025-06-13", "<=", "2025-06-13"))
+        assertTrue(DateTimeCompare.compare("2025-06-13", "==", "2025-06-13"))
+        assertTrue(DateTimeCompare.compare("2025-06-13", "=", "2025-06-13"))
+        assertTrue(DateTimeCompare.compare("2025-06-13", "!=", "2025-06-14"))
+        assertTrue(DateTimeCompare.compare("2025-06-14", ">", "2025-06-13"))
+        assertTrue(DateTimeCompare.compare("2025-06-14", ">=", "2025-06-14"))
+
+        assertFalse(DateTimeCompare.compare("2025-06-13", ">", "2025-06-14"))
+        assertFalse(DateTimeCompare.compare("2025-06-13", "<", "2025-06-12"))
+        assertFalse(DateTimeCompare.compare("2025-06-13", "!=", "2025-06-13"))
+        assertFalse(DateTimeCompare.compare("2025-06-13", "==", "2025-06-14"))
+    }
+
+    @Test
+    fun `isBetweenDate returns correct code`() {
+        assertEquals(0, DateTimeCompare.isBetweenDate("2025-06-10", "2025-06-13", "2025-06-15"))
+        assertEquals(-1, DateTimeCompare.isBetweenDate("2025-06-10", "2025-06-09", "2025-06-15"))
+        assertEquals(1, DateTimeCompare.isBetweenDate("2025-06-10", "2025-06-16", "2025-06-15"))
+        assertEquals(0, DateTimeCompare.isBetweenDate("2025-06-13", "2025-06-13", "2025-06-13"))
+    }
+
+    @Test
+    fun `betweenDays Calendar calculates days accurately`() {
+        val cal1 = Calendar.getInstance().apply {
+            set(2025, Calendar.JUNE, 10, 0, 0, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        val cal2 = Calendar.getInstance().apply {
+            set(2025, Calendar.JUNE, 15, 0, 0, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        val days = DateTimeCompare.betweenDays(cal1, cal2)
+        assertEquals(5, days)
+    }
+
+    @Test
+    fun `betweenDays String parses and calculates correctly`() {
+        val days = DateTimeCompare.betweenDays("2025-06-10", "2025-06-15")
+        assertEquals(5, days)
+    }
+
+    @Test
+    fun `betweenDays negative difference`() {
+        val days = DateTimeCompare.betweenDays("2025-06-15", "2025-06-10")
+        assertEquals(-5, days)
+    }
+
+    @Test
+    fun `betweenDays same day should be 0`() {
+        val days = DateTimeCompare.betweenDays("2025-06-13", "2025-06-13")
+        assertEquals(0, days)
+    }
 }
