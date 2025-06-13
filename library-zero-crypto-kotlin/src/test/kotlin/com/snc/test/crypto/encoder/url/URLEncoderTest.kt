@@ -3,7 +3,6 @@ package com.snc.test.crypto.encoder.url
 import com.snc.zero.crypto.encoder.url.URLEncoder
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
-import com.sun.toolkit.Uri
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -18,7 +17,7 @@ class URLEncoderTest : BaseJUnit5Test() {
         // when
         val v1 = URLEncoder.encodeURIComponent(data)
         val v2 = URLEncoder.encodeURI(data)
-        val v3 = URLEncoder.encodeURIPath(Uri(data))
+        val v3 = URLEncoder.encodeURIPath(java.net.URI(data))
         // then
         logger.debug { "encodeURIComponent: $v1" }
         logger.debug { "encodeURI: $v2" }

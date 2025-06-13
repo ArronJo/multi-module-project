@@ -1,6 +1,5 @@
 package com.snc.zero.crypto.encoder.url
 
-import com.sun.toolkit.Uri
 import java.net.URLDecoder
 
 /**
@@ -31,7 +30,7 @@ object URLDecoder {
      * path 이하 Decoding
      * @Deprecated("Use decodeURI() instead")
      */
-    fun decodeURIPath(uri: Uri, charset: String = CHARSET): String {
+    fun decodeURIPath(uri: java.net.URI, charset: String = CHARSET): String {
         var s = "${uri.scheme}://${uri.host}"
         if (-1 != uri.port) {
             s += ":${uri.port}"

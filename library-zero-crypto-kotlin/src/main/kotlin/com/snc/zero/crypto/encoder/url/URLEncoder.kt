@@ -1,6 +1,5 @@
 package com.snc.zero.crypto.encoder.url
 
-import com.sun.toolkit.Uri
 import java.net.URLEncoder
 
 /**
@@ -58,7 +57,7 @@ object URLEncoder {
      * @Deprecated("Use encodeURI() instead")
      * ex) 'https://confluence.hanwhalife.com%2Fpages%2Fviewpage.action%3FpageId%3D68972232'
      */
-    fun encodeURIPath(uri: Uri, charset: String = CHARSET): String {
+    fun encodeURIPath(uri: java.net.URI, charset: String = CHARSET): String {
         var s = "${uri.scheme}://${uri.host}"
         if (-1 != uri.port) {
             s += ":${uri.port}"
