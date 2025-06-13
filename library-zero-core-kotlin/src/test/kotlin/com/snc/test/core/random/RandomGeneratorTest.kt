@@ -3,8 +3,9 @@ package com.snc.test.core.random
 import com.snc.zero.core.random.RandomGenerator
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import java.util.Random
+import java.util.*
 
 private val logger = TLogging.logger { }
 
@@ -80,5 +81,79 @@ class RandomGeneratorTest : BaseJUnit5Test() {
         logger.debug { "RandomGenerator random 한글 3 결과: $v3" }
 
         //assertEquals(v1, false)
+    }
+
+    @Test
+    fun `should generate random string with letters and numbers`() {
+        val result = RandomGenerator.random(10, letters = true, numbers = true)
+        assertEquals(10, result.length)
+        assertTrue(result.all { it.isLetterOrDigit() })
+    }
+
+    @Test
+    fun `should generate random string with only letters`() {
+        val result = RandomGenerator.random(20, letters = true, numbers = false)
+        assertEquals(20, result.length)
+        assertTrue(result.all { it.isLetter() })
+    }
+
+    @Test
+    fun `should generate random string with only numbers`() {
+        val result = RandomGenerator.random(15, letters = false, numbers = true)
+        assertEquals(15, result.length)
+        assertTrue(result.all { it.isDigit() })
+    }
+
+    @Test
+    fun `should generate random string with special chars when letters and numbers are false`() {
+        val result = RandomGenerator.random(12, letters = false, numbers = false)
+        assertEquals(12, result.length)
+        assertTrue(result.any { !it.isLetterOrDigit() })
+    }
+
+    @Test
+    fun `should generate correct number of Korean characters`() {
+        val result = RandomGenerator.randomKorean(5)
+        assertEquals(5, result.length)
+        assertTrue(result.all { it in '\uAC00'..'\uD7A3' }) // 한글 유니코드 범위
+    }
+
+    @Test
+    fun `should generate correct number of digits with randomNumber`() {
+        val result = RandomGenerator.randomNumber(8)
+        assertEquals(8, result.length)
+        assertTrue(result.all { it.isDigit() })
+    }
+
+    @Test
+    fun `should return empty string when length is 0`() {
+        val result = RandomGenerator.random(0, letters = true, numbers = true)
+        assertEquals("", result)
+    }
+
+    @Test
+    fun `should throw IllegalArgumentException when length is negative`() {
+        val exception = assertThrows(IllegalArgumentException::class.java) {
+            RandomGenerator.random(-1, letters = true, numbers = true)
+        }
+        assertEquals("Requested random string length -1 is less than 0.", exception.message)
+    }
+
+    @Test
+    fun `should not include invalid surrogate characters`() {
+        val result = RandomGenerator.random(100, letters = true, numbers = false)
+        assertFalse(result.any { it.code in 0xDB80..0xDBFF }, "Must not contain invalid surrogate range")
+    }
+
+    @Test
+    fun `should handle surrogate pairs when applicable`() {
+        val result = RandomGenerator.random(100, letters = false, numbers = false)
+        // Check surrogate pair integrity (simplified)
+        for (i in 0 until result.length - 1) {
+            val ch = result[i]
+            if (ch.isHighSurrogate()) {
+                assertTrue(result[i + 1].isLowSurrogate())
+            }
+        }
     }
 }

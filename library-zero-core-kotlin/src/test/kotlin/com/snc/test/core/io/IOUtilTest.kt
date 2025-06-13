@@ -9,8 +9,10 @@ import org.junit.jupiter.api.Test
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.Closeable
+import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
+import java.util.concurrent.atomic.AtomicBoolean
 
 @Suppress("NonAsciiCharacters")
 class IOUtilTest : BaseJUnit5Test() {
@@ -81,5 +83,98 @@ class IOUtilTest : BaseJUnit5Test() {
         closeQuietly(`is`)
         closeQuietly(os)
         closeQuietly(c)
+    }
+
+    @Test
+    fun `should close InputStream without exception`() {
+        val closed = AtomicBoolean(false)
+
+        val input = object : InputStream() {
+            override fun read(): Int = -1
+            override fun close() {
+                closed.set(true)
+            }
+        }
+
+        IOUtil.closeQuietly(input)
+        assertTrue(closed.get())
+    }
+
+    @Test
+    fun `should handle exception during InputStream close`() {
+        val input = object : InputStream() {
+            override fun read(): Int = -1
+            override fun close() {
+                throw IOException("Simulated close error")
+            }
+        }
+
+        assertDoesNotThrow { IOUtil.closeQuietly(input) }
+    }
+
+    @Test
+    fun `should flush and close OutputStream without exception`() {
+        val flushed = AtomicBoolean(false)
+        val closed = AtomicBoolean(false)
+
+        val output = object : OutputStream() {
+            override fun write(b: Int) {}
+            override fun flush() {
+                flushed.set(true)
+            }
+            override fun close() {
+                closed.set(true)
+            }
+        }
+
+        IOUtil.closeQuietly(output)
+        assertTrue(flushed.get())
+        assertTrue(closed.get())
+    }
+
+    @Test
+    fun `should handle exception during OutputStream flush and close`() {
+        val output = object : OutputStream() {
+            override fun write(b: Int) {}
+            override fun flush() {
+                throw IOException("Flush failed")
+            }
+
+            override fun close() {
+                throw IOException("Close failed")
+            }
+        }
+
+        assertDoesNotThrow { IOUtil.closeQuietly(output) }
+    }
+
+    @Test
+    fun `should close Closeable without exception`() {
+        val closed = AtomicBoolean(false)
+
+        val closeable = object : Closeable {
+            override fun close() {
+                closed.set(true)
+            }
+        }
+
+        closeQuietly(closeable)
+        assertTrue(closed.get())
+    }
+
+    @Test
+    fun `should handle exception during Closeable close`() {
+        val closeable = object : Closeable {
+            override fun close() {
+                throw IOException("Closeable error")
+            }
+        }
+
+        assertDoesNotThrow { closeQuietly(closeable) }
+    }
+
+    @Test
+    fun `should call System gc without throwing exception`() {
+        assertDoesNotThrow { IOUtil.gc() }
     }
 }

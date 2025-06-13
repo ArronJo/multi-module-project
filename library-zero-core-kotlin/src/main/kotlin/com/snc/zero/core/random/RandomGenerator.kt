@@ -52,7 +52,6 @@ class RandomGenerator private constructor() {
             chars: CharArray? = null,
             random: Random = RANDOM
         ): String {
-            if (countLen == 0) return ""
             require(countLen >= 0) { "Requested random string length $countLen is less than 0." }
 
             val (start, end) = determineCharRange(startPos, endPos, letters, numbers)

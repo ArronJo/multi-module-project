@@ -1,12 +1,11 @@
 package com.snc.test.crypto.encoder
 
-import com.snc.zero.crypto.encoder.Encoder.Algo
 import com.snc.zero.crypto.encoder.Encoder
+import com.snc.zero.crypto.encoder.Encoder.Algo
 import com.snc.zero.crypto.encoder.base64.Base64
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotEquals
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }
@@ -74,5 +73,17 @@ class EncoderTest : BaseJUnit5Test() {
         val v2 = String(java.util.Base64.getEncoder().encode(data.toByteArray()))
         // then
         assertEquals(v1, v2)
+    }
+
+    @Test
+    fun `Encode 테스트 Exception - 2`() {
+        val data = "U3BlY2lhbCBjaGFyczogw7vDu8O/IGhlcmUu"
+
+        assertThrows(Exception::class.java) {
+            Encoder.with(Algo.URIComponent).encode(data.toByteArray())
+        }
+        assertThrows(Exception::class.java) {
+            Encoder.with(Algo.URI).encode(data.toByteArray())
+        }
     }
 }
