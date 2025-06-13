@@ -88,8 +88,8 @@ abstract class AbsMaskingSerializer<T> : JsonSerializer<T>() {
             if (matchResult != null) {
                 val (first, middle, last) = matchResult.destructured
                 return "${first.take(2)}${"*".repeat(first.length - 2)}-" +
-                        "${"*".repeat(middle.length)}-" +
-                        "${"*".repeat(last.length - 2)}${last.takeLast(2)}"
+                    "${"*".repeat(middle.length)}-" +
+                    "${"*".repeat(last.length - 2)}${last.takeLast(2)}"
             }
         }
 
