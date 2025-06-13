@@ -49,7 +49,7 @@ abstract class AbsMaskingSerializer<T> : JsonSerializer<T>() {
         // Kept the Two Main Patterns
         // - \d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4} → Matches standard 16-digit card numbers.
         // - \d{4}[-\s]?\d{6}[-\s]?\d{5} → Matches 15-digit card numbers.
-        val cardPattern = """^\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}$|^\d{4}[-\s]?\d{6}[-\s]?\d{5}$""".toRegex()
+        val cardPattern = """^(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})[-\s]?(\d{4})$|^(\d{4})[-\s]?(\d{6})[-\s]?(\d{5})$""".toRegex()
 
         if (idPattern.matches(str)) {
             val matchResult = idPattern.find(str)
@@ -67,25 +67,29 @@ abstract class AbsMaskingSerializer<T> : JsonSerializer<T>() {
             }
         }
 
+        if (cardPattern.matches(str)) {
+            val matchResult = cardPattern.find(str)
+            if (matchResult != null) {
+                // 두 개의 패턴이 OR(|)로 묶여 있으므로 두 그룹 패턴 중 하나만 매칭됨
+                return if (matchResult.groupValues[1].isNotEmpty()) {
+                    // 16자리 카드번호: 그룹 1~4 사용
+                    "${matchResult.groupValues[1]}-****-****-${matchResult.groupValues[4]}"
+                } else if (matchResult.groupValues[5].isNotEmpty()) {
+                    // 15자리 카드번호: 그룹 5~7 사용
+                    "${matchResult.groupValues[5]}-******-${matchResult.groupValues[7]}"
+                } else {
+                    str
+                }
+            }
+        }
+
         if (accountPattern.matches(str)) {
             val matchResult = accountPattern.find(str)
             if (matchResult != null) {
                 val (first, middle, last) = matchResult.destructured
                 return "${first.take(2)}${"*".repeat(first.length - 2)}-" +
-                    "${"*".repeat(middle.length)}-" +
-                    "${"*".repeat(last.length - 2)}${last.takeLast(2)}"
-            }
-        }
-
-        if (cardPattern.matches(str)) {
-            val matchResult = cardPattern.find(str)
-            if (matchResult != null) {
-                val groups = matchResult.groupValues.drop(1).filter { it.isNotEmpty() }
-                return when (groups.size) {
-                    4 -> "${groups[0]}-****-****-${groups[3]}" // 16자리 카드
-                    3 -> "${groups[0]}-******-${groups[2]}" // 15자리 카드 (American Express)
-                    else -> str
-                }
+                        "${"*".repeat(middle.length)}-" +
+                        "${"*".repeat(last.length - 2)}${last.takeLast(2)}"
             }
         }
 

@@ -125,5 +125,6 @@ class HangulDecomposeTest : BaseJUnit5Test() {
         logger.debug { HangulDecompose.decompose('Z') }
         logger.debug { HangulDecompose.decompose('0') }
         logger.debug { HangulDecompose.decompose('ㅏ') }
+        logger.debug { HangulDecompose.decompose(0xFF00.toChar()) }
     }
 }
