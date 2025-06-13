@@ -2,6 +2,7 @@ package com.snc.test.core.util
 
 import com.snc.zero.core.util.StringUtil
 import com.snc.zero.test.base.BaseJUnit5Test
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class StringUtilTest : BaseJUnit5Test() {

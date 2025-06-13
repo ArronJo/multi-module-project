@@ -3,6 +3,7 @@ package com.snc.test.e2e
 import com.snc.zero.e2e.E2EEncryption
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }

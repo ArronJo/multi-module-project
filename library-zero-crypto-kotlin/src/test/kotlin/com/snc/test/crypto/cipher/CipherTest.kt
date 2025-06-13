@@ -5,6 +5,7 @@ import com.snc.zero.crypto.cipher.aes.AES
 import com.snc.zero.crypto.cipher.rsa.RSAKeyGen
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import java.security.SecureRandom

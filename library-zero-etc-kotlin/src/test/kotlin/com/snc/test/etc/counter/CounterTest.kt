@@ -3,6 +3,7 @@ package com.snc.test.etc.counter
 import com.snc.zero.etc.counter.Counter
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }

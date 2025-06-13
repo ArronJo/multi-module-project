@@ -6,6 +6,7 @@ import com.snc.zero.extension.json.toJsonString
 import com.snc.zero.extension.json.toObject
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }

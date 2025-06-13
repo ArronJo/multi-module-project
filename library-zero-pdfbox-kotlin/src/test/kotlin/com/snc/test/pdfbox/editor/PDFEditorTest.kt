@@ -4,6 +4,7 @@ import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.pdfbox.editor.PDFEditor
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.io.File

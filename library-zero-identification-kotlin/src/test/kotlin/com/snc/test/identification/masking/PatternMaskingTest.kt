@@ -4,6 +4,7 @@ import com.snc.zero.identification.masking.PatternMasking
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import com.snc.zero.test.testcase.TestCase
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }

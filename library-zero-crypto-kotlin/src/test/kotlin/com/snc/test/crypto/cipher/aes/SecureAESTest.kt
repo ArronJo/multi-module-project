@@ -3,6 +3,8 @@ package com.snc.test.crypto.cipher.aes
 import com.snc.zero.crypto.cipher.aes.SecureAES
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertArrayEquals
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class SecureAESTest : BaseJUnit5Test() {

@@ -5,6 +5,7 @@ import com.snc.zero.crypto.cipher.aes.AES.encrypt
 import com.snc.zero.crypto.encoder.base62.Base62
 import com.snc.zero.crypto.encoder.base64.Base64
 import com.snc.zero.test.base.BaseJUnit5Test
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 @Suppress("NonAsciiCharacters")

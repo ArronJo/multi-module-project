@@ -4,6 +4,7 @@ import com.snc.zero.extension.format.formatNumericalKoreanMoney
 import com.snc.zero.extension.format.formatWordKoreanMoney
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }

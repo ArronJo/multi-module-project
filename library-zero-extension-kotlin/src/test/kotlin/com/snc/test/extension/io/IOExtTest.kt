@@ -8,6 +8,7 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.util.concurrent.atomic.AtomicBoolean
 import com.snc.zero.extension.io.closeQuietly
+import org.junit.jupiter.api.Assertions.assertTrue
 
 class IOExtTest : BaseJUnit5Test() {
 

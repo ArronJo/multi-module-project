@@ -2,7 +2,10 @@ package sun.toolkit
 
 import com.snc.zero.test.base.BaseJUnit5Test
 import com.sun.toolkit.Uri
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class UriTest : BaseJUnit5Test() {

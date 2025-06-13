@@ -4,6 +4,7 @@ import com.snc.zero.crypto.encoder.base62.Base62
 import com.snc.zero.crypto.encoder.base62.Base62.CharacterSets
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 private val logger = TLogging.logger { }

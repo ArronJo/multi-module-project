@@ -5,6 +5,7 @@ import com.snc.zero.extension.text.queryStringToMap
 import com.snc.zero.extension.text.toQueryString
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo

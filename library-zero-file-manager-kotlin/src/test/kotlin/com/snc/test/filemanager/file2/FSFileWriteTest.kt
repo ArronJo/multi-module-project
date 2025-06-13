@@ -4,6 +4,9 @@ import com.snc.zero.filemanager.file2.FSFile
 import com.snc.zero.filemanager.file2.extensions.toFile
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
+import org.junit.jupiter.api.Assertions.assertDoesNotThrow
+import org.junit.jupiter.api.Assertions.assertNotEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
@@ -37,7 +40,7 @@ class FSFileWriteTest : BaseJUnit5Test() {
     fun `FSFile write 1메가 이상`() {
         val file = File(dir, "1mb.txt")
         var data = ""
-        for (i in 1..10 * 1024) {
+        (1..10 * 1024).forEach { i ->
             data += "svg width=\"70px\" height=\"70px\" viewBox=\"0 0 70 70\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\""
         }
 

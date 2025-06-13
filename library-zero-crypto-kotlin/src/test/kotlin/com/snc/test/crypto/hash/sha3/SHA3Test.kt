@@ -5,6 +5,8 @@ import com.snc.zero.extension.text.toHexString
 import com.snc.zero.crypto.hash.sha3.SHA3
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import java.nio.charset.Charset

@@ -53,7 +53,8 @@ class RegularExpr private constructor() {
         const val PATTERN_PW_ENG_UC_LC_NUM_SPC = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).{10,}$"
         const val PATTERN_PW_ENG_NUM_SPC = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[^a-zA-Z0-9]).{10,}$"
 
-        const val PATTERN_PHONE_NUM = "(\\+82-?1[0-9]-?\\d{3,4}-?\\d{4}\$)|(01[0-9]-?\\d{3,4}-?\\d{4})"
+        const val PATTERN_PHONE_NUM = "(?:\\+82-?1[0-9]-?\\d{3,4}-?\\d{4})|(?:01[0-9]-?\\d{3,4}-?\\d{4})"
+
         const val PATTERN_EMAIL = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
 
         const val DIGIT = "0-9"
@@ -87,15 +88,11 @@ class RegularExpr private constructor() {
             try {
                 val pattern = Pattern.compile(regularExpression)
                 val matcher = pattern.matcher(input)
-                var idx = 0
-                while (idx < input.length && matcher.find(idx)) {
-                    val start = matcher.start()
-                    val end = matcher.end()
-                    val txt: String = input.substring(start, end)
+                while (matcher.find()) {
+                    val txt = matcher.group()
                     if (txt.isNotEmpty()) {
                         ret.add(txt)
                     }
-                    idx = end + 1
                 }
             } catch (e: PatternSyntaxException) {
                 logger.error(e) { }
