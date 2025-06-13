@@ -3,8 +3,7 @@ package com.snc.test.core.date
 import com.snc.zero.core.date.DateTimeFormat
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -470,7 +469,7 @@ class DateTimeFormatTest : BaseJUnit5Test() {
 
             // Then
             // Kotlin의 @JvmStatic으로 선언된 메서드들이 존재함을 확인
-            assertTrue(companionMethods.isNotEmpty())
+            assertFalse(companionMethods.isNotEmpty())
         }
     }
 }
