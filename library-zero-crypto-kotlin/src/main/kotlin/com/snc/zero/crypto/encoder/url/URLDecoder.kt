@@ -38,7 +38,7 @@ object URLDecoder {
         s += URLDecoder.decode(uri.path, charset)
         uri.query?.let {
             if (it.isNotEmpty()) {
-                s += URLDecoder.decode(it, charset)
+                s += "?" + URLDecoder.decode(it, charset)
             }
         }
         return s

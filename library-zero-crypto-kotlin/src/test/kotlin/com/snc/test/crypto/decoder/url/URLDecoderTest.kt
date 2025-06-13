@@ -4,9 +4,9 @@ import com.snc.zero.crypto.encoder.url.URLDecoder
 import com.snc.zero.crypto.encoder.url.URLEncoder
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import java.net.URI
 
 private val logger = TLogging.logger { }
 
@@ -19,7 +19,7 @@ class URLDecoderTest : BaseJUnit5Test() {
         // when
         val v1 = URLDecoder.decodeURIComponent(data1)
         val v2 = URLDecoder.decodeURI(data1)
-        val v3 = URLDecoder.decodeURIPath(java.net.URI(data1))
+        val v3 = URLDecoder.decodeURIPath(URI(data1))
         // then
         logger.debug { "URI decodeURIComponent: $v1" }
         logger.debug { "URI decodeURI: $v2" }
@@ -41,7 +41,7 @@ class URLDecoderTest : BaseJUnit5Test() {
         // when
         val v1 = URLDecoder.decodeURIComponent(data1)
         val v2 = URLDecoder.decodeURI(data1)
-        val v3 = URLDecoder.decodeURIPath(java.net.URI(data1))
+        val v3 = URLDecoder.decodeURIPath(URI(data1))
         // then
         logger.debug { "URI decodeURIComponent: $v1" }
         logger.debug { "URI decodeURI: $v2" }
@@ -85,15 +85,15 @@ class URLDecoderTest : BaseJUnit5Test() {
 
     @Test
     fun `decodeURIPath should decode full URI with port and query`() {
-        val uri = java.net.URI("https://example.com:8080/path%20with%20space?param%3Dvalue")
+        val uri = URI("https://example.com:8080/path%20with%20space?param%3Dvalue")
         val result = URLDecoder.decodeURIPath(uri)
-        val expected = "https://example.com:8080/path with spaceparam=value"
+        val expected = "https://example.com:8080/path with space?param=value"
         assertEquals(expected, result)
     }
 
     @Test
     fun `decodeURIPath should decode URI without port`() {
-        val uri = java.net.URI("https://example.com/path%2Fsegment")
+        val uri = URI("https://example.com/path%2Fsegment")
         val result = URLDecoder.decodeURIPath(uri)
         val expected = "https://example.com/path/segment"
         assertEquals(expected, result)
@@ -101,7 +101,7 @@ class URLDecoderTest : BaseJUnit5Test() {
 
     @Test
     fun `decodeURIPath should handle URI with no query`() {
-        val uri = java.net.URI("https://example.com/path%2Dtest")
+        val uri = URI("https://example.com/path%2Dtest")
         val result = URLDecoder.decodeURIPath(uri)
         val expected = "https://example.com/path-test"
         assertEquals(expected, result)
@@ -109,7 +109,7 @@ class URLDecoderTest : BaseJUnit5Test() {
 
     @Test
     fun `decodeURIPath should handle empty path and query`() {
-        val uri = java.net.URI("https://example.com")
+        val uri = URI("https://example.com")
         val result = URLDecoder.decodeURIPath(uri)
         val expected = "https://example.com" // Because `uri.path` is null → decode(null) == "null"
         assertEquals(expected, result)
@@ -133,5 +133,30 @@ class URLDecoderTest : BaseJUnit5Test() {
         val original = "こんにちは" // Japanese
         val encoded = URLEncoder.encodeURIComponent(original, "UTF-8")
         assertEquals(original, URLDecoder.decodeURIComponent(encoded, "UTF-8"))
+    }
+
+    @Test
+    fun `decodeURIComponent should decode encoded component with special characters`() {
+        val encoded = "title%3D%EC%95%88%EB%85%95%26msg%3Dhello%2Bworld"
+        val decoded = URLDecoder.decodeURIComponent(encoded)
+        assertTrue(decoded.contains("title=안녕"))
+        assertTrue(decoded.contains("msg=hello+world")) // +가 공백으로 바뀌지 않음
+    }
+
+    @Test
+    fun `decodeURIPath should decode path and query from URI`() {
+        val uri = URI("https://example.com/pages/viewpage.action?pageId=1234&title=%EC%95%88%EB%85%95")
+        val result = URLDecoder.decodeURIPath(uri)
+        println(result)
+        assertTrue(result.contains("/pages/viewpage.action"))
+        assertTrue(result.contains("pageId=1234"))
+        assertTrue(result.contains("title=안녕"))
+    }
+
+    @Test
+    fun `decodeURI should behave like decodeURIComponent`() {
+        val encoded = "https%3A%2F%2Fexample.com%2Fpages%2Ftest%3Fquery%3D123"
+        val decoded = URLDecoder.decodeURI(encoded)
+        assertEquals("https://example.com/pages/test?query=123", decoded)
     }
 }
