@@ -6,6 +6,7 @@ import com.snc.zero.crypto.cipher.rsa.RSAKeyGen
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import java.security.SecureRandom
@@ -239,5 +240,23 @@ class CipherTest : BaseJUnit5Test() {
         val dec = Cipher.with().algo(Cipher.Algo.AES).key(key, iv).decrypt(enc)
         val plainText = String(dec)
         assertEquals(data, plainText)
+    }
+
+    @Test
+    fun `Cipher Exception 테스트`() {
+        val cipher = Cipher.with().algo(Cipher.Algo.RSA)
+        assertThrows(IllegalArgumentException::class.java) {
+            cipher.encrypt(data.toByteArray())
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            cipher.decrypt(data)
+        }
+    }
+
+    @Test
+    fun `Cipher Enum 100프로 테스트 완료를 위한 entries 테스트`() {
+        val v = Cipher.Algo.entries.toTypedArray()
+        assertEquals(Cipher.Algo.AES, v[0])
+        assertEquals(Cipher.Algo.RSA, v[1])
     }
 }
