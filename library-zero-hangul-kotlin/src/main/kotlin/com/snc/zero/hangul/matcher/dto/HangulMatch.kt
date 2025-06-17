@@ -9,6 +9,6 @@ package com.snc.zero.hangul.matcher.dto
 data class HangulMatch(val start: Int, val length: Int) {
 
     companion object {
-        val EMPTY: HangulMatch = HangulMatch(-1, 0)
+        val EMPTY = HangulMatch(-1, 0)
     }
 }
