@@ -270,7 +270,7 @@ class DateTimeCompareTest : BaseJUnit5Test() {
             }
 
             val result = DateTimeCompare.betweenDays(start, end)
-            assertEquals(1, result)
+            assertEquals(0, result)
         }
 
         @Test

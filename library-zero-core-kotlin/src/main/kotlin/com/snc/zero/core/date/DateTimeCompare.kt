@@ -49,20 +49,22 @@ class DateTimeCompare private constructor() {
         }
 
         fun betweenDays(startDate: Calendar, endDate: Calendar): Int {
-            val start = startDate.timeInMillis
-            val end = endDate.timeInMillis
+            val startCopy = startDate.clone() as Calendar
+            val endCopy = endDate.clone() as Calendar
 
-            var presumedDays = TimeUnit.MILLISECONDS.toDays(end - start).toInt()
-            startDate.add(Calendar.DAY_OF_MONTH, presumedDays)
+            // 날짜 부분만 비교 (시간 무시)
+            startCopy.set(Calendar.HOUR_OF_DAY, 0)
+            startCopy.set(Calendar.MINUTE, 0)
+            startCopy.set(Calendar.SECOND, 0)
+            startCopy.set(Calendar.MILLISECOND, 0)
 
-            if (startDate.before(endDate)) {
-                startDate.add(Calendar.DAY_OF_MONTH, 1)
-                ++presumedDays
-            }
-            if (startDate.after(endDate)) {
-                --presumedDays
-            }
-            return presumedDays
+            endCopy.set(Calendar.HOUR_OF_DAY, 0)
+            endCopy.set(Calendar.MINUTE, 0)
+            endCopy.set(Calendar.SECOND, 0)
+            endCopy.set(Calendar.MILLISECOND, 0)
+
+            val diffMillis = endCopy.timeInMillis - startCopy.timeInMillis
+            return TimeUnit.MILLISECONDS.toDays(diffMillis).toInt()
         }
 
         fun betweenDays(srcDate: String, dstDate: String): Int {
