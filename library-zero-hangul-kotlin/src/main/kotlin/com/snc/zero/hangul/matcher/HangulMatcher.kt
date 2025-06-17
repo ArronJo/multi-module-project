@@ -15,7 +15,7 @@ class HangulMatcher {
 
     fun keyword(keyword: String): HangulMatcher {
         this.keyword = keyword.lowercase(Locale.getDefault())
-            .replace("[^0-9a-zA-Zㄱ-ㅎㅏ-ㅣ\\u3165-\\u318E\\uD7B0-\\uD7FB\\uA960-\\uA97C가-힣\\u00B7\\u119E\\u11A2\\u2022\\u2024\\u2025\\u2219\\u302E\\u318D]+".toRegex(), "")
+            .replace("[^0-9a-zA-Zㄱ-ㅎㅏ-ㅣ\\u3165-\\u318E\\uD7B0-\\uD7FB\\uA960-\\uA97C가-힣\\u00B7\\u119E\\u11A2\\u2022\\u2024\\u2025\\u2219\\u302E]+".toRegex(), "")
         return this
     }
 
