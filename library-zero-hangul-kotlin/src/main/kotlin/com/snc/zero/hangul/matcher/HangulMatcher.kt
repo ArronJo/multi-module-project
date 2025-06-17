@@ -61,6 +61,6 @@ class HangulMatcher {
         if (HangulDecompose.decompose(t).startsWith(HangulDecompose.decompose(k))) {
             return 1 // match
         }
-        return -1 // not match
+        return -1 // not a match
     }
 }
