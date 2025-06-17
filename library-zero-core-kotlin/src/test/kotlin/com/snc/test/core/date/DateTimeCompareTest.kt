@@ -3,16 +3,14 @@ package com.snc.test.core.date
 import com.snc.zero.core.date.DateTimeCompare
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.ValueSource
-import java.util.Calendar
+import java.util.*
 
 private val logger = TLogging.logger { }
 
@@ -244,6 +242,51 @@ class DateTimeCompareTest : BaseJUnit5Test() {
     @Nested
     @DisplayName("betweenDays 메서드 테스트")
     inner class BetweenDaysTest {
+
+        @Test
+        fun `betweenDays should return 1 when times are just under 24 hours apart`() {
+            val start = Calendar.getInstance().apply {
+                set(2025, Calendar.JUNE, 15, 23, 0, 0) // 2025-06-15 23:00
+                set(Calendar.MILLISECOND, 0)
+            }
+            val end = Calendar.getInstance().apply {
+                set(2025, Calendar.JUNE, 16, 22, 0, 0) // 2025-06-16 22:00
+                set(Calendar.MILLISECOND, 0)
+            }
+
+            val result = DateTimeCompare.betweenDays(start, end)
+            assertEquals(1, result)
+        }
+
+        @Test
+        fun `betweenDays should return 0 when difference is less than 1 day`() {
+            val start = Calendar.getInstance().apply {
+                set(2025, Calendar.JUNE, 15, 12, 0, 0)
+                set(Calendar.MILLISECOND, 0)
+            }
+            val end = Calendar.getInstance().apply {
+                set(2025, Calendar.JUNE, 15, 23, 59, 59)
+                set(Calendar.MILLISECOND, 0)
+            }
+
+            val result = DateTimeCompare.betweenDays(start, end)
+            assertEquals(1, result)
+        }
+
+        @Test
+        fun `betweenDays should return 2 when milliseconds difference overestimates by a day`() {
+            val start = Calendar.getInstance().apply {
+                set(2025, Calendar.JUNE, 15, 0, 0, 0)
+                set(Calendar.MILLISECOND, 0)
+            }
+            val end = Calendar.getInstance().apply {
+                set(2025, Calendar.JUNE, 17, 0, 0, 1) // Slightly over 2 days
+                set(Calendar.MILLISECOND, 1)
+            }
+
+            val result = DateTimeCompare.betweenDays(start, end)
+            assertEquals(2, result)
+        }
 
         @Test
         @DisplayName("Calendar 객체를 사용한 날짜 차이 계산")
