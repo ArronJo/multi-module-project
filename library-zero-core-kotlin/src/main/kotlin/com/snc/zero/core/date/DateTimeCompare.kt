@@ -53,15 +53,15 @@ class DateTimeCompare private constructor() {
             val endCopy = endDate.clone() as Calendar
 
             // 날짜 부분만 비교 (시간 무시)
-            startCopy.set(Calendar.HOUR_OF_DAY, 0)
-            startCopy.set(Calendar.MINUTE, 0)
-            startCopy.set(Calendar.SECOND, 0)
-            startCopy.set(Calendar.MILLISECOND, 0)
+            startCopy[Calendar.HOUR_OF_DAY] = 0
+            startCopy[Calendar.MINUTE] = 0
+            startCopy[Calendar.SECOND] = 0
+            startCopy[Calendar.MILLISECOND] = 0
 
-            endCopy.set(Calendar.HOUR_OF_DAY, 0)
-            endCopy.set(Calendar.MINUTE, 0)
-            endCopy.set(Calendar.SECOND, 0)
-            endCopy.set(Calendar.MILLISECOND, 0)
+            endCopy[Calendar.HOUR_OF_DAY] = 0
+            endCopy[Calendar.MINUTE] = 0
+            endCopy[Calendar.SECOND] = 0
+            endCopy[Calendar.MILLISECOND] = 0
 
             val diffMillis = endCopy.timeInMillis - startCopy.timeInMillis
             return TimeUnit.MILLISECONDS.toDays(diffMillis).toInt()
