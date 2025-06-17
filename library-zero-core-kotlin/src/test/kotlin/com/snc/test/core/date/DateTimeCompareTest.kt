@@ -18,6 +18,14 @@ private val logger = TLogging.logger { }
 class DateTimeCompareTest : BaseJUnit5Test() {
 
     @Test
+    fun `날짜 비교 compare 테스트 Exception`() {
+        val srcDate = "20170215"
+        val dstDate = "20170309"
+        val v1 = DateTimeCompare.compare(srcDate, "!", dstDate)
+        assertFalse(v1)
+    }
+
+    @Test
     fun `날짜 비교 compare 테스트 1`() {
         // given
         val srcDate = "20170215"
@@ -26,7 +34,7 @@ class DateTimeCompareTest : BaseJUnit5Test() {
         val v1 = DateTimeCompare.compare(srcDate, "<=", dstDate)
         // then
         logger.debug { "Date 비교: $srcDate '<=' $dstDate => $v1" }
-        assertEquals(v1, true)
+        assertEquals(true, v1)
     }
 
     @Test
@@ -38,7 +46,7 @@ class DateTimeCompareTest : BaseJUnit5Test() {
         val v1 = DateTimeCompare.isBetweenDate(srcDate, "20170228", dstDate)
         // then
         logger.debug { "Date 비교: $srcDate '20170228' $dstDate => $v1" }
-        assertEquals(v1, 0)
+        assertEquals(0, v1)
     }
 
     @Test
@@ -50,7 +58,7 @@ class DateTimeCompareTest : BaseJUnit5Test() {
         val v1 = DateTimeCompare.betweenDays(srcDate, dstDate)
         // then
         logger.debug { "Date 남은 일자: $srcDate ~ $dstDate => $v1 일" }
-        assertEquals(v1, 22)
+        assertEquals(22, v1)
     }
 
     @Nested
