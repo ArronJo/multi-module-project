@@ -5,6 +5,7 @@ import com.snc.zero.core.promise.Promise
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -184,5 +185,139 @@ class PromiseTest : BaseJUnit5Test() {
 
         assertEquals("Chain error", error.get()?.message)
         assertTrue(finallyCalled.get())
+    }
+
+    @Test
+    fun `resolve 이후에는 reject가 무시된다`() {
+        val promise = Promise<Int>()
+        val resolved = AtomicBoolean(false)
+        val rejected = AtomicBoolean(false)
+
+        promise
+            .then { resolved.set(true) }
+            .catch { rejected.set(true) }
+
+        promise.resolve(42)
+        promise.reject(RuntimeException("Should not be called"))
+
+        assertTrue(resolved.get())
+        assertFalse(rejected.get())
+    }
+
+    @Test
+    fun `reject 이후에는 resolve가 무시된다`() {
+        val promise = Promise<Int>()
+        val resolved = AtomicBoolean(false)
+        val rejected = AtomicBoolean(false)
+
+        promise
+            .then { resolved.set(true) }
+            .catch { rejected.set(true) }
+
+        promise.reject(RuntimeException("Failure"))
+        promise.resolve(42)
+
+        assertFalse(resolved.get())
+        assertTrue(rejected.get())
+    }
+
+    @Test
+    fun `resolve 이후 등록된 then은 즉시 호출된다`() {
+        val promise = Promise<String>()
+        promise.resolve("done")
+
+        var result: String? = null
+        promise.then { result = it }
+
+        assertEquals("done", result)
+    }
+
+    @Test
+    fun `reject 이후 등록된 catch는 즉시 호출된다`() {
+        val promise = Promise<String>()
+        val error = RuntimeException("failure")
+        promise.reject(error)
+
+        var caught: Throwable? = null
+        promise.catch { caught = it }
+
+        assertEquals(error, caught)
+    }
+
+    @Test
+    fun `resolve 이후 등록된 finally는 즉시 호출된다`() {
+        val promise = Promise<String>()
+        val called = AtomicBoolean(false)
+        promise.resolve("done")
+
+        promise.finally { called.set(true) }
+
+        assertTrue(called.get())
+    }
+
+    @Test
+    fun `reject 이후 등록된 finally는 즉시 호출된다`() {
+        val promise = Promise<String>()
+        val called = AtomicBoolean(false)
+        promise.reject(RuntimeException("fail"))
+
+        promise.finally { called.set(true) }
+
+        assertTrue(called.get())
+    }
+
+    @Test
+    fun `resolve는 한 번만 실행된다`() {
+        val promise = Promise<Int>()
+        var callCount = 0
+        promise.then { callCount++ }
+
+        promise.resolve(1)
+        promise.resolve(2) // 무시됨
+
+        assertEquals(1, callCount)
+    }
+
+    @Test
+    fun `reject는 한 번만 실행된다`() {
+        val promise = Promise<Int>()
+        var callCount = 0
+        promise.catch { callCount++ }
+
+        promise.reject(RuntimeException("1"))
+        promise.reject(RuntimeException("2")) // 무시됨
+
+        assertEquals(1, callCount)
+    }
+
+    @Test
+    fun `resolve 이후 then catch finally가 순서대로 모두 호출된다`() {
+        val logs = mutableListOf<String>()
+        val promise = Promise<String>()
+
+        promise
+            .then { logs.add("then: $it") }
+            .catch { logs.add("catch") }
+            .finally { logs.add("finally") }
+
+        promise.resolve("OK")
+
+        assertEquals(listOf("then: OK", "finally"), logs)
+    }
+
+    @Test
+    fun `reject 이후 then catch finally가 순서대로 모두 호출된다`() {
+        val logs = mutableListOf<String>()
+        val error = IllegalArgumentException("Oops")
+        val promise = Promise<String>()
+
+        promise
+            .then { logs.add("then") }
+            .catch { logs.add("catch: ${it.message}") }
+            .finally { logs.add("finally") }
+
+        promise.reject(error)
+
+        assertEquals(listOf("catch: Oops", "finally"), logs)
     }
 }

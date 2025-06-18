@@ -154,6 +154,16 @@ class URLDecoderTest : BaseJUnit5Test() {
     }
 
     @Test
+    fun `decodeURIPath should decode path from URI 2`() {
+        val uri = URI("https://example.com/pages/viewpage.action")
+        val result = URLDecoder.decodeURIPath(uri)
+        println(result)
+        assertTrue(result.contains("/pages/viewpage.action"))
+        assertFalse(result.contains("pageId=1234"))
+        assertFalse(result.contains("title=안녕"))
+    }
+
+    @Test
     fun `decodeURI should behave like decodeURIComponent`() {
         val encoded = "https%3A%2F%2Fexample.com%2Fpages%2Ftest%3Fquery%3D123"
         val decoded = URLDecoder.decodeURI(encoded)

@@ -19,10 +19,9 @@ class TickTimer {
                 listener.onTick()
             }
         }
-        if (null == tickTimer) {
-            tickTimer = Timer()
+        tickTimer = Timer().also {
+            it.schedule(timerTask, timeInMillis, timeInMillis)
         }
-        tickTimer?.schedule(timerTask, timeInMillis, timeInMillis)
     }
 
     fun stop() {
