@@ -490,4 +490,96 @@ class DateTimeCompareTest : BaseJUnit5Test() {
         val days = DateTimeCompare.betweenDays("2025-06-13", "2025-06-13")
         assertEquals(0, days)
     }
+
+    private val earlier = "2024-01-01"
+    private val same = "2024-01-01"
+    private val later = "2025-01-01"
+
+    @Test
+    fun `valid operators should compare correctly`() {
+        assertTrue(DateTimeCompare.compare(later, ">", earlier))
+        assertFalse(DateTimeCompare.compare(earlier, ">", later))
+
+        assertTrue(DateTimeCompare.compare(earlier, "<", later))
+        assertFalse(DateTimeCompare.compare(later, "<", earlier))
+
+        assertTrue(DateTimeCompare.compare(earlier, ">=", earlier))
+        assertTrue(DateTimeCompare.compare(later, ">=", earlier))
+        assertFalse(DateTimeCompare.compare(earlier, ">=", later))
+
+        assertTrue(DateTimeCompare.compare(earlier, "<=", later))
+        assertTrue(DateTimeCompare.compare(earlier, "<=", same))
+        assertFalse(DateTimeCompare.compare(later, "<=", earlier))
+
+        assertTrue(DateTimeCompare.compare(earlier, "==", same))
+        assertTrue(DateTimeCompare.compare(earlier, "=", same))
+        assertFalse(DateTimeCompare.compare(earlier, "==", later))
+
+        assertTrue(DateTimeCompare.compare(earlier, "!=", later))
+        assertFalse(DateTimeCompare.compare(earlier, "!=", same))
+    }
+
+    @Test
+    fun `invalid operators should return false`() {
+        val invalidOperators = listOf(
+            "=>", "=<", "!==", "><", "<>", "=>=", "=<=", "===", "== =",
+            "!!", "!>", "!<", "><", "~=", "equal", "lte"
+        )
+
+        for (op in invalidOperators) {
+            val result = DateTimeCompare.compare(earlier, op, later)
+            assertFalse(result, "Expected false for invalid operator: '$op'")
+        }
+    }
+
+    @Test
+    fun `compare operator - greater than`() {
+        assertTrue(DateTimeCompare.compare(later, ">", earlier))
+        assertFalse(DateTimeCompare.compare(earlier, ">", later))
+        assertFalse(DateTimeCompare.compare(same, ">", same))
+    }
+
+    @Test
+    fun `compare operator - greater than or equal`() {
+        assertTrue(DateTimeCompare.compare(later, ">=", earlier))
+        assertTrue(DateTimeCompare.compare(same, ">=", same))
+        assertFalse(DateTimeCompare.compare(earlier, ">=", later))
+    }
+
+    @Test
+    fun `compare operator - less than`() {
+        assertTrue(DateTimeCompare.compare(earlier, "<", later))
+        assertFalse(DateTimeCompare.compare(later, "<", earlier))
+        assertFalse(DateTimeCompare.compare(same, "<", same))
+    }
+
+    @Test
+    fun `compare operator - less than or equal`() {
+        assertTrue(DateTimeCompare.compare(earlier, "<=", later))
+        assertTrue(DateTimeCompare.compare(same, "<=", same))
+        assertFalse(DateTimeCompare.compare(later, "<=", earlier))
+    }
+
+    @Test
+    fun `compare operator - equals`() {
+        assertTrue(DateTimeCompare.compare(same, "==", same))
+        assertTrue(DateTimeCompare.compare(same, "=", same)) // alias
+        assertFalse(DateTimeCompare.compare(earlier, "==", later))
+        assertFalse(DateTimeCompare.compare(earlier, "=", later))
+    }
+
+    @Test
+    fun `compare operator - not equals`() {
+        assertTrue(DateTimeCompare.compare(earlier, "!=", later))
+        assertFalse(DateTimeCompare.compare(same, "!=", same))
+    }
+
+    @Test
+    fun `compare operator - invalid signs return false`() {
+        val invalidOps = listOf("!==", "><", "<>", "===", "=", ">>>", "~=", "??", "=>", "=<")
+        for (op in invalidOps) {
+            if (op == "=") continue // '=' is valid in this code
+            assertFalse(DateTimeCompare.compare(earlier, op, later), "Expected false for operator: $op")
+        }
+    }
 }

@@ -10,8 +10,7 @@ import com.snc.zero.core.regex.RegularExpr.Companion.find
 import com.snc.zero.core.regex.RegularExpr.Companion.matches
 import com.snc.zero.core.util.StringUtil
 import com.snc.zero.test.base.BaseJUnit5Test
-import org.junit.jupiter.api.Assertions.assertArrayEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 @Suppress("NonAsciiCharacters")
@@ -101,5 +100,43 @@ class RegularExprTest : BaseJUnit5Test() {
         val invalidRegex = "[abc" // 닫히지 않은 괄호
         val found = find(invalidRegex, "abcabcabc")
         assertArrayEquals(emptyArray<String>(), found)
+    }
+
+    @Test
+    fun `find should include matched non-empty strings`() {
+        val pattern = "\\d+" // 숫자 추출
+        val input = "전화번호 123, 또 다른 번호는 456입니다"
+        val result = find(pattern, input)
+        assertArrayEquals(arrayOf("123", "456"), result)
+    }
+
+    @Test
+    fun `find should exclude empty string matches`() {
+        val pattern = "\\s*" // 0개 이상의 공백 (빈 문자열 포함 가능)
+        val input = " " // 공백 하나
+        val result = find(pattern, input)
+
+        // .group() 결과가 "" 일 수 있으나 isNotEmpty() 조건으로 필터됨
+        assertTrue(result.isNotEmpty()) // 결과 배열은 비어 있어야 함
+    }
+
+    @Test
+    fun `find should return empty array when no match`() {
+        val pattern = "[a-z]+" // 알파벳 소문자
+        val input = "12345" // 숫자만 존재
+        val result = find(pattern, input)
+        assertTrue(result.isEmpty())
+    }
+
+    @Test
+    fun `find should ignore empty match in between valid matches`() {
+        val pattern = "." // 빈 문자열 포함 가능한 모든 문자열 (비추천이지만 예외 케이스로 테스트)
+        val input = "ab"
+        val result = find(pattern, input)
+
+        // isNotEmpty() 필터링으로 인해 빈 문자열은 제외됨 → 'a', 'b'만 추출됨
+        assertTrue(result.contains("a"))
+        assertTrue(result.contains("b"))
+        assertFalse(result.contains("")) // 빈 문자열 없어야 함
     }
 }

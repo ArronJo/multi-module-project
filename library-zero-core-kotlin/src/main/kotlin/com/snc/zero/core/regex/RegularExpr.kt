@@ -86,11 +86,22 @@ class RegularExpr private constructor() {
             try {
                 val pattern = Pattern.compile(regularExpression)
                 val matcher = pattern.matcher(input)
+                var lastEnd = -1
                 while (matcher.find()) {
                     val txt = matcher.group()
                     if (txt.isNotEmpty()) {
                         ret.add(txt)
                     }
+                    // 빈 문자열 매칭 방지: 빈 문자열이 연속 매칭되는 것을 방지하기 위해
+                    if (matcher.end() == lastEnd) {
+                        // 강제로 한 문자 앞으로 이동
+                        if (matcher.end() < input.length) {
+                            matcher.region(matcher.end() + 1, input.length)
+                        } else {
+                            break
+                        }
+                    }
+                    lastEnd = matcher.end()
                 }
             } catch (e: PatternSyntaxException) {
                 logger.error(e) { }
