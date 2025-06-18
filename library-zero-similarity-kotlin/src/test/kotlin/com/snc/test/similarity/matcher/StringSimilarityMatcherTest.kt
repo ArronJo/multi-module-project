@@ -238,4 +238,21 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
         }
         println()
     }
+
+    @Test
+    fun `Enum entries 테스트`() {
+        val e1 = StringSimilarityMatcher.SimilarityMethod.entries.toTypedArray()
+        assertEquals(StringSimilarityMatcher.SimilarityMethod.LEVENSHTEIN, e1[0])
+        assertEquals(StringSimilarityMatcher.SimilarityMethod.JACCARD, e1[1])
+        assertEquals(StringSimilarityMatcher.SimilarityMethod.COSINE, e1[2])
+
+        val e2 = StringSimilarityMatcher.DifferenceMethod.entries.toTypedArray()
+        assertEquals(StringSimilarityMatcher.DifferenceMethod.FREQUENCY_BASED, e2[0])
+        assertEquals(StringSimilarityMatcher.DifferenceMethod.POSITION_BASED, e2[1])
+
+        val e3 = StringSimilarityMatcher.MatchType.entries.toTypedArray()
+        assertEquals(StringSimilarityMatcher.MatchType.EXACT_LENGTH, e3[0])
+        assertEquals(StringSimilarityMatcher.MatchType.SUBSTRING, e3[1])
+        assertEquals(StringSimilarityMatcher.MatchType.REVERSE_SUBSTRING, e3[2])
+    }
 }

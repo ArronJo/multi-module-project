@@ -85,5 +85,20 @@ class EncoderTest : BaseJUnit5Test() {
         assertThrows(Exception::class.java) {
             Encoder.with(Algo.URI).encode(data.toByteArray())
         }
+        assertThrows(Exception::class.java) {
+            Encoder.with(Algo.BASE62).encodeURI(data)
+        }
+        assertThrows(Exception::class.java) {
+            Encoder.with(Algo.BASE64).encodeURI(data)
+        }
+    }
+
+    @Test
+    fun `Encode Enum 100프로 테스트 완료를 위한 entries 테스트`() {
+        val e = Algo.entries.toTypedArray()
+        assertEquals(Algo.BASE62, e[0])
+        assertEquals(Algo.BASE64, e[1])
+        assertEquals(Algo.URIComponent, e[2])
+        assertEquals(Algo.URI, e[3])
     }
 }

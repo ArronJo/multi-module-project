@@ -255,8 +255,8 @@ class CipherTest : BaseJUnit5Test() {
 
     @Test
     fun `Cipher Enum 100프로 테스트 완료를 위한 entries 테스트`() {
-        val v = Cipher.Algo.entries.toTypedArray()
-        assertEquals(Cipher.Algo.AES, v[0])
-        assertEquals(Cipher.Algo.RSA, v[1])
+        val e = Cipher.Algo.entries.toTypedArray()
+        assertEquals(Cipher.Algo.AES, e[0])
+        assertEquals(Cipher.Algo.RSA, e[1])
     }
 }
