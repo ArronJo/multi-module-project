@@ -169,4 +169,41 @@ class URLDecoderTest : BaseJUnit5Test() {
         val decoded = URLDecoder.decodeURI(encoded)
         assertEquals("https://example.com/pages/test?query=123", decoded)
     }
+
+    @Test
+    fun `decodeURIPath with no query`() {
+        val uri = URI("https://example.com/path/to/resource")
+        val decoded = URLDecoder.decodeURIPath(uri)
+        assertEquals("https://example.com/path/to/resource", decoded)
+    }
+
+    @Test
+    fun `decodeURIPath with empty query`() {
+        val uri = URI("https://example.com/path/to/resource?")
+        val decoded = URLDecoder.decodeURIPath(uri)
+        // 빈 쿼리는 무시되므로 ?가 추가되지 않음
+        assertEquals("https://example.com/path/to/resource", decoded)
+    }
+
+    @Test
+    fun `decodeURIPath with non-empty query`() {
+        val uri = URI("https://example.com/path/to/resource?a=1%202&b=test")
+        val decoded = URLDecoder.decodeURIPath(uri)
+        // query 부분은 디코딩된 후 포함됨
+        assertEquals("https://example.com/path/to/resource?a=1 2&b=test", decoded)
+    }
+
+    @Test
+    fun `decodeURIPath with port and query`() {
+        val uri = URI("https://example.com:8080/resource?key=value")
+        val decoded = URLDecoder.decodeURIPath(uri)
+        assertEquals("https://example.com:8080/resource?key=value", decoded)
+    }
+
+    @Test
+    fun `decodeURIPath with encoded path and encoded query`() {
+        val uri = URI("https://example.com/some%20path?query%20key=query%20value")
+        val decoded = URLDecoder.decodeURIPath(uri)
+        assertEquals("https://example.com/some path?query key=query value", decoded)
+    }
 }
