@@ -2,33 +2,30 @@ package com.snc.zero.prizedraw
 
 import kotlin.random.Random
 
-data class Item(
-    val name: String,
-    val weight: Double
-)
-
-class WeightedRandomPicker {
+open class WeightedRandomPicker {
     private val items = mutableListOf<Item>()
 
     fun addItem(name: String, weight: Double) {
         items.add(Item(name, weight))
     }
 
+    open fun getRandom(): Double {
+        return Random.nextDouble()
+    }
+
     fun pickItem(): String? {
-        if (items.isEmpty()) { return null }
+        if (items.isEmpty()) return null
 
         val totalWeight = items.sumOf { it.weight }
-        val randomValue = Random.nextDouble() * totalWeight
+        val randomValue = getRandom() * totalWeight
         var accumulatedWeight = 0.0
-
         for (item in items) {
             accumulatedWeight += item.weight
             if (randomValue < accumulatedWeight) {
                 return item.name
             }
         }
-
-        // 이 부분에 도달할 가능성은 매우 낮지만, 부동소수점 오차로 인해 발생할 수 있습니다.
+        // 매우 낮은 확률로 여기 도달할 수 있음 (부동소수점 오차 등)
         return items.last().name
     }
 
@@ -36,3 +33,5 @@ class WeightedRandomPicker {
         return items.toList()
     }
 }
+
+data class Item(val name: String, val weight: Double)
