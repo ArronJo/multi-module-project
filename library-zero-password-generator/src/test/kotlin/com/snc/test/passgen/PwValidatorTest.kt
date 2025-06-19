@@ -31,6 +31,20 @@ class PwValidatorTest : BaseJUnit5Test() {
     }
 
     @Test
+    fun `Invalid password - 1`() {
+        val result = PwValidator.validate("Abdef1@")
+        assertFalse(result.success)
+        assertEquals("Password must be 8 or more characters in length.", result.reason)
+    }
+
+    @Test
+    fun `Invalid password - 2`() {
+        val result = PwValidator.validate("Abdefgh1@")
+        assertFalse(result.success)
+        assertEquals("Password contains the illegal alphabetical sequence 'defgh'.", result.reason)
+    }
+
+    @Test
     fun `should pass when password meets all rules`() {
         val result = PwValidator.validate("Abㅌdef1@")
         assertTrue(result.success)

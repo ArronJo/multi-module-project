@@ -21,10 +21,7 @@ class PwValidator private constructor() {
                 // at least one digit character
                 CharacterRule(EnglishCharacterData.Digit, 1),
                 // at least one symbol (special character)
-                CharacterRule(
-                    EnglishCharacterData.Special,
-                    1
-                ),
+                CharacterRule(EnglishCharacterData.Special, 1),
                 // define some illegal sequences that will fail when >= 5 chars long
                 // alphabetical is of the form 'abcde', numerical is '34567', qwery is 'asdfg'
                 // the false parameter indicates that wrapped sequences are allowed; e.g. 'xyzabc'
@@ -37,13 +34,12 @@ class PwValidator private constructor() {
 
             val result = validator.validate(PasswordData(password))
             if (!result.isValid) {
-                println("Invalid password:")
+                // Invalid password
                 for (msg in validator.getMessages(result)) {
-                    println(msg)
                     return ValidateResult(false, msg)
                 }
             }
-            println("Password is valid")
+            // Password is valid
             return ValidateResult(true, "")
         }
     }
