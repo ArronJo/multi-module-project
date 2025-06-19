@@ -8,7 +8,7 @@ class Promise<T> {
     private var isResolved = false
     private var isRejected = false
     private var resolvedValue: T? = null
-    private var rejectedError: Throwable? = null
+    private lateinit var rejectedError: Throwable
 
     fun resolve(value: T) {
         if (isResolved || isRejected) return
@@ -37,7 +37,7 @@ class Promise<T> {
     fun catch(onRejected: (Throwable) -> Unit): Promise<T> {
         rejectCallback = onRejected
         if (isRejected) {
-            rejectedError?.let { onRejected(it) }
+            onRejected(rejectedError)
         }
         return this
     }

@@ -6,6 +6,7 @@ import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.util.concurrent.atomic.AtomicBoolean
@@ -319,5 +320,26 @@ class PromiseTest : BaseJUnit5Test() {
         promise.reject(error)
 
         assertEquals(listOf("catch: Oops", "finally"), logs)
+    }
+
+    @Test
+    fun `should resolve with null value for nullable type`() {
+        var result: String? = "initial"
+        var finallyCalled = false
+
+        val promise = Promise<String?>()
+
+        promise
+            .then {
+                result = it // null이어야 함
+            }
+            .finally {
+                finallyCalled = true
+            }
+
+        promise.resolve(null)
+
+        assertNull(result, "then 블록에서 전달된 값이 null이어야 합니다")
+        assertTrue(finallyCalled, "finally 블록이 호출되어야 합니다")
     }
 }
