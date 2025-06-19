@@ -1,6 +1,6 @@
 package com.snc.zero.passgen.result
 
 data class ValidateResult(
-    val result: Boolean,
-    val msg: String
+    val success: Boolean,
+    val reason: String
 )
