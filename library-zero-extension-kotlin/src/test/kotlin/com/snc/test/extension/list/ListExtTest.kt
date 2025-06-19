@@ -99,7 +99,7 @@ class ListExtTest : BaseJUnit5Test() {
             }
             r = random.nextInt()
         }
-        val result = list.getOrDefault(r)
+        val result = list.getOrDefault(r, null)
         assertNull(result)
     }
 
@@ -127,7 +127,7 @@ class ListExtTest : BaseJUnit5Test() {
     @Test
     fun `should return null when defaultValue is not provided and index is invalid`() {
         val list = listOf("one", "two")
-        val result = list.getOrDefault(10) // defaultValue = null
+        val result = list.getOrDefault(10, null)
         assertNull(result)
     }
 }

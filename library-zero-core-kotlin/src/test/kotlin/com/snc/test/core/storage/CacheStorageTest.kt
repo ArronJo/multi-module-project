@@ -78,7 +78,7 @@ class CacheStorageTest : BaseJUnit5Test() {
     @Test
     fun `remove should delete a key`() {
         CacheStorage.putString(key = "foo", value = "bar")
-        val removed = CacheStorage.remove("foo")
+        val removed = CacheStorage.remove(key = "foo")
         val result = CacheStorage.getString(key = "foo", defaultValue = "none")
 
         assertTrue(removed)
@@ -87,7 +87,7 @@ class CacheStorageTest : BaseJUnit5Test() {
 
     @Test
     fun `remove should return false for non-existent key`() {
-        val removed = CacheStorage.remove("not_existing_key")
+        val removed = CacheStorage.remove(key = "not_existing_key")
         assertFalse(removed)
     }
 }

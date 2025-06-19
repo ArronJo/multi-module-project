@@ -12,7 +12,7 @@ object CacheStorage {
 
     private val cache = HashMap<String, String>()
 
-    private fun key(group: String = "", key: String): String {
+    private fun internalKey(group: String = "", key: String): String {
         if (group.isNotEmpty()) {
             return "$group#$key"
         }
@@ -20,12 +20,12 @@ object CacheStorage {
     }
 
     fun putString(group: String = "", key: String, value: String) {
-        val groupKey = key(group, key)
+        val groupKey = internalKey(group, key)
         cache[groupKey] = "$value;" + DateTimeParser.today("yyyyMMddHHmmss")
     }
 
     fun getString(group: String = "", key: String, defaultValue: String = ""): String {
-        val groupKey = key(group, key)
+        val groupKey = internalKey(group, key)
         if (!cache.contains(groupKey)) {
             return defaultValue
         }
@@ -40,9 +40,10 @@ object CacheStorage {
         return getString(group, key, "$defaultValue").toInt()
     }
 
-    fun remove(key: String): Boolean {
-        if (cache.contains(key)) {
-            cache.remove(key)
+    fun remove(group: String = "", key: String): Boolean {
+        val groupKey = internalKey(group, key)
+        if (cache.contains(groupKey)) {
+            cache.remove(groupKey)
             return true
         }
         return false

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 private val logger = TLogging.logger { }
 
@@ -33,6 +34,16 @@ class Base62Test : BaseJUnit5Test() {
         // then
         logger.debug { "Base62 encoded: $v" }
         assertEquals("HBwBDdH6QzS9hkmroFlT7e3zRUz08WtIkBVKWHRdxn96cOc3QpfFmEP6FEZrCzF", String(v))
+    }
+
+    @Test
+    fun `Decode To Base62 - Exception`() {
+        val data = "123 + 455"
+        assertThrows<IllegalArgumentException> {
+            Base62.decode(data.toByteArray()).let {
+                logger.debug { "Base62 decoded: $it" }
+            }
+        }
     }
 
     @Test
