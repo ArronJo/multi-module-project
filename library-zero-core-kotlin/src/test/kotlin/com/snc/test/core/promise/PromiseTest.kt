@@ -342,4 +342,42 @@ class PromiseTest : BaseJUnit5Test() {
         assertNull(result, "then 블록에서 전달된 값이 null이어야 합니다")
         assertTrue(finallyCalled, "finally 블록이 호출되어야 합니다")
     }
+
+    @Test
+    fun `should resolve with null when T is nullable`() {
+        val promise = Promise<String?>()
+
+        var thenCalledWith: String? = "initial"
+        var finallyCalled = false
+
+        promise
+            .then { thenCalledWith = it }
+            .finally { finallyCalled = true }
+
+        promise.resolve(null)
+
+        assertNull(thenCalledWith, "then 블록은 null을 전달받아야 함")
+        assertTrue(finallyCalled, "finally 블록은 호출되어야 함")
+    }
+
+    @Test
+    fun `should not call catch when rejected with null`() {
+        val promise = Promise<String?>()
+
+        var catchCalled = false
+        var finallyCalled = false
+
+        promise
+            .catch {
+                catchCalled = true
+            }
+            .finally {
+                finallyCalled = true
+            }
+
+        promise.reject(null)
+
+        assertFalse(catchCalled, "catch 블록은 null 예외일 경우 호출되지 않아야 함")
+        assertTrue(finallyCalled, "finally 블록은 호출되어야 함")
+    }
 }

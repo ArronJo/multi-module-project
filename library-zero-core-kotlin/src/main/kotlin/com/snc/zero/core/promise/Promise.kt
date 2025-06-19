@@ -8,21 +8,22 @@ class Promise<T> {
     private var isResolved = false
     private var isRejected = false
     private var resolvedValue: T? = null
-    private lateinit var rejectedError: Throwable
+    private var rejectedError: Throwable? = null
 
-    fun resolve(value: T) {
+    @Suppress("UNCHECKED_CAST")
+    fun resolve(value: T?) {
         if (isResolved || isRejected) return
         isResolved = true
         resolvedValue = value
-        resolveCallback?.invoke(value)
+        resolveCallback?.invoke(value as T)
         finallyCallback?.invoke()
     }
 
-    fun reject(error: Throwable) {
+    fun reject(error: Throwable?) {
         if (isResolved || isRejected) return
         isRejected = true
         rejectedError = error
-        rejectCallback?.invoke(error)
+        error?.let { rejectCallback?.invoke(it) }
         finallyCallback?.invoke()
     }
 
@@ -37,7 +38,7 @@ class Promise<T> {
     fun catch(onRejected: (Throwable) -> Unit): Promise<T> {
         rejectCallback = onRejected
         if (isRejected) {
-            onRejected(rejectedError)
+            rejectedError?.let { onRejected(it) }
         }
         return this
     }
