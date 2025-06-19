@@ -124,8 +124,14 @@ class URLEncoderTest : BaseJUnit5Test() {
     fun `encodeURIPath should encode path and query`() {
         val uri = URI("https://example.com/pages/viewpage.action?pageId=12345&title=안녕")
         val result = URLEncoder.encodeURIPath(uri)
-        println(result)
         assertTrue(result.contains("%2Fpages%2Fviewpage.action"))
         assertTrue(result.contains("title%3D%EC%95%88%EB%85%95"))
+    }
+
+    @Test
+    fun `encodeURIPath should encode path and query 2`() {
+        val uri = URI("https://example.com/pages/viewpage.action")
+        val result = URLEncoder.encodeURIPath(uri)
+        assertTrue(result.contains("%2Fpages%2Fviewpage.action"))
     }
 }

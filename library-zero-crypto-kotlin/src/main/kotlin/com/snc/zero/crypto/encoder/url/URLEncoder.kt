@@ -63,8 +63,10 @@ object URLEncoder {
             s += ":${uri.port}"
         }
         s += URLEncoder.encode(uri.path, charset)
-        if (!uri.query.isNullOrEmpty()) {
-            s += "%3F" + URLEncoder.encode(uri.query, charset) // `?` 인코딩 후 추가
+        uri.query?.let {
+            if (it.isNotEmpty()) {
+                s += "%3F" + URLEncoder.encode(it, charset) // `?` 인코딩 후 추가
+            }
         }
 
         return s

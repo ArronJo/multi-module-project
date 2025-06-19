@@ -1,6 +1,6 @@
 package com.snc.zero.extension.list
 
-fun <T> List<T>.get(index: Int, defaultValue: Any? = null): Any? {
+fun <T> List<T>.getOrDefault(index: Int, defaultValue: Any? = null): Any? {
     try {
         if (this.isEmpty()) {
             return defaultValue
