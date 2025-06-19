@@ -12,7 +12,7 @@ object CacheStorage {
 
     private val cache = HashMap<String, String>()
 
-    private fun internalKey(group: String = "", key: String): String {
+    private fun internalKey(group: String, key: String): String {
         if (group.isNotEmpty()) {
             return "$group#$key"
         }
