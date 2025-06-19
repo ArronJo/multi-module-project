@@ -380,4 +380,58 @@ class PromiseTest : BaseJUnit5Test() {
         assertFalse(catchCalled, "catch 블록은 null 예외일 경우 호출되지 않아야 함")
         assertTrue(finallyCalled, "finally 블록은 호출되어야 함")
     }
+
+    @Test
+    fun `then callback should be invoked when resolvedValue is not null`() {
+        var called = false
+        val promise = Promise<String?>()
+        promise.resolve("ok")
+
+        promise.then {
+            called = true
+        }
+
+        assertTrue(called)
+    }
+
+    @Test
+    fun `then callback should NOT be invoked when resolvedValue is null`() {
+        var called = false
+        val promise = Promise<String?>()
+        promise.resolve(null)
+
+        promise.then {
+            called = true
+        }
+
+        assertFalse(called)
+    }
+
+    @Test
+    fun `catch callback should be invoked when rejectedError is not null`() {
+        var called = false
+        val promise = Promise<String?>()
+        promise.reject(RuntimeException("fail"))
+
+        promise.catch {
+            called = true
+        }
+
+        assertTrue(called)
+    }
+
+    @Test
+    fun `catch callback should NOT be invoked when rejectedError is null`() {
+        var called = false
+        val promise = Promise<String?>()
+
+        // null 예외를 강제로 reject
+        promise.reject(null)
+
+        promise.catch {
+            called = true
+        }
+
+        assertFalse(called)
+    }
 }
