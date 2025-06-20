@@ -12,7 +12,7 @@ private val logger = TLogging.logger { }
 class HexStringExtTest : BaseJUnit5Test() {
 
     @Test
-    fun `ToHexString 테스트 1`() {
+    fun `ToHexString 테스트 - String 1`() {
         // given
         val data = "abcdefABCDEF"
         // when
@@ -23,7 +23,7 @@ class HexStringExtTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `ToHexString 테스트 2`() {
+    fun `ToHexString 테스트 - String 2`() {
         // given
         val data = "1234567890"
         // when
@@ -34,7 +34,7 @@ class HexStringExtTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `ToHexString 테스트 3`() {
+    fun `ToHexString 테스트 - String 3`() {
         // given
         val data = " !@#$%^&*()"
         // when
@@ -42,5 +42,17 @@ class HexStringExtTest : BaseJUnit5Test() {
         // then
         logger.debug { "ToHexString 3: data -> $v" }
         assertEquals("2021402324255e262a2829", v)
+    }
+
+    @Test
+    fun `ToHexString 테스트 - Char 1`() {
+        val v = 0x60.toChar().toHexString()
+        assertEquals("60", v)
+    }
+
+    @Test
+    fun `ToHexString 테스트 - Char 2`() {
+        val v = 0xAC00.toChar().toHexString()
+        assertEquals("ac00", v)
     }
 }

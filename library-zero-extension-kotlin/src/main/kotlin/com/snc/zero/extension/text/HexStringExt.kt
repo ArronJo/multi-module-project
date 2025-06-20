@@ -49,6 +49,9 @@ fun Byte.toHexString(): String {
     return "${hexDigits[i shr 4 and 0xf]}${hexDigits[i and 0xf]}"
 }
 
+fun Char.toHexString(): String =
+    if (code in 0..127) "%02x".format(code) else "%04x".format(code)
+
 fun String.toHexString(): String {
     return this.toByteArray().toHexString()
 }
