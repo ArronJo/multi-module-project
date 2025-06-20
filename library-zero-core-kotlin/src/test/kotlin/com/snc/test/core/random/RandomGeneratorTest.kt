@@ -312,7 +312,7 @@ class RandomGeneratorTest : BaseJUnit5Test() {
                 0xD800.toChar(), // 범위 시작
                 0xD900.toChar(), // 중간값
                 0xDAFF.toChar(), // 중간값
-                0xDB7F.toChar()  // 범위 끝
+                0xDB7F.toChar() // 범위 끝
             )
 
             testCases.forEach { highSurrogateChar ->
@@ -344,7 +344,7 @@ class RandomGeneratorTest : BaseJUnit5Test() {
             // Given - High surrogate가 포함된 범위에서 문자열 생성 요청
             val count = 10
             val startPos = 0xD800 // High surrogate 시작 범위
-            val endPos = 0xDB7F   // High surrogate 끝 범위
+            val endPos = 0xDB7F // High surrogate 끝 범위
 
             // When
             val result = RandomGenerator.random(
