@@ -1,7 +1,6 @@
 package com.snc.zero.hangul.matcher
 
 import com.snc.zero.hangul.compose.HangulDecompose
-import com.snc.zero.hangul.matcher.dto.HangulMatch
 import java.util.Locale
 
 /**
@@ -19,9 +18,9 @@ class HangulMatcher {
         return this
     }
 
-    fun match(data: String, startIndex: Int = 0): HangulMatch {
+    fun match(data: String, startIndex: Int = 0): HangulMatchResult {
         if (keyword.isEmpty()) {
-            return HangulMatch(0, 0)
+            return HangulMatchResult(0, 0)
         }
 
         val target = data.lowercase(Locale.getDefault())
@@ -44,12 +43,12 @@ class HangulMatcher {
                     k++
                 }
                 if (k == keyword.length) {
-                    return HangulMatch(i, j + 1)
+                    return HangulMatchResult(i, j + 1)
                 }
                 j++
             }
         }
-        return HangulMatch.EMPTY
+        return HangulMatchResult.EMPTY
     }
 
     private val ignore = "!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?~` "
@@ -62,5 +61,18 @@ class HangulMatcher {
             return 1 // match
         }
         return -1 // not a match
+    }
+
+    /**
+     * 한글 검색 결과 (초성 검색 포함)
+     *
+     * @author mcharima5@gmail.com
+     * @since 2022
+     */
+    data class HangulMatchResult(val start: Int, val length: Int) {
+
+        companion object {
+            val EMPTY = HangulMatchResult(-1, 0)
+        }
     }
 }
