@@ -16,11 +16,11 @@ fun <T> Array<T>.print(): String {
     return sb.toString()
 }
 
-fun CharArray.print(): String {
-    return joinToString(", ", "[", "]") {
-        if (it.code in 0..127) "%02x".format(it.code) else "%04x".format(it.code)
-    }
-}
+fun Char.toHexString(): String =
+    if (code in 0..127) "%02x".format(code) else "%04x".format(code)
+
+fun CharArray.print(): String =
+    joinToString(", ", "[", "]") { it.toHexString() }
 
 fun ByteArray.print(): String {
     val sb = StringBuilder()
