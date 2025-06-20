@@ -5,6 +5,7 @@ import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import java.util.*
 
 private val logger = TLogging.logger { }
@@ -176,16 +177,18 @@ class RandomGeneratorTest : BaseJUnit5Test() {
         val lowSurrogateChar = 0xDC00.toChar() // low surrogate 시작값
         val fixedCharArray = CharArray(1) { lowSurrogateChar }
 
-        val result = RandomGenerator.random(
-            countLen = 1,
-            startPos = 0,
-            endPos = 1,
-            letters = false,
-            numbers = false,
-            chars = fixedCharArray
-        )
+        assertThrows<IllegalStateException> {
+            val result = RandomGenerator.random(
+                countLen = 1,
+                startPos = 0,
+                endPos = 1,
+                letters = false,
+                numbers = false,
+                chars = fixedCharArray
+            )
 
-        assertEquals(1, result.length)
+            assertEquals(1, result.length)
+        }
     }
 
     @Test

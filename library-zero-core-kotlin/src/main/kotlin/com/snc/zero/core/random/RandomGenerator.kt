@@ -58,14 +58,30 @@ class RandomGenerator private constructor() {
             val buffer = CharArray(countLen)
             var remainingCount = countLen
 
+            var previousRemainingCount = remainingCount
+            var sameCountIterations = 0
+
             while (remainingCount > 0) {
                 val ch = generateRandomChar(chars, random, start, end)
 
                 if (shouldIncludeChar(ch, letters, numbers)) {
                     remainingCount = handleCharacterPlacement(buffer, remainingCount, ch, random)
                 }
-            }
 
+                // 무한 루프 방지 로직
+                if (remainingCount == previousRemainingCount) {
+                    sameCountIterations++
+                    if (sameCountIterations >= 100) {
+                        throw IllegalStateException(
+                            "무한 루프가 감지되었습니다. remainingCount가 100번 이상 동일한 값($remainingCount)을 유지하고 있습니다."
+                        )
+                    }
+                } else {
+                    // remainingCount가 변경되면 카운터 리셋
+                    previousRemainingCount = remainingCount
+                    sameCountIterations = 0
+                }
+            }
             return String(buffer)
         }
 
