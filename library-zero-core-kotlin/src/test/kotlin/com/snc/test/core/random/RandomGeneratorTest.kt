@@ -4,8 +4,16 @@ import com.snc.zero.core.random.RandomGenerator
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.never
+import org.mockito.Mockito.times
+import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
+import org.mockito.kotlin.verify
 import java.util.*
 
 private val logger = TLogging.logger { }
@@ -210,6 +218,146 @@ class RandomGeneratorTest : BaseJUnit5Test() {
             )
 
             assertEquals(1, result.length)
+        }
+    }
+
+    @Nested
+    inner class HandleHighSurrogateTest {
+
+        private lateinit var mockRandom: Random
+
+        @BeforeEach
+        fun setUp() {
+            mockRandom = mock(Random::class.java)
+        }
+
+        @Test
+        fun `count가 1일 때 버퍼 변경 없이 count를 그대로 반환한다`() {
+            // Given
+            val buffer = CharArray(1) { 'a' }
+            val count = 1
+            val highSurrogateChar = 0xD800.toChar() // High surrogate 범위의 첫 번째 문자
+
+            // When
+            val result = RandomGenerator.handleHighSurrogate(buffer, count, highSurrogateChar, mockRandom)
+
+            // Then
+            assertEquals(1, result)
+            assertEquals('a', buffer[0]) // 버퍼가 변경되지 않았는지 확인
+            verify(mockRandom, never()).nextInt(any()) // Random이 호출되지 않았는지 확인
+        }
+
+        @Test
+        fun `count가 2 이상일 때 high surrogate pair를 정상적으로 생성한다`() {
+            // Given
+            val buffer = CharArray(5) { 'x' }
+            val count = 3
+            val highSurrogateChar = 0xD900.toChar() // High surrogate 범위 내의 문자
+            val randomValue = 50 // 0~127 범위 내의 값
+
+            `when`(mockRandom.nextInt(128)).thenReturn(randomValue)
+
+            // When
+            val result = RandomGenerator.handleHighSurrogate(buffer, count, highSurrogateChar, mockRandom)
+
+            // Then
+            assertEquals(1, result) // count - 2를 반환
+            assertEquals((0xDC00 + randomValue).toChar(), buffer[2]) // count - 1 위치에 low surrogate
+            assertEquals(highSurrogateChar, buffer[1]) // count - 2 위치에 high surrogate
+            verify(mockRandom, times(1)).nextInt(128)
+        }
+
+        @Test
+        fun `count가 2일 때 정확한 surrogate pair를 생성한다`() {
+            // Given
+            val buffer = CharArray(2) { 'y' }
+            val count = 2
+            val highSurrogateChar = 0xDB7F.toChar() // High surrogate 범위의 마지막 문자
+            val randomValue = 127 // nextInt(128)의 최대값
+
+            `when`(mockRandom.nextInt(128)).thenReturn(randomValue)
+
+            // When
+            val result = RandomGenerator.handleHighSurrogate(buffer, count, highSurrogateChar, mockRandom)
+
+            // Then
+            assertEquals(0, result) // count - 2 = 0
+            assertEquals((0xDC00 + randomValue).toChar(), buffer[1]) // Low surrogate at count-1
+            assertEquals(highSurrogateChar, buffer[0]) // High surrogate at count-2
+        }
+
+        @Test
+        fun `random nextInt가 0을 반환할 때 최소 low surrogate 값을 생성한다`() {
+            // Given
+            val buffer = CharArray(4) { 'z' }
+            val count = 4
+            val highSurrogateChar = 0xD850.toChar()
+            val randomValue = 0 // nextInt(128)의 최소값
+
+            `when`(mockRandom.nextInt(128)).thenReturn(randomValue)
+
+            // When
+            val result = RandomGenerator.handleHighSurrogate(buffer, count, highSurrogateChar, mockRandom)
+
+            // Then
+            assertEquals(2, result) // count - 2
+            assertEquals(0xDC00.toChar(), buffer[3]) // 최소 low surrogate 값
+            assertEquals(highSurrogateChar, buffer[2])
+        }
+
+        @Test
+        fun `다양한 high surrogate 문자에 대해 정상 처리한다`() {
+            // Given
+            val testCases = listOf(
+                0xD800.toChar(), // 범위 시작
+                0xD900.toChar(), // 중간값
+                0xDAFF.toChar(), // 중간값
+                0xDB7F.toChar()  // 범위 끝
+            )
+
+            testCases.forEach { highSurrogateChar ->
+                val buffer = CharArray(3) { 'a' }
+                val count = 3
+                val randomValue = 64 // 중간값
+
+                `when`(mockRandom.nextInt(128)).thenReturn(randomValue)
+
+                // When
+                val result = RandomGenerator.handleHighSurrogate(buffer, count, highSurrogateChar, mockRandom)
+
+                // Then
+                assertEquals(1, result)
+                assertEquals((0xDC00 + randomValue).toChar(), buffer[2])
+                assertEquals(highSurrogateChar, buffer[1])
+            }
+        }
+    }
+
+    @Nested
+    inner class IntegrationTest {
+
+        @Test
+        fun `실제 RandomGenerator에서 handleHighSurrogate 호출 시나리오`() {
+            // 이 테스트는 실제 클래스의 private 메소드를 직접 테스트할 수 없으므로
+            // 리플렉션을 사용하거나 public 메소드를 통한 간접 테스트를 수행할 수 있습니다.
+
+            // Given - High surrogate가 포함된 범위에서 문자열 생성 요청
+            val count = 10
+            val startPos = 0xD800 // High surrogate 시작 범위
+            val endPos = 0xDB7F   // High surrogate 끝 범위
+
+            // When
+            val result = RandomGenerator.random(
+                countLen = count,
+                startPos = startPos,
+                endPos = endPos,
+                letters = false,
+                numbers = false
+            )
+
+            // Then
+            assertNotNull(result)
+            assertTrue(result.length <= count) // Surrogate pair로 인해 길이가 줄어들 수 있음
         }
     }
 }

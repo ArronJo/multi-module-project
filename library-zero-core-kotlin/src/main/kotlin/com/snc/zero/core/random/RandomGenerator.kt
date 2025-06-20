@@ -150,7 +150,7 @@ class RandomGenerator private constructor() {
             return count - 2
         }
 
-        private fun handleHighSurrogate(
+        fun handleHighSurrogate(
             buffer: CharArray,
             count: Int,
             ch: Char,
