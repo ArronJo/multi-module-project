@@ -106,7 +106,7 @@ class PwValidatorTest : BaseJUnit5Test() {
         val result = validateWithInjectedValidator("whatever", mockValidator)
 
         assertFalse(result.success)
-        assertEquals("Password validation failed (no message)", result.reason)
+        assertEquals("", result.reason)
     }
 
     private fun validateWithInjectedValidator(password: String, validator: PasswordValidator): ValidateResult {
@@ -116,7 +116,7 @@ class PwValidatorTest : BaseJUnit5Test() {
             return if (messages.isNotEmpty()) {
                 ValidateResult(false, messages.first())
             } else {
-                ValidateResult(false, "Password validation failed (no message)")
+                ValidateResult(false, "") // Password validation failed (no message)
             }
         }
         return ValidateResult(true, "")
