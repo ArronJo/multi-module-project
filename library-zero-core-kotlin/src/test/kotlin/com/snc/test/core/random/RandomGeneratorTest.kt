@@ -161,15 +161,18 @@ class RandomGeneratorTest : BaseJUnit5Test() {
     @Test
     fun `random function skips invalid surrogate range DB80-DBFF`() {
         val invalidSurrogates = CharArray(1) { 0xDB80.toChar() } // 임의로 invalid surrogate 하나만 넣음
-        val result = RandomGenerator.random(
-            countLen = 1,
-            startPos = 0,
-            endPos = 1,
-            letters = false,
-            numbers = false,
-            chars = invalidSurrogates
-        )
-        assertEquals(1, result.length) // 요구 길이 충족하되, skip 처리되어 fallback 생성됨
+
+        assertThrows<IllegalStateException> {
+            val result = RandomGenerator.random(
+                countLen = 1,
+                startPos = 0,
+                endPos = 1,
+                letters = false,
+                numbers = false,
+                chars = invalidSurrogates
+            )
+            assertEquals(1, result.length) // 요구 길이 충족하되, skip 처리되어 fallback 생성됨
+        }
     }
 
     @Test
@@ -196,15 +199,17 @@ class RandomGeneratorTest : BaseJUnit5Test() {
         val highSurrogateChar = 0xD800.toChar() // high surrogate 시작값
         val fixedCharArray = CharArray(1) { highSurrogateChar }
 
-        val result = RandomGenerator.random(
-            countLen = 1,
-            startPos = 0,
-            endPos = 1,
-            letters = false,
-            numbers = false,
-            chars = fixedCharArray
-        )
+        assertThrows<IllegalStateException> {
+            val result = RandomGenerator.random(
+                countLen = 1,
+                startPos = 0,
+                endPos = 1,
+                letters = false,
+                numbers = false,
+                chars = fixedCharArray
+            )
 
-        assertEquals(1, result.length)
+            assertEquals(1, result.length)
+        }
     }
 }
