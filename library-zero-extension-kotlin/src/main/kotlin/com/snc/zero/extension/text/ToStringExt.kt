@@ -51,67 +51,107 @@ fun String.safeSubstring(startIndex: Int, endIndex: Int = this.length): String {
 }
 
 fun String.printJSON(indentSize: Int = 2, padChar: Char = ' '): String {
-    fun nextCharPos(sb: String, i: Int): Int {
-        var j = 1
-        while (i + j < sb.length) {
-            // ignore space after comma as we have added a newline
-            val nextChar = sb.getOrElse(i + j) { ' ' }
-            if (nextChar != ' ') {
-                return maxOf(i, i + j - 1) // 음수 방지
-            }
-            j++
+    val processor = JsonFormatter(indentSize, padChar)
+    return processor.format(this)
+}
+
+private class JsonFormatter(
+    private val indentSize: Int,
+    private val padChar: Char
+) {
+    private var indentLevel = 0
+    private val sb = StringBuilder()
+
+    fun format(input: String): String {
+        var i = 0
+        while (i < input.length) {
+            val char = input[i]
+            i = processCharacter(input, i, char)
         }
-        return i
+        return sb.toString()
     }
 
-    var indentLevel = 0
-    fun padding() = "".padStart(maxOf(0, indentLevel * indentSize), padChar) // 음수 방지
-    val toString = toString()
-    val sb = StringBuilder(toString.length)
-
-    var i = 0
-    while (i < toString.length) {
-        when (val char = toString[i]) {
-            '(', '[', '{' -> {
-                sb.append(char).appendLine()
-                indentLevel++
-                sb.append(padding())
-                i = nextCharPos(toString, i)
-            }
+    private fun processCharacter(input: String, currentIndex: Int, char: Char): Int {
+        return when (char) {
+            '(', '[', '{' -> handleOpeningBrace(input, currentIndex, char)
             ')', ']', '}' -> {
-                // 닫는 괄호 앞의 공백 제거
-                while (sb.isNotEmpty() && sb.last() == ' ') {
-                    sb.deleteCharAt(sb.length - 1)
-                }
-                indentLevel = maxOf(0, indentLevel - 1) // 음수 방지
-                sb.appendLine().append(padding()).append(char)
+                handleClosingBrace(char)
+                currentIndex + 1
             }
-            ',' -> {
-                // 쉼표 앞의 공백 제거
-                while (sb.isNotEmpty() && sb.last() == ' ') {
-                    sb.deleteCharAt(sb.length - 1)
-                }
-                sb.append(char).appendLine()
-                sb.append(padding())
-                i = nextCharPos(toString, i)
-            }
+            ',' -> handleComma(input, currentIndex)
             ' ' -> {
-                // 연속된 공백 처리: 현재 위치가 특수문자 앞이 아닌 경우에만 공백 추가
-                val nextCharIndex = i + 1
-                if (nextCharIndex < toString.length) {
-                    val nextChar = toString[nextCharIndex]
-                    if (nextChar !in "()[]{}," && sb.isNotEmpty() && sb.last() != ' ') {
-                        sb.append(char)
-                    }
-                } else if (sb.isNotEmpty() && sb.last() != ' ') {
-                    sb.append(char)
-                }
+                handleSpace(input, currentIndex)
+                currentIndex + 1
             }
             else -> {
-                sb.append(char)
+                handleRegularChar(char)
+                currentIndex + 1
             }
         }
-        i++
     }
-    return sb.toString()
+
+    private fun handleOpeningBrace(input: String, currentIndex: Int, char: Char): Int {
+        sb.append(char).appendLine()
+        indentLevel++
+        sb.append(padding())
+        return findNextNonSpacePosition(input, currentIndex)
+    }
+
+    private fun handleClosingBrace(char: Char) {
+        removeTrailingSpaces()
+        indentLevel = maxOf(0, indentLevel - 1)
+        sb.appendLine().append(padding()).append(char)
+    }
+
+    private fun handleComma(input: String, currentIndex: Int): Int {
+        removeTrailingSpaces()
+        sb.append(',').appendLine()
+        sb.append(padding())
+        return findNextNonSpacePosition(input, currentIndex)
+    }
+
+    private fun handleSpace(input: String, currentIndex: Int) {
+        if (shouldAddSpace(input, currentIndex)) {
+            sb.append(' ')
+        }
+    }
+
+    private fun handleRegularChar(char: Char) {
+        sb.append(char)
+    }
+
+    private fun shouldAddSpace(input: String, currentIndex: Int): Boolean {
+        val nextCharIndex = currentIndex + 1
+        return when {
+            nextCharIndex >= input.length -> hasValidPreviousChar()
+            isSpecialChar(input[nextCharIndex]) -> false
+            else -> hasValidPreviousChar()
+        }
+    }
+
+    private fun hasValidPreviousChar(): Boolean {
+        return sb.isNotEmpty() && sb.last() != ' '
+    }
+
+    private fun isSpecialChar(char: Char): Boolean {
+        return char in "()[]{},"
+    }
+
+    private fun removeTrailingSpaces() {
+        while (sb.isNotEmpty() && sb.last() == ' ') {
+            sb.deleteCharAt(sb.length - 1)
+        }
+    }
+
+    private fun findNextNonSpacePosition(input: String, currentIndex: Int): Int {
+        var position = currentIndex + 1
+        while (position < input.length && input[position] == ' ') {
+            position++
+        }
+        return position
+    }
+
+    private fun padding(): String {
+        return "".padStart(maxOf(0, indentLevel * indentSize), padChar)
+    }
 }

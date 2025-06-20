@@ -1004,4 +1004,221 @@ class ToStringExtTest : BaseJUnit5Test() {
             }
         }
     }
+
+    @Nested
+    inner class PrintJsonTest {
+
+        @Nested
+        @DisplayName("기본 괄호 처리")
+        inner class BasicBracketHandling {
+
+            @Test
+            @DisplayName("단순한 여는 괄호는 새 줄과 들여쓰기를 추가한다")
+            fun `단순한 여는 괄호는 새 줄과 들여쓰기를 추가한다`() {
+                // given
+                val input = "(test)"
+
+                // when
+                val result = input.printJSON()
+
+                // then
+                assertEquals("(\n  test\n)", result)
+            }
+
+            @Test
+            @DisplayName("단순한 닫는 괄호는 들여쓰기 레벨을 감소시킨다")
+            fun `단순한 닫는 괄호는 들여쓰기 레벨을 감소시킨다`() {
+                // given
+                val input = "{test}"
+
+                // when
+                val result = input.printJSON()
+
+                // then
+                assertEquals("{\n  test\n}", result)
+            }
+        }
+
+        @Nested
+        @DisplayName("중첩 구조 처리")
+        inner class NestedStructureHandling {
+
+            @Test
+            @DisplayName("중첩된 괄호는 들여쓰기 레벨을 증가시킨다")
+            fun `중첩된 괄호는 들여쓰기 레벨을 증가시킨다`() {
+                // given
+                val input = "{{test}}"
+
+                // when
+                val result = input.printJSON()
+
+                // then
+                assertEquals("{\n  {\n    test\n  }\n}", result)
+            }
+
+            @Test
+            @DisplayName("중첩된 닫는 괄호 처리")
+            fun `중첩된 닫는 괄호는 들여쓰기 레벨이 감소한다`() {
+                // given
+                val input = "({[test]})"
+
+                // when
+                val result = input.printJSON()
+
+                // then
+                assertEquals("(\n  {\n    [\n      test\n    ]\n  }\n)", result)
+            }
+        }
+
+        @Nested
+        @DisplayName("쉼표 처리")
+        inner class CommaHandling {
+
+            @Test
+            @DisplayName("쉼표는 새 줄과 들여쓰기를 추가한다")
+            fun `쉼표는 새 줄과 들여쓰기를 추가한다`() {
+                // given
+                val input = "{a,b,c}"
+
+                // when
+                val result = input.printJSON()
+
+                // then
+                assertEquals("{\n  a,\n  b,\n  c\n}", result)
+            }
+
+            @Test
+            @DisplayName("쉼표 앞의 공백은 제거된다")
+            fun `쉼표 앞의 공백은 제거된다`() {
+                // given
+                val input = "{a ,b ,c}"
+
+                // when
+                val result = input.printJSON()
+
+                // then
+                assertEquals("{\n  a,\n  b,\n  c\n}", result)
+            }
+        }
+
+        @Nested
+        @DisplayName("공백 처리")
+        inner class SpaceHandling {
+
+            @Test
+            @DisplayName("일반 텍스트 사이의 공백은 유지된다")
+            fun `일반 텍스트 사이의 공백은 유지된다`() {
+                // given
+                val input = "{hello world}"
+
+                // when
+                val result = input.printJSON()
+
+                // then
+                assertEquals("{\n  hello world\n}", result)
+            }
+
+            @Test
+            @DisplayName("특수 문자 앞의 공백은 제거된다")
+            fun `특수 문자 앞의 공백은 제거된다`() {
+                // given
+                val input = "{test }"
+
+                // when
+                val result = input.printJSON()
+
+                // then
+                assertEquals("{\n  test\n}", result)
+            }
+
+            @Test
+            @DisplayName("연속된 공백은 하나로 압축된다")
+            fun `연속된 공백은 적절히 처리된다`() {
+                // given
+                val input = "{hello    world}"
+
+                // when
+                val result = input.printJSON()
+
+                // then
+                assertEquals("{\n  hello world\n}", result)
+            }
+        }
+
+        @Nested
+        @DisplayName("들여쓰기 설정")
+        inner class IndentationSettings {
+
+            @Test
+            @DisplayName("커스텀 들여쓰기 크기가 적용된다")
+            fun `커스텀 들여쓰기 크기가 적용된다`() {
+                // given
+                val input = "{test}"
+
+                // when
+                val result = input.printJSON(indentSize = 4)
+
+                // then
+                assertEquals("{\n    test\n}", result)
+            }
+
+            @Test
+            @DisplayName("커스텀 패딩 문자가 적용된다")
+            fun `커스텀 패딩 문자가 적용된다`() {
+                // given
+                val input = "{test}"
+
+                // when
+                val result = input.printJSON(indentSize = 2, padChar = '\t')
+
+                // then
+                assertEquals("{\n\t\ttest\n}", result)
+            }
+        }
+
+        @Nested
+        @DisplayName("엣지 케이스")
+        inner class EdgeCases {
+
+            @Test
+            @DisplayName("빈 문자열은 그대로 반환된다")
+            fun `빈 문자열은 그대로 반환된다`() {
+                // given
+                val input = ""
+
+                // when
+                val result = input.printJSON()
+
+                // then
+                assertEquals("", result)
+            }
+
+            @Test
+            @DisplayName("특수 문자만 있는 경우")
+            fun `특수 문자만 있는 경우 처리된다`() {
+                // given
+                val input = "{}"
+
+                // when
+                val result = input.printJSON()
+
+                // then
+                assertEquals("{\n\n}", result)
+            }
+
+            @Test
+            @DisplayName("복잡한 중첩 구조")
+            fun `복잡한 중첩 구조가 올바르게 처리된다`() {
+                // given
+                val input = "{name:John,age:30,address:{city:Seoul,country:Korea}}"
+
+                // when
+                val result = input.printJSON()
+
+                // then
+                val expected = "{\n  name:John,\n  age:30,\n  address:{\n    city:Seoul,\n    country:Korea\n  }\n}"
+                assertEquals(expected, result)
+            }
+        }
+    }
 }
