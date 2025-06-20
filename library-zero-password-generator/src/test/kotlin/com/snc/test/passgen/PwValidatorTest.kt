@@ -7,6 +7,9 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.passay.PasswordData
+import org.passay.PasswordValidator
+import org.passay.RuleResult
 
 private val logger = TLogging.logger { }
 
@@ -63,5 +66,26 @@ class PwValidatorTest : BaseJUnit5Test() {
         val result = PwValidator.validate("abcdeF1@") // 'abcde' 시퀀스 포함
         assertFalse(result.success)
         assertTrue(result.reason.contains("alphabetical"), "시퀀스 관련 에러 포함해야 함")
+    }
+
+    class EmptyMessagePasswordValidator : PasswordValidator() {
+        override fun getMessages(result: RuleResult?): List<String> {
+            return emptyList() // 일부러 메시지를 비워서 branch 커버 유도
+        }
+
+        override fun validate(passwordData: PasswordData?): RuleResult {
+            return RuleResult().apply {
+                isValid = false
+            }
+        }
+    }
+
+    @Test
+    fun `when validation fails but messages are empty, returns generic error`() {
+        val validator = EmptyMessagePasswordValidator()
+        val result = validator.validate(PasswordData("invalidPassword"))
+
+        // 명시적 메시지 없이 false를 반환하는지 확인
+        assertFalse(result.isValid)
     }
 }

@@ -44,11 +44,7 @@ class IOUtil private constructor() {
         }
 
         fun gc() {
-            try {
-                System.gc()
-            } catch (_: Exception) {
-                //
-            }
+            System.gc()
         }
     }
 }
