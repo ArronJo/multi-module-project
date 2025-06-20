@@ -18,6 +18,7 @@ dependencies {
 
     testImplementation(project(":library-zero-test-kotlin"))
     testImplementation(libs.junit.jupiter)
+    testImplementation(libs.mockito.kotlin)
 
     testRuntimeOnly(libs.junit.platform.launcher)
     testRuntimeOnly(libs.junit.jupiter.engine)

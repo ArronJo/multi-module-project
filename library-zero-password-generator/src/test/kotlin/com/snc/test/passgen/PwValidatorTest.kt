@@ -2,11 +2,15 @@ package com.snc.test.passgen
 
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.passgen.PwValidator
+import com.snc.zero.passgen.result.ValidateResult
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito.mock
+import org.mockito.kotlin.any
+import org.mockito.kotlin.whenever
 import org.passay.PasswordData
 import org.passay.PasswordValidator
 import org.passay.RuleResult
@@ -87,5 +91,35 @@ class PwValidatorTest : BaseJUnit5Test() {
 
         // 명시적 메시지 없이 false를 반환하는지 확인
         assertFalse(result.isValid)
+    }
+
+    @Test
+    fun `when result is invalid but no messages, still returns default invalid result`() {
+        // given
+        val mockValidator = mock<PasswordValidator>()
+        val mockResult = mock<RuleResult>()
+
+        whenever(mockValidator.validate(any())).thenReturn(mockResult)
+        whenever(mockResult.isValid).thenReturn(false)
+        whenever(mockValidator.getMessages(mockResult)).thenReturn(emptyList()) // 핵심: empty list
+
+        val result = validateWithInjectedValidator("whatever", mockValidator)
+
+        assertFalse(result.success)
+        assertEquals("Password validation failed (no message)", result.reason)
+    }
+
+    private fun validateWithInjectedValidator(password: String, validator: PasswordValidator): ValidateResult {
+        val result = validator.validate(PasswordData(password))
+        if (!result.isValid) {
+            val messages = validator.getMessages(result)
+            return if (messages.isNotEmpty()) {
+                ValidateResult(false, messages.first())
+            } else {
+                ValidateResult(false, "Password validation failed (no message)")
+            }
+        }
+        return ValidateResult(true, "")
+
     }
 }
