@@ -33,7 +33,7 @@ class PrintExtTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `Print - CharArray`() {
+    fun `Print - CharArray 1`() {
         // given
         val data = "Aa1가"
         // when
@@ -41,6 +41,17 @@ class PrintExtTest : BaseJUnit5Test() {
         // then
         logger.debug { "Print - CharArray 결과: $v1" }
         assertEquals("[41, 61, 31, ac00]", v1)
+    }
+
+    @Test
+    fun `Print - CharArray 2`() {
+        // given
+        val data = charArrayOf(0x60.toChar(), 0xAC00.toChar())
+        // when
+        val v1 = data.print()
+        // then
+        logger.debug { "Print - CharArray 결과: $v1" }
+        //assertEquals("[41, 61, 31, ac00]", v1)
     }
 
     @Test
