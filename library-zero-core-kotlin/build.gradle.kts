@@ -17,6 +17,7 @@ dependencies {
     implementation(project(":library-zero-extension-kotlin"))
     implementation(libs.google.gson)
     implementation(libs.ua.parser)
+    implementation(libs.kotlinx.serialization.json)
 
     testImplementation(project(":library-zero-test-kotlin"))
     testImplementation(libs.junit.jupiter)
