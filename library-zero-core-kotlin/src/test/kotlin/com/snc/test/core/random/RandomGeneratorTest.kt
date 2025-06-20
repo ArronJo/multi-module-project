@@ -116,6 +116,7 @@ class RandomGeneratorTest : BaseJUnit5Test() {
     @Test
     fun `should generate random string with special chars when letters and numbers are false`() {
         val result = RandomGenerator.random(12, letters = false, numbers = false)
+        println(result)
         assertEquals(12, result.length)
         assertTrue(result.any { !it.isLetterOrDigit() })
     }
