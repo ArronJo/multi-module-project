@@ -197,9 +197,16 @@ class UriTest : BaseJUnit5Test() {
     }
 
     @Test
+    fun `IPv6 host 닫는 대괄호가 path 이후에 있으면 예외 발생`() {
+        val uri = "http://[::1/path]"
+        val exception = assertThrows<MalformedURLException> {
+            Uri(uri)
+        }
+        assertTrue(exception.message!!.contains("Invalid URI"))
+    }
+
+    @Test
     fun `IPv6 host가 있지만 닫는 대괄호 위치가 endIndex 보다 뒤에 있으면 예외 발생`() {
-        //val uri = "http://[::1]:80/path"
-        // 유효한 포맷이지만 endIndex를 조작해야 해당 조건을 강제로 유발할 수 있음.
         // 아래 예시는 edge case를 흉내내기 위한 예로, Uri 클래스에 약간의 조정 없이는 테스트하기 어려움.
         val brokenUri = "http://[::1/80" // 닫는 대괄호가 없고, 포트 콜론도 없음
         val exception = assertThrows<MalformedURLException> {
