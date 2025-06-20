@@ -77,7 +77,11 @@ class Uri(val uri: String) {
 
     private fun parseRegularHost(startIndex: Int, endIndex: Int): Int {
         val colon = uri.indexOf(':', startIndex)
-        val hostEnd = if (colon < 0 || colon > endIndex) endIndex else colon
+        val hostEnd = if (colon < 0 || colon > endIndex) {
+            endIndex
+        } else {
+            colon
+        }
 
         if (startIndex < hostEnd) {
             host = uri.substring(startIndex, hostEnd)
