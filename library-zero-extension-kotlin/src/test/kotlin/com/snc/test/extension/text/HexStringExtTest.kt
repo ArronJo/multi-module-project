@@ -4,6 +4,7 @@ import com.snc.zero.extension.text.toHexString
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -259,6 +260,124 @@ class HexStringExtTest : BaseJUnit5Test() {
 
             // Then
             assertEquals("5c", result)
+        }
+    }
+
+    @Nested
+    @DisplayName("추가 조건 커버리지 테스트")
+    inner class AdditionalCoverageTest {
+
+        @Test
+        @DisplayName("코드 1 테스트 - 범위 내 최솟값 근처")
+        fun testCode1() {
+            // Given
+            val char1 = 1.toChar()
+
+            // When
+            val result = char1.toHexString()
+
+            // Then
+            assertEquals("01", result)
+        }
+
+        @Test
+        @DisplayName("코드 126 테스트 - ASCII 최댓값 바로 전")
+        fun testCode126() {
+            // Given
+            val char126 = 126.toChar()
+
+            // When
+            val result = char126.toHexString()
+
+            // Then
+            assertEquals("7e", result)
+        }
+
+        @Test
+        @DisplayName("코드 200 테스트 - 확장 범위 중간값")
+        fun testCode200() {
+            // Given
+            val char200 = 200.toChar()
+
+            // When
+            val result = char200.toHexString()
+
+            // Then
+            assertEquals("00c8", result)
+        }
+
+        @Test
+        @DisplayName("코드 127 정확한 경계값 재검증")
+        fun testExactBoundary127() {
+            // Given
+            val exactBoundary = 127.toChar()
+
+            // When
+            val result = exactBoundary.toHexString()
+
+            // Then
+            assertEquals("7f", result)
+            assertTrue(exactBoundary.code == 127)
+            assertTrue(exactBoundary.code in 0..127)
+        }
+
+        @Test
+        @DisplayName("코드 128 정확한 경계값 재검증")
+        fun testExactBoundary128() {
+            // Given
+            val exactBoundary = 128.toChar()
+
+            // When
+            val result = exactBoundary.toHexString()
+
+            // Then
+            assertEquals("0080", result)
+            assertTrue(exactBoundary.code == 128)
+            assertFalse(exactBoundary.code in 0..127)
+        }
+
+        @Test
+        @DisplayName("음수 범위 테스트 - 실제로는 불가능하지만 논리적 확인")
+        fun testNegativeRangeLogic() {
+            // 실제 Char는 음수가 될 수 없지만, 범위 조건의 논리적 완성도를 위해
+            // 0 값에서 범위 시작점 확인
+            val zeroChar = 0.toChar()
+            val result = zeroChar.toHexString()
+
+            assertEquals("00", result)
+            assertTrue(zeroChar.code >= 0)
+            assertTrue(zeroChar.code in 0..127)
+        }
+
+        @Test
+        @DisplayName("최대 유니코드 값 테스트")
+        fun testMaxUnicodeValue() {
+            // Given
+            val maxChar = 65535.toChar() // Char의 최댓값
+
+            // When
+            val result = maxChar.toHexString()
+
+            // Then
+            assertEquals("ffff", result)
+            assertFalse(maxChar.code in 0..127)
+        }
+
+        @Test
+        @DisplayName("중간 범위 경계 테스트 - 범위 조건의 모든 분기")
+        fun testAllBranchConditions() {
+            // 범위 내: true 분기 테스트
+            val inRange = 64.toChar() // '@' 문자
+            assertEquals("40", inRange.toHexString())
+
+            // 범위 밖: false 분기 테스트
+            val outRange = 256.toChar()
+            assertEquals("0100", outRange.toHexString())
+
+            // 경계값들 재확인
+            assertTrue(0.toChar().code in 0..127)
+            assertTrue(127.toChar().code in 0..127)
+            assertFalse(128.toChar().code in 0..127)
         }
     }
 }

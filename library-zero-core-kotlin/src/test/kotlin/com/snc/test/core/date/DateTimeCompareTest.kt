@@ -61,83 +61,150 @@ class DateTimeCompareTest : BaseJUnit5Test() {
         assertEquals(22, v1)
     }
 
-    @Nested
-    @DisplayName("isBetweenDate 메서드 테스트")
-    inner class IsBetweenDateTest {
+    @Test
+    fun `compare string dates with various operators`() {
+        assertTrue(DateTimeCompare.compare("2025-06-13", "<", "2025-06-14"))
+        assertTrue(DateTimeCompare.compare("2025-06-13", "<=", "2025-06-13"))
+        assertTrue(DateTimeCompare.compare("2025-06-13", "==", "2025-06-13"))
+        assertTrue(DateTimeCompare.compare("2025-06-13", "=", "2025-06-13"))
+        assertTrue(DateTimeCompare.compare("2025-06-13", "!=", "2025-06-14"))
+        assertTrue(DateTimeCompare.compare("2025-06-14", ">", "2025-06-13"))
+        assertTrue(DateTimeCompare.compare("2025-06-14", ">=", "2025-06-14"))
 
-        @Test
-        @DisplayName("날짜가 범위 내에 있는 경우 0을 반환")
-        fun `should return 0 when date is between start and end date`() {
-            // Given
-            val startDate = "2024-01-01"
-            val date = "2024-01-15"
-            val endDate = "2024-01-31"
+        assertFalse(DateTimeCompare.compare("2025-06-13", ">", "2025-06-14"))
+        assertFalse(DateTimeCompare.compare("2025-06-13", "<", "2025-06-12"))
+        assertFalse(DateTimeCompare.compare("2025-06-13", "!=", "2025-06-13"))
+        assertFalse(DateTimeCompare.compare("2025-06-13", "==", "2025-06-14"))
+    }
 
-            // When
-            val result = DateTimeCompare.isBetweenDate(startDate, date, endDate)
+    @Test
+    fun `isBetweenDate returns correct code`() {
+        assertEquals(0, DateTimeCompare.isBetweenDate("2025-06-10", "2025-06-13", "2025-06-15"))
+        assertEquals(-1, DateTimeCompare.isBetweenDate("2025-06-10", "2025-06-09", "2025-06-15"))
+        assertEquals(1, DateTimeCompare.isBetweenDate("2025-06-10", "2025-06-16", "2025-06-15"))
+        assertEquals(0, DateTimeCompare.isBetweenDate("2025-06-13", "2025-06-13", "2025-06-13"))
+    }
 
-            // Then
-            assertEquals(0, result)
+    @Test
+    fun `betweenDays Calendar calculates days accurately`() {
+        val cal1 = Calendar.getInstance().apply {
+            set(2025, Calendar.JUNE, 10, 0, 0, 0)
+            set(Calendar.MILLISECOND, 0)
         }
-
-        @Test
-        @DisplayName("날짜가 시작 날짜보다 이전인 경우 -1을 반환")
-        fun `should return -1 when date is before start date`() {
-            // Given
-            val startDate = "2024-01-15"
-            val date = "2024-01-01"
-            val endDate = "2024-01-31"
-
-            // When
-            val result = DateTimeCompare.isBetweenDate(startDate, date, endDate)
-
-            // Then
-            assertEquals(-1, result)
+        val cal2 = Calendar.getInstance().apply {
+            set(2025, Calendar.JUNE, 15, 0, 0, 0)
+            set(Calendar.MILLISECOND, 0)
         }
+        val days = DateTimeCompare.betweenDays(cal1, cal2)
+        assertEquals(5, days)
+    }
 
-        @Test
-        @DisplayName("날짜가 종료 날짜보다 이후인 경우 1을 반환")
-        fun `should return 1 when date is after end date`() {
-            // Given
-            val startDate = "2024-01-01"
-            val date = "2024-02-15"
-            val endDate = "2024-01-31"
+    @Test
+    fun `betweenDays String parses and calculates correctly`() {
+        val days = DateTimeCompare.betweenDays("2025-06-10", "2025-06-15")
+        assertEquals(5, days)
+    }
 
-            // When
-            val result = DateTimeCompare.isBetweenDate(startDate, date, endDate)
+    @Test
+    fun `betweenDays negative difference`() {
+        val days = DateTimeCompare.betweenDays("2025-06-15", "2025-06-10")
+        assertEquals(-5, days)
+    }
 
-            // Then
-            assertEquals(1, result)
+    @Test
+    fun `betweenDays same day should be 0`() {
+        val days = DateTimeCompare.betweenDays("2025-06-13", "2025-06-13")
+        assertEquals(0, days)
+    }
+
+    private val earlier = "2024-01-01"
+    private val same = "2024-01-01"
+    private val later = "2025-01-01"
+
+    @Test
+    fun `valid operators should compare correctly`() {
+        assertTrue(DateTimeCompare.compare(later, ">", earlier))
+        assertFalse(DateTimeCompare.compare(earlier, ">", later))
+
+        assertTrue(DateTimeCompare.compare(earlier, "<", later))
+        assertFalse(DateTimeCompare.compare(later, "<", earlier))
+
+        assertTrue(DateTimeCompare.compare(earlier, ">=", earlier))
+        assertTrue(DateTimeCompare.compare(later, ">=", earlier))
+        assertFalse(DateTimeCompare.compare(earlier, ">=", later))
+
+        assertTrue(DateTimeCompare.compare(earlier, "<=", later))
+        assertTrue(DateTimeCompare.compare(earlier, "<=", same))
+        assertFalse(DateTimeCompare.compare(later, "<=", earlier))
+
+        assertTrue(DateTimeCompare.compare(earlier, "==", same))
+        assertTrue(DateTimeCompare.compare(earlier, "=", same))
+        assertFalse(DateTimeCompare.compare(earlier, "==", later))
+
+        assertTrue(DateTimeCompare.compare(earlier, "!=", later))
+        assertFalse(DateTimeCompare.compare(earlier, "!=", same))
+    }
+
+    @Test
+    fun `invalid operators should return false`() {
+        val invalidOperators = listOf(
+            "=>", "=<", "!==", "><", "<>", "=>=", "=<=", "===", "== =",
+            "!!", "!>", "!<", "><", "~=", "equal", "lte"
+        )
+
+        for (op in invalidOperators) {
+            val result = DateTimeCompare.compare(earlier, op, later)
+            assertFalse(result, "Expected false for invalid operator: '$op'")
         }
+    }
 
-        @Test
-        @DisplayName("날짜가 시작 날짜와 같은 경우 0을 반환")
-        fun `should return 0 when date equals start date`() {
-            // Given
-            val startDate = "2024-01-15"
-            val date = "2024-01-15"
-            val endDate = "2024-01-31"
+    @Test
+    fun `compare operator - greater than`() {
+        assertTrue(DateTimeCompare.compare(later, ">", earlier))
+        assertFalse(DateTimeCompare.compare(earlier, ">", later))
+        assertFalse(DateTimeCompare.compare(same, ">", same))
+    }
 
-            // When
-            val result = DateTimeCompare.isBetweenDate(startDate, date, endDate)
+    @Test
+    fun `compare operator - greater than or equal`() {
+        assertTrue(DateTimeCompare.compare(later, ">=", earlier))
+        assertTrue(DateTimeCompare.compare(same, ">=", same))
+        assertFalse(DateTimeCompare.compare(earlier, ">=", later))
+    }
 
-            // Then
-            assertEquals(0, result)
-        }
+    @Test
+    fun `compare operator - less than`() {
+        assertTrue(DateTimeCompare.compare(earlier, "<", later))
+        assertFalse(DateTimeCompare.compare(later, "<", earlier))
+        assertFalse(DateTimeCompare.compare(same, "<", same))
+    }
 
-        @Test
-        @DisplayName("날짜가 종료 날짜와 같은 경우 0을 반환")
-        fun `should return 0 when date equals end date`() {
-            // Given
-            val startDate = "2024-01-01"
-            val date = "2024-01-31"
-            val endDate = "2024-01-31"
+    @Test
+    fun `compare operator - less than or equal`() {
+        assertTrue(DateTimeCompare.compare(earlier, "<=", later))
+        assertTrue(DateTimeCompare.compare(same, "<=", same))
+        assertFalse(DateTimeCompare.compare(later, "<=", earlier))
+    }
 
-            // When
-            val result = DateTimeCompare.isBetweenDate(startDate, date, endDate)
+    @Test
+    fun `compare operator - equals`() {
+        assertTrue(DateTimeCompare.compare(same, "==", same))
+        assertTrue(DateTimeCompare.compare(same, "=", same)) // alias
+        assertFalse(DateTimeCompare.compare(earlier, "==", later))
+        assertFalse(DateTimeCompare.compare(earlier, "=", later))
+    }
 
-            // Then
-            assertEquals(0, result)
+    @Test
+    fun `compare operator - not equals`() {
+        assertTrue(DateTimeCompare.compare(earlier, "!=", later))
+        assertFalse(DateTimeCompare.compare(same, "!=", same))
+    }
+
+    @Test
+    fun `compare operator - invalid signs return false`() {
+        val invalidOps = listOf("", "=", "!==", "><", "<>", "===", "=", ">>>", "~=", "??", "=>", "=<")
+        for (op in invalidOps) {
+            assertFalse(DateTimeCompare.compare(earlier, op, later), "Expected false for operator: $op")
         }
     }
 
@@ -435,151 +502,543 @@ class DateTimeCompareTest : BaseJUnit5Test() {
         }
     }
 
-    @Test
-    fun `compare string dates with various operators`() {
-        assertTrue(DateTimeCompare.compare("2025-06-13", "<", "2025-06-14"))
-        assertTrue(DateTimeCompare.compare("2025-06-13", "<=", "2025-06-13"))
-        assertTrue(DateTimeCompare.compare("2025-06-13", "==", "2025-06-13"))
-        assertTrue(DateTimeCompare.compare("2025-06-13", "=", "2025-06-13"))
-        assertTrue(DateTimeCompare.compare("2025-06-13", "!=", "2025-06-14"))
-        assertTrue(DateTimeCompare.compare("2025-06-14", ">", "2025-06-13"))
-        assertTrue(DateTimeCompare.compare("2025-06-14", ">=", "2025-06-14"))
+    @Nested
+    @DisplayName("compare 메서드 테스트 - 모든 JaCoCo 조건 커버리지")
+    inner class CompareMethodTest {
 
-        assertFalse(DateTimeCompare.compare("2025-06-13", ">", "2025-06-14"))
-        assertFalse(DateTimeCompare.compare("2025-06-13", "<", "2025-06-12"))
-        assertFalse(DateTimeCompare.compare("2025-06-13", "!=", "2025-06-13"))
-        assertFalse(DateTimeCompare.compare("2025-06-13", "==", "2025-06-14"))
-    }
+        @Nested
+        @DisplayName(">= 연산자 테스트")
+        inner class GreaterThanOrEqualTest {
 
-    @Test
-    fun `isBetweenDate returns correct code`() {
-        assertEquals(0, DateTimeCompare.isBetweenDate("2025-06-10", "2025-06-13", "2025-06-15"))
-        assertEquals(-1, DateTimeCompare.isBetweenDate("2025-06-10", "2025-06-09", "2025-06-15"))
-        assertEquals(1, DateTimeCompare.isBetweenDate("2025-06-10", "2025-06-16", "2025-06-15"))
-        assertEquals(0, DateTimeCompare.isBetweenDate("2025-06-13", "2025-06-13", "2025-06-13"))
-    }
+            @Test
+            @DisplayName("data1이 data2보다 큰 경우 - true 반환")
+            fun `should return true when data1 is greater than data2`() {
+                // given
+                val data1 = "2024-01-02"
+                val data2 = "2024-01-01"
+                val sign = ">="
 
-    @Test
-    fun `betweenDays Calendar calculates days accurately`() {
-        val cal1 = Calendar.getInstance().apply {
-            set(2025, Calendar.JUNE, 10, 0, 0, 0)
-            set(Calendar.MILLISECOND, 0)
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
+
+                // then
+                assertTrue(result)
+            }
+
+            @Test
+            @DisplayName("data1이 data2와 같은 경우 - true 반환")
+            fun `should return true when data1 equals data2`() {
+                // given
+                val data1 = "2024-01-01"
+                val data2 = "2024-01-01"
+                val sign = ">="
+
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
+
+                // then
+                assertTrue(result)
+            }
+
+            @Test
+            @DisplayName("data1이 data2보다 작은 경우 - false 반환")
+            fun `should return false when data1 is less than data2`() {
+                // given
+                val data1 = "2024-01-01"
+                val data2 = "2024-01-02"
+                val sign = ">="
+
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
+
+                // then
+                assertFalse(result)
+            }
         }
-        val cal2 = Calendar.getInstance().apply {
-            set(2025, Calendar.JUNE, 15, 0, 0, 0)
-            set(Calendar.MILLISECOND, 0)
+
+        @Nested
+        @DisplayName("<= 연산자 테스트")
+        inner class LessThanOrEqualTest {
+
+            @Test
+            @DisplayName("data1이 data2보다 작은 경우 - true 반환")
+            fun `should return true when data1 is less than data2`() {
+                // given
+                val data1 = "2024-01-01"
+                val data2 = "2024-01-02"
+                val sign = "<="
+
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
+
+                // then
+                assertTrue(result)
+            }
+
+            @Test
+            @DisplayName("data1이 data2와 같은 경우 - true 반환")
+            fun `should return true when data1 equals data2`() {
+                // given
+                val data1 = "2024-01-01"
+                val data2 = "2024-01-01"
+                val sign = "<="
+
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
+
+                // then
+                assertTrue(result)
+            }
+
+            @Test
+            @DisplayName("data1이 data2보다 큰 경우 - false 반환")
+            fun `should return false when data1 is greater than data2`() {
+                // given
+                val data1 = "2024-01-02"
+                val data2 = "2024-01-01"
+                val sign = "<="
+
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
+
+                // then
+                assertFalse(result)
+            }
         }
-        val days = DateTimeCompare.betweenDays(cal1, cal2)
-        assertEquals(5, days)
-    }
 
-    @Test
-    fun `betweenDays String parses and calculates correctly`() {
-        val days = DateTimeCompare.betweenDays("2025-06-10", "2025-06-15")
-        assertEquals(5, days)
-    }
+        @Nested
+        @DisplayName("== 연산자 테스트")
+        inner class EqualsTest {
 
-    @Test
-    fun `betweenDays negative difference`() {
-        val days = DateTimeCompare.betweenDays("2025-06-15", "2025-06-10")
-        assertEquals(-5, days)
-    }
+            @Test
+            @DisplayName("data1이 data2와 같은 경우 - true 반환")
+            fun `should return true when data1 equals data2 with double equals`() {
+                // given
+                val data1 = "2024-01-01"
+                val data2 = "2024-01-01"
+                val sign = "=="
 
-    @Test
-    fun `betweenDays same day should be 0`() {
-        val days = DateTimeCompare.betweenDays("2025-06-13", "2025-06-13")
-        assertEquals(0, days)
-    }
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
 
-    private val earlier = "2024-01-01"
-    private val same = "2024-01-01"
-    private val later = "2025-01-01"
+                // then
+                assertTrue(result)
+            }
 
-    @Test
-    fun `valid operators should compare correctly`() {
-        assertTrue(DateTimeCompare.compare(later, ">", earlier))
-        assertFalse(DateTimeCompare.compare(earlier, ">", later))
+            @Test
+            @DisplayName("data1이 data2와 다른 경우 - false 반환")
+            fun `should return false when data1 not equals data2 with double equals`() {
+                // given
+                val data1 = "2024-01-01"
+                val data2 = "2024-01-02"
+                val sign = "=="
 
-        assertTrue(DateTimeCompare.compare(earlier, "<", later))
-        assertFalse(DateTimeCompare.compare(later, "<", earlier))
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
 
-        assertTrue(DateTimeCompare.compare(earlier, ">=", earlier))
-        assertTrue(DateTimeCompare.compare(later, ">=", earlier))
-        assertFalse(DateTimeCompare.compare(earlier, ">=", later))
+                // then
+                assertFalse(result)
+            }
+        }
 
-        assertTrue(DateTimeCompare.compare(earlier, "<=", later))
-        assertTrue(DateTimeCompare.compare(earlier, "<=", same))
-        assertFalse(DateTimeCompare.compare(later, "<=", earlier))
+        @Nested
+        @DisplayName("= 연산자 테스트")
+        inner class SingleEqualsTest {
 
-        assertTrue(DateTimeCompare.compare(earlier, "==", same))
-        assertTrue(DateTimeCompare.compare(earlier, "=", same))
-        assertFalse(DateTimeCompare.compare(earlier, "==", later))
+            @Test
+            @DisplayName("data1이 data2와 같은 경우 - true 반환")
+            fun `should return true when data1 equals data2 with single equals`() {
+                // given
+                val data1 = "2024-01-01"
+                val data2 = "2024-01-01"
+                val sign = "="
 
-        assertTrue(DateTimeCompare.compare(earlier, "!=", later))
-        assertFalse(DateTimeCompare.compare(earlier, "!=", same))
-    }
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
 
-    @Test
-    fun `invalid operators should return false`() {
-        val invalidOperators = listOf(
-            "=>", "=<", "!==", "><", "<>", "=>=", "=<=", "===", "== =",
-            "!!", "!>", "!<", "><", "~=", "equal", "lte"
-        )
+                // then
+                assertTrue(result)
+            }
 
-        for (op in invalidOperators) {
-            val result = DateTimeCompare.compare(earlier, op, later)
-            assertFalse(result, "Expected false for invalid operator: '$op'")
+            @Test
+            @DisplayName("data1이 data2와 다른 경우 - false 반환")
+            fun `should return false when data1 not equals data2 with single equals`() {
+                // given
+                val data1 = "2024-01-01"
+                val data2 = "2024-01-02"
+                val sign = "="
+
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
+
+                // then
+                assertFalse(result)
+            }
+        }
+
+        @Nested
+        @DisplayName("!= 연산자 테스트")
+        inner class NotEqualsTest {
+
+            @Test
+            @DisplayName("data1이 data2와 다른 경우 - true 반환")
+            fun `should return true when data1 not equals data2`() {
+                // given
+                val data1 = "2024-01-01"
+                val data2 = "2024-01-02"
+                val sign = "!="
+
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
+
+                // then
+                assertTrue(result)
+            }
+
+            @Test
+            @DisplayName("data1이 data2와 같은 경우 - false 반환")
+            fun `should return false when data1 equals data2`() {
+                // given
+                val data1 = "2024-01-01"
+                val data2 = "2024-01-01"
+                val sign = "!="
+
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
+
+                // then
+                assertFalse(result)
+            }
+        }
+
+        @Nested
+        @DisplayName("> 연산자 테스트")
+        inner class GreaterThanTest {
+
+            @Test
+            @DisplayName("data1이 data2보다 큰 경우 - true 반환")
+            fun `should return true when data1 is greater than data2`() {
+                // given
+                val data1 = "2024-01-02"
+                val data2 = "2024-01-01"
+                val sign = ">"
+
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
+
+                // then
+                assertTrue(result)
+            }
+
+            @Test
+            @DisplayName("data1이 data2와 같은 경우 - false 반환")
+            fun `should return false when data1 equals data2`() {
+                // given
+                val data1 = "2024-01-01"
+                val data2 = "2024-01-01"
+                val sign = ">"
+
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
+
+                // then
+                assertFalse(result)
+            }
+
+            @Test
+            @DisplayName("data1이 data2보다 작은 경우 - false 반환")
+            fun `should return false when data1 is less than data2`() {
+                // given
+                val data1 = "2024-01-01"
+                val data2 = "2024-01-02"
+                val sign = ">"
+
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
+
+                // then
+                assertFalse(result)
+            }
+        }
+
+        @Nested
+        @DisplayName("< 연산자 테스트")
+        inner class LessThanTest {
+
+            @Test
+            @DisplayName("data1이 data2보다 작은 경우 - true 반환")
+            fun `should return true when data1 is less than data2`() {
+                // given
+                val data1 = "2024-01-01"
+                val data2 = "2024-01-02"
+                val sign = "<"
+
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
+
+                // then
+                assertTrue(result)
+            }
+
+            @Test
+            @DisplayName("data1이 data2와 같은 경우 - false 반환")
+            fun `should return false when data1 equals data2`() {
+                // given
+                val data1 = "2024-01-01"
+                val data2 = "2024-01-01"
+                val sign = "<"
+
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
+
+                // then
+                assertFalse(result)
+            }
+
+            @Test
+            @DisplayName("data1이 data2보다 큰 경우 - false 반환")
+            fun `should return false when data1 is greater than data2`() {
+                // given
+                val data1 = "2024-01-02"
+                val data2 = "2024-01-01"
+                val sign = "<"
+
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
+
+                // then
+                assertFalse(result)
+            }
+        }
+
+        @Nested
+        @DisplayName("기타 연산자 테스트")
+        inner class DefaultCaseTest {
+
+            @Test
+            @DisplayName("지원하지 않는 연산자인 경우 - false 반환")
+            fun `should return false for unsupported operator`() {
+                // given
+                val data1 = "2024-01-01"
+                val data2 = "2024-01-02"
+                val sign = "unknown"
+
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
+
+                // then
+                assertFalse(result)
+            }
+        }
+
+        @Nested
+        @DisplayName("경계값 테스트")
+        inner class BoundaryValueTest {
+
+            @Test
+            @DisplayName("빈 문자열 비교 테스트")
+            fun `should handle empty strings`() {
+                // given
+                val data1 = ""
+                val data2 = ""
+                val sign = "=="
+
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
+
+                // then
+                assertTrue(result)
+            }
+
+            @Test
+            @DisplayName("null이 아닌 문자열과 빈 문자열 비교")
+            fun `should handle non empty and empty string comparison`() {
+                // given
+                val data1 = "2024-01-01"
+                val data2 = ""
+                val sign = ">"
+
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
+
+                // then
+                assertTrue(result)
+            }
+
+            @Test
+            @DisplayName("특수 문자가 포함된 문자열 비교")
+            fun `should handle special characters in strings`() {
+                // given
+                val data1 = "2024-01-01T00:00:00"
+                val data2 = "2024-01-01T00:00:01"
+                val sign = "<"
+
+                // when
+                val result = DateTimeCompare.compare(data1, sign, data2)
+
+                // then
+                assertTrue(result)
+            }
         }
     }
 
-    @Test
-    fun `compare operator - greater than`() {
-        assertTrue(DateTimeCompare.compare(later, ">", earlier))
-        assertFalse(DateTimeCompare.compare(earlier, ">", later))
-        assertFalse(DateTimeCompare.compare(same, ">", same))
-    }
+    @Nested
+    @DisplayName("isBetweenDate 메서드 테스트")
+    inner class IsBetweenDateTest {
 
-    @Test
-    fun `compare operator - greater than or equal`() {
-        assertTrue(DateTimeCompare.compare(later, ">=", earlier))
-        assertTrue(DateTimeCompare.compare(same, ">=", same))
-        assertFalse(DateTimeCompare.compare(earlier, ">=", later))
-    }
+        @Nested
+        @DisplayName("isBetweenDate 메서드 테스트")
+        inner class IsBetweenDateTest {
 
-    @Test
-    fun `compare operator - less than`() {
-        assertTrue(DateTimeCompare.compare(earlier, "<", later))
-        assertFalse(DateTimeCompare.compare(later, "<", earlier))
-        assertFalse(DateTimeCompare.compare(same, "<", same))
-    }
+            @Test
+            @DisplayName("날짜가 범위 내에 있는 경우 0을 반환")
+            fun `should return 0 when date is between start and end date`() {
+                // Given
+                val startDate = "2024-01-01"
+                val date = "2024-01-15"
+                val endDate = "2024-01-31"
 
-    @Test
-    fun `compare operator - less than or equal`() {
-        assertTrue(DateTimeCompare.compare(earlier, "<=", later))
-        assertTrue(DateTimeCompare.compare(same, "<=", same))
-        assertFalse(DateTimeCompare.compare(later, "<=", earlier))
-    }
+                // When
+                val result = DateTimeCompare.isBetweenDate(startDate, date, endDate)
 
-    @Test
-    fun `compare operator - equals`() {
-        assertTrue(DateTimeCompare.compare(same, "==", same))
-        assertTrue(DateTimeCompare.compare(same, "=", same)) // alias
-        assertFalse(DateTimeCompare.compare(earlier, "==", later))
-        assertFalse(DateTimeCompare.compare(earlier, "=", later))
-    }
+                // Then
+                assertEquals(0, result)
+            }
 
-    @Test
-    fun `compare operator - not equals`() {
-        assertTrue(DateTimeCompare.compare(earlier, "!=", later))
-        assertFalse(DateTimeCompare.compare(same, "!=", same))
-    }
+            @Test
+            @DisplayName("날짜가 시작 날짜보다 이전인 경우 -1을 반환")
+            fun `should return -1 when date is before start date`() {
+                // Given
+                val startDate = "2024-01-15"
+                val date = "2024-01-01"
+                val endDate = "2024-01-31"
 
-    @Test
-    fun `compare operator - invalid signs return false`() {
-        val invalidOps = listOf("!==", "><", "<>", "===", "=", ">>>", "~=", "??", "=>", "=<")
-        for (op in invalidOps) {
-            if (op == "=") continue // '=' is valid in this code
-            assertFalse(DateTimeCompare.compare(earlier, op, later), "Expected false for operator: $op")
+                // When
+                val result = DateTimeCompare.isBetweenDate(startDate, date, endDate)
+
+                // Then
+                assertEquals(-1, result)
+            }
+
+            @Test
+            @DisplayName("날짜가 종료 날짜보다 이후인 경우 1을 반환")
+            fun `should return 1 when date is after end date`() {
+                // Given
+                val startDate = "2024-01-01"
+                val date = "2024-02-15"
+                val endDate = "2024-01-31"
+
+                // When
+                val result = DateTimeCompare.isBetweenDate(startDate, date, endDate)
+
+                // Then
+                assertEquals(1, result)
+            }
+
+            @Test
+            @DisplayName("날짜가 시작 날짜와 같은 경우 0을 반환")
+            fun `should return 0 when date equals start date`() {
+                // Given
+                val startDate = "2024-01-15"
+                val date = "2024-01-15"
+                val endDate = "2024-01-31"
+
+                // When
+                val result = DateTimeCompare.isBetweenDate(startDate, date, endDate)
+
+                // Then
+                assertEquals(0, result)
+            }
+
+            @Test
+            @DisplayName("날짜가 종료 날짜와 같은 경우 0을 반환")
+            fun `should return 0 when date equals end date`() {
+                // Given
+                val startDate = "2024-01-01"
+                val date = "2024-01-31"
+                val endDate = "2024-01-31"
+
+                // When
+                val result = DateTimeCompare.isBetweenDate(startDate, date, endDate)
+
+                // Then
+                assertEquals(0, result)
+            }
+        }
+
+        @Test
+        @DisplayName("날짜가 범위 내에 있는 경우 - 0 반환")
+        fun `should return 0 when date is within range`() {
+            // given
+            val startDate = "2024-01-01"
+            val date = "2024-01-05"
+            val endDate = "2024-01-10"
+
+            // when
+            val result = DateTimeCompare.isBetweenDate(startDate, date, endDate)
+
+            // then
+            assertEquals(0, result)
+        }
+
+        @Test
+        @DisplayName("날짜가 시작일보다 이전인 경우 - -1 반환")
+        fun `should return -1 when date is before start date`() {
+            // given
+            val startDate = "2024-01-05"
+            val date = "2024-01-01"
+            val endDate = "2024-01-10"
+
+            // when
+            val result = DateTimeCompare.isBetweenDate(startDate, date, endDate)
+
+            // then
+            assertEquals(-1, result)
+        }
+
+        @Test
+        @DisplayName("날짜가 종료일보다 이후인 경우 - 1 반환")
+        fun `should return 1 when date is after end date`() {
+            // given
+            val startDate = "2024-01-01"
+            val date = "2024-01-15"
+            val endDate = "2024-01-10"
+
+            // when
+            val result = DateTimeCompare.isBetweenDate(startDate, date, endDate)
+
+            // then
+            assertEquals(1, result)
+        }
+
+        @Test
+        @DisplayName("날짜가 시작일과 같은 경우 - 0 반환")
+        fun `should return 0 when date equals start date`() {
+            // given
+            val startDate = "2024-01-01"
+            val date = "2024-01-01"
+            val endDate = "2024-01-10"
+
+            // when
+            val result = DateTimeCompare.isBetweenDate(startDate, date, endDate)
+
+            // then
+            assertEquals(0, result)
+        }
+
+        @Test
+        @DisplayName("날짜가 종료일과 같은 경우 - 0 반환")
+        fun `should return 0 when date equals end date`() {
+            // given
+            val startDate = "2024-01-01"
+            val date = "2024-01-10"
+            val endDate = "2024-01-10"
+
+            // when
+            val result = DateTimeCompare.isBetweenDate(startDate, date, endDate)
+
+            // then
+            assertEquals(0, result)
         }
     }
 }
