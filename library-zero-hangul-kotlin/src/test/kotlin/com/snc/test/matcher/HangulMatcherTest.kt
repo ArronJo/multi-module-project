@@ -1,6 +1,7 @@
 package com.snc.test.matcher
 
 import com.snc.zero.hangul.matcher.HangulMatcher
+import com.snc.zero.hangul.matcher.dto.HangulMatchResult
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -45,7 +46,7 @@ class HangulMatcherTest : BaseJUnit5Test() {
         for (m in menus) {
             val match = matcher.match(m)
             // then
-            if (HangulMatcher.HangulMatchResult.EMPTY != match) {
+            if (HangulMatchResult.EMPTY != match) {
                 logger.debug { "한글 초성 검색 ($keyword) -> 결과: $m" }
             }
         }
@@ -55,56 +56,56 @@ class HangulMatcherTest : BaseJUnit5Test() {
     fun `keyword should lowercase and filter non-korean characters`() {
         matcher.keyword("가나다 ABC123!@#")
         val result = matcher.match("가나다 abc123")
-        assertEquals(HangulMatcher.HangulMatchResult(0, 10), result)
+        assertEquals(HangulMatchResult(0, 10), result)
     }
 
     @Test
     fun `match should return correct start and length when match found`() {
         matcher.keyword("ㄱㄴ")
         val result = matcher.match("가나다라마")
-        assertEquals(HangulMatcher.HangulMatchResult(0, 2), result)
+        assertEquals(HangulMatchResult(0, 2), result)
     }
 
     @Test
     fun `match should skip ignored symbols`() {
         matcher.keyword("abc")
         val result = matcher.match("a@b!c")
-        assertEquals(HangulMatcher.HangulMatchResult(0, 5), result)
+        assertEquals(HangulMatchResult(0, 5), result)
     }
 
     @Test
     fun `match should return EMPTY when keyword not found`() {
         matcher.keyword("ㅋㅌㅍ")
         val result = matcher.match("가나다라마바사")
-        assertEquals(HangulMatcher.HangulMatchResult.EMPTY, result)
+        assertEquals(HangulMatchResult.EMPTY, result)
     }
 
     @Test
     fun `match should return EMPTY when keyword is empty`() {
         matcher.keyword("")
         val result = matcher.match("아무 문자열")
-        assertEquals(HangulMatcher.HangulMatchResult(0, 0), result)
+        assertEquals(HangulMatchResult(0, 0), result)
     }
 
     @Test
     fun `match should return match even with intermediate ignored characters`() {
         matcher.keyword("abc")
         val result = matcher.match("a!@#b%^c")
-        assertEquals(HangulMatcher.HangulMatchResult(0, 8), result)
+        assertEquals(HangulMatchResult(0, 8), result)
     }
 
     @Test
     fun `match should match mixed case and Korean characters`() {
         matcher.keyword("GNa")
         val result = matcher.match("가나abc")
-        assertEquals(HangulMatcher.HangulMatchResult.EMPTY, result)
+        assertEquals(HangulMatchResult.EMPTY, result)
     }
 
     @Test
     fun `match should skip initial unmatched characters`() {
         matcher.keyword("ㄷㄹ")
         val result = matcher.match("가나다라마")
-        assertEquals(HangulMatcher.HangulMatchResult(2, 2), result)
+        assertEquals(HangulMatchResult(2, 2), result)
     }
 
     @Nested
@@ -178,7 +179,7 @@ class HangulMatcherTest : BaseJUnit5Test() {
             matcher.keyword("없는단어")
             val result = matcher.match("안녕하세요")
 
-            assertEquals(HangulMatcher.HangulMatchResult.EMPTY, result)
+            assertEquals(HangulMatchResult.EMPTY, result)
         }
 
         @Test
@@ -202,7 +203,7 @@ class HangulMatcherTest : BaseJUnit5Test() {
             matcher.keyword("매우긴키워드입니다")
             val result = matcher.match("짧음")
 
-            assertEquals(HangulMatcher.HangulMatchResult.EMPTY, result)
+            assertEquals(HangulMatchResult.EMPTY, result)
         }
 
         @Test
@@ -221,7 +222,7 @@ class HangulMatcherTest : BaseJUnit5Test() {
             matcher.keyword("안녕")
             val result = matcher.match("하이")
 
-            assertEquals(HangulMatcher.HangulMatchResult.EMPTY, result)
+            assertEquals(HangulMatchResult.EMPTY, result)
         }
 
         @Test
@@ -230,7 +231,7 @@ class HangulMatcherTest : BaseJUnit5Test() {
             matcher.keyword("안녕하세요")
             val result = matcher.match("테스트안녕하세")
 
-            assertEquals(HangulMatcher.HangulMatchResult.EMPTY, result)
+            assertEquals(HangulMatchResult.EMPTY, result)
         }
 
         @Test
@@ -259,7 +260,7 @@ class HangulMatcherTest : BaseJUnit5Test() {
             matcher.keyword("안녕")
             val result = matcher.match("")
 
-            assertEquals(HangulMatcher.HangulMatchResult.EMPTY, result)
+            assertEquals(HangulMatchResult.EMPTY, result)
         }
     }
 
@@ -303,7 +304,7 @@ class HangulMatcherTest : BaseJUnit5Test() {
             matcher.keyword("안녕")
             val result = matcher.match("!@#$%^&*()")
 
-            assertEquals(HangulMatcher.HangulMatchResult.EMPTY, result)
+            assertEquals(HangulMatchResult.EMPTY, result)
         }
     }
 
@@ -326,7 +327,7 @@ class HangulMatcherTest : BaseJUnit5Test() {
             matcher.keyword("안녕")
             val result = matcher.match("안녕하세요", 10)
 
-            assertEquals(HangulMatcher.HangulMatchResult.EMPTY, result)
+            assertEquals(HangulMatchResult.EMPTY, result)
         }
 
         @Test
@@ -345,7 +346,7 @@ class HangulMatcherTest : BaseJUnit5Test() {
             matcher.keyword("긴키워드")
             val result = matcher.match("짧은문자열", 8)
 
-            assertEquals(HangulMatcher.HangulMatchResult.EMPTY, result)
+            assertEquals(HangulMatchResult.EMPTY, result)
         }
     }
 
@@ -379,7 +380,7 @@ class HangulMatcherTest : BaseJUnit5Test() {
             matcher.keyword("ㅂㅂ")
             val result = matcher.match("안녕하세요")
 
-            assertEquals(HangulMatcher.HangulMatchResult.EMPTY, result)
+            assertEquals(HangulMatchResult.EMPTY, result)
         }
     }
 
@@ -393,7 +394,7 @@ class HangulMatcherTest : BaseJUnit5Test() {
             matcher.keyword("안녕하세요추가문자")
             val result = matcher.match("안녕하세요")
 
-            assertEquals(HangulMatcher.HangulMatchResult.EMPTY, result)
+            assertEquals(HangulMatchResult.EMPTY, result)
         }
 
         @Test
@@ -402,7 +403,7 @@ class HangulMatcherTest : BaseJUnit5Test() {
             matcher.keyword("세요뒤")
             val result = matcher.match("안녕하세요")
 
-            assertEquals(HangulMatcher.HangulMatchResult.EMPTY, result)
+            assertEquals(HangulMatchResult.EMPTY, result)
         }
 
         @Test
@@ -433,7 +434,7 @@ class HangulMatcherTest : BaseJUnit5Test() {
         @Test
         @DisplayName("HangulMatch EMPTY 상수 확인")
         fun shouldHaveEmptyConstant() {
-            val empty = HangulMatcher.HangulMatchResult.EMPTY
+            val empty = HangulMatchResult.EMPTY
             assertEquals(-1, empty.start)
             assertEquals(0, empty.length)
         }
@@ -441,7 +442,7 @@ class HangulMatcherTest : BaseJUnit5Test() {
         @Test
         @DisplayName("HangulMatch 데이터 클래스 생성")
         fun shouldCreateHangulMatchInstance() {
-            val match = HangulMatcher.HangulMatchResult(5, 3)
+            val match = HangulMatchResult(5, 3)
             assertEquals(5, match.start)
             assertEquals(3, match.length)
         }
@@ -449,9 +450,9 @@ class HangulMatcherTest : BaseJUnit5Test() {
         @Test
         @DisplayName("HangulMatch equals 동작 확인")
         fun shouldTestHangulMatchEquality() {
-            val match1 = HangulMatcher.HangulMatchResult(5, 3)
-            val match2 = HangulMatcher.HangulMatchResult(5, 3)
-            val match3 = HangulMatcher.HangulMatchResult(4, 3)
+            val match1 = HangulMatchResult(5, 3)
+            val match2 = HangulMatchResult(5, 3)
+            val match3 = HangulMatchResult(4, 3)
 
             assertEquals(match1, match2)
             assertNotEquals(match1, match3)
