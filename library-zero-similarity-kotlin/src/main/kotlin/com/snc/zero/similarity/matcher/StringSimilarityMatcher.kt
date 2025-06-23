@@ -215,7 +215,7 @@ class StringSimilarityMatcher {
         data: List<String>,
         target: String,
         minSimilarity: Double = 0.5,
-        method: SimilarityMethod
+        method: SimilarityMethod = SimilarityMethod.LEVENSHTEIN
     ): List<SimilarityResult> {
         return data.mapNotNull { text ->
             val similarity = when (method) {
