@@ -50,7 +50,7 @@ cache-caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version.re
 
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 google-gson = { module = "com.google.code.gson:gson", version.ref = "google-gson" }
-json-jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson-kotlin" }
+jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson-kotlin" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 

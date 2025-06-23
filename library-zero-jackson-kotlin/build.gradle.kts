@@ -17,7 +17,7 @@ dependencies {
     implementation(project(":library-zero-logger-kotlin"))
 
     // https://github.com/FasterXML/jackson/wiki/Jackson-Releases
-    implementation(libs.json.jackson.kotlin)
+    implementation(libs.jackson.kotlin)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.kotlinx.datetime)
 

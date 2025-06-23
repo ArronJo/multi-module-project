@@ -161,7 +161,7 @@ fun String.toCalendar(pattern: String = "yyyyMMddHHmmss"): Calendar {
     try {
         val date = sdf.parse(this.substring(0, min(pattern.length, this.length)))
         date?.let {
-            calendar.time = date
+            calendar.time = it
         }
     } catch (e: ParseException) {
         logger.error { e }
