@@ -18,7 +18,6 @@ dependencies {
 
     testImplementation(project(":library-zero-test-kotlin"))
     testImplementation(libs.junit.jupiter)
-    testImplementation(libs.assertj.core)
 
     testRuntimeOnly(libs.junit.platform.launcher)
     testRuntimeOnly(libs.junit.jupiter.engine)

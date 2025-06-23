@@ -16,6 +16,8 @@ dependencies {
     // https://docs.gradle.org/8.4/userguide/upgrading_version_8.html#test_framework_implementation_dependencies
     implementation(libs.junit.jupiter)
     //implementation(libs.junit.jupiter.api)
+    // (Optional) If you need "Parameterized Tests"
+    //testImplementation(libs.junit.jupiter.params)
 
     testRuntimeOnly(libs.junit.platform.launcher)
     testRuntimeOnly(libs.junit.jupiter.engine)

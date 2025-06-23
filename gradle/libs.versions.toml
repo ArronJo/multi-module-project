@@ -7,7 +7,6 @@ dependencycheck = "8.0.2"
 cyclonedx = "2.2.0" # "1.7.4" # https://plugins.gradle.org/plugin/org.cyclonedx.bom
 license-report = "2.5"
 junit-jupiter = "5.10.2"
-assertj-core = "3.25.1"
 testng = "7.9.0"
 mockito-kotlin = "5.3.1"
 logback-core = "1.5.13"
@@ -35,7 +34,7 @@ junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "jun
 #junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
-assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj-core" }
+#junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit-jupiter" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockito-kotlin" }
 
 testng = { module = "org.testng:testng", version.ref = "testng" }
