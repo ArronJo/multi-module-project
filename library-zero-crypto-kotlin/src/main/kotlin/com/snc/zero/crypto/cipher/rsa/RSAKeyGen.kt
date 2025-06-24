@@ -1,7 +1,7 @@
 package com.snc.zero.crypto.cipher.rsa
 
-import com.snc.zero.extension.text.toBytes
-import com.snc.zero.extension.text.toHexString
+import com.snc.zero.extensions.text.toBytes
+import com.snc.zero.extensions.text.toHexString
 import java.security.Key
 import java.security.KeyFactory
 import java.security.KeyPair

@@ -2,8 +2,8 @@ package com.snc.test.extension.json
 
 import com.google.gson.JsonSyntaxException
 import com.google.gson.annotations.SerializedName
-import com.snc.zero.extension.json.toJsonString
-import com.snc.zero.extension.json.toObject
+import com.snc.zero.extensions.json.toJsonString
+import com.snc.zero.extensions.json.toObject
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertThrows

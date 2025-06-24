@@ -1,7 +1,7 @@
 package com.snc.test.core.date
 
 import com.snc.zero.core.date.DateTimeParser
-import com.snc.zero.extension.text.print
+import com.snc.zero.extensions.text.print
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertEquals

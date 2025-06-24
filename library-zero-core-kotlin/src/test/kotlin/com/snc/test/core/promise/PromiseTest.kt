@@ -1,6 +1,6 @@
 package com.snc.test.core.promise
 
-import com.snc.zero.extension.random.randomInt
+import com.snc.zero.extensions.random.randomInt
 import com.snc.zero.core.promise.Promise
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test

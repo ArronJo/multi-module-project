@@ -1,6 +1,6 @@
 package com.snc.test.extension.format
 
-import com.snc.zero.extension.format.formatFileSize
+import com.snc.zero.extensions.format.formatFileSize
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertEquals

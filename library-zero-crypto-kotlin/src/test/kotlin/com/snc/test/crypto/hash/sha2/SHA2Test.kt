@@ -1,7 +1,7 @@
 package com.snc.test.crypto.hash.sha2
 
-import com.snc.zero.extension.random.randomString
-import com.snc.zero.extension.text.toHexString
+import com.snc.zero.extensions.random.randomString
+import com.snc.zero.extensions.text.toHexString
 import com.snc.zero.crypto.hash.sha2.SHA2
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test

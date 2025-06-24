@@ -1,10 +1,10 @@
 package com.snc.test.extension.random
 
 import com.snc.zero.etc.counter.Counter
-import com.snc.zero.extension.random.getRandomItem
-import com.snc.zero.extension.random.getWeightedRandom
-import com.snc.zero.extension.random.randomInt
-import com.snc.zero.extension.random.randomString
+import com.snc.zero.extensions.random.getRandomItem
+import com.snc.zero.extensions.random.getWeightedRandom
+import com.snc.zero.extensions.random.randomInt
+import com.snc.zero.extensions.random.randomString
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertThrows

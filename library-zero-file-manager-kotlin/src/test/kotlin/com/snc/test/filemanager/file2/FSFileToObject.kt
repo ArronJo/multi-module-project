@@ -1,6 +1,6 @@
 package com.snc.test.filemanager.file2
 
-import com.snc.zero.extension.text.print
+import com.snc.zero.extensions.text.print
 import com.snc.zero.filemanager.file2.FSFile
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test

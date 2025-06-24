@@ -1,6 +1,6 @@
 package com.snc.test.extension.collection
 
-import com.snc.zero.extension.collection.asListOfType
+import com.snc.zero.extensions.collection.asListOfType
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Test

@@ -1,6 +1,6 @@
 package com.snc.test.extension.text
 
-import com.snc.zero.extension.text.safeSubstring
+import com.snc.zero.extensions.text.safeSubstring
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals

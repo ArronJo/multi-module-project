@@ -1,8 +1,8 @@
 package com.snc.test.extension.text
 
-import com.snc.zero.extension.text.getQueryStringValue
-import com.snc.zero.extension.text.queryStringToMap
-import com.snc.zero.extension.text.toQueryString
+import com.snc.zero.extensions.text.getQueryStringValue
+import com.snc.zero.extensions.text.queryStringToMap
+import com.snc.zero.extensions.text.toQueryString
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertEquals

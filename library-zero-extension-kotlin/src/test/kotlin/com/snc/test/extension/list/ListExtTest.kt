@@ -1,8 +1,8 @@
 package com.snc.test.extension.list
 
 import com.snc.zero.etc.counter.Counter
-import com.snc.zero.extension.list.getOrDefault
-import com.snc.zero.extension.list.getShuffledItem
+import com.snc.zero.extensions.list.getOrDefault
+import com.snc.zero.extensions.list.getShuffledItem
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.*

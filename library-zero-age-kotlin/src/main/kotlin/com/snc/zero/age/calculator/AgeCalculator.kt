@@ -1,7 +1,7 @@
 package com.snc.zero.age.calculator
 
-import com.snc.zero.extension.calendar.diff
-import com.snc.zero.extension.format.formatDateTime
+import com.snc.zero.extensions.calendar.diff
+import com.snc.zero.extensions.format.formatDateTime
 import com.snc.zero.logger.jvm.TLogging
 import java.time.LocalDate
 import java.time.Period

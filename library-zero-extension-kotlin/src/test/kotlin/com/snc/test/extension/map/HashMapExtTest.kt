@@ -1,6 +1,6 @@
 package com.snc.test.extension.map
 
-import com.snc.zero.extension.map.get
+import com.snc.zero.extensions.map.get
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test

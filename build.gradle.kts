@@ -429,6 +429,18 @@ subprojects {
         //additionalClassDirs(files("build/classes/kotlin/main"))
         //additionalSourceDirs(files("src/main/kotlin"))
         //executionData(files("build/jacoco/test.exec"))
+
+        val excluded = listOf(
+            "**/com/snc/zero/filemanager/file2/**"
+        )
+
+        classDirectories.setFrom(
+            files(classDirectories.files.map {
+                fileTree(it) {
+                    exclude(excluded)
+                }
+            })
+        )
     }
 
     tasks.jacocoTestCoverageVerification {

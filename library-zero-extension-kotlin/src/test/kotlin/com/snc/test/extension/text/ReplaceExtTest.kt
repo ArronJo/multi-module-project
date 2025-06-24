@@ -1,8 +1,8 @@
 package com.snc.test.extension.text
 
-import com.snc.zero.extension.text.remove
-import com.snc.zero.extension.text.removeNewLine
-import com.snc.zero.extension.text.removePrefixSuffix
+import com.snc.zero.extensions.text.remove
+import com.snc.zero.extensions.text.removeNewLine
+import com.snc.zero.extensions.text.removePrefixSuffix
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Test

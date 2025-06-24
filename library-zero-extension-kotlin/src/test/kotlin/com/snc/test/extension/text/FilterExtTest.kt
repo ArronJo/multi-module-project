@@ -1,6 +1,6 @@
 package com.snc.test.extension.text
 
-import com.snc.zero.extension.text.filter
+import com.snc.zero.extensions.text.filter
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.BeforeEach

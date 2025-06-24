@@ -1,6 +1,6 @@
 package com.snc.test.crypto.extensions.hash
 
-import com.snc.zero.extension.text.toHexString
+import com.snc.zero.extensions.text.toHexString
 import com.snc.zero.crypto.extensions.hash.*
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test

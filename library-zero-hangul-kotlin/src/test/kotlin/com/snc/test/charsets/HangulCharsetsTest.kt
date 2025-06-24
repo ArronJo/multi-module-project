@@ -1,6 +1,6 @@
 package com.snc.test.charsets
 
-import com.snc.zero.extension.text.print
+import com.snc.zero.extensions.text.print
 import com.snc.zero.hangul.charsets.HangulCharsets
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test

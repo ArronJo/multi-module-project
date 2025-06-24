@@ -1,8 +1,8 @@
 package com.snc.test.extension.date
 
-import com.snc.zero.extension.date.parseDate
-import com.snc.zero.extension.date.parseDateTime
-import com.snc.zero.extension.format.formatDateTime
+import com.snc.zero.extensions.date.parseDate
+import com.snc.zero.extensions.date.parseDateTime
+import com.snc.zero.extensions.format.formatDateTime
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertEquals
