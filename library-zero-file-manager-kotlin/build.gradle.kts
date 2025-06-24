@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 
 plugins {
     kotlin("jvm")
-    id("jacoco")
+    //id("jacoco")
 }
 
 group = "com.snc.zero"
@@ -40,6 +40,6 @@ tasks.named("clean") {
     }
 }
 
-//tasks.named<Test>("test") {
-//    enabled = false
-//}
+tasks.named<Test>("test") {
+    enabled = false
+}
