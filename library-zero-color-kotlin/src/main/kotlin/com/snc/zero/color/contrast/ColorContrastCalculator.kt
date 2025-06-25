@@ -178,37 +178,42 @@ class ColorContrastCalculator {
         val (r, g, b) = bgRgb
         val hsv = rgbToHsv(r, g, b)
 
-        // 이진 탐색으로 적절한 명도 찾기
+        val searchResult = findOptimalBrightness(hsv, textRgb, textLuminance, targetRatio)
+
+        return when {
+            searchResult.ratio >= targetRatio -> searchResult.rgb
+            else -> getFallbackColor(textLuminance)
+        }
+    }
+
+    private data class BrightnessSearchResult(
+        val rgb: Triple<Int, Int, Int>,
+        val ratio: Double
+    )
+
+    private fun findOptimalBrightness(
+        hsv: Triple<Double, Double, Double>,
+        textRgb: Triple<Int, Int, Int>,
+        textLuminance: Double,
+        targetRatio: Double
+    ): BrightnessSearchResult {
         var minV = 0.0
         var maxV = 1.0
-        var bestRgb = bgRgb
-        var bestRatio = calculateContrastRatio(bgRgb, textRgb)
+        var bestResult = BrightnessSearchResult(
+            rgb = hsvToRgb(hsv.first, hsv.second, hsv.third),
+            ratio = calculateContrastRatio(hsvToRgb(hsv.first, hsv.second, hsv.third), textRgb)
+        )
 
-        // 더 적은 반복으로 효율성 향상
         repeat(50) {
             val testV = (minV + maxV) / 2
             val testRgb = hsvToRgb(hsv.first, hsv.second, testV)
             val ratio = calculateContrastRatio(testRgb, textRgb)
 
             if (ratio >= targetRatio) {
-                if (ratio > bestRatio || bestRatio < targetRatio) {
-                    bestRgb = testRgb
-                    bestRatio = ratio
-                }
-
-                // 목표를 달성했으므로 더 자연스러운 색상을 찾기 위해 조정
-                if (textLuminance > 0.5) {
-                    maxV = testV // 더 밝게 (덜 어둡게)
-                } else {
-                    minV = testV // 더 어둡게 (덜 밝게)
-                }
+                bestResult = updateBestResult(bestResult, testRgb, ratio, targetRatio)
+                maxV = adjustMaxBrightness(testV, textLuminance)
             } else {
-                // 목표 미달성, 더 극단적으로 조정 필요
-                if (textLuminance > 0.5) {
-                    minV = testV // 더 어둡게
-                } else {
-                    maxV = testV // 더 밝게
-                }
+                minV = adjustMinBrightness(testV, textLuminance)
             }
 
             if (abs(maxV - minV) < 0.001) {
@@ -216,12 +221,32 @@ class ColorContrastCalculator {
             }
         }
 
-        return if (bestRatio >= targetRatio) {
-            bestRgb
+        return bestResult
+    }
+
+    private fun updateBestResult(
+        currentBest: BrightnessSearchResult,
+        testRgb: Triple<Int, Int, Int>,
+        testRatio: Double,
+        targetRatio: Double
+    ): BrightnessSearchResult {
+        return if (testRatio > currentBest.ratio || currentBest.ratio < targetRatio) {
+            BrightnessSearchResult(testRgb, testRatio)
         } else {
-            // 마지막 안전장치
-            if (textLuminance > 0.5) Triple(0, 0, 0) else Triple(255, 255, 255)
+            currentBest
         }
+    }
+
+    private fun adjustMaxBrightness(testV: Double, textLuminance: Double): Double {
+        return if (textLuminance > 0.5) testV else testV
+    }
+
+    private fun adjustMinBrightness(testV: Double, textLuminance: Double): Double {
+        return if (textLuminance > 0.5) testV else testV
+    }
+
+    private fun getFallbackColor(textLuminance: Double): Triple<Int, Int, Int> {
+        return if (textLuminance > 0.5) Triple(0, 0, 0) else Triple(255, 255, 255)
     }
 
     /**
