@@ -2,9 +2,9 @@ package com.snc.zero.color
 
 data class Color(val r: Int, val g: Int, val b: Int) {
     constructor(hex: String) : this(
-        hex.substring(1, 3).toInt(16),
-        hex.substring(3, 5).toInt(16),
-        hex.substring(5, 7).toInt(16)
+        hex.removePrefix("#").substring(0, 2).toInt(16),
+        hex.removePrefix("#").substring(2, 4).toInt(16),
+        hex.removePrefix("#").substring(4, 6).toInt(16)
     )
 
     fun toHex(): String = "#%02X%02X%02X".format(r, g, b)

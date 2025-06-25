@@ -213,9 +213,13 @@ class ColorContrastCalculator {
 
             if (ratio >= targetRatio) {
                 bestResult = updateBestResult(bestResult, testRgb, ratio, targetRatio)
-                maxV = adjustMaxBrightness(testV, textLuminance)
+                val (newMinV, newMaxV) = adjustBrightnessForTarget(minV, maxV, testV, textLuminance)
+                minV = newMinV
+                maxV = newMaxV
             } else {
-                minV = adjustMinBrightness(testV, textLuminance)
+                val (newMinV, newMaxV) = adjustBrightnessForMissed(minV, maxV, testV, textLuminance)
+                minV = newMinV
+                maxV = newMaxV
             }
 
             if (abs(maxV - minV) < 0.001) {
@@ -239,12 +243,32 @@ class ColorContrastCalculator {
         }
     }
 
-    private fun adjustMaxBrightness(testV: Double, textLuminance: Double): Double {
-        return if (textLuminance > 0.5) testV else testV
+    private fun adjustBrightnessForTarget(
+        minV: Double,
+        maxV: Double,
+        testV: Double,
+        textLuminance: Double
+    ): Pair<Double, Double> {
+        // 목표를 달성했으므로 더 자연스러운 색상을 찾기 위해 조정
+        return if (textLuminance > 0.5) {
+            minV to testV // 더 밝게 (덜 어둡게)
+        } else {
+            testV to maxV // 더 어둡게 (덜 밝게)
+        }
     }
 
-    private fun adjustMinBrightness(testV: Double, textLuminance: Double): Double {
-        return if (textLuminance > 0.5) testV else testV
+    private fun adjustBrightnessForMissed(
+        minV: Double,
+        maxV: Double,
+        testV: Double,
+        textLuminance: Double
+    ): Pair<Double, Double> {
+        // 목표 미달성, 더 극단적으로 조정 필요
+        return if (textLuminance > 0.5) {
+            testV to maxV // 더 어둡게
+        } else {
+            minV to testV // 더 밝게
+        }
     }
 
     private fun getFallbackColor(textLuminance: Double): Triple<Int, Int, Int> {

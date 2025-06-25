@@ -19,34 +19,6 @@ class ColorContrastCalculatorTest : BaseJUnit5Test() {
 
     data class ColorTestCase(val color: String, val description: String)
 
-    data class RGB(val r: Int, val g: Int, val b: Int) {
-        fun toHex(): String = "#%02X%02X%02X".format(r, g, b)
-    }
-
-    fun String.toRGB(): RGB {
-        val hex = this.removePrefix("#")
-        require(hex.length == 6) { "Hex string must be 6 characters" }
-        val r = hex.substring(0, 2).toInt(16)
-        val g = hex.substring(2, 4).toInt(16)
-        val b = hex.substring(4, 6).toInt(16)
-        return RGB(r, g, b)
-    }
-
-    private fun getColorPreview(hexString: String): String {
-        val color = hexString.toRGB()
-        val bgCode = "\u001B[48;2;${color.r};${color.g};${color.b}m"
-        val resetCode = "\u001B[0m"
-        val textColor = if (isLightColor(hexString)) "\u001B[30m" else "\u001B[37m" // 검은색 또는 흰색 텍스트
-        return "$bgCode$textColor  ${color.toHex()}  $resetCode"
-    }
-
-    private fun isLightColor(hexString: String): Boolean {
-        val color = hexString.toRGB()
-        // YIQ 공식: 밝기 계산
-        val brightness = (color.r * 299 + color.g * 587 + color.b * 114) / 1000
-        return brightness >= 128
-    }
-
     @Nested
     @DisplayName("WCAG 기준 대비율 테스트")
     inner class WCAGContrastRatioTest {
@@ -83,9 +55,9 @@ class ColorContrastCalculatorTest : BaseJUnit5Test() {
             println("레벨 AAA: 일반 텍스트 최소 7:1, 큰 텍스트 최소 4.5:1 ")
 
             println("\n=== 조정 결과 ===")
-            println("택스트 색상: ${result.textColor}")
-            println("원본 색상: ${result.originalColor}  ${getColorPreview(result.originalColor)}")
-            println("조정된 색상: ${result.adjustedColor}  ${getColorPreview(result.adjustedColor)}")
+            println("택스트 색상: ${result.textColor}  ${getColorPreview(result.textColor)}")
+            println("원본 색상: ${result.originalColor}  ${getColorPreview(result.originalColor, result.textColor)}")
+            println("조정된 색상: ${result.adjustedColor}  ${getColorPreview(result.adjustedColor, result.textColor)}")
             println("원본 대비율: ${result.originalRatio}:1")
 
             if (result.adjustmentNeeded) {
@@ -172,12 +144,12 @@ class ColorContrastCalculatorTest : BaseJUnit5Test() {
 
             println("=== 색상 대비율 자동 조정 결과 ===\n")
 
-            testCases.forEach { (color, description) ->
+            testCases.forEach { (baseColor, description) ->
                 println("📝 $description")
-                println("원본 색상: $color")
+                println("원본 색상: $baseColor  ${getColorPreview(baseColor)}")
 
                 // When
-                val result = calculator.adjustColorForContrast(color)
+                val result = calculator.adjustColorForContrast(baseColor)
 
                 // Then
                 assertNotNull(result, "조정 결과가 null이면 안됩니다")
@@ -185,7 +157,7 @@ class ColorContrastCalculatorTest : BaseJUnit5Test() {
                 assertTrue(result.originalRatio > 0, "원본 대비율은 0보다 커야 합니다")
                 assertTrue(result.finalRatio != null, "최종 대비율이 설정되어야 합니다")
 
-                println("조정된 색상: ${result.adjustedColor}")
+                println("조정된 색상: ${result.adjustedColor}  ${getColorPreview(result.adjustedColor)}")
                 println("원본 대비율: ${result.originalRatio}:1")
                 result.finalRatio?.let { println("조정된 대비율: $it:1") }
                 println("AA 기준 만족: ${if (result.meetsAA) "✓" else "❌"}")
