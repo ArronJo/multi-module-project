@@ -55,9 +55,9 @@ class ColorContrastCalculatorTest : BaseJUnit5Test() {
             println("레벨 AAA: 일반 텍스트 최소 7:1, 큰 텍스트 최소 4.5:1 ")
 
             println("\n=== 조정 결과 ===")
-            println("택스트 색상: ${result.textColor}  ${getColorPreview(result.textColor)}")
-            println("원본 색상: ${result.originalColor}  ${getColorPreview(result.originalColor, result.textColor)}")
-            println("조정된 색상: ${result.adjustedColor}  ${getColorPreview(result.adjustedColor, result.textColor)}")
+            println("택스트 색상: ${getColorPreview(result.textColor)}")
+            println("원본 색상: ${getColorPreview(result.originalColor, result.textColor)}")
+            println("조정된 색상: ${getColorPreview(result.adjustedColor, result.textColor)}")
             println("원본 대비율: ${result.originalRatio}:1")
 
             if (result.adjustmentNeeded) {
@@ -146,7 +146,7 @@ class ColorContrastCalculatorTest : BaseJUnit5Test() {
 
             testCases.forEach { (baseColor, description) ->
                 println("📝 $description")
-                println("원본 색상: $baseColor  ${getColorPreview(baseColor)}")
+                println("원본 색상: ${getColorPreview(baseColor)}")
 
                 // When
                 val result = calculator.adjustColorForContrast(baseColor)
@@ -157,7 +157,7 @@ class ColorContrastCalculatorTest : BaseJUnit5Test() {
                 assertTrue(result.originalRatio > 0, "원본 대비율은 0보다 커야 합니다")
                 assertTrue(result.finalRatio != null, "최종 대비율이 설정되어야 합니다")
 
-                println("조정된 색상: ${result.adjustedColor}  ${getColorPreview(result.adjustedColor)}")
+                println("조정된 색상: ${getColorPreview(result.adjustedColor)}")
                 println("원본 대비율: ${result.originalRatio}:1")
                 result.finalRatio?.let { println("조정된 대비율: $it:1") }
                 println("AA 기준 만족: ${if (result.meetsAA) "✓" else "❌"}")
