@@ -1,6 +1,6 @@
 package com.snc.test.color.palette
 
-import com.snc.zero.color.palette.Color
+import com.snc.zero.color.Color
 import com.snc.zero.color.palette.ColorPaletteGenerator
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertEquals
