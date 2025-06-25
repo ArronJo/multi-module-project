@@ -81,6 +81,7 @@ class ColorContrastCalculator {
         if (currentRatio >= targetRatio) {
             return ContrastResult(
                 originalColor = baseColorHex,
+                textColor = textColorHex,
                 adjustedColor = baseColorHex,
                 originalRatio = currentRatio.roundTo(2),
                 targetRatio = targetRatio,
@@ -104,6 +105,7 @@ class ColorContrastCalculator {
 
         return ContrastResult(
             originalColor = baseColorHex,
+            textColor = textColorHex,
             adjustedColor = adjustedHex,
             originalRatio = currentRatio.roundTo(2),
             finalRatio = finalRatio.roundTo(2),
@@ -337,6 +339,7 @@ class ColorContrastCalculator {
  */
 data class ContrastResult(
     val originalColor: String,
+    val textColor: String,
     val adjustedColor: String,
     val originalRatio: Double,
     val finalRatio: Double? = null,

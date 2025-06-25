@@ -83,7 +83,8 @@ class ColorContrastCalculatorTest : BaseJUnit5Test() {
             println("레벨 AAA: 일반 텍스트 최소 7:1, 큰 텍스트 최소 4.5:1 ")
 
             println("\n=== 조정 결과 ===")
-            println("원본 색상: ${result.originalColor}  ${getColorPreview(result.originalColor)}\")")
+            println("택스트 색상: ${result.textColor}")
+            println("원본 색상: ${result.originalColor}  ${getColorPreview(result.originalColor)}")
             println("조정된 색상: ${result.adjustedColor}  ${getColorPreview(result.adjustedColor)}")
             println("원본 대비율: ${result.originalRatio}:1")
 
