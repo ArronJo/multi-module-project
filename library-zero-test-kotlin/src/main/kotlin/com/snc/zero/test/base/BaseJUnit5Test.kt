@@ -65,8 +65,10 @@ open class BaseJUnit5Test {
      * ANSI SGR 코드
      * 예시: "\u001B[30m" = "이후 텍스트를 검정색으로 출력해라"
      * 마무리: \u001B[30m + 텍스트 + \u001B[0m
-     * \u001B[38;2;r;g;bm	ANSI 24비트 전경색 지정 (텍스트 색상)
-     * \u001B[48;2;r;g;bm	ANSI 24비트 배경색 지정
+     * "\u001b[30m" = 텍스트 검정 (black)
+     * "\u001b[37m" = 텍스트 흰색 (white)
+     * "\u001B[38;2;r;g;bm"	ANSI 24비트 전경색 지정 (텍스트 색상)
+     * "\u001B[48;2;r;g;bm"	ANSI 24비트 배경색 지정
      */
     protected fun getColorPreview(bgHexString: String, textHexString: String = ""): String {
         val color = bgHexString.toRGB()
@@ -76,7 +78,7 @@ open class BaseJUnit5Test {
             val textColor = textHexString.toRGB()
             "\u001B[38;2;${textColor.r};${textColor.g};${textColor.b}m"
         } else {
-            //if (isLightColor(bgHexString)) "\u001B[30m" else "\u001B[37m"
+            // if (isLightColor(bgHexString)) "\u001B[30m" else "\u001B[37m"
             if (isLightColor(bgHexString)) "\u001B[38;2;0;0;0m" else "\u001B[38;2;255;255;255m"
         }
         return "$bgCode$textColor  ${color.toHex()}  $resetCode"
