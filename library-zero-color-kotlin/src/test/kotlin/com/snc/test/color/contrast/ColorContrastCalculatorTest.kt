@@ -446,7 +446,6 @@ class ColorContrastCalculatorTest : BaseJUnit5Test() {
         }
     }
 
-
     @Nested
     @DisplayName("색상 변환 기능")
     inner class ColorConversion2Test {
@@ -727,8 +726,12 @@ class ColorContrastCalculatorTest : BaseJUnit5Test() {
         )
         @DisplayName("다양한 색상 대비율 테스트")
         fun `다양한 색상 조합의 대비율을 계산한다`(
-            r1: Int, g1: Int, b1: Int,
-            r2: Int, g2: Int, b2: Int,
+            r1: Int,
+            g1: Int,
+            b1: Int,
+            r2: Int,
+            g2: Int,
+            b2: Int,
             expectedRatio: Double
         ) {
             // given
@@ -787,7 +790,10 @@ class ColorContrastCalculatorTest : BaseJUnit5Test() {
 
                 // when
                 val result = calculator.adjustColorForContrast(
-                    baseColor, textColor, targetRatio, adjustBackground = true
+                    baseColor,
+                    textColor,
+                    targetRatio,
+                    adjustBackground = true
                 )
 
                 // then
@@ -807,7 +813,10 @@ class ColorContrastCalculatorTest : BaseJUnit5Test() {
 
                 // when
                 val result = calculator.adjustColorForContrast(
-                    baseColor, textColor, targetRatio, adjustBackground = true
+                    baseColor,
+                    textColor,
+                    targetRatio,
+                    adjustBackground = true
                 )
 
                 // then
@@ -832,7 +841,10 @@ class ColorContrastCalculatorTest : BaseJUnit5Test() {
 
                 // when
                 val result = calculator.adjustColorForContrast(
-                    baseColor, textColor, targetRatio, adjustBackground = false
+                    baseColor,
+                    textColor,
+                    targetRatio,
+                    adjustBackground = false
                 )
 
                 // then
@@ -1047,7 +1059,7 @@ class ColorContrastCalculatorTest : BaseJUnit5Test() {
                 "#e74c3c" to "#ffffff", // 빨간색 배경에 흰색 텍스트
                 "#2ecc71" to "#ffffff", // 초록색 배경에 흰색 텍스트
                 "#f39c12" to "#000000", // 주황색 배경에 검은색 텍스트
-                "#9b59b6" to "#ffffff"  // 보라색 배경에 흰색 텍스트
+                "#9b59b6" to "#ffffff" // 보라색 배경에 흰색 텍스트
             )
 
             scenarios.forEach { (bgColor, textColor) ->
@@ -1056,11 +1068,15 @@ class ColorContrastCalculatorTest : BaseJUnit5Test() {
 
                 // then
                 if (result.adjustmentNeeded) {
-                    assertTrue(result.finalRatio!! >= 4.5,
-                        "색상 조합 $bgColor-$textColor 의 조정된 대비율이 4.5 이상이어야 함")
+                    assertTrue(
+                        result.finalRatio!! >= 4.5,
+                        "색상 조합 $bgColor-$textColor 의 조정된 대비율이 4.5 이상이어야 함"
+                    )
                 } else {
-                    assertTrue(result.originalRatio >= 4.5,
-                        "색상 조합 $bgColor-$textColor 의 원본 대비율이 4.5 이상이어야 함")
+                    assertTrue(
+                        result.originalRatio >= 4.5,
+                        "색상 조합 $bgColor-$textColor 의 원본 대비율이 4.5 이상이어야 함"
+                    )
                 }
             }
         }
