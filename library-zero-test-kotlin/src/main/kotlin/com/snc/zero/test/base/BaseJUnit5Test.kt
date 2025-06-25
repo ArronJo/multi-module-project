@@ -67,6 +67,7 @@ open class BaseJUnit5Test {
      * 마무리: \u001B[30m + 텍스트 + \u001B[0m
      * "\u001b[30m" = 텍스트 검정 (black)
      * "\u001b[37m" = 텍스트 흰색 (white)
+     * 인데...실제 색상이 잘 반영이 안되어서 rgb 값으로 처리 했다.
      * "\u001B[38;2;r;g;bm"	ANSI 24비트 전경색 지정 (텍스트 색상)
      * "\u001B[48;2;r;g;bm"	ANSI 24비트 배경색 지정
      */
@@ -78,7 +79,6 @@ open class BaseJUnit5Test {
             val textColor = textHexString.toRGB()
             "\u001B[38;2;${textColor.r};${textColor.g};${textColor.b}m"
         } else {
-            // if (isLightColor(bgHexString)) "\u001B[30m" else "\u001B[37m"
             if (isLightColor(bgHexString)) "\u001B[38;2;0;0;0m" else "\u001B[38;2;255;255;255m"
         }
         return "$bgCode$textColor  ${color.toHex()}  $resetCode"
