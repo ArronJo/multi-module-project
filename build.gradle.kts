@@ -21,7 +21,8 @@ plugins {
     // Dependency-check OWASP
     alias(libs.plugins.dependencycheck) // id("org.owasp.dependencycheck") version "8.0.2"
 
-    // https://github.com/JLLeitschuh/ktlint-gradle
+    // 플러그인 최신버전 확인하기: https://github.com/JLLeitschuh/ktlint-gradle/blob/main/CHANGELOG.md
+    // https://beaniejoy.tistory.com/108
     // https://plugins.gradle.org/plugin/org.jlleitschuh.gradle.ktlint
     alias(libs.plugins.ktlint) // id("org.jlleitschuh.gradle.ktlint") version "12.0.3"
 
@@ -187,11 +188,12 @@ sourceSets {
 //
 //configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
 ktlint {
-    version.set("1.5.0") // CLI 최신버전 확인: https://pinterest.github.io/ktlint/latest/
+    version.set("1.6.0") // CLI 최신버전 확인: https://pinterest.github.io/ktlint/latest/
+    debug.set(false)
     verbose.set(true)
     android.set(false)
     outputToConsole.set(true) // 콘솔 출력 활성화
-    //ignoreFailures.set(true)  // true: 오류 무시하고 계속 진행
+    ignoreFailures.set(false) // true: 오류 무시하고 계속 진행
     //enableExperimentalRules.set(true) // 실험적 규칙 활성화
 
     filter {

@@ -1,35 +1,52 @@
 # .editorconfig
-
+#
 # Reference
-# https://pinterest.github.io/ktlint/dev-snapshot/rules/configuration-ktlint/
-
-# Web Editor
+# https://pinterest.github.io/ktlint/1.6.0/rules/configuration-ktlint/
+# https://pinterest.github.io/ktlint/0.49.1/rules/code-styles/
+# https://pinterest.github.io/ktlint/0.49.1/rules/standard/
+#
 # https://editorconfig.org/
+#
 
-# 변수 시작
+
+# top-most EditorConfig file
+# 해당 .editorconfig 파일이 해당 디렉토리에서 최상위 설정 파일임을 명시하는 것을 의미합니다.
+# 이 설정은 Ktlint가 .editorconfig 파일을 찾을 때, 이 파일이 발견된 디렉토리부터 상위로 더 이상 탐색하지 않고 해당 파일에서 설정을 적용하도록 지시하는 역할을 합니다.
 root = true
 
+
+######################################
+# all files
 # noinspection EditorConfigKeyCorrectness
 [*]
 charset = utf-8
 end_of_line = lf
 insert_final_newline = true
+ktlint_code_style = intellij_idea
 #indent_size = 4
 #indent_style = space
 #max_line_length = 120
 #tab_width = 4
 #trim_trailing_whitespace = true
 #ij_continuation_indent_size = 8
-ktlint_code_style = intellij_idea
 
 
+
+######################################
+# gradle
 # noinspection EditorConfigKeyCorrectness
 #[*.gradle.kts]
 #ktlint = disabled
 
 
+######################################
+# kotlin
 # noinspection EditorConfigKeyCorrectness
 [*.{kt,kts}]
+indent_size = 4
+indent_style = space
+
+# 실험적인(experimental) 코드 스타일 규칙을 활성화하겠다는 의미
 #ktlint_experimental = enabled
 
 # Imports must be ordered in lexicographic order without any empty lines in-between with "java", "javax", "kotlin" and aliases in the end (standard:import-ordering)
@@ -38,19 +55,27 @@ ktlint_standard_import-ordering = disabled
 # Wildcard import (cannot be auto-corrected) (standard:no-wildcard-imports)
 ktlint_standard_no-wildcard-imports = disabled
 
-# (standard:filename)
-ktlint_standard_filename = disabled
+# File 'xxx.kt' contains a single class and possibly also extension functions for that class and should be named same after that class 'xxY' (cannot be auto-corrected) (standard:filename)
+# 파일 이름과 클래스 이름 불일치에 대해 검사 여부 (기본값으로 enabled)
+ktlint_standard_filename = enabled
 
-#ktlint_standard_annotation = disabled
+# annotation 관련 코딩 스타일 가이드 준수 여부 (기본값으로 enabled)
+ktlint_standard_annotation = enabled
+
+# Missing newline after "(",  Missing newline before ")"
+ktlint_standard_wrapping = disabled
 
 # Skipping rule(s) which are depending on a rule which is not loaded.
 # Please check if you need to add additional rule sets before creating an issue.
 #   - Rule with id 'RuleId(value=standard:trailing-comma-on-call-site)' requires rule with id 'RuleId(value=standard:wrapping)' to be loaded
 #   - Rule with id 'RuleId(value=standard:trailing-comma-on-declaration-site)' requires rule with id 'RuleId(value=standard:wrapping)' to be loaded
+# 함수 호출 시 인자의 마지막 부분에 후행 쉼표(trailing comma)를 강제화
 ktlint_standard_trailing-comma-on-call-site = disabled
+# Missing trailing comma before ")" (standard:trailing-comma-on-declaration-site)
 ktlint_standard_trailing-comma-on-declaration-site = disabled
 
 # Missing space after // (standard:comment-spacing)
+# 주석 사용시 무조건 space 가 필요함
 ktlint_standard_comment-spacing = disabled
 
 # 주석 관련
@@ -77,14 +102,14 @@ ktlint_standard_discouraged-comment-location = disabled
 #  Property name should start with a lowercase letter and use camel case (standard:property-naming)
 #ktlint_standard_property-naming = disabled
 
-# Missing newline after "(",  Missing newline before ")"
-ktlint_standard_wrapping = disabled
-
-# Multi-line이면 NewLine에서 시작
+# Multi-line 이면 NewLine 에서 시작
 #ktlint_standard_string-template-indent = disabled
+# 우변이 Multi Line 일 경우 새로운 Line 에서 시작
 #ktlint_standard_multiline-expression-wrapping = disabled
 
 # Function body should be replaced with body expression (standard:function-expression-body)
+# 단일 표현식으로 이루어진 함수를 = [식] 형태로 표현해야 한다.
+# 예시) fun sum(a: Int, b: Int) = a + b
 ktlint_standard_function-expression-body = disabled
 
 # A comment inside or on same line after a 'value_parameter' is not allowed.
@@ -95,7 +120,13 @@ ktlint_standard_value-parameter-comment = disabled
 ktlint_standard_condition-wrapping = disabled
 
 # First line of body expression fits on same line as function signature (standard:function-signature)
+# Function signature should be replaced with function declaration (standard:function-signature)
+# 함수 본문이 여러 줄로 이어질 경우 시그니처와 본문 사이에 줄 바꿈을 어떻게 처리하는지에 대한 설정을 제어
+# 예시) (X) fun error(t: Throwable?, msg: () -> Any?): Unit =
+#              logger.error(t, msg)
+#      (O) fun error(t: Throwable?, msg: () -> Any?): Unit = logger.error(t, msg)
 ktlint_standard_function-signature = disabled
+
 
 ######################################
 # Allowed
@@ -116,8 +147,14 @@ ktlint_standard_function-signature = disabled
 # Argument should be on a separate line (unless all arguments can fit a single line) (standard:argument-list-wrapping)
 #ktlint_standard_argument-list-wrapping = disabled
 
+
+######################################
+# yaml
 #[*.{yml,yaml}]
 #indent_size = 2
 
+
+######################################
+# markdown
 #[*.{md,mdx}]
 #trim_trailing_whitespace = false
