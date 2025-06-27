@@ -24,6 +24,12 @@ plugins {
     // 플러그인 최신버전 확인하기: https://github.com/JLLeitschuh/ktlint-gradle/blob/main/CHANGELOG.md
     // https://beaniejoy.tistory.com/108
     // https://plugins.gradle.org/plugin/org.jlleitschuh.gradle.ktlint
+    //
+    // 설치시 ktlint-gradle 플러그인을 설치하면 내부적으로 다음과 같은 일이 일어납니다:
+    // tasks.named("check") {
+    //    dependsOn("ktlintCheck")
+    // }
+    // 빌드시: → build → check 포함 → ktlintCheck 실행됨
     alias(libs.plugins.ktlint) // id("org.jlleitschuh.gradle.ktlint") version "12.0.3"
 
     // 규칙 충돌 관리를 위해 detekt 는 off 하도록 한다.
@@ -186,15 +192,19 @@ sourceSets {
 //          https://github.com/pinterest/ktlint
 // -Rule: https://pinterest.github.io/ktlint/latest/rules/standard/
 //
+
+// CLI 최신버전 확인: https://pinterest.github.io/ktlint/latest/
+var ktlintVersion = "1.6.0"
+
 //configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
 ktlint {
-    version.set("1.6.0") // CLI 최신버전 확인: https://pinterest.github.io/ktlint/latest/
+    version.set(ktlintVersion)
     debug.set(false)
     verbose.set(true)
     android.set(false)
     outputToConsole.set(true) // 콘솔 출력 활성화
     ignoreFailures.set(false) // true: 오류 무시하고 계속 진행
-    //enableExperimentalRules.set(true) // 실험적 규칙 활성화
+    //enableExperimentalRules.set(true) // true: check task에 연결하지 않도록 설정
 
     filter {
         //exclude("**/generated/**") // 생성된 코드 제외
@@ -209,6 +219,22 @@ ktlint {
         reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.HTML)
     }
 }
+
+// ktlintCheck 는 플러그인 설치시 플러그인에 의해 자동으로 연결된다.
+// 수정 연결 코드
+// tasks.named("check") {
+//    dependsOn("ktlintCheck")
+// }
+//
+// 연결 제거
+// tasks.named("check").configure {
+//    dependsOn.removeIf { it.name == "ktlintCheck" }
+// }
+
+// ktlintFormat 연결
+// tasks.named("build") {
+//    dependsOn("ktlintFormat")
+// }
 
 // 특정 task에서만 오류 무시:
 //tasks.withType<org.jlleitschuh.gradle.ktlint.tasks.KtLintCheckTask> {
@@ -361,10 +387,12 @@ subprojects {
     }
 
     ktlint {
-        version.set("1.5.0")
+        version.set(ktlintVersion)
+        debug.set(false)
         verbose.set(true)
         android.set(false)
         outputToConsole.set(true)
+        ignoreFailures.set(false)
 
         reporters {
             reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
@@ -477,7 +505,6 @@ subprojects {
          */
     }
 
-    //++
     /*
     detekt {
         //buildUponDefaultConfig = true // preconfigure defaults
@@ -504,5 +531,4 @@ subprojects {
         jvmTarget = "1.8"
     }
      */
-    //--
 }

@@ -55,6 +55,9 @@ ktlint_standard_import-ordering = disabled
 # Wildcard import (cannot be auto-corrected) (standard:no-wildcard-imports)
 ktlint_standard_no-wildcard-imports = disabled
 
+# Property name should start with a lowercase letter and use camel case (cannot be auto-corrected) (standard:property-naming)
+#ktlint_standard:property-naming = disabled
+
 # File 'xxx.kt' contains a single class and possibly also extension functions for that class and should be named same after that class 'xxY' (cannot be auto-corrected) (standard:filename)
 # 파일 이름과 클래스 이름 불일치에 대해 검사 여부 (기본값으로 enabled)
 ktlint_standard_filename = enabled
