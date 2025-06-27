@@ -1,7 +1,11 @@
 package com.snc.test.test
 
 import com.snc.zero.test.base.BaseJUnit5Test
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 @Suppress("NonAsciiCharacters")
 class JUnit5Test : BaseJUnit5Test() {

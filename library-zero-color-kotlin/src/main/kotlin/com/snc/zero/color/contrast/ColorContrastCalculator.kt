@@ -1,6 +1,8 @@
 package com.snc.zero.color.contrast
 
-import kotlin.math.*
+import kotlin.math.abs
+import kotlin.math.pow
+import kotlin.math.roundToInt
 
 /**
  * WCAG 2.1 기준 색상 대비율 계산 및 자동 조정 클래스

@@ -8,6 +8,8 @@
 # https://editorconfig.org/
 #
 
+# task 캐시로 인해 옵션 반영이 누락된 경우
+# $ ./gradlew ktlintCheck --rerun-tasks --no-build-cache
 
 # top-most EditorConfig file
 # 해당 .editorconfig 파일이 해당 디렉토리에서 최상위 설정 파일임을 명시하는 것을 의미합니다.
@@ -31,7 +33,6 @@ ktlint_code_style = intellij_idea
 #ij_continuation_indent_size = 8
 
 
-
 ######################################
 # gradle
 # noinspection EditorConfigKeyCorrectness
@@ -46,14 +47,19 @@ ktlint_code_style = intellij_idea
 indent_size = 4
 indent_style = space
 
-# 실험적인(experimental) 코드 스타일 규칙을 활성화하겠다는 의미
-#ktlint_experimental = enabled
+# 실험적인(experimental) 코드 스타일 규칙을 활성화
+ktlint_experimental = disabled
 
 # Imports must be ordered in lexicographic order without any empty lines in-between with "java", "javax", "kotlin" and aliases in the end (standard:import-ordering)
 ktlint_standard_import-ordering = disabled
 
 # Wildcard import (cannot be auto-corrected) (standard:no-wildcard-imports)
-ktlint_standard_no-wildcard-imports = disabled
+# 와일드카드 import 금지
+ktlint_standard_no-wildcard-imports = enabled
+# 옵션 - IntelliJ에서도 일관되게 하려면 추가
+#ij_kotlin_imports_layout=*,java.**,javax.**,kotlin.**
+#ij_kotlin_imports_optimize=true
+#ij_kotlin_allow_wildcard_imports=false
 
 # Property name should start with a lowercase letter and use camel case (cannot be auto-corrected) (standard:property-naming)
 #ktlint_standard:property-naming = disabled
@@ -130,10 +136,6 @@ ktlint_standard_condition-wrapping = disabled
 #      (O) fun error(t: Throwable?, msg: () -> Any?): Unit = logger.error(t, msg)
 ktlint_standard_function-signature = disabled
 
-
-######################################
-# Allowed
-
 # File must end with a newline (\n) (standard:final-newline)
 #ktlint_standard_final-newline = disabled
 
@@ -149,6 +151,11 @@ ktlint_standard_function-signature = disabled
 # 모든 arguments는 single line 으로 위치해야 함. 이 옵션이 영향도가 좀 크네...
 # Argument should be on a separate line (unless all arguments can fit a single line) (standard:argument-list-wrapping)
 #ktlint_standard_argument-list-wrapping = disabled
+
+# Add a blank line between all when-condition in case at least one multiline when-condition is found in the statement (standard:blank-line-between-when-conditions)
+# when 문 내에 여러 줄로 구성된 조건(multiline when-condition)이 하나라도 있을 경우, 다른 모든 when-condition 사이에도 일관적으로 빈 줄을 추가하여 각 조건 블록을 명확하게 구분하도록 합니다.
+ktlint_standard_blank-line-between-when-conditions = disabled
+ktlint_standard_when-without-else = disabled
 
 
 ######################################

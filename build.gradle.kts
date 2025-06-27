@@ -1,8 +1,8 @@
-//import org.gradle.api.artifacts.verification.DependencyVerificationMode as VerificationMode
 import java.io.FileInputStream
 import java.util.Properties
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+//import org.gradle.api.artifacts.verification.DependencyVerificationMode as VerificationMode
 
 plugins {
     //`kotlin-dsl`
@@ -203,8 +203,8 @@ ktlint {
     verbose.set(true)
     android.set(false)
     outputToConsole.set(true) // 콘솔 출력 활성화
-    ignoreFailures.set(false) // true: 오류 무시하고 계속 진행
-    //enableExperimentalRules.set(true) // true: check task에 연결하지 않도록 설정
+    //ignoreFailures.set(true) // true: 오류 무시하고 계속 진행
+    //enableExperimentalRules.set(true) // true: 아직 정식으로 안정화되지 않은 실험적인 규칙들을 활성화
 
     filter {
         //exclude("**/generated/**") // 생성된 코드 제외

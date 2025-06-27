@@ -1,6 +1,15 @@
 package com.snc.zero.filemanager.file2
 
-import java.io.*
+import java.io.BufferedReader
+import java.io.ByteArrayInputStream
+import java.io.Closeable
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
+import java.io.OutputStream
 import java.nio.CharBuffer
 import java.nio.charset.Charset
 import java.util.Arrays

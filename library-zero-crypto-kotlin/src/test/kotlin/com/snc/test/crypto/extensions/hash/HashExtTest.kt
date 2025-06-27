@@ -1,7 +1,16 @@
 package com.snc.test.crypto.extensions.hash
 
+import com.snc.zero.crypto.extensions.hash.toHmacSHA224
+import com.snc.zero.crypto.extensions.hash.toHmacSHA256
+import com.snc.zero.crypto.extensions.hash.toHmacSHA384
+import com.snc.zero.crypto.extensions.hash.toHmacSHA512
+import com.snc.zero.crypto.extensions.hash.toSha224
+import com.snc.zero.crypto.extensions.hash.toSha256
+import com.snc.zero.crypto.extensions.hash.toSha384
+import com.snc.zero.crypto.extensions.hash.toSha512
+import com.snc.zero.crypto.extensions.hash.toShake128
+import com.snc.zero.crypto.extensions.hash.toShake256
 import com.snc.zero.extensions.text.toHexString
-import com.snc.zero.crypto.extensions.hash.*
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertEquals

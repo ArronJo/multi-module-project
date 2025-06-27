@@ -1,6 +1,10 @@
 package com.snc.zero.passgen
 
-import org.passay.*
+import org.passay.CharacterRule
+import org.passay.EnglishCharacterData
+import org.passay.PasswordGenerator
+import org.passay.Rule
+import org.passay.WhitespaceRule
 import java.security.SecureRandom
 
 /**
