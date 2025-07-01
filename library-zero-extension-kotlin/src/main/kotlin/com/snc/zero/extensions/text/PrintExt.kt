@@ -1,7 +1,7 @@
 package com.snc.zero.extensions.text
 
 import com.snc.zero.extensions.format.formatDateTime
-import java.util.*
+import java.util.Calendar
 
 fun <T> Array<T>.print(): String {
     val sb = StringBuilder()

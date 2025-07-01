@@ -8,7 +8,8 @@ import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
-import java.util.*
+import java.util.Random
+import java.util.SplittableRandom
 
 private val logger = TLogging.logger { }
 

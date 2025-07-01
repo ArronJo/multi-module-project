@@ -4,7 +4,7 @@ import com.snc.zero.test.timer.TestTimer
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInfo
-import java.util.*
+import java.util.SplittableRandom
 
 /**
  * 각 Class 실행 실행시

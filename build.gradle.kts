@@ -66,6 +66,7 @@ repositories {
     //maven {
     //    url = uri("https://plugins.gradle.org/m2/")
     //}
+    //gradlePluginPortal()
 }
 
 dependencies {
@@ -124,6 +125,11 @@ kotlin {
 
     println("[kotlin-compilerOptions] KotlinVersion = " + rootProject.extra["kotlinVersion"] as String + " --> " + KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String) + " --- " + KotlinVersion.KOTLIN_2_1 + " : " + KotlinVersion.fromVersion("2.1"))
 }
+
+// 중복 처리 전략 추가
+//tasks.withType<Jar> {
+//    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+//}
 
 tasks.withType<KotlinCompile>().configureEach {
     compilerOptions {
@@ -203,20 +209,24 @@ ktlint {
     verbose.set(true)
     android.set(false)
     outputToConsole.set(true) // 콘솔 출력 활성화
-    //ignoreFailures.set(true) // true: 오류 무시하고 계속 진행
+    outputColorName.set("RED")
+    ignoreFailures.set(false) // true: 오류 무시하고 계속 진행
     //enableExperimentalRules.set(true) // true: 아직 정식으로 안정화되지 않은 실험적인 규칙들을 활성화
-
-    filter {
-        //exclude("**/generated/**") // 생성된 코드 제외
-        //exclude("**/build/**") // 생성된 코드 제외
-        //exclude("**/*Test.kt") // 특정 파일 제외
-        //include("**/kotlin/**") // kotlin 소스만 포함
-    }
-
     reporters {
         reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.PLAIN)
         reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.CHECKSTYLE)
         reporter(org.jlleitschuh.gradle.ktlint.reporter.ReporterType.HTML)
+    }
+    //kotlinScriptAdditionalPaths {
+    //    include(fileTree("scripts/") {
+    //        include("*.kts")
+    //    })
+    //}
+    filter {
+        exclude("**/generated/**") // 생성된 코드 제외
+        //exclude("**/build/**") // 생성된 코드 제외
+        //exclude("**/*Test.kt") // 특정 파일 제외
+        //include("**/kotlin/**") // kotlin 소스만 포함
     }
 }
 
@@ -231,7 +241,7 @@ ktlint {
 //    dependsOn.removeIf { it.name == "ktlintCheck" }
 // }
 
-// ktlintFormat 연결
+// 빌드시 자동 포맷하려면 아래처럼 설정
 // tasks.named("build") {
 //    dependsOn("ktlintFormat")
 // }
@@ -465,11 +475,13 @@ subprojects {
         )
 
         classDirectories.setFrom(
-            files(classDirectories.files.map {
-                fileTree(it) {
-                    exclude(excluded)
+            files(
+                classDirectories.files.map {
+                    fileTree(it) {
+                        exclude(excluded)
+                    }
                 }
-            })
+            )
         )
     }
 

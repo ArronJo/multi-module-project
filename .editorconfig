@@ -1,17 +1,19 @@
 # .editorconfig
+# https://editorconfig.org/
 #
-# Reference
+# -Reference
 # https://pinterest.github.io/ktlint/1.6.0/rules/configuration-ktlint/
 # https://pinterest.github.io/ktlint/0.49.1/rules/code-styles/
 # https://pinterest.github.io/ktlint/0.49.1/rules/standard/
 #
-# https://editorconfig.org/
-#
+# -IntelliJ에서 .editorconfig 인식하도록 설정
+# Preferences (또는 Settings) → Editor → Code Style
+# 우측 상단의 ⚙️(톱니바퀴) 아이콘 클릭 → Enable EditorConfig support 체크!
 
-# task 캐시로 인해 옵션 반영이 누락된 경우
-# $ ./gradlew ktlintCheck --rerun-tasks --no-build-cache
+# -task 캐시로 인해 옵션 반영이 누락된 경우
+#  ./gradlew ktlintCheck --rerun-tasks --no-build-cache
 
-# top-most EditorConfig file
+# -top-most EditorConfig file
 # 해당 .editorconfig 파일이 해당 디렉토리에서 최상위 설정 파일임을 명시하는 것을 의미합니다.
 # 이 설정은 Ktlint가 .editorconfig 파일을 찾을 때, 이 파일이 발견된 디렉토리부터 상위로 더 이상 탐색하지 않고 해당 파일에서 설정을 적용하도록 지시하는 역할을 합니다.
 root = true
@@ -24,7 +26,7 @@ root = true
 charset = utf-8
 end_of_line = lf
 insert_final_newline = true
-ktlint_code_style = intellij_idea
+#ktlint_code_style = intellij_idea
 #indent_size = 4
 #indent_style = space
 #max_line_length = 120
@@ -44,8 +46,14 @@ ktlint_code_style = intellij_idea
 # kotlin
 # noinspection EditorConfigKeyCorrectness
 [*.{kt,kts}]
+# IntelliJ에서 Ktlint와 충돌 없이 저장 시 자동 포맷을 적용
 indent_size = 4
 indent_style = space
+# - 코드 스타일 프리셋을 선택하는 옵션
+# official			: Ktlint의 기본 스타일 (Kotlin 공식 스타일 가이드 기반)
+# intellij_idea		: IntelliJ IDEA에서 사용하는 기본 Kotlin 코드 스타일
+# android_studio	: Android 개발에 최적화된 Android Studio 스타일 (Ktlint 1.2.0+부터 지원)
+ktlint_code_style = intellij_idea
 
 # 실험적인(experimental) 코드 스타일 규칙을 활성화
 ktlint_experimental = disabled
@@ -54,12 +62,11 @@ ktlint_experimental = disabled
 ktlint_standard_import-ordering = disabled
 
 # Wildcard import (cannot be auto-corrected) (standard:no-wildcard-imports)
-# 와일드카드 import 금지
+# Wild import 금지
+ij_kotlin_name_count_to_use_star_import = 999
+ij_kotlin_name_count_to_use_star_import_for_members = 999
+ij_kotlin_packages_to_use_import_on_demand =
 ktlint_standard_no-wildcard-imports = enabled
-# 옵션 - IntelliJ에서도 일관되게 하려면 추가
-#ij_kotlin_imports_layout=*,java.**,javax.**,kotlin.**
-#ij_kotlin_imports_optimize=true
-#ij_kotlin_allow_wildcard_imports=false
 
 # Property name should start with a lowercase letter and use camel case (cannot be auto-corrected) (standard:property-naming)
 #ktlint_standard:property-naming = disabled
@@ -71,8 +78,9 @@ ktlint_standard_filename = enabled
 # annotation 관련 코딩 스타일 가이드 준수 여부 (기본값으로 enabled)
 ktlint_standard_annotation = enabled
 
-# Missing newline after "(",  Missing newline before ")"
-ktlint_standard_wrapping = disabled
+# Missing newline after '{' (standard:statement-wrapping)
+# Missing newline before '}' (standard:statement-wrapping)
+ktlint_standard_statement-wrapping = disabled
 
 # Skipping rule(s) which are depending on a rule which is not loaded.
 # Please check if you need to add additional rule sets before creating an issue.
@@ -102,6 +110,11 @@ ktlint_standard_comment-spacing = disabled
 # Unexpected blank line(s) before "}" (standard:no-blank-line-before-rbrace)
 ktlint_standard_no-blank-line-before-rbrace = disabled
 
+#  Missing newline after "(" (standard:wrapping)
+# Missing newline before ")" (standard:wrapping)
+ktlint_standard_wrapping = disabled
+
+# Missing newline after '{' (standard:statement-wrapping)
 # Missing newline before '}' (standard:statement-wrapping)
 ktlint_standard_statement-wrapping = disabled
 
@@ -130,6 +143,9 @@ ktlint_standard_condition-wrapping = disabled
 
 # First line of body expression fits on same line as function signature (standard:function-signature)
 # Function signature should be replaced with function declaration (standard:function-signature)
+# Newline expected after opening parenthesis (standard:function-signature)
+# Parameter should start on a newline (standard:function-signature)
+# Newline expected before closing parenthesis (standard:function-signature)
 # 함수 본문이 여러 줄로 이어질 경우 시그니처와 본문 사이에 줄 바꿈을 어떻게 처리하는지에 대한 설정을 제어
 # 예시) (X) fun error(t: Throwable?, msg: () -> Any?): Unit =
 #              logger.error(t, msg)
@@ -156,6 +172,12 @@ ktlint_standard_function-signature = disabled
 # when 문 내에 여러 줄로 구성된 조건(multiline when-condition)이 하나라도 있을 경우, 다른 모든 when-condition 사이에도 일관적으로 빈 줄을 추가하여 각 조건 블록을 명확하게 구분하도록 합니다.
 ktlint_standard_blank-line-between-when-conditions = disabled
 ktlint_standard_when-without-else = disabled
+
+# Class body should not start with blank line (standard:no-empty-first-line-in-class-body)
+ktlint_standard_no-empty-first-line-in-class-body = disabled
+
+# A multiline expression should start on a new line (standard:multiline-expression-wrapping)
+ktlint_standard_multiline-expression-wrapping = disabled
 
 
 ######################################

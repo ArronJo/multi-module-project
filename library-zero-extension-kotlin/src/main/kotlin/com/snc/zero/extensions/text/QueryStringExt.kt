@@ -1,6 +1,6 @@
 package com.snc.zero.extensions.text
 
-import java.util.*
+import java.util.Locale
 import kotlin.collections.HashMap
 
 fun <T> Map<String, T>.toQueryString(): String {

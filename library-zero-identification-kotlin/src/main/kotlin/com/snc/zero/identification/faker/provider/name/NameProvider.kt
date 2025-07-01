@@ -1,6 +1,6 @@
 package com.snc.zero.identification.faker.provider.name
 
-import java.util.*
+import java.util.SplittableRandom
 import kotlin.math.ln
 
 open class NameProvider {

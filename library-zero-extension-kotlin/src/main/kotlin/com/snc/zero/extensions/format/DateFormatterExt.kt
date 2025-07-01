@@ -1,7 +1,9 @@
 package com.snc.zero.extensions.format
 
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 fun String.formatDateTime(inputFormat: String, outputFormat: String = "yyyyMMddHHmmss"): String {
     val input = SimpleDateFormat(inputFormat, Locale.getDefault())
