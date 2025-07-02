@@ -63,10 +63,11 @@ ktlint_standard_import-ordering = disabled
 
 # Wildcard import (cannot be auto-corrected) (standard:no-wildcard-imports)
 # Wild import 금지
-ij_kotlin_name_count_to_use_star_import = 999
-ij_kotlin_name_count_to_use_star_import_for_members = 999
 ij_kotlin_packages_to_use_import_on_demand =
 ktlint_standard_no-wildcard-imports = enabled
+# import 개수
+ij_kotlin_name_count_to_use_star_import = 999
+ij_kotlin_name_count_to_use_star_import_for_members = 999
 
 # Property name should start with a lowercase letter and use camel case (cannot be auto-corrected) (standard:property-naming)
 #ktlint_standard:property-naming = disabled
