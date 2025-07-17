@@ -17,6 +17,7 @@ property**/
 .idea/libraries/
 .idea/dictionaries/
 .idea/uiDesigner.xml
+.idea/inspectionProfiles/
 *.iws
 *.iml
 *.ipr

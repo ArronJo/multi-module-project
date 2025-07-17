@@ -2,12 +2,9 @@ package com.snc.zero.age.calculator
 
 import com.snc.zero.extensions.calendar.diff
 import com.snc.zero.extensions.format.formatDateTime
-import com.snc.zero.logger.jvm.TLogging
 import java.time.LocalDate
 import java.time.Period
 import java.util.Calendar
-
-private val logger = TLogging.logger { }
 
 /**
  * 나이 계산
@@ -50,7 +47,7 @@ class AgeCalculator private constructor() {
             val targetDate = Calendar.getInstance()
             birthDate[yearOfBirth, monthOfBirth - 1] = 1
             if (birthDate.getActualMaximum(Calendar.DAY_OF_MONTH) < dayOfBirth) {
-                logger.warn { "Exception: Invalid Date = $yearOfBirth-$monthOfBirth-$dayOfBirth" }
+                println("Exception: Invalid Date = $yearOfBirth-$monthOfBirth-$dayOfBirth")
                 return arrayOf()
             }
             birthDate[yearOfBirth, monthOfBirth - 1] = dayOfBirth

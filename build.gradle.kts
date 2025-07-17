@@ -5,20 +5,23 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 //import org.gradle.api.artifacts.verification.DependencyVerificationMode as VerificationMode
 
 plugins {
-    //`kotlin-dsl`
-    //id("java")
-    kotlin("jvm") version "2.1.20" // id("org.jetbrains.kotlin.jvm") version "2.1.0" "2.0.22" "1.9.23"
-    kotlin("plugin.serialization") version "1.8.0"
+    id("java")
 
-    // Check latest version
-    // https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
+    // https://plugins.gradle.org/plugin/org.jetbrains.kotlin.jvm
+    // Kotlin 관련 플러그인은 같은 버전을 사용하는 것이 좋다고 하네.
+    kotlin("jvm") version "2.2.0" // id("org.jetbrains.kotlin.jvm") version "2.1.20"
+    kotlin("plugin.serialization") version "2.2.0"
+
     id("jacoco")
+
+    // https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
     alias(libs.plugins.sonarqube) // id("org.sonarqube") version "5.1.0.4882"
 
+    // Dependency-check OWASP
+    // https://plugins.gradle.org/plugin/org.owasp.dependencycheck
     // https://wiki.owasp.org/images/b/bd/OWASP_Top_10-2017-ko.pdf
     // https://rcan.net/149?category=998453
     // https://github.com/dependency-check/dependency-check-sonar-plugin
-    // Dependency-check OWASP
     alias(libs.plugins.dependencycheck) // id("org.owasp.dependencycheck") version "8.0.2"
 
     // 플러그인 최신버전 확인하기: https://github.com/JLLeitschuh/ktlint-gradle/blob/main/CHANGELOG.md
@@ -54,9 +57,10 @@ version = "0.1-beta"
 
 buildscript {
     extra.apply {
-        // Gradle JVM : File > Settings > Build, Execution, Deployment > Build Tools > Gradle > "Gradle JVM"
+        // Gradle JVM: File > Settings > Build, Execution, Deployment > Build Tools > Gradle > "Gradle JVM"
         set("javaVersion", JavaVersion.VERSION_17)
         set("kotlinVersion", "2.0") // org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0
+        set("jvmToolchain", 17)
     }
 }
 
@@ -90,6 +94,7 @@ configurations.all {
     }
 }
 
+// Dependency-check OWASP
 //dependencyCheck {
 //    format = org.owasp.dependencycheck.reporting.ReportGenerator.Format.ALL
 //}
@@ -114,13 +119,14 @@ kotlin {
     // Kotlin 코드를 컴파일하고 실행할 때 사용할 Java 툴체인을 설정
     // 실제로 Java 17 JDK를 사용하여 바이트코드를 생성
     // 컴파일러, 실행 환경 모두 Java 17을 사용
-    jvmToolchain(17)
+    jvmToolchain(rootProject.extra["jvmToolchain"] as Int)
 
     compilerOptions {
         // Kotlin 언어 기능, API 버전 설정
         // 일반적으로 jvmToolchain(17)만 설정하면 충분하며, Kotlin 언어 버전은 사용 중인 Kotlin 플러그인 버전에 따라 자동으로 결정됩니다.
         languageVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
         apiVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
+        // Kotlin K2모드 사용 설정, freeCompilerArgs.add("-Xuse-k2")
     }
 
     println("[kotlin-compilerOptions] KotlinVersion = " + rootProject.extra["kotlinVersion"] as String + " --> " + KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String) + " --- " + KotlinVersion.KOTLIN_2_1 + " : " + KotlinVersion.fromVersion("2.1"))
@@ -258,20 +264,28 @@ ktlint {
 //                   https://yeoonjae.tistory.com/entry/Project-Gradle-Build-%EC%8B%9C-JaCoCo-%EC%97%B0%EB%8F%99%ED%95%98%EA%B8%B0
 // -Release: https://github.com/jacoco/jacoco/releases
 jacoco {
-    toolVersion = "0.8.12"
+    toolVersion = "0.8.13"
     //reportsDirectory = layout.buildDirectory.dir("customJacocoReportDir")
 }
-/*
 tasks.test {
     finalizedBy(tasks.jacocoTestReport)
 }
-
 tasks.jacocoTestReport {
     reports {
         xml.required.set(true)
         html.required.set(true)
     }
     dependsOn(tasks.test)
+}
+/*
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = "0.80".toBigDecimal()
+            }
+        }
+    }
 }
  */
 
@@ -284,7 +298,7 @@ if (sonarPropertiesFile.exists()) {
 }
 //println("sonarProperties: $sonarProperties")
 
-// for GitHub Action
+// For GitHub Action
 // https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
 // Task 'sonarqube' is deprecated. Use 'sonar' instead.
 sonar {
@@ -302,7 +316,6 @@ sonar {
         property("sonar.projectKey", sonarProjectKey)
         property("sonar.organization", sonarOrganization)
         property("sonar.token", sonarToken)
-        //property("sonar.login", sonarToken)   // The property 'sonar.login' is deprecated and will be removed in the future. Please use the 'sonar.token' property instead when passing a token.
         property("sonar.host.url", sonarHost)
 
         property("sonar.java.binaries", "${layout.buildDirectory}/classes")
@@ -340,6 +353,8 @@ tasks.named("clean") {
 ///////////////////////////////////////////////////////////
 // compileJava 사전 Task
 tasks.register<Exec>("deleteDSStoreShellScript") {
+    println("\n\n>>>>> task deleteDSStoreShellScript : $projectDir/,  os.name: ${System.getProperty("os.name")}") // "Mac OS X"
+
     description = "This is a shell task that deletes the '.DS_Store' file when building a project."
     group = JavaBasePlugin.BUILD_TASK_NAME
     if (System.getProperty("os.name").lowercase().contains("windows")) {
