@@ -5,6 +5,7 @@ import java.io.ByteArrayInputStream
 import java.io.Closeable
 import java.io.File
 import java.io.FileInputStream
+import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
@@ -12,6 +13,7 @@ import java.io.InputStreamReader
 import java.io.OutputStream
 import java.nio.CharBuffer
 import java.nio.charset.Charset
+import java.nio.file.Files
 import java.util.Arrays
 
 /**
@@ -62,28 +64,83 @@ class FSFile private constructor() {
             return file.delete()
         }
 
+        /**
+         * (보안취약점) TOCTOU(Time-of-Check-Time-of-Use) 경쟁 조건은 파일 시스템에서 발생하는 중요한 보안 취약점입니다.
+         * TOCTOU 경쟁 조건이란?
+         * TOCTOU는 파일의 상태를 **확인하는 시점(Time-of-Check)**과 실제로 사용하는 시점(Time-of-Use) 사이에
+         * 시간 차이가 있을 때 발생하는 문제입니다. 이 짧은 시간 동안 다른 프로세스가 파일을 변경할 수 있어 예상치 못한 결과가 발생할 수 있습니다.
+         *
+         * fun safeRead(filename: String): String {
+         *   try {
+         *     // 파일 존재 확인과 읽기를 동시에 수행
+         *     val content = Files.readString(Paths.get(filename))
+         *     // 파일 처리 로직
+         *     return content
+         *   } catch (_: NoSuchFileException) {
+         *     // 파일이 없는 경우 처리
+         *     return ""
+         *   }
+         * }
+         *
+         * fun safeReadWithDescriptor(filename: String): String {
+         *   try {
+         *     Files.newInputStream(Paths.get(filename)).use { inputStream ->
+         *       // 파일 디스크립터가 고정되어 안전
+         *       val content = inputStream.readBytes()
+         *       // 처리 로직
+         *       return String(content, Charsets.UTF_8)
+         *     }
+         *   } catch (_: IOException) {
+         *     // 에러 처리
+         *     return ""
+         *   }
+         * }
+         */
         @Throws(IOException::class)
         fun read(
             file: File,
             charset: String = "UTF-8"
         ): ByteArray {
-            val buf = CharArray(DEFAULT_BUFFER_SIZE)
+            // TOCTOU 대응: 파일 존재 확인과 스트림 생성을 동시에 수행
+            var fileInputStream: FileInputStream? = null
             var br: BufferedReader? = null
-            val sb = StringBuilder()
 
-            var length = file.length()
             try {
-                br = BufferedReader(InputStreamReader(FileInputStream(file), charset(charset)))
-                while (length > 0) {
-                    val amt = br.read(buf, 0, buf.size)
+                fileInputStream = FileInputStream(file)
+                br = BufferedReader(InputStreamReader(fileInputStream, charset(charset)))
+
+                val sb = StringBuilder()
+                val buf = CharArray(DEFAULT_BUFFER_SIZE)
+                var amt: Int
+
+                while (br.read(buf, 0, buf.size).also { amt = it } != -1) {
                     sb.appendRange(buf, 0, amt)
-                    length -= amt
                 }
 
+                return sb.toString().toByteArray(charset(charset))
+
+            } catch (e: FileNotFoundException) {
+                throw IOException("파일을 찾을 수 없습니다: ${file.absolutePath}", e)
+            } catch (e: SecurityException) {
+                throw IOException("파일 접근 권한이 없습니다: ${file.absolutePath}", e)
             } finally {
                 closeQuietly(br)
+                closeQuietly(fileInputStream)
             }
-            return sb.toString().toByteArray()
+        }
+
+        // 더 안전한 대안 - NIO 사용
+        // 가장 안전한 방법은 readWithNIO() 함수를 사용하는 것입니다.
+        @Throws(IOException::class)
+        fun readWithNIO(file: File): ByteArray {
+            return try {
+                // NIO를 사용한 원자적 파일 읽기
+                Files.readAllBytes(file.toPath())
+            } catch (e: NoSuchFileException) {
+                throw IOException("파일을 찾을 수 없습니다: ${file.absolutePath}", e)
+            } catch (e: AccessDeniedException) {
+                throw IOException("파일 접근 권한이 없습니다: ${file.absolutePath}", e)
+            }
         }
 
         @Throws(IOException::class)
