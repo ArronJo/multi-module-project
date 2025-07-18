@@ -161,10 +161,8 @@ fun String.toCalendar(pattern: String = "yyyyMMddHHmmss"): Calendar {
     val sdf = SimpleDateFormat(pattern, Locale.getDefault())
     val calendar = Calendar.getInstance()
     try {
-        val date = sdf.parse(this.substring(0, min(pattern.length, this.length)))
-        date?.let {
-            calendar.time = it
-        }
+        val date: Date = sdf.parse(this.substring(0, min(pattern.length, this.length)))
+        calendar.time = date
     } catch (e: ParseException) {
         logger.error { e }
     }
