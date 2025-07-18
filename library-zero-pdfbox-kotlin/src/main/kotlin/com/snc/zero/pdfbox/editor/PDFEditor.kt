@@ -14,7 +14,6 @@ import org.apache.pdfbox.text.PDFTextStripperByArea
 import org.apache.pdfbox.text.TextPosition
 import java.awt.geom.Rectangle2D
 import java.io.File
-import javax.annotation.processing.Generated
 
 /**
  * Kotlin을 사용하여 PDF 문서 내 특정 위치를 찾아 하이라이트 처리하는 방법을 알려드리겠습니다.
@@ -34,15 +33,20 @@ class PDFEditor private constructor() {
             // output 디렉토리가 없으면 생성
             if (!outputDir.exists()) {
                 outputDir.mkdirs()
-            } else {
-                // output 디렉토리가 있으면 내부 파일들 삭제
-                outputDir.listFiles()?.forEach { file ->
-                    @Generated
-                    if (file.isFile && !file.delete()) {
-                        println("delete failed...")
+            }
+
+            // output 디렉토리가 있으면 내부 파일들 삭제
+            outputDir.listFiles()
+                ?.filter { it.isFile }
+                ?.forEach { file ->
+                    try {
+                        if (!file.delete()) {
+                            println("파일 삭제 실패: ${file.absolutePath}")
+                        }
+                    } catch (_: SecurityException) {
+                        println("파일 삭제 권한 없음: ${file.absolutePath}")
                     }
                 }
-            }
         }
 
         /**
