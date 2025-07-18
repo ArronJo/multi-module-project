@@ -31,6 +31,11 @@ import com.snc.zero.extensions.format.formatDateTime
 import com.snc.zero.extensions.text.print
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.util.Calendar
 import java.util.Date
@@ -198,5 +203,211 @@ class CalendarExtTest : BaseJUnit5Test() {
         val v1 = data.toCalendar()
         // then
         logger.debug { "Date toCalendar 결과: $data -> ${v1.print()}" }
+    }
+
+    @Nested
+    @DisplayName("정상적인 날짜 문자열 파싱")
+    inner class ValidDateStringParsing {
+
+        @Test
+        @DisplayName("기본 패턴으로 정상 날짜 파싱")
+        fun `should parse valid date string with default pattern`() {
+            // Given
+            val dateString = "20240315143000"
+
+            // When
+            val result = dateString.toCalendar()
+
+            // Then
+            assertEquals(2024, result.get(Calendar.YEAR))
+            assertEquals(Calendar.MARCH, result.get(Calendar.MONTH))
+            assertEquals(15, result.get(Calendar.DAY_OF_MONTH))
+            assertEquals(14, result.get(Calendar.HOUR_OF_DAY))
+            assertEquals(30, result.get(Calendar.MINUTE))
+            assertEquals(0, result.get(Calendar.SECOND))
+        }
+
+        @Test
+        @DisplayName("커스텀 패턴으로 정상 날짜 파싱")
+        fun `should parse valid date string with custom pattern`() {
+            // Given
+            val dateString = "2024-03-15"
+            val pattern = "yyyy-MM-dd"
+
+            // When
+            val result = dateString.toCalendar(pattern)
+
+            // Then
+            assertEquals(2024, result.get(Calendar.YEAR))
+            assertEquals(Calendar.MARCH, result.get(Calendar.MONTH))
+            assertEquals(15, result.get(Calendar.DAY_OF_MONTH))
+        }
+    }
+
+    @Nested
+    @DisplayName("비정상적인 날짜 문자열 파싱")
+    inner class InvalidDateStringParsing {
+
+        @Test
+        @DisplayName("완전히 잘못된 형식의 날짜 문자열")
+        fun `should return current calendar when date string is completely invalid`() {
+            // Given
+            val invalidDateString = "invalid-date-string"
+            val beforeTest = Calendar.getInstance()
+
+            // When
+            val result = invalidDateString.toCalendar()
+            val afterTest = Calendar.getInstance()
+
+            // Then
+            // ParseException이 발생하면 현재 시간의 Calendar가 반환되어야 함
+            assertTrue(result.timeInMillis >= beforeTest.timeInMillis)
+            assertTrue(result.timeInMillis <= afterTest.timeInMillis)
+        }
+
+        @Test
+        @DisplayName("부분적으로 잘못된 형식의 날짜 문자열")
+        fun `should return current calendar when date string is partially invalid`() {
+            // Given
+            val partiallyInvalidDateString = "2024aa15143000"
+            val beforeTest = Calendar.getInstance()
+
+            // When
+            val result = partiallyInvalidDateString.toCalendar()
+            val afterTest = Calendar.getInstance()
+
+            // Then
+            assertTrue(result.timeInMillis >= beforeTest.timeInMillis)
+            assertTrue(result.timeInMillis <= afterTest.timeInMillis)
+        }
+
+        @Test
+        @DisplayName("존재하지 않는 날짜는 자동으로 조정됨")
+        fun `should auto-adjust non-existent date`() {
+            // Given
+            val nonExistentDate = "20240230143000" // 2월 30일은 존재하지 않음
+
+            // When
+            val result = nonExistentDate.toCalendar()
+
+            // Then
+            // SimpleDateFormat은 2월 30일을 3월 1일로 자동 조정함
+            assertEquals(2024, result.get(Calendar.YEAR))
+            assertEquals(Calendar.MARCH, result.get(Calendar.MONTH))
+            assertEquals(1, result.get(Calendar.DAY_OF_MONTH))
+            assertEquals(14, result.get(Calendar.HOUR_OF_DAY))
+            assertEquals(30, result.get(Calendar.MINUTE))
+            assertEquals(0, result.get(Calendar.SECOND))
+        }
+    }
+
+    @Nested
+    @DisplayName("엣지 케이스 테스트")
+    inner class EdgeCaseTests {
+
+        @Test
+        @DisplayName("빈 문자열")
+        fun `should return current calendar when string is empty`() {
+            // Given
+            val emptyString = ""
+            val beforeTest = Calendar.getInstance()
+
+            // When
+            val result = emptyString.toCalendar()
+            val afterTest = Calendar.getInstance()
+
+            // Then
+            assertTrue(result.timeInMillis >= beforeTest.timeInMillis)
+            assertTrue(result.timeInMillis <= afterTest.timeInMillis)
+        }
+
+        @Test
+        @DisplayName("패턴보다 짧은 문자열")
+        fun `should handle string shorter than pattern`() {
+            // Given
+            val shortString = "2024"
+            val beforeTest = Calendar.getInstance()
+
+            // When
+            val result = shortString.toCalendar()
+            val afterTest = Calendar.getInstance()
+
+            // Then
+            assertTrue(result.timeInMillis >= beforeTest.timeInMillis)
+            assertTrue(result.timeInMillis <= afterTest.timeInMillis)
+        }
+
+        @Test
+        @DisplayName("패턴보다 긴 문자열")
+        fun `should handle string longer than pattern`() {
+            // Given
+            val longString = "20240315143000123456789"
+
+            // When
+            val result = longString.toCalendar()
+
+            // Then
+            assertEquals(2024, result.get(Calendar.YEAR))
+            assertEquals(Calendar.MARCH, result.get(Calendar.MONTH))
+            assertEquals(15, result.get(Calendar.DAY_OF_MONTH))
+            assertEquals(14, result.get(Calendar.HOUR_OF_DAY))
+            assertEquals(30, result.get(Calendar.MINUTE))
+            assertEquals(0, result.get(Calendar.SECOND))
+        }
+    }
+
+    @Nested
+    @DisplayName("Null 반환 시나리오 테스트")
+    inner class NullReturnScenarioTests {
+
+        @Test
+        @DisplayName("SimpleDateFormat.parse()가 null을 반환하는 경우")
+        fun `should return current calendar when SimpleDateFormat parse returns null`() {
+            // Given
+            val dateString = "invalid"
+            val beforeTest = Calendar.getInstance()
+
+            // When
+            val result = dateString.toCalendar()
+            val afterTest = Calendar.getInstance()
+
+            // Then
+            // parse()가 null을 반환하면 date?.let 블록이 실행되지 않고
+            // 현재 시간의 Calendar가 반환되어야 함
+            assertNotNull(result)
+            assertTrue(result.timeInMillis >= beforeTest.timeInMillis)
+            assertTrue(result.timeInMillis <= afterTest.timeInMillis)
+        }
+
+        @Test
+        @DisplayName("다양한 잘못된 형식에 대한 null 반환 처리")
+        fun `should handle various invalid formats that return null`() {
+            // Given
+            val invalidFormats = listOf(
+                "not-a-date",
+                "2024-13-32", // 잘못된 월/일
+                "abcd1234efgh",
+                "2024/03/15", // 패턴과 다른 구분자
+                "24-03-15" // 2자리 연도
+            )
+
+            invalidFormats.forEach { invalidFormat ->
+                // When
+                val beforeTest = Calendar.getInstance()
+                val result = invalidFormat.toCalendar()
+                val afterTest = Calendar.getInstance()
+
+                // Then
+                assertNotNull(result, "Result should not be null for input: $invalidFormat")
+                assertTrue(
+                    result.timeInMillis >= beforeTest.timeInMillis,
+                    "Result should be current time for input: $invalidFormat"
+                )
+                assertTrue(
+                    result.timeInMillis <= afterTest.timeInMillis,
+                    "Result should be current time for input: $invalidFormat"
+                )
+            }
+        }
     }
 }
