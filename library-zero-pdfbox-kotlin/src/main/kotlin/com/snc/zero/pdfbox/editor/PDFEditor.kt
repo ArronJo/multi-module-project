@@ -35,18 +35,15 @@ class PDFEditor private constructor() {
                 outputDir.mkdirs()
             }
 
-            // output 디렉토리가 있으면 내부 파일들 삭제
-            outputDir.listFiles()
-                ?.filter { it.isFile }
-                ?.forEach { file ->
-                    try {
-                        if (!file.delete()) {
-                            println("파일 삭제 실패: ${file.absolutePath}")
-                        }
-                    } catch (_: SecurityException) {
-                        println("파일 삭제 권한 없음: ${file.absolutePath}")
-                    }
+            clean(outputDir)
+        }
+
+        private fun clean(outputDir: File) {
+            outputDir.listFiles()?.forEach { file ->
+                if (!file.deleteRecursively()) {
+                    println("삭제 실패: ${file.absolutePath}")
                 }
+            }
         }
 
         /**

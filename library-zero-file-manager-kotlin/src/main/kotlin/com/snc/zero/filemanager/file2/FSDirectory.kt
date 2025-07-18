@@ -43,5 +43,13 @@ class FSDirectory private constructor() {
             }
             return dir.delete()
         }
+
+        fun deleteRecursively(dir: File) {
+            dir.listFiles()?.forEach { file ->
+                if (!file.deleteRecursively()) {
+                    println("삭제 실패: ${file.absolutePath}")
+                }
+            }
+        }
     }
 }

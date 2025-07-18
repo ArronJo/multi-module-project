@@ -53,6 +53,21 @@ class FSFile private constructor() {
             }
         }
 
+        /**
+         * 참고) 파일만 삭제하기
+         *
+         * outputDir.listFiles()
+         *   ?.filter { it.isFile }
+         *   ?.forEach { file ->
+         *     try {
+         *       if (!file.delete()) {
+         *         println("파일 삭제 실패: ${file.absolutePath}")
+         *       }
+         *     } catch (_: SecurityException) {
+         *       println("파일 삭제 권한 없음: ${file.absolutePath}")
+         *     }
+         *   }
+         */
         @Throws(IOException::class)
         fun delete(file: File, ignore: Boolean = false): Boolean {
             if (!file.exists()) {

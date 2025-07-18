@@ -81,6 +81,20 @@ class FSDirectoryTest : BaseJUnit5Test() {
     }
 
     @Test
+    fun `FSDirectory delete Recursively 1`() {
+        assertDoesNotThrow {
+            FSDirectory.create(dir, overwrite = true)
+            FSDirectory.deleteRecursively(parent)
+        }
+        if (parent.exists()) {
+            logger.debug { "delete: $parent exist" }
+        } else {
+            logger.debug { "delete: $parent not exist" }
+        }
+    }
+
+
+    @Test
     fun `FSDirectory delete 2`() {
         val ret = FSDirectory.delete(File(parent, "notexist"))
         assertEquals(false, ret)
