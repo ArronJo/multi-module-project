@@ -29,8 +29,7 @@ class HangulMatcher {
 
         for (i in startIndex until len) {
             var k = 0
-            var j = 0
-            while (i + j < target.length) {
+            for (j in 0 until (target.length - i)) {
                 val tc = target[i + j]
                 val kc = keyword[k]
 
@@ -46,7 +45,6 @@ class HangulMatcher {
                 if (k == keyword.length) {
                     return HangulMatchResult(i, j + 1)
                 }
-                j++
             }
         }
         return HangulMatchResult.EMPTY
