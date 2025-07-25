@@ -13,6 +13,13 @@ repositories {
 }
 
 dependencies {
+    // https://kotest.io/docs/framework/lifecycle-hooks.html
+    // https://kotest.io/docs/framework/testing-styles.html
+    // https://test-architect.dev/junit-5-vs-kotest-part-1/
+    // https://catsbi.oopy.io/c670a8b6-019d-4640-bdb0-9c80321722d0
+    implementation(libs.kotest.runner.junit5)
+    implementation(libs.kotest.assertions.core)
+
     // https://docs.gradle.org/8.4/userguide/upgrading_version_8.html#test_framework_implementation_dependencies
     implementation(libs.junit.jupiter)
     //implementation(libs.junit.jupiter.api)

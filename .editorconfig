@@ -180,6 +180,9 @@ ktlint_standard_no-empty-first-line-in-class-body = disabled
 # A multiline expression should start on a new line (standard:multiline-expression-wrapping)
 ktlint_standard_multiline-expression-wrapping = disabled
 
+# Super type should start on a newline (standard:class-signature)
+ktlint_standard_class-signature = disabled
+
 
 ######################################
 # yaml

@@ -56,9 +56,9 @@ class AgeCalculatorTest : BaseJUnit5Test() {
         val birthDate = LocalDate.of(yearOfBirth, monthOfBirth, dayOfBirth) // 생년월일 예시
         val currentDate = LocalDate.of(yearOfTarget, monthOfTarget, dayOfTarget)//LocalDate.now() // 현재 날짜
         // when
-        val manAge = AgeCalculator.calculateInsAge(birthDate, currentDate)
+        val insAge = AgeCalculator.calculateInsAge(birthDate, currentDate)
         // then
-        logger.debug { "보험나이: $manAge 세" }
+        logger.debug { "보험나이: $insAge 세" }
     }
 
     @Test
@@ -68,16 +68,16 @@ class AgeCalculatorTest : BaseJUnit5Test() {
         val currentDate =
             "$yearOfTarget${monthOfTarget.padStart(2, '0')}${dayOfTarget.padStart(2, '0')}" //LocalDate.now() // 현재 날짜
         // when
-        val manAge = AgeCalculator.calculateManInsAge(birthDate, currentDate)
+        val age = AgeCalculator.calculateManInsAge(birthDate, currentDate)
         // then
-        logger.debug { "통합 계산: ${manAge.print()}" }
+        logger.debug { "통합 계산: ${age.print()}" }
     }
 
     @Test
     fun `통합 계산 ChatGPT`() {
         // given
         // when
-        val manAge = AgeCalculator.calculateManInsAge(
+        val age = AgeCalculator.calculateManInsAge(
             yearOfBirth,
             monthOfBirth,
             dayOfBirth,
@@ -86,7 +86,7 @@ class AgeCalculatorTest : BaseJUnit5Test() {
             dayOfTarget
         )
         // then
-        logger.debug { "통합 계산 ChatGPT ${manAge.print()}" }
+        logger.debug { "통합 계산 ChatGPT ${age.print()}" }
     }
 
     @Test

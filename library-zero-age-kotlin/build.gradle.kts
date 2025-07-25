@@ -17,6 +17,8 @@ dependencies {
     implementation(project(":library-zero-extension-kotlin"))
 
     testImplementation(project(":library-zero-test-kotlin"))
+    testImplementation(libs.kotest.runner.junit5)
+    testImplementation(libs.kotest.assertions.core)
     testImplementation(libs.junit.jupiter)
 
     testRuntimeOnly(libs.junit.platform.launcher)

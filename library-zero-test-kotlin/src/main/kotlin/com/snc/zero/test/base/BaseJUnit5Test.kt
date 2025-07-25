@@ -39,7 +39,7 @@ open class BaseJUnit5Test {
     // 각 TestCase 실행 전
     @AfterEach
     open fun afterEach(testInfo: TestInfo) {
-        println("[E] Task Result $count elapse: ${timer.stop()}\n\n")
+        println("[E] Task Case $count Result elapse: ${timer.stop()}\n\n")
     }
 
     private val random = SplittableRandom()
