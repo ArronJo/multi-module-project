@@ -1,10 +1,11 @@
 package com.snc.zero.test.testcase
 
 /**
- * 사용법: TestCase.create<String, String, Unit>()
+ * 사용법:
+ * TestCaseOld.create<String, String, Unit>()
  *   .given {
  *     "a"
- *   }.whens { data ->
+ *   }.`when` { data ->
  *     data.uppercase()
  *   }.then { result ->
  *     assertEquals("A", result)

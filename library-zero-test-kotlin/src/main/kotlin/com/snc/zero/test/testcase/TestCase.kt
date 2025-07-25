@@ -3,6 +3,15 @@ package com.snc.zero.test.testcase
 /**
  * BDD 스타일의 테스트 작성을 위한 DSL 클래스
  * given-when-then-catch 패턴을 지원합니다.
+ *
+ * 사용법:
+ *  TestCase.given {
+ *    "a"
+ *  }.`when` { data ->
+ *    data.uppercase()
+ *  }.then { result ->
+ *    assertEquals("A", result)
+ *  }
  */
 class TestCase<T> private constructor(
     private val givenData: T? = null,
