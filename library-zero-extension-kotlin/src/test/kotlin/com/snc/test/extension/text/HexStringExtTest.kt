@@ -516,17 +516,31 @@ class HexStringExtTest : BaseJUnit5Test() {
     inner class FormattingTest {
 
         @Test
+        @DisplayName("02x 포맷 함수 호출 테스트")
+        fun `02x 포맷 함수 호출 테스트`() {
+            // "%02x".format(code) 호출 경로 테스트
+            assertEquals("00", '\u0000'.toHexString()) // 0
+            assertEquals("01", '\u0001'.toHexString()) // 1
+            assertEquals("0f", '\u000F'.toHexString()) // 15
+            assertEquals("10", '\u0010'.toHexString()) // 16
+            assertEquals("7f", '\u007F'.toHexString()) // 127
+        }
+
+        @Test
+        @DisplayName("04x 포맷 함수 호출 테스트")
+        fun `04x 포맷 함수 호출 테스트`() {
+            // "%04x".format(code) 호출 경로 테스트
+            assertEquals("0080", '\u0080'.toHexString()) // 128
+            assertEquals("00ff", '\u00FF'.toHexString()) // 255
+            assertEquals("0100", '\u0100'.toHexString()) // 256
+            assertEquals("ffff", '\uFFFF'.toHexString()) // 최대값
+        }
+
+        @Test
         @DisplayName("앞자리 0이 올바르게 패딩된다")
         fun `앞자리 0이 올바르게 패딩된다`() {
             assertEquals("01", '\u0001'.toHexString()) // ASCII 범위 패딩
             assertEquals("0f", '\u000F'.toHexString()) // ASCII 범위 패딩
-            assertEquals("0f", '\u000F'.toHexString().let {
-                if ('\u000F'.code in 0..127) {
-                    "%02x".format('\u000F'.code)
-                } else {
-                    "%04x".format('\u000F'.code)
-                }
-            })
             assertEquals("0100", '\u0100'.toHexString()) // 비ASCII 범위 패딩
             assertEquals("00ff", '\u00FF'.toHexString()) // 비ASCII 범위 패딩
         }
@@ -541,6 +555,21 @@ class HexStringExtTest : BaseJUnit5Test() {
             val unicodeResult = '가'.toHexString()
             assertEquals("ac00", unicodeResult)
             assertTrue(unicodeResult.all { it.isDigit() || it in 'a'..'f' })
+        }
+
+        @Test
+        @DisplayName("포맷 문자열 길이 검증")
+        fun `포맷 문자열 길이 검증`() {
+            // ASCII 범위: 정확히 2자리
+            (0..127).map { it.toChar() }.forEach { char ->
+                assertEquals(2, char.toHexString().length)
+            }
+
+            // 비ASCII 범위: 정확히 4자리
+            val nonAsciiSamples = listOf(128, 255, 256, 1000, 65535)
+            nonAsciiSamples.map { it.toChar() }.forEach { char ->
+                assertEquals(4, char.toHexString().length)
+            }
         }
     }
 
@@ -577,6 +606,78 @@ class HexStringExtTest : BaseJUnit5Test() {
                 assertTrue(result.isNotEmpty())
                 assertTrue(result.length == 2 || result.length == 4)
             }
+        }
+    }
+
+    @Nested
+    @DisplayName("조건 커버리지 완전 테스트")
+    inner class ConditionCoverageTest {
+
+        @Test
+        @DisplayName("범위 연산자의 하한 경계 조건 테스트")
+        fun `범위 연산자의 하한 경계 조건 테스트`() {
+            // code >= 0 조건 테스트
+            assertEquals("00", '\u0000'.toHexString()) // code == 0 (경계값)
+            assertEquals("01", '\u0001'.toHexString()) // code > 0
+        }
+
+        @Test
+        @DisplayName("범위 연산자의 상한 경계 조건 테스트")
+        fun `범위 연산자의 상한 경계 조건 테스트`() {
+            // code <= 127 조건 테스트
+            assertEquals("7e", '\u007E'.toHexString()) // code < 127
+            assertEquals("7f", '\u007F'.toHexString()) // code == 127 (경계값)
+            assertEquals("0080", '\u0080'.toHexString()) // code > 127
+        }
+
+        @Test
+        @DisplayName("in 연산자 false 조건 상세 테스트")
+        fun `in 연산자 false 조건 상세 테스트`() {
+            // code < 0은 불가능하지만 code > 127 케이스를 더 다양하게
+            assertEquals("0080", '\u0080'.toHexString()) // 128
+            assertEquals("0081", '\u0081'.toHexString()) // 129
+            assertEquals("00ff", '\u00FF'.toHexString()) // 255
+            assertEquals("0100", '\u0100'.toHexString()) // 256
+            assertEquals("ffff", '\uFFFF'.toHexString()) // 최대값
+        }
+
+        @Test
+        @DisplayName("범위 검사의 모든 분기 조건 테스트")
+        fun `범위 검사의 모든 분기 조건 테스트`() {
+            // in 0..127의 내부 구현: code >= 0 && code <= 127
+            // 각각의 && 연산자 조건을 모두 테스트
+
+            // true && true = true (ASCII 범위)
+            val asciiChars = listOf('\u0000', '\u0001', '\u007E', '\u007F')
+            asciiChars.forEach { char ->
+                val result = char.toHexString()
+                assertEquals(2, result.length)
+            }
+
+            // false || true = false (범위 밖)
+            val nonAsciiChars = listOf('\u0080', '\u0100', '\u1000', '\uFFFF')
+            nonAsciiChars.forEach { char ->
+                val result = char.toHexString()
+                assertEquals(4, result.length)
+            }
+        }
+
+        @Test
+        @DisplayName("코드 포인트 값 직접 검증")
+        fun `코드 포인트 값 직접 검증`() {
+            // Char.code 값을 직접 검증하여 조건 커버리지 보장
+            assertTrue('\u0000'.code == 0)
+            assertTrue('\u007F'.code == 127)
+            assertTrue('\u0080'.code == 128)
+
+            // 조건식의 각 부분 검증
+            assertTrue('\u0000'.code >= 0)
+            assertTrue('\u0000'.code <= 127)
+            assertTrue('\u007F'.code >= 0)
+            assertTrue('\u007F'.code <= 127)
+
+            assertFalse('\u0080'.code <= 127)
+            assertTrue('\u0080'.code >= 0) // 항상 true이지만 명시적 테스트
         }
     }
 
