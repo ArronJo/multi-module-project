@@ -3,14 +3,26 @@ package com.snc.zero.test.testcase
 /**
  * BDD 스타일의 테스트 작성을 위한 DSL 클래스
  * given-when-then-catch 패턴을 지원합니다.
+ * given에서 정의한 변수들을 when에서도 사용할 수 있습니다.
  *
  * 사용법:
  *  TestCase.given {
- *    "a"
+ *    val name = "test"
+ *    val number = 42
+ *    givenContext(name, number)  // 여러 변수를 담는 데이터 클래스
+ *  }.`when` { (name, number) ->  // 구조 분해 할당으로 변수 접근
+ *    "$name: $number".uppercase()
+ *  }.then { result ->
+ *    assertEquals("TEST: 42", result)
+ *  }
+ *
+ *  또는 단일 값:
+ *  TestCase.given {
+ *    "hello"
  *  }.`when` { data ->
  *    data.uppercase()
  *  }.then { result ->
- *    assertEquals("A", result)
+ *    assertEquals("HELLO", result)
  *  }
  */
 class TestCase<T> private constructor(
@@ -101,3 +113,29 @@ class WhenResult<R> internal constructor(
         }
     }
 }
+
+// 여러 변수를 담기 위한 유틸리티 데이터 클래스들
+data class GivenContext2<T1, T2>(val first: T1, val second: T2)
+data class GivenContext3<T1, T2, T3>(val first: T1, val second: T2, val third: T3)
+data class GivenContext4<T1, T2, T3, T4>(val first: T1, val second: T2, val third: T3, val fourth: T4)
+data class GivenContext5<T1, T2, T3, T4, T5>(val first: T1, val second: T2, val third: T3, val fourth: T4, val fifth: T5)
+
+// 더 많은 변수가 필요한 경우를 위한 맵 기반 컨텍스트
+class GivenContextMap(private val values: Map<String, Any>) {
+    @Suppress("UNCHECKED_CAST")
+    fun <T> get(key: String): T = values[key] as T
+
+    operator fun <T> component1(): T = get("1")
+    operator fun <T> component2(): T = get("2")
+    operator fun <T> component3(): T = get("3")
+    operator fun <T> component4(): T = get("4")
+    operator fun <T> component5(): T = get("5")
+}
+
+// 편의 함수들
+fun <T1, T2> givenContext(p1: T1, p2: T2) = GivenContext2(p1, p2)
+fun <T1, T2, T3> givenContext(p1: T1, p2: T2, p3: T3) = GivenContext3(p1, p2, p3)
+fun <T1, T2, T3, T4> givenContext(p1: T1, p2: T2, p3: T3, p4: T4) = GivenContext4(p1, p2, p3, p4)
+fun <T1, T2, T3, T4, T5> givenContext(p1: T1, p2: T2, p3: T3, p4: T4, p5: T5) = GivenContext5(p1, p2, p3, p4, p5)
+
+fun givenContextMap(vararg pairs: Pair<String, Any>) = GivenContextMap(pairs.toMap())

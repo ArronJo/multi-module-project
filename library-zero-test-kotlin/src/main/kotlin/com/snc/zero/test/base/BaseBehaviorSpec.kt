@@ -25,14 +25,14 @@ abstract class BaseBehaviorSpec(body: BehaviorSpec.() -> Unit = {}) : BehaviorSp
 
         beforeTest { test ->
             if (test.name.prefix?.startsWith("When:") == true) {
-                println("\n[S] Task Case [${test.name.prefix}]-${++count} -> ${test.name.testName} ")
+                println("\n[S] Task Case [${test.name.prefix}]-${++count} -> ${test.name} ")
                 timer.start()
             }
         }
 
         afterTest { (test, result) ->
             if (test.name.prefix?.startsWith("When:") == true) {
-                println("[E] Task Case [${test.name.prefix}]-$count -> ${test.name.testName}, Result '${result.isSuccess}' elapse: ${timer.stop()}")
+                println("[E] Task Case [${test.name.prefix}]-$count -> ${test.name}, Result '${result.isSuccess}' elapse: ${timer.stop()}")
             }
         }
     }
