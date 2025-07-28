@@ -3,8 +3,10 @@ package com.snc.test.extension.text
 import com.snc.zero.extensions.text.toHexString
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
+import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
@@ -15,49 +17,54 @@ private val logger = TLogging.logger { }
 @Suppress("NonAsciiCharacters")
 class HexStringExtTest : BaseJUnit5Test() {
 
-    @Test
-    fun `ToHexString 테스트 - String 1`() {
-        // given
-        val data = "abcdefABCDEF"
-        // when
-        val v = data.toHexString()
-        // then
-        logger.debug { "ToHexString 1: data -> $v" }
-        assertEquals("616263646566414243444546", v)
-    }
+    @Nested
+    @DisplayName("ToHexString() 기본 테스트")
+    inner class ToHexString() {
 
-    @Test
-    fun `ToHexString 테스트 - String 2`() {
-        // given
-        val data = "1234567890"
-        // when
-        val v = data.toHexString()
-        // then
-        logger.debug { "ToHexString 2: data -> $v" }
-        assertEquals("31323334353637383930", v)
-    }
+        @Test
+        fun `ToHexString 테스트 - String 1`() {
+            // given
+            val data = "abcdefABCDEF"
+            // when
+            val v = data.toHexString()
+            // then
+            logger.debug { "ToHexString 1: data -> $v" }
+            assertEquals("616263646566414243444546", v)
+        }
 
-    @Test
-    fun `ToHexString 테스트 - String 3`() {
-        // given
-        val data = " !@#$%^&*()"
-        // when
-        val v = data.toHexString()
-        // then
-        logger.debug { "ToHexString 3: data -> $v" }
-        assertEquals("2021402324255e262a2829", v)
-    }
+        @Test
+        fun `ToHexString 테스트 - String 2`() {
+            // given
+            val data = "1234567890"
+            // when
+            val v = data.toHexString()
+            // then
+            logger.debug { "ToHexString 2: data -> $v" }
+            assertEquals("31323334353637383930", v)
+        }
 
-    @Test
-    fun `ToHexString 테스트 - Char 1`() {
-        val v = 0x60.toChar().toHexString()
-        assertEquals("60", v)
-    }
+        @Test
+        fun `ToHexString 테스트 - String 3`() {
+            // given
+            val data = " !@#$%^&*()"
+            // when
+            val v = data.toHexString()
+            // then
+            logger.debug { "ToHexString 3: data -> $v" }
+            assertEquals("2021402324255e262a2829", v)
+        }
 
-    @Test
-    fun `ToHexString 테스트 - Char 2`() {
-        val v = 0xAC00.toChar().toHexString()
-        assertEquals("ac00", v)
+        @Test
+        fun `ToHexString 테스트 - Char 1`() {
+            val v = 0x60.toChar().toHexString()
+            assertEquals("60", v)
+        }
+
+        @Test
+        fun `ToHexString 테스트 - Char 2`() {
+            val v = 0xAC00.toChar().toHexString()
+            assertEquals("ac00", v)
+        }
     }
 
     @Nested
@@ -378,6 +385,232 @@ class HexStringExtTest : BaseJUnit5Test() {
             assertTrue(0.toChar().code in 0..127)
             assertTrue(127.toChar().code in 0..127)
             assertFalse(128.toChar().code in 0..127)
+        }
+    }
+
+    @Nested
+    @DisplayName("ASCII 범위 문자 테스트 (0-127)")
+    inner class AsciiRangeTest2 {
+
+        @Test
+        @DisplayName("숫자 문자는 2자리 16진수로 변환된다")
+        fun `숫자 문자는 2자리 16진수로 변환된다`() {
+            assertEquals("30", '0'.toHexString())
+            assertEquals("39", '9'.toHexString())
+        }
+
+        @Test
+        @DisplayName("영문 소문자는 2자리 16진수로 변환된다")
+        fun `영문 소문자는 2자리 16진수로 변환된다`() {
+            assertEquals("61", 'a'.toHexString())
+            assertEquals("7a", 'z'.toHexString())
+        }
+
+        @Test
+        @DisplayName("영문 대문자는 2자리 16진수로 변환된다")
+        fun `영문 대문자는 2자리 16진수로 변환된다`() {
+            assertEquals("41", 'A'.toHexString())
+            assertEquals("5a", 'Z'.toHexString())
+        }
+
+        @Test
+        @DisplayName("특수문자는 2자리 16진수로 변환된다")
+        fun `특수문자는 2자리 16진수로 변환된다`() {
+            assertEquals("20", ' '.toHexString()) // 공백
+            assertEquals("21", '!'.toHexString())
+            assertEquals("40", '@'.toHexString())
+            assertEquals("23", '#'.toHexString())
+        }
+
+        @Test
+        @DisplayName("제어문자는 2자리 16진수로 변환된다")
+        fun `제어문자는 2자리 16진수로 변환된다`() {
+            assertEquals("00", '\u0000'.toHexString()) // NULL
+            assertEquals("09", '\t'.toHexString()) // TAB
+            assertEquals("0a", '\n'.toHexString()) // LF
+            assertEquals("0d", '\r'.toHexString()) // CR
+            assertEquals("7f", '\u007F'.toHexString()) // DEL
+        }
+
+        @Test
+        @DisplayName("ASCII 경계값 테스트")
+        fun `ASCII 경계값 테스트`() {
+            assertEquals("00", '\u0000'.toHexString()) // 최소값
+            assertEquals("7f", '\u007F'.toHexString()) // 최대값 (127)
+        }
+    }
+
+    @Nested
+    @DisplayName("비ASCII 범위 문자 테스트 (128 이상)")
+    inner class NonAsciiRangeTest {
+
+        @Test
+        @DisplayName("확장 ASCII는 4자리 16진수로 변환된다")
+        fun `확장 ASCII는 4자리 16진수로 변환된다`() {
+            assertEquals("0080", '\u0080'.toHexString()) // 128
+            assertEquals("00ff", '\u00FF'.toHexString()) // 255
+        }
+
+        @Test
+        @DisplayName("한글은 4자리 16진수로 변환된다")
+        fun `한글은 4자리 16진수로 변환된다`() {
+            assertEquals("ac00", '가'.toHexString())
+            assertEquals("d7a3", '힣'.toHexString())
+            assertEquals("d55c", '한'.toHexString())
+            assertEquals("ae00", '글'.toHexString())
+        }
+
+        @Test
+        @DisplayName("중국어는 4자리 16진수로 변환된다")
+        fun `중국어는 4자리 16진수로 변환된다`() {
+            assertEquals("4e2d", '中'.toHexString())
+            assertEquals("6587", '文'.toHexString())
+        }
+
+        @Test
+        @DisplayName("일본어는 4자리 16진수로 변환된다")
+        fun `일본어는 4자리 16진수로 변환된다`() {
+            assertEquals("3042", 'あ'.toHexString())
+            assertEquals("3044", 'い'.toHexString())
+            assertEquals("3046", 'う'.toHexString())
+        }
+
+        @Test
+        @DisplayName("이모지는 4자리 16진수로 변환된다")
+        fun `이모지는 4자리 16진수로 변환된다`() {
+            // BMP 범위 내의 이모지들
+            assertEquals("263a", '☺'.toHexString())
+            assertEquals("2764", '❤'.toHexString())
+        }
+
+        @Test
+        @DisplayName("수학 기호는 4자리 16진수로 변환된다")
+        fun `수학 기호는 4자리 16진수로 변환된다`() {
+            assertEquals("221e", '∞'.toHexString())
+            assertEquals("03c0", 'π'.toHexString())
+            assertEquals("03b1", 'α'.toHexString())
+        }
+    }
+
+    @Nested
+    @DisplayName("경계값 테스트")
+    inner class BoundaryValueTest2 {
+
+        @Test
+        @DisplayName("ASCII와 비ASCII 경계값 테스트")
+        fun `ASCII와 비ASCII 경계값 테스트`() {
+            assertEquals("7f", '\u007F'.toHexString()) // 127 - ASCII 최대값
+            assertEquals("0080", '\u0080'.toHexString()) // 128 - 비ASCII 최소값
+        }
+
+        @Test
+        @DisplayName("최소값과 최대값 BMP 문자 테스트")
+        fun `최소값과 최대값 BMP 문자 테스트`() {
+            assertEquals("00", '\u0000'.toHexString()) // 최솟값
+            assertEquals("ffff", '\uFFFF'.toHexString()) // BMP 최댓값
+        }
+    }
+
+    @Nested
+    @DisplayName("포맷팅 정확성 테스트")
+    inner class FormattingTest {
+
+        @Test
+        @DisplayName("앞자리 0이 올바르게 패딩된다")
+        fun `앞자리 0이 올바르게 패딩된다`() {
+            assertEquals("01", '\u0001'.toHexString()) // ASCII 범위 패딩
+            assertEquals("0f", '\u000F'.toHexString()) // ASCII 범위 패딩
+            assertEquals("0f", '\u000F'.toHexString().let {
+                if ('\u000F'.code in 0..127) {
+                    "%02x".format('\u000F'.code)
+                } else {
+                    "%04x".format('\u000F'.code)
+                }
+            })
+            assertEquals("0100", '\u0100'.toHexString()) // 비ASCII 범위 패딩
+            assertEquals("00ff", '\u00FF'.toHexString()) // 비ASCII 범위 패딩
+        }
+
+        @Test
+        @DisplayName("16진수는 소문자로 출력된다")
+        fun `16진수는 소문자로 출력된다`() {
+            val result = 'A'.toHexString()
+            assertEquals("41", result)
+            assertTrue(result.all { it.isDigit() || it in 'a'..'f' })
+
+            val unicodeResult = '가'.toHexString()
+            assertEquals("ac00", unicodeResult)
+            assertTrue(unicodeResult.all { it.isDigit() || it in 'a'..'f' })
+        }
+    }
+
+    @Nested
+    @DisplayName("예외 상황 및 에러 케이스")
+    inner class ErrorCaseTest {
+
+        @Test
+        @DisplayName("널 문자도 올바르게 처리된다")
+        fun `널 문자도 올바르게 처리된다`() {
+            assertDoesNotThrow {
+                val result = '\u0000'.toHexString()
+                assertEquals("00", result)
+            }
+        }
+
+        @Test
+        @DisplayName("최대 유니코드 BMP 문자도 올바르게 처리된다")
+        fun `최대 유니코드 BMP 문자도 올바르게 처리된다`() {
+            assertDoesNotThrow {
+                val result = '\uFFFF'.toHexString()
+                assertEquals("ffff", result)
+            }
+        }
+
+        @Test
+        @DisplayName("반환값은 항상 non-null이고 비어있지 않다")
+        fun `반환값은 항상 non-null이고 비어있지 않다`() {
+            val testChars = listOf('a', '가', '\u0000', '\uFFFF', '1', '@')
+
+            testChars.forEach { char ->
+                val result = char.toHexString()
+                assertNotNull(result)
+                assertTrue(result.isNotEmpty())
+                assertTrue(result.length == 2 || result.length == 4)
+            }
+        }
+    }
+
+    @Nested
+    @DisplayName("성능 및 일관성 테스트")
+    inner class PerformanceConsistencyTest {
+
+        @Test
+        @DisplayName("동일한 문자는 항상 동일한 결과를 반환한다")
+        fun `동일한 문자는 항상 동일한 결과를 반환한다`() {
+            val testChar = '한'
+            val results = (1..100).map { testChar.toHexString() }
+
+            assertTrue(results.all { it == results.first() })
+            assertEquals("d55c", results.first())
+        }
+
+        @Test
+        @DisplayName("ASCII 범위는 모두 2자리, 비ASCII는 모두 4자리다")
+        fun `ASCII 범위는 모두 2자리, 비ASCII는 모두 4자리다`() {
+            // ASCII 범위 테스트
+            (0..127).forEach { code ->
+                val char = code.toChar()
+                val result = char.toHexString()
+                assertEquals(2, result.length, "ASCII 문자 '$char'($code)는 2자리여야 함")
+            }
+
+            // 비ASCII 범위 샘플 테스트
+            val nonAsciiSamples = listOf(128, 255, 0x1000, 0xFFFF)
+            nonAsciiSamples.forEach { code ->
+                val char = code.toChar()
+                val result = char.toHexString()
+                assertEquals(4, result.length, "비ASCII 문자 '$char'($code)는 4자리여야 함")
+            }
         }
     }
 }
