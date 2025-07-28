@@ -124,12 +124,6 @@ data class GivenContext5<T1, T2, T3, T4, T5>(val first: T1, val second: T2, val 
 class GivenContextMap(private val values: Map<String, Any>) {
     @Suppress("UNCHECKED_CAST")
     fun <T> get(key: String): T = values[key] as T
-
-    operator fun <T> component1(): T = get("1")
-    operator fun <T> component2(): T = get("2")
-    operator fun <T> component3(): T = get("3")
-    operator fun <T> component4(): T = get("4")
-    operator fun <T> component5(): T = get("5")
 }
 
 // 편의 함수들
