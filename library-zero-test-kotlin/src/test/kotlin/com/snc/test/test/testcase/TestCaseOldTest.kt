@@ -19,6 +19,14 @@ class TestCaseOldTest : BaseJUnit5Test() {
             }.then { result ->
                 assertEquals("A", result)
             }
+
+        TestCaseOld.given<String, String, Unit> {
+                "a"
+            }.`when` { data ->
+                data.uppercase()
+            }.then { result ->
+                assertEquals("A", result)
+            }
     }
 
     @Test
