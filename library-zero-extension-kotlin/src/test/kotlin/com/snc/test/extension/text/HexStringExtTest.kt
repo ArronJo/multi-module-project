@@ -72,6 +72,53 @@ class HexStringExtTest : BaseJUnit5Test() {
     inner class AsciiRangeTest {
 
         @Test
+        @DisplayName("숫자 문자는 2자리 16진수로 변환된다")
+        fun `숫자 문자는 2자리 16진수로 변환된다`() {
+            assertEquals("30", '0'.toHexString())
+            assertEquals("39", '9'.toHexString())
+        }
+
+        @Test
+        @DisplayName("영문 소문자는 2자리 16진수로 변환된다")
+        fun `영문 소문자는 2자리 16진수로 변환된다`() {
+            assertEquals("61", 'a'.toHexString())
+            assertEquals("7a", 'z'.toHexString())
+        }
+
+        @Test
+        @DisplayName("영문 대문자는 2자리 16진수로 변환된다")
+        fun `영문 대문자는 2자리 16진수로 변환된다`() {
+            assertEquals("41", 'A'.toHexString())
+            assertEquals("5a", 'Z'.toHexString())
+        }
+
+        @Test
+        @DisplayName("특수문자는 2자리 16진수로 변환된다")
+        fun `특수문자는 2자리 16진수로 변환된다`() {
+            assertEquals("20", ' '.toHexString()) // 공백
+            assertEquals("21", '!'.toHexString())
+            assertEquals("40", '@'.toHexString())
+            assertEquals("23", '#'.toHexString())
+        }
+
+        @Test
+        @DisplayName("제어문자는 2자리 16진수로 변환된다")
+        fun `제어문자는 2자리 16진수로 변환된다`() {
+            assertEquals("00", '\u0000'.toHexString()) // NULL
+            assertEquals("09", '\t'.toHexString()) // TAB
+            assertEquals("0a", '\n'.toHexString()) // LF
+            assertEquals("0d", '\r'.toHexString()) // CR
+            assertEquals("7f", '\u007F'.toHexString()) // DEL
+        }
+
+        @Test
+        @DisplayName("ASCII 경계값 테스트")
+        fun `ASCII 경계값 테스트`() {
+            assertEquals("00", '\u0000'.toHexString()) // 최소값
+            assertEquals("7f", '\u007F'.toHexString()) // 최대값 (127)
+        }
+
+        @Test
         @DisplayName("경계값 테스트 - 코드 0 (NULL 문자)")
         fun testNullCharacter() {
             // Given
@@ -184,6 +231,20 @@ class HexStringExtTest : BaseJUnit5Test() {
     @Nested
     @DisplayName("경계값 상세 테스트")
     inner class BoundaryValueTest {
+
+        @Test
+        @DisplayName("ASCII와 비ASCII 경계값 테스트")
+        fun `ASCII와 비ASCII 경계값 테스트`() {
+            assertEquals("7f", '\u007F'.toHexString()) // 127 - ASCII 최대값
+            assertEquals("0080", '\u0080'.toHexString()) // 128 - 비ASCII 최소값
+        }
+
+        @Test
+        @DisplayName("최소값과 최대값 BMP 문자 테스트")
+        fun `최소값과 최대값 BMP 문자 테스트`() {
+            assertEquals("00", '\u0000'.toHexString()) // 최솟값
+            assertEquals("ffff", '\uFFFF'.toHexString()) // BMP 최댓값
+        }
 
         @Test
         @DisplayName("ASCII 범위 마지막 문자 - 코드 126 ('~')")
@@ -389,58 +450,6 @@ class HexStringExtTest : BaseJUnit5Test() {
     }
 
     @Nested
-    @DisplayName("ASCII 범위 문자 테스트 (0-127)")
-    inner class AsciiRangeTest2 {
-
-        @Test
-        @DisplayName("숫자 문자는 2자리 16진수로 변환된다")
-        fun `숫자 문자는 2자리 16진수로 변환된다`() {
-            assertEquals("30", '0'.toHexString())
-            assertEquals("39", '9'.toHexString())
-        }
-
-        @Test
-        @DisplayName("영문 소문자는 2자리 16진수로 변환된다")
-        fun `영문 소문자는 2자리 16진수로 변환된다`() {
-            assertEquals("61", 'a'.toHexString())
-            assertEquals("7a", 'z'.toHexString())
-        }
-
-        @Test
-        @DisplayName("영문 대문자는 2자리 16진수로 변환된다")
-        fun `영문 대문자는 2자리 16진수로 변환된다`() {
-            assertEquals("41", 'A'.toHexString())
-            assertEquals("5a", 'Z'.toHexString())
-        }
-
-        @Test
-        @DisplayName("특수문자는 2자리 16진수로 변환된다")
-        fun `특수문자는 2자리 16진수로 변환된다`() {
-            assertEquals("20", ' '.toHexString()) // 공백
-            assertEquals("21", '!'.toHexString())
-            assertEquals("40", '@'.toHexString())
-            assertEquals("23", '#'.toHexString())
-        }
-
-        @Test
-        @DisplayName("제어문자는 2자리 16진수로 변환된다")
-        fun `제어문자는 2자리 16진수로 변환된다`() {
-            assertEquals("00", '\u0000'.toHexString()) // NULL
-            assertEquals("09", '\t'.toHexString()) // TAB
-            assertEquals("0a", '\n'.toHexString()) // LF
-            assertEquals("0d", '\r'.toHexString()) // CR
-            assertEquals("7f", '\u007F'.toHexString()) // DEL
-        }
-
-        @Test
-        @DisplayName("ASCII 경계값 테스트")
-        fun `ASCII 경계값 테스트`() {
-            assertEquals("00", '\u0000'.toHexString()) // 최소값
-            assertEquals("7f", '\u007F'.toHexString()) // 최대값 (127)
-        }
-    }
-
-    @Nested
     @DisplayName("비ASCII 범위 문자 테스트 (128 이상)")
     inner class NonAsciiRangeTest {
 
@@ -489,25 +498,6 @@ class HexStringExtTest : BaseJUnit5Test() {
             assertEquals("221e", '∞'.toHexString())
             assertEquals("03c0", 'π'.toHexString())
             assertEquals("03b1", 'α'.toHexString())
-        }
-    }
-
-    @Nested
-    @DisplayName("경계값 테스트")
-    inner class BoundaryValueTest2 {
-
-        @Test
-        @DisplayName("ASCII와 비ASCII 경계값 테스트")
-        fun `ASCII와 비ASCII 경계값 테스트`() {
-            assertEquals("7f", '\u007F'.toHexString()) // 127 - ASCII 최대값
-            assertEquals("0080", '\u0080'.toHexString()) // 128 - 비ASCII 최소값
-        }
-
-        @Test
-        @DisplayName("최소값과 최대값 BMP 문자 테스트")
-        fun `최소값과 최대값 BMP 문자 테스트`() {
-            assertEquals("00", '\u0000'.toHexString()) // 최솟값
-            assertEquals("ffff", '\uFFFF'.toHexString()) // BMP 최댓값
         }
     }
 
