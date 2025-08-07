@@ -1,4 +1,4 @@
-package com.snc.zero.identification.masking
+package com.snc.zero.identification.mask
 
 import kotlin.math.max
 import kotlin.math.min
@@ -9,10 +9,10 @@ import kotlin.math.min
  * @author mcharima5@gmail.com
  * @since 2024
  */
-object Masking {
+object Mask {
 
     fun regNo(v: String): String {
-        return masking(v, "[-6]")
+        return mask(v, "[-6]")
     }
 
     fun name(v: String): String {
@@ -26,33 +26,64 @@ object Masking {
     }
 
     fun phoneNum(v: String): String {
-        return masking(v, "[-4]")
+        return mask(v, "[-4]")
     }
 
     fun email(v: String): String {
         val split = v.split("@")
-        val m = masking(split[0], "[-3]")
+        val m = mask(split[0], "[-3]")
         return m + "@" + split[1]
     }
 
-    fun masking(v: String, rangePattern: String, charMark: Char = '*'): String {
+    /**
+     * 주소 문자열의 공백 기준 3번째 시작점부터 최대 10자리를 마스킹하는 함수
+     * @param address 원본 주소 문자열
+     * @return 마스킹된 주소 문자열
+     */
+    fun address(address: String): String {
+        val parts = address.split(" ")
+
+        // 3개 미만의 부분으로 나뉘면 원본 반환
+        if (parts.size < 3) {
+            return address
+        }
+
+        // 첫 번째와 두 번째 부분은 그대로 유지
+        val prefix = parts.take(2).joinToString(" ")
+
+        // 3번째 부분부터의 문자열 생성
+        val remainingParts = parts.drop(2).joinToString(" ")
+
+        // 마스킹할 문자 수 결정 (최대 10자리)
+        val maskingLength = minOf(remainingParts.length, 10)
+
+        // 마스킹된 문자열 생성
+        val maskedPart = "*".repeat(maskingLength)
+
+        return "$prefix $maskedPart"
+    }
+
+    /**
+     * 마스킹 기본 함수
+     */
+    fun mask(v: String, rangePattern: String, charMark: Char = '*'): String {
         var pattern = rangePattern
         if (pattern[0] != '[' || pattern[pattern.length - 1] != ']') {
             return v.replace(pattern, ("" + charMark).repeat(pattern.length))
         }
-        pattern = pattern.substring(0, pattern.length - 1).substring(1)
+        pattern = pattern.dropLast(1).substring(1)
         if (pattern.isEmpty()) {
             return v
         }
         return parsePattern(v, pattern, charMark)
     }
 
-    fun masking(v: String, regex: Regex, charMark: Char = '*'): String {
+    fun mask(v: String, regex: Regex, charMark: Char = '*'): String {
         return v.replace(regex, charMark.toString())
     }
 
-    fun masking(v: String, st: Int, ed: Int, charMark: Char = '*'): String {
-        val firstPart: String = v.substring(0, st)
+    fun mask(v: String, st: Int, ed: Int, charMark: Char = '*'): String {
+        val firstPart: String = v.take(st)
         val secondPart: String = v.substring(ed)
         return firstPart + ("" + charMark).repeat((ed - st)) + secondPart
     }
@@ -65,7 +96,7 @@ object Masking {
             }
             if (pattern.matches("^\\d+$".toRegex())) { // isNumber
                 val idx = pattern.toInt()
-                return masking(v, idx, idx + pattern.length, charMark)
+                return mask(v, idx, idx + pattern.length, charMark)
             }
             return v
         }
@@ -75,7 +106,7 @@ object Masking {
             val arr = pattern.split("-")
             val st = max(0, v.length - Integer.parseInt(arr[1]))
             val ed = v.length
-            return masking(v, st, ed, charMark)
+            return mask(v, st, ed, charMark)
         }
 
         // '-' 가 1번째 뒤에 위치함. ex) "2-", "2-7", "2-@"
@@ -87,6 +118,6 @@ object Masking {
         } else {
             max(st, v.indexOf(arr[1]))
         }
-        return masking(v, st, ed, charMark)
+        return mask(v, st, ed, charMark)
     }
 }

@@ -1,4 +1,4 @@
-package com.snc.zero.json.masking.annotations
+package com.snc.zero.json.mask.annotations
 
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside
 

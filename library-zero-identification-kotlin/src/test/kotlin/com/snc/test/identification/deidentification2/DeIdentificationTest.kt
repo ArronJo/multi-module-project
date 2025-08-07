@@ -235,11 +235,11 @@ class DeIdentificationTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `데이터 마스킹 (Data Masking) - 이름`() {
+    fun `데이터 마스킹 (Data Mask) - 이름`() {
         // given
         val name = "진가연"
         // when
-        val v = DeIdentification.DataMasking.name(name)
+        val v = DeIdentification.DataMask.name(name)
         // then
         logger.debug { "name: $name -> $v" }
         assertEquals("진◯◯", v)

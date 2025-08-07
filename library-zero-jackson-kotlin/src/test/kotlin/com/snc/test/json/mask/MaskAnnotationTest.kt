@@ -1,11 +1,11 @@
-package com.snc.test.json.masking
+package com.snc.test.json.mask
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import com.snc.zero.json.masking.MaskingAnnotationIntrospector
-import com.snc.zero.json.masking.annotations.MaskAllFields
-import com.snc.zero.json.masking.annotations.MaskField
+import com.snc.zero.json.mask.MaskAnnotationIntrospector
+import com.snc.zero.json.mask.annotations.MaskAllFields
+import com.snc.zero.json.mask.annotations.MaskField
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Test
@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test
 private val logger = TLogging.logger { }
 
 @Suppress("NonAsciiCharacters")
-class MaskingAnnotationTest : BaseJUnit5Test() {
+class MaskAnnotationTest : BaseJUnit5Test() {
 
     @MaskAllFields
     data class SensitiveData(
@@ -54,7 +54,7 @@ class MaskingAnnotationTest : BaseJUnit5Test() {
     fun `MaskedModule 테스트`() {
         val objectMapper = ObjectMapper().apply {
             registerKotlinModule()
-            setAnnotationIntrospector(MaskingAnnotationIntrospector())
+            setAnnotationIntrospector(MaskAnnotationIntrospector())
             setSerializationInclusion(JsonInclude.Include.NON_NULL)
         }
 

@@ -1,11 +1,11 @@
-package com.snc.zero.json.masking
+package com.snc.zero.json.mask
 
 import com.fasterxml.jackson.databind.introspect.Annotated
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector
-import com.snc.zero.json.masking.annotations.MaskAllFields
-import com.snc.zero.json.masking.annotations.MaskField
-import com.snc.zero.json.masking.serializer.MaskAllFieldsSerializer
-import com.snc.zero.json.masking.serializer.MaskFieldSerializer
+import com.snc.zero.json.mask.annotations.MaskAllFields
+import com.snc.zero.json.mask.annotations.MaskField
+import com.snc.zero.json.mask.serializer.MaskAllFieldsSerializer
+import com.snc.zero.json.mask.serializer.MaskFieldSerializer
 
 /**
  * Jackson JSON Annotation 인터셉터
@@ -14,7 +14,7 @@ import com.snc.zero.json.masking.serializer.MaskFieldSerializer
  *
  *  val objectMapper = ObjectMapper().apply {
  *      registerKotlinModule()
- *      setAnnotationIntrospector(MaskingAnnotationIntrospector())
+ *      setAnnotationIntrospector(MaskAnnotationIntrospector())
  *      setSerializationInclusion(JsonInclude.Include.NON_NULL)
  *  }
  *
@@ -24,7 +24,7 @@ import com.snc.zero.json.masking.serializer.MaskFieldSerializer
  *  logger.debug { objectMapper.writeValueAsString(sensitiveData) }
  *
  */
-class MaskingAnnotationIntrospector : JacksonAnnotationIntrospector() {
+class MaskAnnotationIntrospector : JacksonAnnotationIntrospector() {
 
     override fun findSerializer(a: Annotated?): Any? {
         if (a?.hasAnnotation(MaskField::class.java) == true) {

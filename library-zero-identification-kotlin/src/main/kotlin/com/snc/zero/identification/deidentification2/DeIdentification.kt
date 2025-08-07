@@ -119,7 +119,7 @@ object DeIdentification {
      * : 예시) 홍길동, 35세, 서울 거주, 한국대 재학  ->  홍ㅇㅇ, 35세, 서울 거주, ㅇㅇ대학 재학 (from 행안부, 2016)
      * : 세부기술: 16)임의 잡음 추가 17)공백과 대체
      */
-    object DataMasking {
+    object DataMask {
 
         fun name(v: String): String {
             // 이름이 외자 인 경우 등이 존재하므로 통일성을 가지기 위해 2개로 고정한다. (v.length - 1) → 2 로 수정

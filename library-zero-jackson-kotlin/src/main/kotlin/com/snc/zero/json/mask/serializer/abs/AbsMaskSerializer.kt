@@ -1,16 +1,16 @@
-package com.snc.zero.json.masking.serializer.abs
+package com.snc.zero.json.mask.serializer.abs
 
 import com.fasterxml.jackson.databind.JsonSerializer
 import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.full.primaryConstructor
 
-abstract class AbsMaskingSerializer<T> : JsonSerializer<T>() {
+abstract class AbsMaskSerializer<T> : JsonSerializer<T>() {
 
     fun maskIfNeeded(obj: Any?): Any? {
         return when {
             obj == null -> null
-            obj::class.isSubclassOf(String::class) -> masking(obj as String)
+            obj::class.isSubclassOf(String::class) -> mask(obj as String)
             obj::class.isSubclassOf(Number::class) -> obj
             obj::class.isSubclassOf(Boolean::class) -> obj
             obj::class.isSubclassOf(Char::class) -> obj
@@ -33,15 +33,15 @@ abstract class AbsMaskingSerializer<T> : JsonSerializer<T>() {
         val args = constructor.parameters.associateWith { param ->
             val property = properties[param.name]
             when (val value = property?.getter?.call(obj)) {
-                is String -> masking(value)
-                is Collection<*> -> value.map { if (it is String) masking(it) else it }
-                is Map<*, *> -> value.mapValues { if (it.value is String) masking(it.value as String) else it.value }
+                is String -> mask(value)
+                is Collection<*> -> value.map { if (it is String) mask(it) else it }
+                is Map<*, *> -> value.mapValues { if (it.value is String) mask(it.value as String) else it.value }
                 else -> value
             }
         }
         return constructor.callBy(args)
     }
-    private fun masking(str: String): String {
+    private fun mask(str: String): String {
         val idPattern = """^(\d{6})[-]?(\d{7})$""".toRegex()
         val phonePattern = """^(01[016789])[-]?(\d{3,4})[-]?(\d{4})$""".toRegex()
         val accountPattern = """^(\d{2,6})[-]?(\d{2,6})[-]?(\d{2,6})$""".toRegex()

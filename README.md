@@ -43,8 +43,8 @@ Updated the "test" module.
 ### 2024-05-17
 
 Updated the "identification" module.
-- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Masking 클래스 추가
-  - class PatternMasking
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Mask 클래스 추가
+  - class PatternMask
     - id()
     - phoneNum()
     - account()
@@ -85,13 +85,13 @@ Added new "identification" module.
     - age()
     - address()
 
-- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Masking 클래스 추가
-  - class Masking
+- ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Mask 클래스 추가
+  - class Mask
     - regNo()
     - name()
     - phoneNum()
     - email()
-    - masking()
+    - mask()
 
 - ![feat](https://img.shields.io/badge/Feature-%2300c806.svg) : Faker 클래스 추가
   - class Faker

@@ -1,21 +1,21 @@
-package com.snc.test.json.masking
+package com.snc.test.json.mask
 
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.databind.SerializerProvider
-import com.snc.zero.json.masking.serializer.abs.AbsMaskingSerializer
+import com.snc.zero.json.mask.serializer.abs.AbsMaskSerializer
 import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @Suppress("NonAsciiCharacters")
-class AbsMaskingSerializerTest : BaseJUnit5Test() {
+class AbsMaskSerializerTest : BaseJUnit5Test() {
 
-    private lateinit var serializer: AbsMaskingSerializer<String>
+    private lateinit var serializer: AbsMaskSerializer<String>
 
     @BeforeEach
     fun setUp() {
-        serializer = object : AbsMaskingSerializer<String>() {
+        serializer = object : AbsMaskSerializer<String>() {
             override fun serialize(
                 value: String?,
                 gen: JsonGenerator?,

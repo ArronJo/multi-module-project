@@ -1,6 +1,6 @@
-package com.snc.zero.identification.masking
+package com.snc.zero.identification.mask
 
-object PatternMasking {
+object PatternMask {
 
     fun id(str: String): String {
         val idPattern = """^(\d{6})[-]?(\d{7})$""".toRegex()
