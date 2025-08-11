@@ -1,5 +1,7 @@
 package com.snc.zero.similarity.matcher
 
+import com.snc.zero.similarity.data.InMemoryStringDataProvider
+import com.snc.zero.similarity.data.StringDataProvider
 import kotlin.math.abs
 import kotlin.math.sqrt
 
@@ -32,20 +34,31 @@ data class PositionDifferenceResult(
     val alignedPart2: String
 )
 
-class StringSimilarityMatcher {
+class StringSimilarityMatcher(
+    private val dataProvider: StringDataProvider = InMemoryStringDataProvider()
+) {
 
-    // 레벤슈타인 거리(Levenshtein Distance), 자카드 유사도(Jaccard Similarity), 코사인 유사도(Cosine Similarity)는
-    // 문자열이나 문서 간의 유사도 측정에 널리 사용되는 대표적인 거리/유사도 지표입니다.
+    // 레벤슈타인 거리(Levenshtein Distance, https://en.wikipedia.org/wiki/Levenshtein_distance),
+    // 자카드 유사도(Jaccard Similarity, 간단한 키워드 검색, https://en.wikipedia.org/wiki/Jaccard_index),
+    // 코사인 유사도(Cosine Similarity, 단어 빈도 고려, https://en.wikipedia.org/wiki/Cosine_similarity),
+    // 자로 유사도(Jaro Similarity, https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance),
+    // 자로-윙클러 유사도(Jaro-Winkler Similarity, 공통 접두사에 가중치 부여, https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance)
+    // 는 문자열이나 문서 간의 유사도 측정에 널리 사용되는 대표적인 거리/유사도 지표입니다.
+    // https://blog.harampark.com/blog/nlp-string-distance/
     // 요약 비교표
-    // | 지표		  | 입력 형태		   | 핵심 개념    | 순서 고려 | 사용 예시	              |
-    // |--------------|----------------|------------|---------|-----------------------|
-    // | Levenshtein  | 문자열		   | 편집 거리	|    (O)  | 오타 수정, 유사 문자열 비교 |
-    // | Jaccard	  | 집합			   | 교집합/합집합	|    (X)  |	중복 탐지, 클러스터링      |
-    // | Cosine		  | 벡터 (TF-IDF 등) | 방향 유사도	|    (X)  |	문서 유사도, 검색 시스템    |
+    // | 지표		      | 입력 형태		       | 핵심 개념        | 순서 고려 | 사용 예시	                  |
+    // |------------------|-------------------|----------------|---------|---------------------------|
+    // | Levenshtein      | 문자열		       | 편집 거리	    |    (O)  | 오타 수정, 유사 문자열 비교   |
+    // | Jaccard	      | 집합			       | 교집합/합집합	|    (X)  |	중복 탐지, 클러스터링        |
+    // | Cosine		      | 벡터 (TF-IDF 등) | 방향 유사도	    |    (X)  |	문서 유사도, 검색 시스템      |
+    // | Jaro		      | 문자열		       | 일치/전치	    |    (O)  |	이름 매칭, 레코드 연결       |
+    // | Jaro-Winkler     | 문자열		       | 일치/전치+접두사|    (O)  |	이름 매칭, 스펠링 체크       |
     enum class SimilarityMethod {
         LEVENSHTEIN, // 편집 거리 기반
         JACCARD, // 집합 기반
-        COSINE // 벡터 기반
+        COSINE, // 벡터 기반
+        JARO, // 일치 문자와 전치 기반
+        JARO_WINKLER // 일치 문자와 전치 기반 + 공통 접두사 가중치
     }
 
     enum class DifferenceMethod {
@@ -58,6 +71,36 @@ class StringSimilarityMatcher {
         SUBSTRING, // 원본 문자열에서 타겟을 부분 문자열로 찾음
         REVERSE_SUBSTRING // 타겟에서 원본을 부분 문자열로 찾음
     }
+
+    /**
+     * 데이터 제공자의 데이터를 가져옴
+     */
+    fun getData(): List<String> = dataProvider.getData()
+
+    /**
+     * 데이터 추가
+     */
+    fun addData(items: List<String>) = dataProvider.addData(items)
+
+    /**
+     * 데이터 추가 (단일 항목)
+     */
+    fun addData(item: String) = dataProvider.addData(item)
+
+    /**
+     * 데이터 삭제
+     */
+    fun clearData() = dataProvider.clearData()
+
+    /**
+     * 데이터 크기
+     */
+    fun dataSize(): Int = dataProvider.size()
+
+    /**
+     * 데이터가 비어있는지 확인
+     */
+    fun isDataEmpty(): Boolean = dataProvider.isEmpty()
 
     /**
      * 레벤슈타인 거리 계산
@@ -142,6 +185,86 @@ class StringSimilarityMatcher {
     }
 
     /**
+     * 자로 유사도 계산
+     * 두 문자열 간의 일치하는 문자와 전치(transposition)를 고려한 유사도
+     */
+    fun jaroSimilarity(s1: String, s2: String): Double {
+        if (s1 == s2) return 1.0
+        if (s1.isEmpty() || s2.isEmpty()) return 0.0
+
+        val matchWindow = (maxOf(s1.length, s2.length) / 2) - 1
+        if (matchWindow < 0) return 0.0
+
+        val s1Matches = BooleanArray(s1.length)
+        val s2Matches = BooleanArray(s2.length)
+
+        var matches = 0
+        var transpositions = 0
+
+        // 일치하는 문자 찾기
+        for (i in s1.indices) {
+            val start = maxOf(0, i - matchWindow)
+            val end = minOf(i + matchWindow + 1, s2.length)
+
+            for (j in start until end) {
+                if (s2Matches[j] || s1[i] != s2[j]) continue
+                s1Matches[i] = true
+                s2Matches[j] = true
+                matches++
+                break
+            }
+        }
+
+        if (matches == 0) return 0.0
+
+        // 전치 계산
+        var k = 0
+        for (i in s1.indices) {
+            if (!s1Matches[i]) continue
+            while (!s2Matches[k]) k++
+            if (s1[i] != s2[k]) transpositions++
+            k++
+        }
+
+        val jaroScore = (matches.toDouble() / s1.length +
+            matches.toDouble() / s2.length +
+            (matches - transpositions / 2.0) / matches) / 3.0
+
+        return jaroScore
+    }
+
+    /**
+     * 자로-윙클러 유사도 계산
+     * 자로 유사도를 기반으로 공통 접두사에 가중치를 부여하여 계산
+     * @param s1 첫 번째 문자열
+     * @param s2 두 번째 문자열
+     * @param threshold Jaro 유사도 임계값 (기본 0.7, 이 값 이상일 때만 접두사 보너스 적용)
+     * @param scalingFactor 접두사 가중치 계수 (기본 0.1, 최대 0.25까지 권장)
+     */
+    fun jaroWinklerSimilarity(
+        s1: String,
+        s2: String,
+        threshold: Double = 0.7,
+        scalingFactor: Double = 0.1
+    ): Double {
+        val jaroScore = jaroSimilarity(s1, s2)
+
+        // Jaro 점수가 임계값 미만이면 그대로 반환
+        if (jaroScore < threshold) {
+            return jaroScore
+        }
+
+        // 공통 접두사 길이 계산 (최대 4자까지)
+        val commonPrefixLength = minOf(
+            s1.zip(s2).takeWhile { (c1, c2) -> c1 == c2 }.size,
+            4
+        )
+
+        // Jaro-Winkler 점수 계산
+        return jaroScore + (commonPrefixLength * scalingFactor * (1 - jaroScore))
+    }
+
+    /**
      * 다른 알파벳 개수 계산 (빈도 기반)
      */
     private fun differentCharCount(s1: String, s2: String): Int {
@@ -205,7 +328,21 @@ class StringSimilarityMatcher {
     }
 
     /**
-     * 유사도를 이용한 문자열 매칭
+     * 유사도를 이용한 문자열 매칭 (내부 데이터 사용)
+     * @param target 타겟 문자열
+     * @param minSimilarity 최소 유사도 임계값 (0.0 ~ 1.0)
+     * @param method 사용할 유사도 계산 방법
+     */
+    fun findSimilarStrings(
+        target: String,
+        minSimilarity: Double = 0.5,
+        method: SimilarityMethod = SimilarityMethod.LEVENSHTEIN
+    ): List<SimilarityResult> {
+        return findSimilarStrings(dataProvider.getData(), target, minSimilarity, method)
+    }
+
+    /**
+     * 유사도를 이용한 문자열 매칭 (외부 데이터 사용)
      * @param data 검색할 문자열 리스트
      * @param target 타겟 문자열
      * @param minSimilarity 최소 유사도 임계값 (0.0 ~ 1.0)
@@ -222,6 +359,8 @@ class StringSimilarityMatcher {
                 SimilarityMethod.LEVENSHTEIN -> levenshteinSimilarity(target, text)
                 SimilarityMethod.JACCARD -> jaccardSimilarity(target, text)
                 SimilarityMethod.COSINE -> cosineSimilarity(target, text)
+                SimilarityMethod.JARO -> jaroSimilarity(target, text)
+                SimilarityMethod.JARO_WINKLER -> jaroWinklerSimilarity(target, text)
             }
 
             if (similarity >= minSimilarity) {
@@ -231,7 +370,19 @@ class StringSimilarityMatcher {
     }
 
     /**
-     * 다른 알파벳 개수를 이용한 문자열 매칭 (빈도 기반)
+     * 다른 알파벳 개수를 이용한 문자열 매칭 (내부 데이터 사용)
+     * @param target 타겟 문자열
+     * @param maxDifferentChars 최대 다른 알파벳 개수
+     */
+    fun findByDifferentCharCount(
+        target: String,
+        maxDifferentChars: Int = 3
+    ): List<Pair<String, Int>> {
+        return findByDifferentCharCount(dataProvider.getData(), target, maxDifferentChars)
+    }
+
+    /**
+     * 다른 알파벳 개수를 이용한 문자열 매칭 (외부 데이터 사용)
      * @param data 검색할 문자열 리스트
      * @param target 타겟 문자열
      * @param maxDifferentChars 최대 다른 알파벳 개수
@@ -250,7 +401,19 @@ class StringSimilarityMatcher {
     }
 
     /**
-     * 위치 기반 차이를 이용한 문자열 매칭
+     * 위치 기반 차이를 이용한 문자열 매칭 (내부 데이터 사용)
+     * @param target 타겟 문자열
+     * @param maxDifferences 최대 허용 차이 개수
+     */
+    fun findByPositionDifferences(
+        target: String,
+        maxDifferences: Int = 3
+    ): List<Pair<String, Int>> {
+        return findByPositionDifferences(dataProvider.getData(), target, maxDifferences)
+    }
+
+    /**
+     * 위치 기반 차이를 이용한 문자열 매칭 (외부 데이터 사용)
      * @param data 검색할 문자열 리스트
      * @param target 타겟 문자열
      * @param maxDifferences 최대 허용 차이 개수
@@ -303,7 +466,23 @@ class StringSimilarityMatcher {
     }
 
     /**
-     * 포함 문자열 검사를 포함한 종합 매칭
+     * 포함 문자열 검사를 포함한 종합 매칭 (내부 데이터 사용)
+     * @param target 타겟 문자열
+     * @param maxDifferences 허용할 최대 차이 문자 개수
+     * @param includeSubstring 부분 문자열 포함 검사 여부
+     * @param method 차이 계산 방법 (위치 기반 또는 빈도 기반)
+     */
+    fun findMatchingStrings(
+        target: String,
+        maxDifferences: Int = 1,
+        includeSubstring: Boolean = true,
+        method: DifferenceMethod = DifferenceMethod.POSITION_BASED
+    ): List<MatchResult> {
+        return findMatchingStrings(dataProvider.getData(), target, maxDifferences, includeSubstring, method)
+    }
+
+    /**
+     * 포함 문자열 검사를 포함한 종합 매칭 (외부 데이터 사용)
      * @param data 검색할 문자열 리스트
      * @param target 타겟 문자열
      * @param maxDifferences 허용할 최대 차이 문자 개수

@@ -90,7 +90,6 @@ class MaskTest : BaseJUnit5Test() {
         }
     }
 
-
     @Nested
     inner class DefaultMask {
 
