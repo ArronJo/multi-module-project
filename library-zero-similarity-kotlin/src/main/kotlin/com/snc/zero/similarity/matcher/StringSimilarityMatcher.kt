@@ -195,13 +195,24 @@ class StringSimilarityMatcher(
         val matchWindow = (maxOf(s1.length, s2.length) / 2) - 1
         if (matchWindow < 0) return 0.0
 
+        val (matches, s1Matches, s2Matches) = findMatches(s1, s2, matchWindow)
+        if (matches == 0) return 0.0
+
+        val transpositions = countTranspositions(s1, s2, s1Matches, s2Matches)
+
+        return (matches.toDouble() / s1.length +
+            matches.toDouble() / s2.length +
+            (matches - transpositions / 2.0) / matches) / 3.0
+    }
+
+    /**
+     * 일치하는 문자들을 찾아 반환한다
+     */
+    private fun findMatches(s1: String, s2: String, matchWindow: Int): Triple<Int, BooleanArray, BooleanArray> {
         val s1Matches = BooleanArray(s1.length)
         val s2Matches = BooleanArray(s2.length)
-
         var matches = 0
-        var transpositions = 0
 
-        // 일치하는 문자 찾기
         for (i in s1.indices) {
             val start = maxOf(0, i - matchWindow)
             val end = minOf(i + matchWindow + 1, s2.length)
@@ -215,10 +226,21 @@ class StringSimilarityMatcher(
             }
         }
 
-        if (matches == 0) return 0.0
+        return Triple(matches, s1Matches, s2Matches)
+    }
 
-        // 전치 계산
+    /**
+     * 전치(transposition) 개수를 계산한다
+     */
+    private fun countTranspositions(
+        s1: String,
+        s2: String,
+        s1Matches: BooleanArray,
+        s2Matches: BooleanArray
+    ): Int {
+        var transpositions = 0
         var k = 0
+
         for (i in s1.indices) {
             if (!s1Matches[i]) continue
             while (!s2Matches[k]) k++
@@ -226,11 +248,7 @@ class StringSimilarityMatcher(
             k++
         }
 
-        val jaroScore = (matches.toDouble() / s1.length +
-            matches.toDouble() / s2.length +
-            (matches - transpositions / 2.0) / matches) / 3.0
-
-        return jaroScore
+        return transpositions
     }
 
     /**
