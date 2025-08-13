@@ -1,8 +1,10 @@
 package com.snc.zero.similarity.matcher
 
+import com.snc.zero.hangul.engtokor.EngToKor
 import com.snc.zero.similarity.data.InMemoryStringDataProvider
 import com.snc.zero.similarity.data.StringDataProvider
 import kotlin.math.abs
+import kotlin.math.max
 import kotlin.math.sqrt
 
 data class SimilarityResult(
@@ -34,6 +36,21 @@ data class PositionDifferenceResult(
     val alignedPart2: String
 )
 
+// 문자열 포함 여부 검사 결과
+data class ContainmentResult(
+    val text: String,
+    val similarity: Int, // 0~100 점수
+    val matchType: ContainmentMatchType,
+    val method: String = "CONTAINMENT"
+)
+
+enum class ContainmentMatchType {
+    EXACT_MATCH, // 정확히 일치
+    CONTAINS_SEARCH, // 키워드가 검색어를 포함
+    CONTAINED_IN_SEARCH, // 키워드가 검색어에 포함됨
+    COMMON_CHARS // 공통 문자 기반 유사도
+}
+
 class StringSimilarityMatcher(
     private val dataProvider: StringDataProvider = InMemoryStringDataProvider()
 ) {
@@ -53,17 +70,19 @@ class StringSimilarityMatcher(
     // | Cosine		      | 벡터 (TF-IDF 등) | 방향 유사도	    |    (X)  |	문서 유사도, 검색 시스템      |
     // | Jaro		      | 문자열		       | 일치/전치	    |    (O)  |	이름 매칭, 레코드 연결       |
     // | Jaro-Winkler     | 문자열		       | 일치/전치+접두사|    (O)  |	이름 매칭, 스펠링 체크       |
+    // | Containment      | 문자열           | 포함 관계       |    (O)  | 검색, 자동완성, 키워드 매칭  |
     enum class SimilarityMethod {
         LEVENSHTEIN, // 편집 거리 기반
         JACCARD, // 집합 기반
         COSINE, // 벡터 기반
         JARO, // 일치 문자와 전치 기반
-        JARO_WINKLER // 일치 문자와 전치 기반 + 공통 접두사 가중치
+        JARO_WINKLER, // 일치 문자와 전치 기반 + 공통 접두사 가중치
+        CONTAINMENT // 문자열 포함 여부 기반 (새로 추가)
     }
 
     enum class DifferenceMethod {
-        FREQUENCY_BASED, // 빈도 기반 (기존 방식)
-        POSITION_BASED // 위치 기반 (새로운 방식)
+        FREQUENCY_BASED, // 빈도 기반
+        POSITION_BASED // 위치 기반
     }
 
     enum class MatchType {
@@ -101,6 +120,141 @@ class StringSimilarityMatcher(
      * 데이터가 비어있는지 확인
      */
     fun isDataEmpty(): Boolean = dataProvider.isEmpty()
+
+    /**
+     * 영문인지 확인하는 함수
+     */
+    private fun isEnglish(text: String): Boolean {
+        return text.matches(Regex("^[a-zA-Z\\s]+$"))
+    }
+
+    /**
+     * 한글 → 영문 키보드 변환 (간단한 매핑 예시)
+     */
+    private fun korToEng(text: String): String {
+        val korToEngMap = mapOf(
+            'ㅂ' to 'q', 'ㅈ' to 'w', 'ㄷ' to 'e', 'ㄱ' to 'r', 'ㅅ' to 't',
+            'ㅛ' to 'y', 'ㅕ' to 'u', 'ㅑ' to 'i', 'ㅐ' to 'o', 'ㅔ' to 'p',
+            'ㅁ' to 'a', 'ㄴ' to 's', 'ㅇ' to 'd', 'ㄹ' to 'f', 'ㅎ' to 'g',
+            'ㅗ' to 'h', 'ㅓ' to 'j', 'ㅏ' to 'k', 'ㅣ' to 'l',
+            'ㅋ' to 'z', 'ㅌ' to 'x', 'ㅊ' to 'c', 'ㅍ' to 'v', 'ㅠ' to 'b',
+            'ㅜ' to 'n', 'ㅡ' to 'm'
+        )
+
+        return text.map { char ->
+            korToEngMap[char] ?: char
+        }.joinToString("")
+    }
+
+    /**
+     * 변환 가능한 모든 형태를 반환
+     */
+    private fun getConvertedTerms(searchTerm: String): List<String> {
+        val terms = mutableSetOf<String>()
+        val lowerTerm = searchTerm.lowercase()
+
+        // 원본
+        terms.add(lowerTerm)
+
+        // 영문 → 한글
+        if (isEnglish(searchTerm)) {
+            val converted = EngToKor.engToKor(searchTerm).lowercase()
+            if (converted.isNotEmpty()) terms.add(converted)
+        }
+
+        // 한글 → 영문
+        val engConverted = korToEng(searchTerm)
+        if (engConverted.isNotEmpty()) terms.add(engConverted.lowercase())
+
+        return terms.toList()
+    }
+
+    /**
+     * 문자열 포함 여부 검사 (가장 기본적인 방법)
+     */
+    private fun calculateContainmentSimilarity(keyword: String, searchTerm: String): ContainmentResult {
+        val keywordLower = keyword.lowercase()
+        val searchLower = searchTerm.lowercase()
+
+        // 정확히 일치하는 경우
+        if (keywordLower == searchLower) {
+            return ContainmentResult(keyword, 100, ContainmentMatchType.EXACT_MATCH)
+        }
+
+        // 검색어가 키워드에 포함된 경우 (원본)
+        if (keywordLower.contains(searchLower)) {
+            return ContainmentResult(keyword, 90, ContainmentMatchType.CONTAINS_SEARCH)
+        }
+
+        // 키워드가 검색어에 포함된 경우 (검색어가 더 긴 경우)
+        if (searchLower.contains(keywordLower)) {
+            return ContainmentResult(keyword, 85, ContainmentMatchType.CONTAINED_IN_SEARCH)
+        }
+
+        // 공통 문자 개수로 유사도 계산 (원본)
+        var commonChars = 0
+        val searchChars = searchLower.toList()
+        val keywordChars = keywordLower.toList()
+
+        for (char in searchChars) {
+            if (keywordChars.contains(char)) {
+                commonChars++
+            }
+        }
+
+        val similarity = ((commonChars.toDouble() / max(searchLower.length, keywordLower.length)) * 100).toInt()
+        return ContainmentResult(keyword, similarity, ContainmentMatchType.COMMON_CHARS)
+    }
+
+    /**
+     * 종합 문자열 포함 여부 유사도 계산
+     */
+    private fun getOverallContainmentSimilarity(keyword: String, searchTerm: String): ContainmentResult {
+        val convertedTerms = getConvertedTerms(searchTerm)
+        var bestResult = ContainmentResult(keyword, 0, ContainmentMatchType.COMMON_CHARS)
+
+        for (term in convertedTerms) {
+            val result = calculateContainmentSimilarity(keyword, term)
+            if (result.similarity > bestResult.similarity) {
+                bestResult = result
+            }
+        }
+
+        return bestResult
+    }
+
+    /**
+     * 문자열 포함 여부를 이용한 문자열 매칭 (내부 데이터 사용)
+     * @param target 타겟 문자열
+     * @param minSimilarity 최소 유사도 임계값 (0~100)
+     */
+    fun findByContainment(
+        target: String,
+        minSimilarity: Int = 50
+    ): List<ContainmentResult> {
+        return findByContainment(dataProvider.getData(), target, minSimilarity)
+    }
+
+    /**
+     * 문자열 포함 여부를 이용한 문자열 매칭 (외부 데이터 사용)
+     * @param data 검색할 문자열 리스트
+     * @param target 타겟 문자열
+     * @param minSimilarity 최소 유사도 임계값 (0~100)
+     */
+    fun findByContainment(
+        data: List<String>,
+        target: String,
+        minSimilarity: Int = 50
+    ): List<ContainmentResult> {
+        return data.mapNotNull { text ->
+            val result = getOverallContainmentSimilarity(text, target)
+            if (result.similarity >= minSimilarity) {
+                result
+            } else {
+                null
+            }
+        }.sortedByDescending { it.similarity }
+    }
 
     /**
      * 레벤슈타인 거리 계산
@@ -363,7 +517,7 @@ class StringSimilarityMatcher(
      * 유사도를 이용한 문자열 매칭 (외부 데이터 사용)
      * @param data 검색할 문자열 리스트
      * @param target 타겟 문자열
-     * @param minSimilarity 최소 유사도 임계값 (0.0 ~ 1.0)
+     * @param minSimilarity 최소 유사도 임계값 (0.0 ~ 1.0, CONTAINMENT의 경우 0~100)
      * @param method 사용할 유사도 계산 방법
      */
     fun findSimilarStrings(
@@ -372,19 +526,33 @@ class StringSimilarityMatcher(
         minSimilarity: Double = 0.5,
         method: SimilarityMethod = SimilarityMethod.LEVENSHTEIN
     ): List<SimilarityResult> {
-        return data.mapNotNull { text ->
-            val similarity = when (method) {
-                SimilarityMethod.LEVENSHTEIN -> levenshteinSimilarity(target, text)
-                SimilarityMethod.JACCARD -> jaccardSimilarity(target, text)
-                SimilarityMethod.COSINE -> cosineSimilarity(target, text)
-                SimilarityMethod.JARO -> jaroSimilarity(target, text)
-                SimilarityMethod.JARO_WINKLER -> jaroWinklerSimilarity(target, text)
+        return when (method) {
+            SimilarityMethod.CONTAINMENT -> {
+                // CONTAINMENT 방법은 0~100 점수를 사용하므로 별도 처리
+                val containmentResults = findByContainment(data, target, (minSimilarity * 100).toInt())
+                containmentResults.map { result ->
+                    SimilarityResult(result.text, result.similarity / 100.0, result.method)
+                }
             }
+            else -> {
+                data.mapNotNull { text ->
+                    val similarity = when (method) {
+                        SimilarityMethod.LEVENSHTEIN -> levenshteinSimilarity(target, text)
+                        SimilarityMethod.JACCARD -> jaccardSimilarity(target, text)
+                        SimilarityMethod.COSINE -> cosineSimilarity(target, text)
+                        SimilarityMethod.JARO -> jaroSimilarity(target, text)
+                        SimilarityMethod.JARO_WINKLER -> jaroWinklerSimilarity(target, text)
+                        else -> 0.0 // CONTAINMENT는 위에서 처리됨
+                    }
 
-            if (similarity >= minSimilarity) {
-                SimilarityResult(text, similarity, method.name)
-            } else { null }
-        }.sortedByDescending { it.similarity }
+                    if (similarity >= minSimilarity) {
+                        SimilarityResult(text, similarity, method.name)
+                    } else {
+                        null
+                    }
+                }.sortedByDescending { it.similarity }
+            }
+        }
     }
 
     /**
@@ -414,7 +582,9 @@ class StringSimilarityMatcher(
             val diffCount = differentCharCount(target, text)
             if (diffCount <= maxDifferentChars) {
                 text to diffCount
-            } else { null }
+            } else {
+                null
+            }
         }.sortedBy { it.second }
     }
 
@@ -445,7 +615,9 @@ class StringSimilarityMatcher(
             val result = optimalPositionBasedDifferences(target, text)
             if (result.differences <= maxDifferences) {
                 text to result.differences
-            } else { null }
+            } else {
+                null
+            }
         }.sortedBy { it.second }
     }
 

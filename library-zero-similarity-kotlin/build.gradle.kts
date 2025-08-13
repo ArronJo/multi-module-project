@@ -14,6 +14,7 @@ repositories {
 
 dependencies {
     implementation(project(":library-zero-logger-kotlin"))
+    implementation(project(":library-zero-hangul-kotlin"))
 
     testImplementation(project(":library-zero-test-kotlin"))
     testImplementation(project(":library-zero-extension-kotlin"))
