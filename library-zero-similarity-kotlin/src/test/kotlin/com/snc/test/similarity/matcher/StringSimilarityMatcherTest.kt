@@ -22,6 +22,7 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
         "notebook",
         "sblbry",
         "wowsblarywow",
+        "계약", "약계", "계야약",
         "보험 계약정보", "보험계약 조회", "나의 자동이체정보", "미래연금예상액 조회", "보험금신", "사고보험금 신청",
         "사고보험금 내역조회", "사고보험금 서류보완", "일반보험금 신청", "일반보험금 지급내역", "보험금납입",
         "보험료 조회/납입", "납입계좌 변경", "보험계약변경", "건강체변경 신청", "보험수익자 변경 신청",
@@ -106,6 +107,36 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
                 target,
                 minSimilarity,
                 StringSimilarityMatcher.SimilarityMethod.LEVENSHTEIN
+            )
+            levenshteinResults2.forEach { result ->
+                println("${result.text}: ${String.format("%.3f", result.similarity)}")
+            }
+            println()
+        }
+
+        @Test
+        fun `다메라우-레벤슈타인 거리(Levenshtein Distance) 유사도 테스트`() {
+            println("=== 레벤슈타인 유사도 (최소 $minSimilarity) 출력 ===")
+            println("-Usage: findSimilarStrings( ..., SimilarityMethod.DAMERAU_LEVENSHTEIN )")
+
+            println("검색어: $target")
+            println()
+
+            val levenshteinResults = matcher.findSimilarStrings(
+                data,
+                target,
+                minSimilarity,
+                StringSimilarityMatcher.SimilarityMethod.DAMERAU_LEVENSHTEIN
+            )
+            levenshteinResults.forEach { result ->
+                println("${result.text}: ${String.format("%.3f", result.similarity)}")
+            }
+
+            println("=== 내부 데이터 사용 ===")
+            val levenshteinResults2 = matcher.findSimilarStrings(
+                target,
+                minSimilarity,
+                StringSimilarityMatcher.SimilarityMethod.DAMERAU_LEVENSHTEIN
             )
             levenshteinResults2.forEach { result ->
                 println("${result.text}: ${String.format("%.3f", result.similarity)}")
@@ -489,11 +520,12 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
         fun `Enum entries 테스트`() {
             val e1 = StringSimilarityMatcher.SimilarityMethod.entries.toTypedArray()
             assertEquals(StringSimilarityMatcher.SimilarityMethod.LEVENSHTEIN, e1[0])
-            assertEquals(StringSimilarityMatcher.SimilarityMethod.JACCARD, e1[1])
-            assertEquals(StringSimilarityMatcher.SimilarityMethod.COSINE, e1[2])
-            assertEquals(StringSimilarityMatcher.SimilarityMethod.JARO, e1[3])
-            assertEquals(StringSimilarityMatcher.SimilarityMethod.JARO_WINKLER, e1[4])
-            assertEquals(StringSimilarityMatcher.SimilarityMethod.CONTAINMENT, e1[5])
+            assertEquals(StringSimilarityMatcher.SimilarityMethod.DAMERAU_LEVENSHTEIN, e1[1])
+            assertEquals(StringSimilarityMatcher.SimilarityMethod.JACCARD, e1[2])
+            assertEquals(StringSimilarityMatcher.SimilarityMethod.COSINE, e1[3])
+            assertEquals(StringSimilarityMatcher.SimilarityMethod.JARO, e1[4])
+            assertEquals(StringSimilarityMatcher.SimilarityMethod.JARO_WINKLER, e1[5])
+            assertEquals(StringSimilarityMatcher.SimilarityMethod.CONTAINMENT, e1[6])
 
             val e2 = StringSimilarityMatcher.DifferenceMethod.entries.toTypedArray()
             assertEquals(StringSimilarityMatcher.DifferenceMethod.FREQUENCY_BASED, e2[0])

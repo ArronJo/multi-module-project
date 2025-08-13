@@ -56,6 +56,7 @@ class StringSimilarityMatcher(
 ) {
 
     // 레벤슈타인 거리(Levenshtein Distance, https://en.wikipedia.org/wiki/Levenshtein_distance),
+    // 다메라우-레벤슈타인 거리(Damerau–Levenshtein distance, https://en.wikipedia.org/wiki/Damerau%E2%80%93Levenshtein_distance),
     // 자카드 유사도(Jaccard Similarity, 간단한 키워드 검색, https://en.wikipedia.org/wiki/Jaccard_index),
     // 코사인 유사도(Cosine Similarity, 단어 빈도 고려, https://en.wikipedia.org/wiki/Cosine_similarity),
     // 자로 유사도(Jaro Similarity, https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance),
@@ -63,16 +64,18 @@ class StringSimilarityMatcher(
     // 는 문자열이나 문서 간의 유사도 측정에 널리 사용되는 대표적인 거리/유사도 지표입니다.
     // https://blog.harampark.com/blog/nlp-string-distance/
     // 요약 비교표
-    // | 지표		      | 입력 형태		       | 핵심 개념        | 순서 고려 | 사용 예시	                  |
-    // |------------------|-------------------|----------------|---------|---------------------------|
-    // | Levenshtein      | 문자열		       | 편집 거리	    |    (O)  | 오타 수정, 유사 문자열 비교   |
-    // | Jaccard	      | 집합			       | 교집합/합집합	|    (X)  |	중복 탐지, 클러스터링        |
-    // | Cosine		      | 벡터 (TF-IDF 등) | 방향 유사도	    |    (X)  |	문서 유사도, 검색 시스템      |
-    // | Jaro		      | 문자열		       | 일치/전치	    |    (O)  |	이름 매칭, 레코드 연결       |
-    // | Jaro-Winkler     | 문자열		       | 일치/전치+접두사|    (O)  |	이름 매칭, 스펠링 체크       |
-    // | Containment      | 문자열           | 포함 관계       |    (O)  | 검색, 자동완성, 키워드 매칭  |
+    // | 지표		         | 입력 형태		     | 핵심 개념        | 순서 고려 | 사용 예시	                  |
+    // |---------------------|-------------------|----------------|---------|---------------------------|
+    // | Levenshtein         | 문자열		         | 편집 거리	      |    (O)  | 오타 수정, 유사 문자열 비교	|
+    // | Damerau-Levenshtein | 문자열		         | 편집 거리	      |    (O)  | Levenshtein + 인접 문자 전환(Transposition) 연산까지 허용	|
+    // | Jaccard	         | 집합			     | 교집합/합집합     |    (X)  | 중복 탐지, 클러스터링	|
+    // | Cosine		         | 벡터 (TF-IDF 등)    | 방향 유사도	  |    (X)  | 문서 유사도, 검색 시스템	|
+    // | Jaro		         | 문자열		         | 일치/전치	      |    (O)  | 이름 매칭, 레코드 연결	|
+    // | Jaro-Winkler        | 문자열		         | 일치/전치+접두사   |    (O)  | Jaro + 공통 접두사 보너스를 추가함	|
+    // | Containment         | 문자열              | 포함 관계        |    (O)  | 검색, 자동완성, 키워드 매칭  |
     enum class SimilarityMethod {
         LEVENSHTEIN, // 편집 거리 기반
+        DAMERAU_LEVENSHTEIN, // 편집 거리 기반
         JACCARD, // 집합 기반
         COSINE, // 벡터 기반
         JARO, // 일치 문자와 전치 기반
@@ -171,6 +174,8 @@ class StringSimilarityMatcher(
 
     /**
      * 문자열 포함 여부 검사 (가장 기본적인 방법)
+     * - searchTerm: 검색어
+     * - keyword: 대상 키워드
      */
     private fun calculateContainmentSimilarity(keyword: String, searchTerm: String): ContainmentResult {
         val keywordLower = keyword.lowercase()
@@ -181,7 +186,7 @@ class StringSimilarityMatcher(
             return ContainmentResult(keyword, 100, ContainmentMatchType.EXACT_MATCH)
         }
 
-        // 검색어가 키워드에 포함된 경우 (원본)
+        // 검색어가 키워드에 포함된 경우
         if (keywordLower.contains(searchLower)) {
             return ContainmentResult(keyword, 90, ContainmentMatchType.CONTAINS_SEARCH)
         }
@@ -191,7 +196,7 @@ class StringSimilarityMatcher(
             return ContainmentResult(keyword, 85, ContainmentMatchType.CONTAINED_IN_SEARCH)
         }
 
-        // 공통 문자 개수로 유사도 계산 (원본)
+        // 공통 문자 개수로 유사도 계산
         var commonChars = 0
         val searchChars = searchLower.toList()
         val keywordChars = keywordLower.toList()
@@ -285,6 +290,48 @@ class StringSimilarityMatcher(
     }
 
     /**
+     * 다메라우-레벤슈타인 거리 계산
+     * Damerau–Levenshtein Distance는 여기에 인접 문자 전환(Transposition) 연산까지 허용하는 버전
+     */
+    private fun damerauLevenshteinDistance(s1: String, s2: String): Int {
+        val len1 = s1.length
+        val len2 = s2.length
+        val dp = Array(len1 + 1) { IntArray(len2 + 1) }
+
+        for (i in 0..len1) {
+            dp[i][0] = i
+        }
+        for (j in 0..len2) {
+            dp[0][j] = j
+        }
+
+        for (i in 1..len1) {
+            for (j in 1..len2) {
+                val cost = if (s1[i - 1] == s2[j - 1]) 0 else 1
+
+                dp[i][j] = minOf(
+                    dp[i - 1][j] + 1, // 삭제
+                    dp[i][j - 1] + 1, // 삽입
+                    dp[i - 1][j - 1] + cost // 교체
+                )
+
+                // Damerau-Levenshtein: 인접 문자 전환 체크
+                if (i > 1 && j > 1 &&
+                    s1[i - 1] == s2[j - 2] &&
+                    s1[i - 2] == s2[j - 1]
+                ) {
+                    dp[i][j] = minOf(
+                        dp[i][j],
+                        dp[i - 2][j - 2] + 1 // 전환
+                    )
+                }
+            }
+        }
+
+        return dp[len1][len2]
+    }
+
+    /**
      * 레벤슈타인 거리를 이용한 유사도 계산 (0.0 ~ 1.0)
      */
     private fun levenshteinSimilarity(s1: String, s2: String): Double {
@@ -293,6 +340,15 @@ class StringSimilarityMatcher(
             return 1.0
         }
         val distance = levenshteinDistance(s1, s2)
+        return 1.0 - (distance.toDouble() / maxLen)
+    }
+
+    private fun damerauLevenshteinSimilarity(s1: String, s2: String): Double {
+        val maxLen = maxOf(s1.length, s2.length)
+        if (maxLen == 0) {
+            return 1.0
+        }
+        val distance = damerauLevenshteinDistance(s1, s2)
         return 1.0 - (distance.toDouble() / maxLen)
     }
 
@@ -538,6 +594,7 @@ class StringSimilarityMatcher(
                 data.mapNotNull { text ->
                     val similarity = when (method) {
                         SimilarityMethod.LEVENSHTEIN -> levenshteinSimilarity(target, text)
+                        SimilarityMethod.DAMERAU_LEVENSHTEIN -> damerauLevenshteinSimilarity(target, text)
                         SimilarityMethod.JACCARD -> jaccardSimilarity(target, text)
                         SimilarityMethod.COSINE -> cosineSimilarity(target, text)
                         SimilarityMethod.JARO -> jaroSimilarity(target, text)
