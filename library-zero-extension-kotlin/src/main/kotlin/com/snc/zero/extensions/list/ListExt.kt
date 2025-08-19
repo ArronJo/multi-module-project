@@ -14,3 +14,7 @@ fun <T> List<T>.getOrDefault(index: Int, defaultValue: Any?): Any? {
 fun <T> List<T>.getShuffledItem(): T {
     return this.shuffled()[0]
 }
+
+fun <T> ArrayList<T>.copy(): ArrayList<T> {
+    return this.toCollection(ArrayList()) // return ArrayList(this)
+}
