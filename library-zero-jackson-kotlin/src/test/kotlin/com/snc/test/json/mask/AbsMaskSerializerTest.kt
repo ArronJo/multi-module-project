@@ -14,7 +14,7 @@ class AbsMaskSerializerTest : BaseJUnit5Test() {
     private lateinit var serializer: AbsMaskSerializer<String>
 
     @BeforeEach
-    fun setUp() {
+    fun setup() {
         serializer = object : AbsMaskSerializer<String>() {
             override fun serialize(
                 value: String?,

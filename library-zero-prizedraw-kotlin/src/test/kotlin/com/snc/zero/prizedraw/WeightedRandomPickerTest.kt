@@ -50,7 +50,7 @@ class WeightedRandomPickerTest : BaseJUnit5Test() {
     private lateinit var picker: WeightedRandomPicker
 
     @BeforeEach
-    fun setUp() {
+    fun setup() {
         picker = WeightedRandomPicker()
     }
 

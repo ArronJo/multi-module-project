@@ -8,7 +8,7 @@ import org.testng.annotations.Test
 class TestNGTest {
 
     @BeforeClass
-    fun setUp() {
+    fun setup() {
         println("setUp")
     }
 

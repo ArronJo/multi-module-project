@@ -21,7 +21,7 @@ class HangulMatcherTest : BaseJUnit5Test() {
     private lateinit var matcher: HangulMatcher
 
     @BeforeEach
-    fun setUp() {
+    fun setup() {
         matcher = HangulMatcher()
     }
 

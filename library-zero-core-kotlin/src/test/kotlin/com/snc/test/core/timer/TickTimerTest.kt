@@ -17,7 +17,7 @@ class TickTimerTest : BaseJUnit5Test() {
     private lateinit var listener: TickTimer.OnTickTimerListener
 
     @BeforeEach
-    fun setUp() {
+    fun setup() {
         tickTimer = TickTimer()
         listener = mock()
     }

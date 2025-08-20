@@ -232,7 +232,7 @@ class RandomGeneratorTest : BaseJUnit5Test() {
         private lateinit var mockRandom: Random
 
         @BeforeEach
-        fun setUp() {
+        fun setup() {
             mockRandom = mock(Random::class.java)
         }
 

@@ -288,7 +288,7 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
         val matcher = StringSimilarityMatcher(InMemoryStringDataProvider())
 
         @BeforeEach
-        fun setUp() {
+        fun setup() {
             matcher.clearData()
             matcher.addData(data)
         }

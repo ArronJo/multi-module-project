@@ -25,7 +25,7 @@ class ColorContrastCalculatorTest : BaseJUnit5Test() {
     private lateinit var calculator: ColorContrastCalculator
 
     @BeforeEach
-    fun setUp() {
+    fun setup() {
         calculator = ColorContrastCalculator()
     }
 

@@ -37,7 +37,7 @@ class PrizeDrawingTest : BaseJUnit5Test() {
     private lateinit var prizeDrawing: PrizeDrawing
 
     @BeforeEach
-    fun setUp() {
+    fun setup() {
         prizeDrawing = PrizeDrawing()
     }
 
