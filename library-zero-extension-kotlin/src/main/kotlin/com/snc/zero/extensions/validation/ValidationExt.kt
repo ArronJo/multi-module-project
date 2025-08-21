@@ -1,4 +1,4 @@
-package com.snc.zero.validation.extensions.validation
+package com.snc.zero.extensions.validation
 
 fun String.isLetter(): Boolean {
     return this.matches("^[a-zA-Z]+$".toRegex())

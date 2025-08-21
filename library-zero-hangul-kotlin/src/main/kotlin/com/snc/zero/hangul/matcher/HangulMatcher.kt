@@ -32,8 +32,9 @@ class HangulMatcher {
      * \\u2025: 두 점 리더(..)
      * \\u2219: 불릿 연산자(∙)
      * \\u302E: 한글 겹받침 표시
+     * \\u318D: 한글 자모 중 'ㆍ'(아래아)
      */
-    private val allowedPattern = "0-9a-zA-Zㄱ-ㅎㅏ-ㅣ\\u3165-\\u318E\\uD7B0-\\uD7FB\\uA960-\\uA97C가-힣\\u00B7\\u119E\\u11A2\\u2022\\u2024\\u2025\\u2219\\u302E"
+    private val allowedPattern = "0-9a-zA-Zㄱ-ㅎㅏ-ㅣ\\u3165-\\u318E\\uD7B0-\\uD7FB\\uA960-\\uA97C가-힣\\u00B7\\u119E\\u11A2\\u2022\\u2024\\u2025\\u2219\\u302E\\u318D"
     private val notAllowedRegex = "[^$allowedPattern]+".toRegex()
 
     fun keyword(keyword: String): HangulMatcher {

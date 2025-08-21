@@ -1,13 +1,13 @@
-package com.snc.test.validation.extensions.validation
+package com.snc.test.extension.validation
 
+import com.snc.zero.extensions.validation.isHangul
+import com.snc.zero.extensions.validation.isLetter
+import com.snc.zero.extensions.validation.isLowerCase
+import com.snc.zero.extensions.validation.isNumber
+import com.snc.zero.extensions.validation.isUpperCase
+import com.snc.zero.extensions.validation.validate
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
-import com.snc.zero.validation.extensions.validation.isHangul
-import com.snc.zero.validation.extensions.validation.isLetter
-import com.snc.zero.validation.extensions.validation.isLowerCase
-import com.snc.zero.validation.extensions.validation.isNumber
-import com.snc.zero.validation.extensions.validation.isUpperCase
-import com.snc.zero.validation.extensions.validation.validate
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

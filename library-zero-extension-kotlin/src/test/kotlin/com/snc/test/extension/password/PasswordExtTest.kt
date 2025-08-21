@@ -1,8 +1,8 @@
-package com.snc.test.validation.extensions.password
+package com.snc.test.extension.password
 
+import com.snc.zero.extensions.password.validatePassword
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
-import com.snc.zero.validation.extensions.password.validatePassword
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
