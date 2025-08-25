@@ -107,3 +107,8 @@ fun randomString(
         .map { charsets.random() }
         .joinToString("")
 }
+
+fun generateRandomString(length: Int): String {
+    val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-="
+    return (1..length).map { chars.random() }.joinToString("")
+}
