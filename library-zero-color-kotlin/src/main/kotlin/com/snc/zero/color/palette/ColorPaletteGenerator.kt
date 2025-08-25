@@ -2,6 +2,9 @@ package com.snc.zero.color.palette
 import com.snc.zero.color.Color
 import com.snc.zero.color.HSL
 
+/**
+ * 컬러 팔레트
+ */
 class ColorPaletteGenerator {
 
     /**

@@ -3,6 +3,10 @@ package com.snc.zero.color
 import kotlin.math.abs
 import kotlin.math.round
 
+/**
+ * H(Hue, 색조), S(Saturation, 채도), L(Lightness, 명도)
+ * 세 가지 요소로 표현하는 색상 모델
+ */
 data class HSL(val h: Double, val s: Double, val l: Double) {
     fun toColor(): Color {
         val c = (1.0 - abs(2.0 * l - 1.0)) * s

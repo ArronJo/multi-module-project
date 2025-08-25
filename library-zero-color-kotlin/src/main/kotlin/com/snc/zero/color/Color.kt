@@ -1,5 +1,9 @@
 package com.snc.zero.color
 
+/**
+ * '빨강(Red)', '녹색(Green)', '파랑(Blue)'의 앞 글자를 따온 용어로,
+ * 빛의 삼원색을 혼합하여 색을 표현하는 방식
+ */
 data class Color(val r: Int, val g: Int, val b: Int) {
     constructor(hex: String) : this(
         hex.removePrefix("#").substring(0, 2).toInt(16),

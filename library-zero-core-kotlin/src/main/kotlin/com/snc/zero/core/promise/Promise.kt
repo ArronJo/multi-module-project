@@ -1,5 +1,14 @@
 package com.snc.zero.core.promise
 
+/**
+ * 비동기 처리
+ *
+ * Promise.create { resolve, _ ->
+ *   resolve("Success")
+ * }.then {
+ *   result.set(it)
+ * }
+ */
 class Promise<T> {
     private var resolveCallback: ((T) -> Unit)? = null
     private var rejectCallback: ((Throwable) -> Unit)? = null
