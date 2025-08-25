@@ -41,6 +41,8 @@ class FileBasedKeyStorageTest : BaseJUnit5Test() {
 
             // 오래된 키 정리 (30일 이상된 키 삭제)
             keyManager.cleanupOldKeys(30)
+
+            keyManager.clearCache()
         }
     }
 

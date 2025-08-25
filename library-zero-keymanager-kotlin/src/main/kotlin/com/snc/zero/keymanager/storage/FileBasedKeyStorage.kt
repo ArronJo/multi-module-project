@@ -268,7 +268,7 @@ class RotatingKeyManager(
                     keyCache.remove(version)
                     println("오래된 키 삭제됨: $version")
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // 날짜 형식이 아닌 버전은 건너뜀
             }
         }
