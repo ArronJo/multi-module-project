@@ -63,7 +63,7 @@ object AESGCM {
         params: AesGcmParams = AesGcmParams()
     ): ByteArray {
         require(key.size * 8 == params.keyBits) { "AES key must be ${params.keyBits} bits" }
-        require(blob.size > params.ivBytes) { "Invalid ciphertext" }
+        require(blob.size > header.size + params.ivBytes) { "Invalid ciphertext" }
         val data = blob.copyOfRange(header.size, blob.size)
         val iv = data.copyOfRange(0, params.ivBytes)
         val ct = data.copyOfRange(params.ivBytes, data.size)
