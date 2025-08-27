@@ -1,6 +1,6 @@
 package com.snc.zero.crypto.cipher
 
-import com.snc.zero.crypto.cipher.aes.AES
+import com.snc.zero.crypto.cipher.aes.SimpleAES
 import com.snc.zero.crypto.cipher.rsa.RSA
 import com.snc.zero.crypto.encoder.Decoder
 import com.snc.zero.crypto.encoder.Encoder
@@ -60,9 +60,9 @@ class Cipher private constructor(var algo: Algo = Algo.AES) {
         return when (algo) {
             Algo.AES -> {
                 val enc = if (transform.isNotEmpty()) {
-                    AES.encrypt(input, key, iv, transform)
+                    SimpleAES.encrypt(input, key, iv, transform)
                 } else {
-                    AES.encrypt(input, key, iv)
+                    SimpleAES.encrypt(input, key, iv)
                 }
                 Encoder.with(Encoder.Algo.BASE64).encode(enc)
             }
@@ -79,9 +79,9 @@ class Cipher private constructor(var algo: Algo = Algo.AES) {
             Algo.AES -> {
                 val decoded = Decoder.with(Decoder.Algo.BASE64).decode(input)
                 if (transform.isNotEmpty()) {
-                    AES.decrypt(decoded, key, iv, transform)
+                    SimpleAES.decrypt(decoded, key, iv, transform)
                 } else {
-                    AES.decrypt(decoded, key, iv)
+                    SimpleAES.decrypt(decoded, key, iv)
                 }
             }
             Algo.RSA -> {

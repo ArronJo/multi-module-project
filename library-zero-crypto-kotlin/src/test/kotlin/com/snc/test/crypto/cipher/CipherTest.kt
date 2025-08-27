@@ -1,7 +1,7 @@
 package com.snc.test.crypto.cipher
 
 import com.snc.zero.crypto.cipher.Cipher
-import com.snc.zero.crypto.cipher.aes.AES
+import com.snc.zero.crypto.cipher.aes.SimpleAES
 import com.snc.zero.crypto.cipher.rsa.RSAKeyGen
 import com.snc.zero.logger.jvm.TLogging
 import com.snc.zero.test.base.BaseJUnit5Test
@@ -225,8 +225,8 @@ class CipherTest : BaseJUnit5Test() {
     fun `AES default Encrypt Decrypt`() {
         // given
         // when
-        val enc = AES.encrypt(data.toByteArray(), key, iv)
-        val dec = AES.decrypt(enc, key, iv)
+        val enc = SimpleAES.encrypt(data.toByteArray(), key, iv)
+        val dec = SimpleAES.decrypt(enc, key, iv)
         // then
         val plainText = String(dec)
         logger.debug { "AES default: $plainText" }
