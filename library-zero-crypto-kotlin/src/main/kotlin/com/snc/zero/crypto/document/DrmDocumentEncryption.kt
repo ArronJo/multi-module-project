@@ -257,14 +257,12 @@ enum class Permission {
 
 /**
  * 접근 행동 열거형
+ * 필요한 조건들 추가해서 로그 남기면 된다.
  */
 enum class AccessAction {
     OPEN,
     READ,
-    EDIT,
-    PRINT,
-    COPY,
-    SHARE
+    EDIT
 }
 
 /**
@@ -468,7 +466,7 @@ data class DrmProtectedFile(
         }
 
         private fun extractNestedJsonValue(json: String, parentKey: String, childKey: String): String {
-            val parentPattern = """"$parentKey"\s*:\s*\{([^}]*)\}""".toRegex()
+            val parentPattern = """"$parentKey"\s*:\s*\{([^}]*)}""".toRegex()
             val parentMatch = parentPattern.find(json)?.groupValues?.get(1) ?: ""
             return extractJsonValue(parentMatch, childKey)
         }

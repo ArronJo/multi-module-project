@@ -68,6 +68,10 @@ class DrmDocumentEncryptionTest {
 
             // 6. 파일 로드 및 복호화 시뮬레이션
             val loadedDrmFile = drm.loadDrmFile(filePath)
+
+            var accessLog = drm.logAccess(documentId, userId, AccessAction.OPEN, true)
+            println("접근 로그 기록: ${accessLog.timestamp}")
+
             val decryptedMetadata = drm.decryptMetadata(loadedDrmFile.encryptedMetadata, secretKey)
 
             // 7. 권한 검증
@@ -99,6 +103,9 @@ class DrmDocumentEncryptionTest {
             // 임시 파일 삭제
             //Files.deleteIfExists(filePath)
             println("임시 파일 삭제 완료")
+
+            accessLog = drm.logAccess(documentId, userId, AccessAction.EDIT, true)
+            println("접근 로그 기록: ${accessLog.timestamp}")
         }
     }
 
