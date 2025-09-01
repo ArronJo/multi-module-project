@@ -125,6 +125,25 @@ class PromptSecurity {
             val detectedPatterns = mutableListOf<String>()
 
             // 1단계: 인젝션 패턴 제거
+            processedText = removeInjectionPatterns(processedText, detectedPatterns)
+
+            // 2단계: 개인정보 마스킹
+            processedText = maskPersonalInfo(processedText, detectedPatterns, maskChar)
+
+            // 3단계: 텍스트 정리
+            processedText = cleanupWhitespace(processedText)
+
+            return PromptSanitizeResult(
+                originalText = input,
+                sanitizedText = processedText,
+                detectedPatterns = detectedPatterns,
+                isModified = input != processedText
+            )
+        }
+
+        private fun removeInjectionPatterns(text: String, detectedPatterns: MutableList<String>): String {
+            var processedText = text
+
             injectionPatterns.forEach { (type, patterns) ->
                 patterns.forEachIndexed { index, pattern ->
                     if (pattern.containsMatchIn(processedText)) {
@@ -134,76 +153,91 @@ class PromptSecurity {
                 }
             }
 
-            // 2단계: 개인정보 마스킹
+            return processedText
+        }
+
+        private fun maskPersonalInfo(text: String, detectedPatterns: MutableList<String>, maskChar: Char): String {
+            var processedText = text
+
             personalInfoPatterns.forEach { (type, patterns) ->
                 patterns.forEachIndexed { patternIndex, pattern ->
                     if (pattern.containsMatchIn(processedText)) {
                         detectedPatterns.add("개인정보: $type (패턴 ${patternIndex + 1})")
                         processedText = pattern.replace(processedText) { matchResult ->
-                            val originalLength = matchResult.value.length
-                            when (type) {
-                                "주민등록번호", "외국인등록번호" -> {
-                                    val regNo = matchResult.value
-                                    if (regNo.contains("-")) {
-                                        "${regNo.take(6)}-${maskChar.toString().repeat(regNo.length - 7)}"
-                                    } else {
-                                        "${regNo.take(6)}${maskChar.toString().repeat(regNo.length - 6)}"
-                                    }
-                                }
-                                "신용카드번호" -> {
-                                    val cardNumber = matchResult.value.replace(Regex("[-\\s]"), "")
-                                    val original = matchResult.value
-                                    if (original.contains("-") || original.contains(" ")) {
-                                        val separator = if (original.contains("-")) "-" else " "
-                                        "${cardNumber.take(4)}$separator${maskChar.toString().repeat(4)}$separator${maskChar.toString().repeat(4)}$separator${cardNumber.takeLast(4)}"
-                                    } else {
-                                        "${cardNumber.take(4)}${maskChar.toString().repeat(8)}${cardNumber.takeLast(4)}"
-                                    }
-                                }
-                                "휴대폰번호", "일반전화번호" -> {
-                                    val phone = matchResult.value.replace(Regex("[-\\s()]"), "")
-                                    when {
-                                        phone.startsWith("82") -> "+82-${maskChar.toString().repeat(2)}-${maskChar.toString().repeat(4)}-${phone.takeLast(4)}"
-                                        phone.startsWith("02") -> "02-${maskChar.toString().repeat(phone.length - 6)}-${phone.takeLast(4)}"
-                                        phone.startsWith("010") -> "010-${maskChar.toString().repeat(4)}-${phone.takeLast(4)}"
-                                        else -> "${phone.take(3)}-${maskChar.toString().repeat(phone.length - 7)}-${phone.takeLast(4)}"
-                                    }
-                                }
-                                "이메일" -> {
-                                    val email = matchResult.value
-                                    val atIndex = email.indexOf('@')
-                                    if (atIndex > 0) {
-                                        val localPart = email.substring(0, atIndex)
-                                        val domainPart = email.substring(atIndex)
-                                        val maskedLocal = if (localPart.length <= 2) {
-                                            maskChar.toString().repeat(localPart.length)
-                                        } else {
-                                            localPart.first() + maskChar.toString().repeat(localPart.length - 2) + localPart.last()
-                                        }
-                                        maskedLocal + domainPart
-                                    } else {
-                                        maskChar.toString().repeat(originalLength)
-                                    }
-                                }
-                                else -> maskChar.toString().repeat(originalLength)
-                            }
+                            maskByType(matchResult.value, type, maskChar)
                         }
                     }
                 }
             }
 
-            // 3단계: 연속된 공백 정리 (줄바꿈은 보존)
-            processedText = processedText
-                .replace("""[ \t]+""".toRegex(), " ") // 연속된 스페이스와 탭만 하나로 축소
+            return processedText
+        }
+
+        private fun maskByType(value: String, type: String, maskChar: Char): String {
+            return when (type) {
+                "주민등록번호", "외국인등록번호" -> maskResidentNumber(value, maskChar)
+                "신용카드번호" -> maskCardNumber(value, maskChar)
+                "휴대폰번호", "일반전화번호" -> maskPhoneNumber(value, maskChar)
+                "이메일" -> maskEmail(value, maskChar)
+                else -> maskChar.toString().repeat(value.length)
+            }
+        }
+
+        private fun maskResidentNumber(regNo: String, maskChar: Char): String {
+            return if (regNo.contains("-")) {
+                "${regNo.take(6)}-${maskChar.toString().repeat(regNo.length - 7)}"
+            } else {
+                "${regNo.take(6)}${maskChar.toString().repeat(regNo.length - 6)}"
+            }
+        }
+
+        private fun maskCardNumber(original: String, maskChar: Char): String {
+            val cardNumber = original.replace(Regex("[-\\s]"), "")
+            val separator = when {
+                original.contains("-") -> "-"
+                original.contains(" ") -> " "
+                else -> ""
+            }
+
+            return if (separator.isNotEmpty()) {
+                "${cardNumber.take(4)}$separator${maskChar.toString().repeat(4)}$separator${maskChar.toString().repeat(4)}$separator${cardNumber.takeLast(4)}"
+            } else {
+                "${cardNumber.take(4)}${maskChar.toString().repeat(8)}${cardNumber.takeLast(4)}"
+            }
+        }
+
+        private fun maskPhoneNumber(phone: String, maskChar: Char): String {
+            val cleanPhone = phone.replace(Regex("[-\\s()]"), "")
+
+            return when {
+                cleanPhone.startsWith("82") -> "+82-${maskChar.toString().repeat(2)}-${maskChar.toString().repeat(4)}-${cleanPhone.takeLast(4)}"
+                cleanPhone.startsWith("02") -> "02-${maskChar.toString().repeat(cleanPhone.length - 6)}-${cleanPhone.takeLast(4)}"
+                cleanPhone.startsWith("010") -> "010-${maskChar.toString().repeat(4)}-${cleanPhone.takeLast(4)}"
+                else -> "${cleanPhone.take(3)}-${maskChar.toString().repeat(cleanPhone.length - 7)}-${cleanPhone.takeLast(4)}"
+            }
+        }
+
+        private fun maskEmail(email: String, maskChar: Char): String {
+            val atIndex = email.indexOf('@')
+            if (atIndex <= 0) return maskChar.toString().repeat(email.length)
+
+            val localPart = email.substring(0, atIndex)
+            val domainPart = email.substring(atIndex)
+
+            val maskedLocal = if (localPart.length <= 2) {
+                maskChar.toString().repeat(localPart.length)
+            } else {
+                localPart.first() + maskChar.toString().repeat(localPart.length - 2) + localPart.last()
+            }
+
+            return maskedLocal + domainPart
+        }
+
+        private fun cleanupWhitespace(text: String): String {
+            return text
+                .replace("""[ \t]+""".toRegex(), " ") // 연속된 스페이스와 탭을 하나로 축소
                 .replace("""\n\s*\n""".toRegex(), "\n\n") // 연속된 빈 줄은 최대 2개까지만 허용
                 .trim()
-
-            return PromptSanitizeResult(
-                originalText = input,
-                sanitizedText = processedText,
-                detectedPatterns = detectedPatterns,
-                isModified = input != processedText
-            )
         }
 
         /**
