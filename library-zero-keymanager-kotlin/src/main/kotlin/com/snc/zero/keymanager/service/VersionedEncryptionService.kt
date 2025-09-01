@@ -99,7 +99,7 @@ class VersionedEncryptionService(
         }
 
         // 원래 순서대로 결과 반환
-        return encryptedDataList.indices.map { results[it]!! }
+        return encryptedDataList.indices.map { results.getOrDefault(it, "") }
     }
 
     /**
