@@ -20,7 +20,7 @@ object SecurityUtils {
         plaintext: ByteArray,
         key: ByteArray,
         aad: ByteArray? = null,
-        params: AESGCM.AesGcmParams = AESGCM.AesGcmParams()
+        params: AESGCM.Params = AESGCM.Params()
     ): ByteArray {
         return AESGCM.encrypt(plaintext, key, aad, params)
     }
@@ -33,7 +33,7 @@ object SecurityUtils {
         blob: ByteArray,
         key: ByteArray,
         aad: ByteArray? = null,
-        params: AESGCM.AesGcmParams = AESGCM.AesGcmParams()
+        params: AESGCM.Params = AESGCM.Params()
     ): ByteArray {
         return AESGCM.decrypt(blob, key, aad, params)
     }

@@ -28,7 +28,7 @@ class SecurityUtilsTest : BaseJUnit5Test() {
         @Test
         fun `샘플 사용법`() {
             // AES-GCM
-            val aesKey = AESGCM.generateAesKey(256)
+            val aesKey = AESGCM.generateKey(256)
             val aad = "metadata".toByteArray()
             val message = "hello, world".toByteArray()
             val enc = SecurityUtils.aesGcmEncrypt(message, aesKey, aad)
@@ -61,7 +61,7 @@ class SecurityUtilsTest : BaseJUnit5Test() {
         @Test
         @DisplayName("정상 암복호화")
         fun `AES-GCM encrypt and decrypt should return original data`() {
-            val key = AESGCM.generateAesKey(256)
+            val key = AESGCM.generateKey(256)
             val aad = "metadata".toByteArray()
             val plaintext = "hello kotlin security".toByteArray()
 
@@ -78,7 +78,7 @@ class SecurityUtilsTest : BaseJUnit5Test() {
         @Test
         @DisplayName("AAD 불일치 시 실패")
         fun `AES-GCM with wrong AAD should fail`() {
-            val key = AESGCM.generateAesKey(256)
+            val key = AESGCM.generateKey(256)
             val plaintext = "secure data".toByteArray()
 
             val ciphertext = SecurityUtils.aesGcmEncrypt(plaintext, key, "right".toByteArray())
