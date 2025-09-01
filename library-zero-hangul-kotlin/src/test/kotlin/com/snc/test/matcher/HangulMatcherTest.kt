@@ -458,4 +458,18 @@ class HangulMatcherTest : BaseJUnit5Test() {
             assertNotEquals(match1, match3)
         }
     }
+
+    @Nested
+    @DisplayName("HangulMatch 기타 테스트")
+    inner class HangulMatchEtcTest {
+
+        @Test
+        fun `isValidCharacter 테스트`() {
+            println("isValidCharacter: ${matcher.isValidCharacter('1')}")
+            println("isValidCharacter: ${matcher.isValidCharacter('f')}")
+            println("isValidCharacter: ${matcher.isValidCharacter('U')}")
+            println("isValidCharacter: ${matcher.isValidCharacter('ㅊ')}")
+            println("isValidCharacter: ${matcher.isValidCharacter('아')}")
+        }
+    }
 }
