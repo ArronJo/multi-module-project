@@ -56,7 +56,7 @@ class PromptSecurity {
             ),
             "IP주소" to listOf(
                 """\b(?:\d{1,3}\.){3}\d{1,3}\b""".toRegex(),
-                """\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b""".toRegex(),
+                // 복잡한 정규식: 각 옥텟에서 정확한 범위(0-255)를 검증: """\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b""".toRegex(),
                 """\b(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}\b""".toRegex() // IPv6
             )
         )
@@ -64,9 +64,11 @@ class PromptSecurity {
         // 인젝션 공격 패턴 정의 (제거 대상) - 각 유형별로 여러 패턴 지원
         private val injectionPatterns = mapOf(
             "프롬프트_인젝션" to listOf(
-                """(?i)(ignore\s+previous\s+instructions?|forget\s+everything|act\s+as\s+if|pretend\s+to\s+be|you\s+are\s+now)""".toRegex(),
+                // 복잡한 정규식: """(?i)(ignore\s+previous\s+instructions?|forget\s+everything|act\s+as\s+if|pretend\s+to\s+be|you\s+are\s+now)""".toRegex()
+                """(?i)(ignore\s+previous|forget\s+everything|act\s+as|pretend\s+to|you\s+are)""".toRegex(),
                 """(?i)(disregard\s+the\s+above|ignore\s+all\s+previous|override\s+previous)""".toRegex(),
-                """(?i)(새로운?\s*지시사항?|이전\s*지시\s*무시|모든?\s*것을?\s*잊어)""".toRegex()
+                // 복잡한 정규식: """(?i)(새로운?\s*지시사항?|이전\s*지시\s*무시|모든?\s*것을?\s*잊어)""".toRegex()
+                """(?i)(새로운\s*지시사항|이전\s*지시\s*무시|모든\s*것을\s*잊어)""".toRegex()
             ),
             "시스템_명령어" to listOf(
                 """(?i)(system:|assistant:|user:|human:|\[system]|\[assistant]|\[user])""".toRegex(),
