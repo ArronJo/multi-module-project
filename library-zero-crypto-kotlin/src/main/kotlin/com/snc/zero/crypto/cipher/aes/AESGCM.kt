@@ -15,6 +15,7 @@ import javax.crypto.spec.SecretKeySpec
  * - Salt를 이용한 키 강화
  * - PBKDF2 + HMAC-SHA256 이중 해싱
  * - Timestamp 기반 재생 공격 방지
+ * - 파라미터 일관성 검증
  */
 object AESGCM {
     private val secureRandom = SecureRandom()
@@ -28,7 +29,15 @@ object AESGCM {
         val tagBits: Int = 128, // GCM 인증 태그 길이
         val saltBytes: Int = 16, // Salt 길이
         val hashIterations: Int = 100000 // PBKDF2 반복 횟수 (NIST 권장 기준)
-    )
+    ) {
+        init {
+            require(keyBits in setOf(128, 192, 256)) { "Key size must be 128, 192, or 256 bits" }
+            require(ivBytes > 0) { "IV size must be positive" }
+            require(tagBits > 0) { "Tag size must be positive" }
+            require(saltBytes > 0) { "Salt size must be positive" }
+            require(hashIterations > 0) { "Hash iterations must be positive" }
+        }
+    }
 
     /**
      * 지정된 크기의 안전한 랜덤 바이트 생성
@@ -84,6 +93,7 @@ object AESGCM {
      * @param params 복호화 파라미터
      * @return 복호화된 평문
      * @throws SecurityException 해시 검증 실패 시
+     * @throws IllegalArgumentException 파라미터 불일치 시
      */
     fun decrypt(
         blob: ByteArray,
@@ -94,14 +104,19 @@ object AESGCM {
         validateKey(key, params.keyBits)
         validateBlobSize(blob, params)
 
-        // 메타데이터 추출
+        // 메타데이터 추출 및 검증
         val metadata = EncryptedMetadata.fromByteArray(blob)
+        validateParameterConsistency(metadata, params)
+
         val metadataSize = EncryptedMetadata.calculateSize(metadata.salt.size)
 
         // IV와 암호문 분리
         val dataStart = metadataSize
-        val iv = blob.copyOfRange(dataStart, dataStart + params.ivBytes)
-        val ciphertext = blob.copyOfRange(dataStart + params.ivBytes, blob.size)
+        val ivEnd = dataStart + params.ivBytes
+        require(blob.size > ivEnd) { "Invalid blob size: insufficient data for IV" }
+
+        val iv = blob.copyOfRange(dataStart, ivEnd)
+        val ciphertext = blob.copyOfRange(ivEnd, blob.size)
 
         // AES-GCM 복호화
         val plaintext = performGcmDecryption(ciphertext, key, iv, aad, params)
@@ -126,8 +141,14 @@ object AESGCM {
     }
 
     private fun validateBlobSize(blob: ByteArray, params: Params) {
-        val minSize = EncryptedMetadata.calculateSize(params.saltBytes) + params.ivBytes
-        require(blob.size > minSize) { "Invalid blob size: ${blob.size} <= $minSize" }
+        val minSize = EncryptedMetadata.calculateSize(params.saltBytes) + params.ivBytes + 16 // 최소 암호문 크기
+        require(blob.size >= minSize) { "Invalid blob size: ${blob.size} < $minSize" }
+    }
+
+    private fun validateParameterConsistency(metadata: EncryptedMetadata, params: Params) {
+        require(metadata.salt.size == params.saltBytes) {
+            "Salt size mismatch: expected ${params.saltBytes}, got ${metadata.salt.size}"
+        }
     }
 
     private fun performGcmEncryption(
@@ -239,6 +260,8 @@ object HashGenerator {
      */
     fun pbkdf2(data: ByteArray, salt: ByteArray, iterations: Int, keyLength: Int): ByteArray {
         require(iterations > 0) { "iterations size must be greater than zero" }
+        require(keyLength > 0) { "keyLength must be greater than zero" }
+
         val digest = MessageDigest.getInstance("SHA-256")
         var result = data
 
@@ -288,7 +311,7 @@ data class EncryptedMetadata(
 
             // Prefix 검증
             val prefixStr = data.copyOfRange(offset, offset + PREFIX.length).toString(Charsets.UTF_8)
-            require(prefixStr == PREFIX) { "잘못된 메타데이터 형식입니다" }
+            require(prefixStr == PREFIX) { "잘못된 메타데이터 형식입니다: 예상 '$PREFIX', 실제 '$prefixStr'" }
             offset += PREFIX.length
 
             // 버전 읽기
@@ -301,10 +324,11 @@ data class EncryptedMetadata(
 
             // Salt 길이 읽기 (Big-Endian)
             val saltLength = data.readUInt16BE(offset)
+            require(saltLength > 0) { "잘못된 Salt 길이: $saltLength" }
             offset += SALT_LENGTH_SIZE
 
             require(data.size >= offset + saltLength + TIMESTAMP_SIZE) {
-                "Salt 데이터가 부족합니다: 예상 ${saltLength}바이트"
+                "Salt 데이터가 부족합니다: 필요 ${saltLength}바이트, 사용가능 ${data.size - offset - TIMESTAMP_SIZE}바이트"
             }
 
             // Salt 읽기
@@ -366,16 +390,19 @@ data class EncryptedMetadata(
 // === Extension Functions ===
 
 private fun ByteArray.readUInt16BE(offset: Int): Int {
+    require(offset + 1 < size) { "Insufficient data for UInt16 at offset $offset" }
     return ((this[offset].toInt() and 0xFF) shl 8) or (this[offset + 1].toInt() and 0xFF)
 }
 
 private fun ByteArray.readUInt64BE(offset: Int): Long {
+    require(offset + 7 < size) { "Insufficient data for UInt64 at offset $offset" }
     return (0..7).fold(0L) { acc, i ->
         (acc shl 8) or (this[offset + i].toInt() and 0xFF).toLong()
     }
 }
 
 private fun Int.toUInt16BE(): ByteArray {
+    require(this in 0..0xFFFF) { "Value $this is out of UInt16 range" }
     return byteArrayOf((this shr 8).toByte(), (this and 0xFF).toByte())
 }
 

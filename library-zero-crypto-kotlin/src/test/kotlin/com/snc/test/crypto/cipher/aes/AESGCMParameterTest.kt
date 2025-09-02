@@ -1,13 +1,15 @@
 package com.snc.test.crypto.cipher.aes
 
 import com.snc.zero.crypto.cipher.aes.AESGCM
-import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertArrayEquals
+import org.junit.jupiter.api.Assertions.assertDoesNotThrow
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 /**
  * 매개변수 테스트
@@ -18,7 +20,7 @@ import org.junit.jupiter.api.Test
  * - 매개변수 유효성 검증
  */
 @DisplayName("AES-GCM 매개변수 테스트 (보안 강화)")
-open class AESGCMParameterTest : BaseJUnit5Test() {
+open class AESGCMParameterTest {
 
     private val testPlaintext = "매개변수 테스트 데이터".toByteArray()
 
@@ -416,42 +418,123 @@ open class AESGCMParameterTest : BaseJUnit5Test() {
     @DisplayName("매개변수 유효성 검증 테스트")
     inner class ParameterValidationTest {
 
-        private val testKey = AESGCM.generateKey(256)
-
         @Test
         @DisplayName("잘못된 키 크기 매개변수로 예외가 발생해야 한다")
         fun `should throw exception for invalid key size parameter`() {
+            // Given & When & Then
+            val exception = assertThrows<IllegalArgumentException> {
+                AESGCM.Params(keyBits = 64) // 지원되지 않는 키 크기
+            }
+            assertTrue(exception.message!!.contains("Key size must be 128, 192, or 256 bits"))
+        }
+
+        @Test
+        @DisplayName("여러 잘못된 키 크기들을 테스트한다")
+        fun `should throw exception for various invalid key sizes`() {
             // Given
-            val wrongParams = AESGCM.Params(keyBits = 64) // 지원되지 않는 키 크기
+            val invalidKeySizes = listOf(0, 32, 96, 160, 224, 512)
 
             // When & Then
-            assertThrows(Exception::class.java) {
-                AESGCM.encrypt(testPlaintext, testKey, params = wrongParams)
+            invalidKeySizes.forEach { keySize ->
+                assertThrows<IllegalArgumentException>("키 크기 $keySize 는 실패해야 함") {
+                    AESGCM.Params(keyBits = keySize)
+                }
             }
         }
 
         @Test
         @DisplayName("너무 작은 Salt 크기로 예외가 발생해야 한다")
         fun `should throw exception for too small salt size`() {
-            // Given
-            val params = AESGCM.Params(saltBytes = 0) // 0바이트 Salt
+            // Given & When & Then
+            val exception = assertThrows<IllegalArgumentException> {
+                AESGCM.Params(saltBytes = 0) // 0바이트 Salt
+            }
+            assertTrue(exception.message!!.contains("Salt size must be positive"))
+        }
 
-            // When & Then
-            assertThrows(Exception::class.java) {
-                AESGCM.encrypt(testPlaintext, testKey, params = params)
+        @Test
+        @DisplayName("음수 Salt 크기로 예외가 발생해야 한다")
+        fun `should throw exception for negative salt size`() {
+            // Given & When & Then
+            assertThrows<IllegalArgumentException> {
+                AESGCM.Params(saltBytes = -1) // 음수 Salt
             }
         }
 
         @Test
         @DisplayName("너무 작은 반복 횟수로 예외가 발생해야 한다")
         fun `should throw exception for too small iteration count`() {
+            // Given & When & Then
+            val exception = assertThrows<IllegalArgumentException> {
+                AESGCM.Params(hashIterations = 0) // 0회 반복
+            }
+            assertTrue(exception.message!!.contains("Hash iterations must be positive"))
+        }
+
+        @Test
+        @DisplayName("음수 반복 횟수로 예외가 발생해야 한다")
+        fun `should throw exception for negative iteration count`() {
+            // Given & When & Then
+            assertThrows<IllegalArgumentException> {
+                AESGCM.Params(hashIterations = -100) // 음수 반복
+            }
+        }
+
+        @Test
+        @DisplayName("잘못된 IV 크기로 예외가 발생해야 한다")
+        fun `should throw exception for invalid IV size`() {
+            // Given & When & Then
+            assertThrows<IllegalArgumentException> {
+                AESGCM.Params(ivBytes = 0) // 0바이트 IV
+            }
+
+            assertThrows<IllegalArgumentException> {
+                AESGCM.Params(ivBytes = -1) // 음수 IV
+            }
+        }
+
+        @Test
+        @DisplayName("잘못된 태그 크기로 예외가 발생해야 한다")
+        fun `should throw exception for invalid tag size`() {
+            // Given & When & Then
+            assertThrows<IllegalArgumentException> {
+                AESGCM.Params(tagBits = 0) // 0비트 태그
+            }
+
+            assertThrows<IllegalArgumentException> {
+                AESGCM.Params(tagBits = -1) // 음수 태그
+            }
+        }
+
+        @Test
+        @DisplayName("유효한 매개변수는 정상적으로 생성되어야 한다")
+        fun `should create params successfully with valid parameters`() {
+            // Given & When & Then
+            assertDoesNotThrow {
+                AESGCM.Params(keyBits = 128, saltBytes = 8, hashIterations = 1000)
+            }
+
+            assertDoesNotThrow {
+                AESGCM.Params(keyBits = 192, saltBytes = 16, hashIterations = 50000)
+            }
+
+            assertDoesNotThrow {
+                AESGCM.Params(keyBits = 256, saltBytes = 32, hashIterations = 200000)
+            }
+        }
+
+        @Test
+        @DisplayName("키 크기와 실제 키 바이트 수가 일치하지 않으면 암호화 실패해야 한다")
+        fun `should fail encryption when key size and actual key bytes mismatch`() {
             // Given
-            val params = AESGCM.Params(hashIterations = 0) // 0회 반복
+            val params128 = AESGCM.Params(keyBits = 128)
+            val key256 = AESGCM.generateKey(256) // 256비트 키 생성
 
             // When & Then
-            assertThrows(Exception::class.java) {
-                AESGCM.encrypt(testPlaintext, testKey, params = params)
+            val exception = assertThrows<IllegalArgumentException> {
+                AESGCM.encrypt(testPlaintext, key256, params = params128)
             }
+            assertTrue(exception.message!!.contains("Key must be 128 bits, got 256"))
         }
     }
 }

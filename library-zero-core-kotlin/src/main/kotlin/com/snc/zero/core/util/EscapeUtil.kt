@@ -1,6 +1,6 @@
 package com.snc.zero.core.util
 
-class EscapeUtil {
+class EscapeUtil private constructor() {
 
     companion object {
 

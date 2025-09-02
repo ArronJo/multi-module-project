@@ -465,11 +465,13 @@ class HangulMatcherTest : BaseJUnit5Test() {
 
         @Test
         fun `isValidCharacter 테스트`() {
-            println("isValidCharacter: ${matcher.isValidCharacter('1')}")
             println("isValidCharacter: ${matcher.isValidCharacter('f')}")
             println("isValidCharacter: ${matcher.isValidCharacter('U')}")
             println("isValidCharacter: ${matcher.isValidCharacter('ㅊ')}")
             println("isValidCharacter: ${matcher.isValidCharacter('아')}")
+            println("isValidCharacter: ${matcher.isValidCharacter('힣')}")
+            println("isValidCharacter: ${matcher.isValidCharacter('1')}")
+            println("isValidCharacter: ${matcher.isValidCharacter(0x0D.toChar())}")
         }
     }
 }

@@ -42,7 +42,7 @@ class SecurityUtilsTest : BaseJUnit5Test() {
             println("[PBKDF2 verify] $ok")
 
             // RSA Sign/Verify
-            val kp = SecurityUtils.generateRsaKeyPair(2048)
+            val kp = SecurityUtils.generateRsaKeyPair()
             val signature = SecurityUtils.rsaSign(kp.private, "sign me".toByteArray())
             val verified = SecurityUtils.rsaVerify(kp.public, "sign me".toByteArray(), signature)
             println("[RSA verify] $verified")
@@ -61,6 +61,22 @@ class SecurityUtilsTest : BaseJUnit5Test() {
         @Test
         @DisplayName("정상 암복호화")
         fun `AES-GCM encrypt and decrypt should return original data`() {
+            val key = AESGCM.generateKey(256)
+            val plaintext = "hello kotlin security".toByteArray()
+
+            (1..10).forEach { i ->
+                println("\n[$i] plaintext : ${String(plaintext)}")
+                val ciphertext = SecurityUtils.aesGcmEncrypt(plaintext, key)
+                println("[$i] ciphertext: ${String(ciphertext).take(30)}")
+                val decrypted = SecurityUtils.aesGcmDecrypt(ciphertext, key)
+                println("[$i] decrypted : ${String(decrypted)}")
+                assertArrayEquals(plaintext, decrypted)
+            }
+        }
+
+        @Test
+        @DisplayName("정상 암복호화 (AAD 활용)")
+        fun `AES-GCM (with aad) encrypt and decrypt should return original data`() {
             val key = AESGCM.generateKey(256)
             val aad = "metadata".toByteArray()
             val plaintext = "hello kotlin security".toByteArray()

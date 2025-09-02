@@ -2,7 +2,6 @@ package com.snc.test.crypto.cipher.aes
 
 import com.snc.zero.crypto.cipher.aes.AESGCM
 import com.snc.zero.crypto.cipher.aes.AESGCM.Params
-import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -21,7 +20,7 @@ import org.junit.jupiter.api.Test
  * - 키 호환성 테스트
  */
 @DisplayName("AES-GCM 키 생성 테스트")
-open class AESGCMKeyTest : BaseJUnit5Test() {
+open class AESGCMKeyTest {
 
     @Nested
     @DisplayName("지원되는 키 길이 테스트")

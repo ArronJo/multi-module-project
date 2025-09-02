@@ -80,4 +80,10 @@ class AESGCMTest : BaseJUnit5Test() {
      */
     @Nested
     inner class PerformanceAndStress : AESGCMPerformanceTest()
+
+    /**
+     * Salt 검증
+     */
+    @Nested
+    inner class SaltTest : AESGCMSaltTest()
 }

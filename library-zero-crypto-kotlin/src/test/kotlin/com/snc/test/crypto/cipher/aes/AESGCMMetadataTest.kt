@@ -3,7 +3,6 @@ package com.snc.test.crypto.cipher.aes
 import com.snc.zero.crypto.cipher.aes.AESGCM
 import com.snc.zero.crypto.cipher.aes.EncryptedMetadata
 import com.snc.zero.crypto.cipher.aes.HashGenerator
-import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -22,7 +21,7 @@ import org.junit.jupiter.api.Test
  * - PBKDF2 테스트
  */
 @DisplayName("AES-GCM 메타데이터 테스트 (보안 강화)")
-open class AESGCMMetadataTest : BaseJUnit5Test() {
+open class AESGCMMetadataTest {
 
     @Nested
     @DisplayName("EncryptedMetadata 클래스 테스트")

@@ -1,7 +1,6 @@
 package com.snc.test.crypto.cipher.aes
 
 import com.snc.zero.crypto.cipher.aes.AESGCM
-import com.snc.zero.test.base.BaseJUnit5Test
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -19,7 +18,7 @@ import org.junit.jupiter.api.Test
  */
 @Suppress("NonAsciiCharacters")
 @DisplayName("AES-GCM 기본 암복호화 테스트")
-open class AESGCMBasicTest : BaseJUnit5Test() {
+open class AESGCMBasicTest {
 
     @Nested
     @DisplayName("기본 암복호화 동작")
