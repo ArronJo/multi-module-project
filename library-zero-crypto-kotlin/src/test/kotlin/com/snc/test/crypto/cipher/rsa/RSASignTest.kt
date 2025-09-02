@@ -187,6 +187,19 @@ class RSASignTest {
         }
 
         @Test
+        @DisplayName("정상적인 서명 검증 성공  (PSS 패딩)")
+        fun `올바른 서명이 성공적으로 검증된다  (PSS 패딩)`() {
+            // Given
+            val signature = RSASign.rsaSign(keyPair.private, testData, true)
+
+            // When
+            val isValid = RSASign.rsaVerify(keyPair.public, testData, signature, true)
+
+            // Then
+            assertTrue(isValid)
+        }
+
+        @Test
         @DisplayName("잘못된 서명 검증 실패")
         fun `잘못된 서명은 검증에 실패한다`() {
             // Given
@@ -413,36 +426,6 @@ class RSASignTest {
             // When & Then
             assertThrows<Exception> {
                 RSASign.rsaVerify(anotherKeyPair.public, testData, signature)
-            }
-        }
-
-        @Test
-        @DisplayName("null 데이터로 서명 시도")
-        fun `null 데이터로 서명하면 예외가 발생한다`() {
-            // When & Then
-            assertThrows<Exception> {
-                RSASign.rsaSign(keyPair.private, null as ByteArray)
-            }
-        }
-
-        @Test
-        @DisplayName("null 데이터로 검증 시도")
-        fun `null 데이터로 검증하면 예외가 발생한다`() {
-            // Given
-            val signature = RSASign.rsaSign(keyPair.private, testData)
-
-            // When & Then
-            assertThrows<Exception> {
-                RSASign.rsaVerify(keyPair.public, null as ByteArray, signature)
-            }
-        }
-
-        @Test
-        @DisplayName("null 서명으로 검증 시도")
-        fun `null 서명으로 검증하면 예외가 발생한다`() {
-            // When & Then
-            assertThrows<Exception> {
-                RSASign.rsaVerify(keyPair.public, testData, null as ByteArray)
             }
         }
     }

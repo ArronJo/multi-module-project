@@ -5,6 +5,8 @@ import com.snc.zero.test.base.BaseJUnit5Test
 import com.snc.zero.validation.password.PasswordValidator
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 
@@ -88,7 +90,13 @@ class PasswordValidatorTest : BaseJUnit5Test() {
         fun `영소 + 영대 + 숫자 + 특수문자  유효성`() {
             // given
             // when
-            val v1 = PasswordValidator.validate(data, isLowerCase = true, isUpperCase = true, isDigit = true, isSpecialChars = true)
+            val v1 = PasswordValidator.validate(
+                data,
+                isLowerCase = true,
+                isUpperCase = true,
+                isDigit = true,
+                isSpecialChars = true
+            )
             // then
             println("문자열 (영소 + 영대 + 숫자 + 특수문자) 검수 결과: $v1 : $data")
             assertEquals(4, v1)
@@ -162,6 +170,244 @@ class PasswordValidatorTest : BaseJUnit5Test() {
             // then
             logger.debug { "조건(영소,영대,숫자,특수문자) : 비밀번호 검수 결과: $data -> $v1" }
             assertEquals(true, v1)
+        }
+    }
+
+    @Nested
+    inner class IsValidTest {
+
+        @Test
+        fun `모든 조건을 만족하는 문자열은 true를 반환한다`() {
+            // Given
+            val password = "Abc123!@#"
+
+            // When
+            val result = PasswordValidator.isValid(password)
+
+            // Then
+            assertTrue(result)
+        }
+
+        @Test
+        fun `숫자가 없는 문자열은 false를 반환한다`() {
+            // Given
+            val password = "Abc!@#"
+
+            // When
+            val result = PasswordValidator.isValid(password)
+
+            // Then
+            assertFalse(result)
+        }
+
+        @Test
+        fun `대문자가 없는 문자열은 false를 반환한다`() {
+            // Given
+            val password = "abc123!@#"
+
+            // When
+            val result = PasswordValidator.isValid(password)
+
+            // Then
+            assertFalse(result)
+        }
+
+        @Test
+        fun `소문자가 없는 문자열은 false를 반환한다`() {
+            // Given
+            val password = "ABC123!@#"
+
+            // When
+            val result = PasswordValidator.isValid(password)
+
+            // Then
+            assertFalse(result)
+        }
+
+        @Test
+        fun `특수문자가 없는 문자열은 false를 반환한다`() {
+            // Given
+            val password = "Abc123"
+
+            // When
+            val result = PasswordValidator.isValid(password)
+
+            // Then
+            assertFalse(result)
+        }
+
+        @Test
+        fun `빈 문자열은 false를 반환한다`() {
+            // Given
+            val password = ""
+
+            // When
+            val result = PasswordValidator.isValid(password)
+
+            // Then
+            assertFalse(result)
+        }
+
+        @Test
+        fun `숫자가 없어도 나머지 조건을 만족하면 true를 반환한다`() {
+            // Given
+            val password = "Abc!@#"
+
+            // When
+            val result = PasswordValidator.isValid(password, isDigit = false)
+
+            // Then
+            assertTrue(result)
+        }
+
+        @Test
+        fun `대문자가 없고 숫자 조건이 false면 false를 반환한다`() {
+            // Given
+            val password = "abc!@#"
+
+            // When
+            val result = PasswordValidator.isValid(password, isDigit = false)
+
+            // Then
+            assertFalse(result)
+        }
+
+        @Test
+        fun `대문자가 없어도 나머지 조건을 만족하면 true를 반환한다`() {
+            // Given
+            val password = "abc123!@#"
+
+            // When
+            val result = PasswordValidator.isValid(password, isUpperCase = false)
+
+            // Then
+            assertTrue(result)
+        }
+
+        @Test
+        fun `숫자가 없고 대문자 조건이 false면 false를 반환한다`() {
+            // Given
+            val password = "abc!@#"
+
+            // When
+            val result = PasswordValidator.isValid(password, isUpperCase = false)
+
+            // Then
+            assertFalse(result)
+        }
+
+        @Test
+        fun `소문자가 없어도 나머지 조건을 만족하면 true를 반환한다`() {
+            // Given
+            val password = "ABC123!@#"
+
+            // When
+            val result = PasswordValidator.isValid(password, isLowerCase = false)
+
+            // Then
+            assertTrue(result)
+        }
+
+        @Test
+        fun `숫자가 없고 소문자 조건이 false면 false를 반환한다`() {
+            // Given
+            val password = "ABC!@#"
+
+            // When
+            val result = PasswordValidator.isValid(password, isLowerCase = false)
+
+            // Then
+            assertFalse(result)
+        }
+
+        @Test
+        fun `특수문자가 없어도 나머지 조건을 만족하면 true를 반환한다`() {
+            // Given
+            val password = "Abc123"
+
+            // When
+            val result = PasswordValidator.isValid(password, isSpecialChars = false)
+
+            // Then
+            assertTrue(result)
+        }
+
+        @Test
+        fun `숫자가 없고 특수문자 조건이 false면 false를 반환한다`() {
+            // Given
+            val password = "Abc"
+
+            // When
+            val result = PasswordValidator.isValid(password, isSpecialChars = false)
+
+            // Then
+            assertFalse(result)
+        }
+
+        @Test
+        fun `숫자와 대문자 조건이 false일 때 나머지 조건 만족하면 true를 반환한다`() {
+            // Given
+            val password = "abc!@#"
+
+            // When
+            val result = PasswordValidator.isValid(password, isDigit = false, isUpperCase = false)
+
+            // Then
+            assertTrue(result)
+        }
+
+        @Test
+        fun `숫자와 대문자 조건이 false일 때 소문자가 없으면 false를 반환한다`() {
+            // Given
+            val password = "!@#"
+
+            // When
+            val result = PasswordValidator.isValid(password, isDigit = false, isUpperCase = false)
+
+            // Then
+            assertFalse(result)
+        }
+
+        @Test
+        fun `모든 조건이 false일 때는 항상 true를 반환한다`() {
+            // Given
+            val password = "anystring"
+
+            // When
+            val result = PasswordValidator.isValid(
+                password,
+                isDigit = false,
+                isUpperCase = false,
+                isLowerCase = false,
+                isSpecialChars = false
+            )
+
+            // Then
+            assertTrue(result)
+        }
+
+        @Test
+        fun `각 조건을 최소 1개씩만 만족해도 true를 반환한다`() {
+            // Given
+            val password = "A1a!"
+
+            // When
+            val result = PasswordValidator.isValid(password)
+
+            // Then
+            assertTrue(result)
+        }
+
+        @Test
+        fun `특수문자로 다양한 문자를 포함해도 검증된다`() {
+            // Given
+            val password = "Abc123!@#$%^&*()"
+
+            // When
+            val result = PasswordValidator.isValid(password)
+
+            // Then
+            assertTrue(result)
         }
     }
 }
