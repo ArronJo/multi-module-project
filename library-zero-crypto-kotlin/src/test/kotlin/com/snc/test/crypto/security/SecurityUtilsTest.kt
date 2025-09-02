@@ -130,9 +130,45 @@ class SecurityUtilsTest : BaseJUnit5Test() {
     inner class RSATest {
 
         @Test
-        @DisplayName("정상 서명/검증")
-        fun `RSA sign and verify should succeed`() {
+        @DisplayName("정상 서명/검증 1")
+        fun `RSA sign and verify should succeed 1`() {
+            val kp = SecurityUtils.generateRsaKeyPair()
+            val data = "important message".toByteArray()
+
+            val signature = SecurityUtils.rsaSign(kp.private, data)
+            val verified = SecurityUtils.rsaVerify(kp.public, data, signature)
+
+            assertTrue(verified)
+        }
+
+        @Test
+        @DisplayName("정상 서명/검증 2")
+        fun `RSA sign and verify should succeed 2`() {
             val kp = SecurityUtils.generateRsaKeyPair(2048)
+            val data = "important message".toByteArray()
+
+            val signature = SecurityUtils.rsaSign(kp.private, data)
+            val verified = SecurityUtils.rsaVerify(kp.public, data, signature)
+
+            assertTrue(verified)
+        }
+
+        @Test
+        @DisplayName("정상 서명/검증 3")
+        fun `RSA sign and verify should succeed 3`() {
+            val kp = SecurityUtils.generateRsaKeyPair(1024)
+            val data = "important message".toByteArray()
+
+            val signature = SecurityUtils.rsaSign(kp.private, data)
+            val verified = SecurityUtils.rsaVerify(kp.public, data, signature)
+
+            assertTrue(verified)
+        }
+
+        @Test
+        @DisplayName("정상 서명/검증 4")
+        fun `RSA sign and verify should succeed 4`() {
+            val kp = SecurityUtils.generateRsaKeyPair(4096)
             val data = "important message".toByteArray()
 
             val signature = SecurityUtils.rsaSign(kp.private, data)
@@ -146,7 +182,6 @@ class SecurityUtilsTest : BaseJUnit5Test() {
         fun `RSA verify with wrong data should fail`() {
             val kp = SecurityUtils.generateRsaKeyPair(2048)
             val signature = SecurityUtils.rsaSign(kp.private, "original".toByteArray())
-
             val verified = SecurityUtils.rsaVerify(kp.public, "tampered".toByteArray(), signature)
 
             assertFalse(verified)
