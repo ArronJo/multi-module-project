@@ -42,6 +42,12 @@ insert_final_newline = true
 #ktlint = disabled
 
 
+[*Test.kt]
+# TDD 작성 중에는 해당 옵션이 켜져 있으니깐 너무 힘들다...
+# Argument should be on a separate line (unless all arguments can fit a single line) (standard:argument-list-wrapping)
+ktlint_standard_argument-list-wrapping = disabled
+
+
 ######################################
 # kotlin
 # noinspection EditorConfigKeyCorrectness
@@ -63,7 +69,7 @@ ktlint_standard_import-ordering = disabled
 
 # Wildcard import (cannot be auto-corrected) (standard:no-wildcard-imports)
 # Wild import 금지
-ij_kotlin_packages_to_use_import_on_demand =
+ij_kotlin_packages_to_use_import_on_demand = false
 ktlint_standard_no-wildcard-imports = enabled
 # import 개수
 ij_kotlin_name_count_to_use_star_import = 999
@@ -183,6 +189,12 @@ ktlint_standard_multiline-expression-wrapping = disabled
 
 # Super type should start on a newline (standard:class-signature)
 ktlint_standard_class-signature = disabled
+
+# Redundant curly braces (standard:string-template)
+ktlint_standard_string-template = enabled
+
+# Backing property is only allowed when a matching property or function exists (cannot be auto-corrected) (standard:backing-property-naming)
+#ktlint_standard_backing-property-naming = enabled
 
 
 ######################################

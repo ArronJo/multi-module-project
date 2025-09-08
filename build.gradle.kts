@@ -32,8 +32,8 @@ plugins {
     // tasks.named("check") {
     //    dependsOn("ktlintCheck")
     // }
-    // 빌드시: → build → check 포함 → ktlintCheck 실행됨
-    alias(libs.plugins.ktlint) // id("org.jlleitschuh.gradle.ktlint") version "12.0.3"
+    // 빌드시: → build → check 포함 → ktlintCheck 실행됨. (Rules: '.editorconfig' 파일에 정의)
+    alias(libs.plugins.ktlint) // id("org.jlleitschuh.gradle.ktlint") version "12.3.0"
 
     // 규칙 충돌 관리를 위해 detekt 는 off 하도록 한다.
     // https://github.com/detekt/detekt

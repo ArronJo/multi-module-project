@@ -78,8 +78,272 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
 
     private val target = "계약" // 검색어
 
+    /**
+     * 문자열 포함 유사도
+     * 해당 문자열을 포함하고 있는가? 라는 기준에서는 가장 잘 맞는 유사도가 아닌가 생각한다.
+     */
     @Nested
-    inner class Similarity {
+    inner class ContainmentSimilarity {
+
+        val matcher = StringSimilarityMatcher()
+        val minSimilarity = 0.3 // 30% 이상만 출력하도록 조건
+
+        @Test
+        fun `문자열 포함 여부를 이용한 문자열 매칭 1`() {
+            println("=== 문자열 포함 여부 유사도 (최소 $minSimilarity) 출력 ===")
+            println("-Usage: findSimilarStrings( ..., SimilarityMethod.CONTAINMENT )")
+
+            println("검색어: $target")
+            println()
+
+            val results = matcher.findSimilarStrings(
+                data,
+                target,
+                minSimilarity,
+                StringSimilarityMatcher.SimilarityMethod.CONTAINMENT
+            )
+            results.forEach { result ->
+                println("${result.text}: ${String.format("%.3f", result.similarity)}")
+            }
+        }
+
+        @Test
+        fun `문자열 포함 여부를 이용한 문자열 매칭 21`() {
+            matcher.addData(data)
+            println("문자열 포함 결과: ${matcher.findByContainment(data, "계약")}")
+            println("문자열 포함 결과: ${matcher.findByContainment(data, "rPdir", 70)}")
+            println("문자열 포함 결과: ${matcher.findByContainment("조회")}")
+            println("문자열 포함 결과: ${matcher.findByContainment("whghl", 70)}")
+        }
+    }
+
+    /**
+     * 문자 위치 기반
+     */
+    @Nested
+    inner class FindByPositionDifferences {
+        val matcher = StringSimilarityMatcher()
+
+        @Test
+        fun `(위치 기반) 다른 알파벳 개수 기준 테스트`() {
+            println("=== 위치 기반 (중간 문자열) 차이 계산 테스트 2 ===")
+            println("-Usage: findMatchingStrings( ..., DifferenceMethod.POSITION_BASED )")
+
+            println("타겟: '$target'")
+            println()
+
+            println("=== 위치 기반 (중간 문자열) 다른 알파벳 개수 기준 (최대 3개) ===")
+            val comprehensiveResults = matcher.findMatchingStrings(
+                data = data,
+                target = target,
+                maxDifferences = 3,
+                includeSubstring = true,
+                method = StringSimilarityMatcher.DifferenceMethod.POSITION_BASED
+            )
+
+            comprehensiveResults.forEach { result ->
+                println("원본: ${result.originalString}")
+                println("  매칭 부분: ${result.matchedPart}")
+                println("  차이: ${result.differences}개 (${result.differenceMethod})")
+                println("  타입: ${result.matchType}")
+                println()
+            }
+
+            println("=== 위치 기반 (중간 문자열) 다른 알파벳 개수 기준 (최대 1개) ===")
+            val substringResults = matcher.findMatchingStrings(
+                data = data,
+                target = target,
+                maxDifferences = 1,
+                includeSubstring = true,
+                method = StringSimilarityMatcher.DifferenceMethod.POSITION_BASED
+            )
+
+            substringResults.forEach { result ->
+                println("${result.originalString} -> ${result.matchedPart} (차이: ${result.differences}개)")
+                when (result.originalString) {
+                    "salary" -> assertEquals(result.differences, 0)
+                    "mysalard" -> assertEquals(result.differences, 1)
+                    "sadary" -> assertEquals(result.differences, 1)
+                    "wowsblarywow" -> assertEquals(result.differences, 1)
+                }
+            }
+            println()
+
+            println("=== 위치 기반 (중간 문자열) 다른 알파벳 개수 기준 (target 이 긴 경우) ===")
+            val target2 = "abcdefghijklmnopqrstuvwxyz"
+            println("타겟: '$target2'")
+            val substringResults2 = matcher.findMatchingStrings(
+                data = data,
+                target = target2,
+                maxDifferences = 1,
+                includeSubstring = true,
+                method = StringSimilarityMatcher.DifferenceMethod.POSITION_BASED
+            )
+
+            substringResults2.forEach { result ->
+                println("${result.originalString} -> ${result.matchedPart} (차이: ${result.differences}개)")
+            }
+            println()
+        }
+
+        @Test
+        fun `(위치 기반) 다른 알파벳 개수 기준 테스트 (함수 직접 호출)`() {
+            println("=== 위치 기반 차이 계산 테스트 1 ===")
+            println("-Usage: findByPositionDifferences()")
+
+            println("타겟: '$target'")
+            println()
+
+            // 위치 기반 매칭
+            val positionResults = matcher.findByPositionDifferences(data, target, 5)
+            println("위치 기반 결과:")
+            positionResults.forEach { (text, diff) ->
+                println("  $text: $diff 개 차이")
+                when (text) {
+                    "salary" -> assertEquals(diff, 0)
+                    "sadary" -> assertEquals(diff, 1)
+                    "sblbry" -> assertEquals(diff, 2)
+                    "mysalard" -> assertEquals(diff, 3)
+                }
+            }
+            println()
+
+            val positionResults2 = matcher.findByPositionDifferences(target, 5)
+            println("위치 기반 결과:")
+            positionResults2.forEach { (text, diff) ->
+                println("  $text: $diff 개 차이")
+                when (text) {
+                    "salary" -> assertEquals(diff, 0)
+                    "sadary" -> assertEquals(diff, 1)
+                    "sblbry" -> assertEquals(diff, 2)
+                    "mysalard" -> assertEquals(diff, 3)
+                }
+            }
+            println()
+        }
+    }
+
+    /**
+     * 문자 포함 빈도 이용
+     */
+    @Nested
+    inner class FindByDifferentCharCount {
+        val matcher = StringSimilarityMatcher(InMemoryStringDataProvider())
+
+        @BeforeEach
+        fun setup() {
+            matcher.clearData()
+            matcher.addData(data)
+        }
+
+        @Test
+        fun `(빈도 기반) 다른 알파벳 개수 기준 테스트`() {
+            println("=== 빈도 기반 차이 계산 테스트 2 ===")
+            println("-Usage: findMatchingStrings( ..., DifferenceMethod.FREQUENCY_BASED )")
+
+            println("타겟: '$target'")
+            println()
+
+            println("=== (빈도 기반) 다른 알파벳 개수 기준 (최대 5개) ===")
+            val substringResults = matcher.findMatchingStrings(
+                data = data,
+                target = target,
+                maxDifferences = 5,
+                includeSubstring = false,
+                method = StringSimilarityMatcher.DifferenceMethod.FREQUENCY_BASED
+            )
+
+            substringResults.forEach { result ->
+                println("${result.originalString} -> ${result.matchedPart} (차이: ${result.differences}개)")
+                when (result.originalString) {
+                    "salary" -> assertEquals(result.differences, 0)
+                    "sadary" -> assertEquals(result.differences, 2)
+                    "sblbry" -> assertEquals(result.differences, 4)
+                }
+            }
+            println()
+
+            println("=== (빈도 기반) 다른 알파벳 개수 기준 (내부 데이터 사용) ===")
+            val substringResults2 = matcher.findMatchingStrings(
+                target = target,
+                maxDifferences = 5,
+                includeSubstring = false,
+                method = StringSimilarityMatcher.DifferenceMethod.FREQUENCY_BASED
+            )
+
+            substringResults2.forEach { result ->
+                println("${result.originalString} -> ${result.matchedPart} (차이: ${result.differences}개)")
+                when (result.originalString) {
+                    "salary" -> assertEquals(result.differences, 0)
+                    "sadary" -> assertEquals(result.differences, 2)
+                    "sblbry" -> assertEquals(result.differences, 4)
+                }
+            }
+            println()
+        }
+
+        @Test
+        fun `(빈도 기반) 다른 알파벳 개수 기준 테스트 (함수 직접 호출)`() {
+            println("=== 빈도 기반 차이 계산 테스트 1 ===")
+            println("-Usage: findByDifferentCharCount()")
+
+            println("타겟: '$target'")
+            println()
+
+            println("=== (빈도 기반) 다른 알파벳 개수 기준 (최대 4개) ===")
+            val frequencyResults1 = matcher.findByDifferentCharCount(data, target, 4)
+            frequencyResults1.forEach { (text, diffCount) ->
+                println("  $text: $diffCount 개 차이")
+                when (text) {
+                    "salary" -> assertEquals(diffCount, 0)
+                    "mysalard" -> assertEquals(diffCount, 2)
+                    "sadary" -> assertEquals(diffCount, 2)
+                }
+            }
+            println()
+
+            println("=== (빈도 기반) 다른 알파벳 개수 기준 (최대 3개) ===")
+            val frequencyResults3 = matcher.findByDifferentCharCount(data, target)
+            frequencyResults3.forEach { (text, diffCount) ->
+                println("  $text: $diffCount 개 차이")
+                when (text) {
+                    "salary" -> assertEquals(diffCount, 0)
+                    "mysalard" -> assertEquals(diffCount, 2)
+                    "sadary" -> assertEquals(diffCount, 2)
+                    "sblbry" -> assertEquals(diffCount, 4)
+                }
+            }
+            println()
+
+            println("=== (빈도 기반) 다른 알파벳 개수 기준 (최대 1개) ===")
+            val frequencyResults2 = matcher.findByDifferentCharCount(data, target, 1)
+            frequencyResults2.forEach { (text, diffCount) ->
+                println("$text: 다른 문자 $diffCount 개")
+                when (text) {
+                    "salary" -> assertEquals(diffCount, 0)
+                }
+            }
+            println()
+
+            println("=== (빈도 기반) 다른 알파벳 개수 기준 (내부 데이터 사용) ===")
+            val frequencyResultsInner = matcher.findByDifferentCharCount(target, 4)
+            frequencyResultsInner.forEach { (text, diffCount) ->
+                println("  $text: $diffCount 개 차이")
+                when (text) {
+                    "salary" -> assertEquals(diffCount, 0)
+                    "mysalard" -> assertEquals(diffCount, 2)
+                    "sadary" -> assertEquals(diffCount, 2)
+                }
+            }
+            println()
+        }
+    }
+
+    /**
+     * 유사도 알고리즘
+     */
+    @Nested
+    inner class SimilarityAlgorithm {
 
         val matcher = StringSimilarityMatcher()
         val minSimilarity = 0.3 // 30% 이상만 출력하도록 조건
@@ -237,7 +501,7 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
             val s7 = "약서"
             val s8 = "계약서"
             println("\nJaro: ${matcher.jaroSimilarity(s7, s8)}")
-            println("Jaro-Winkler (threshold=0.5, scale=0.25): ${matcher.jaroWinklerSimilarity(s7, s8,0.5, 0.25)}")
+            println("Jaro-Winkler (threshold=0.5, scale=0.25): ${matcher.jaroWinklerSimilarity(s7, s8, 0.5, 0.25)}")
             println("Jaro-Winkler (threshold=0.7, scale=0.1): ${matcher.jaroWinklerSimilarity(s7, s8, 0.7, 0.1)}")
 
             // 공통 접두사가 있는 경우로 테스트
@@ -253,268 +517,24 @@ class StringSimilarityMatcherTest : BaseJUnit5Test() {
             println("\nJaro: ${matcher.jaroSimilarity(s5, s6)}")
             println("Jaro-Winkler: ${matcher.jaroWinklerSimilarity(s5, s6)}")
         }
-
-        @Test
-        fun `문자열 포함 여부를 이용한 문자열 매칭 1`() {
-            println("=== 문자열 포함 여부 유사도 (최소 $minSimilarity) 출력 ===")
-            println("-Usage: findSimilarStrings( ..., SimilarityMethod.CONTAINMENT )")
-
-            println("검색어: $target")
-            println()
-
-            val results = matcher.findSimilarStrings(
-                data,
-                target,
-                minSimilarity,
-                StringSimilarityMatcher.SimilarityMethod.CONTAINMENT
-            )
-            results.forEach { result ->
-                println("${result.text}: ${String.format("%.3f", result.similarity)}")
-            }
-        }
-
-        @Test
-        fun `문자열 포함 여부를 이용한 문자열 매칭 21`() {
-            matcher.addData(data)
-            println("문자열 포함 여부: ${matcher.findByContainment(data, "계약")}")
-            println("문자열 포함 여부: ${matcher.findByContainment(data, "rPdir", 70)}")
-            println("문자열 포함 여부: ${matcher.findByContainment("조회")}")
-            println("문자열 포함 여부: ${matcher.findByContainment("whghl", 70)}")
-        }
-    }
-
-    @Nested
-    inner class FindByDifferentCharCount {
-        val matcher = StringSimilarityMatcher(InMemoryStringDataProvider())
-
-        @BeforeEach
-        fun setup() {
-            matcher.clearData()
-            matcher.addData(data)
-        }
-
-        @Test
-        fun `(빈도 기반) 다른 알파벳 개수 기준 테스트 1`() {
-            println("=== 빈도 기반 차이 계산 테스트 1 ===")
-            println("-Usage: findByDifferentCharCount()")
-
-            println("타겟: '$target'")
-            println()
-
-            println("=== (빈도 기반) 다른 알파벳 개수 기준 (최대 4개) ===")
-            val frequencyResults1 = matcher.findByDifferentCharCount(data, target, 4)
-            frequencyResults1.forEach { (text, diffCount) ->
-                println("  $text: $diffCount 개 차이")
-                when (text) {
-                    "salary" -> assertEquals(diffCount, 0)
-                    "mysalard" -> assertEquals(diffCount, 2)
-                    "sadary" -> assertEquals(diffCount, 2)
-                }
-            }
-            println()
-
-            println("=== (빈도 기반) 다른 알파벳 개수 기준 (최대 3개) ===")
-            val frequencyResults3 = matcher.findByDifferentCharCount(data, target)
-            frequencyResults3.forEach { (text, diffCount) ->
-                println("  $text: $diffCount 개 차이")
-                when (text) {
-                    "salary" -> assertEquals(diffCount, 0)
-                    "mysalard" -> assertEquals(diffCount, 2)
-                    "sadary" -> assertEquals(diffCount, 2)
-                    "sblbry" -> assertEquals(diffCount, 4)
-                }
-            }
-            println()
-
-            println("=== (빈도 기반) 다른 알파벳 개수 기준 (최대 1개) ===")
-            val frequencyResults2 = matcher.findByDifferentCharCount(data, target, 1)
-            frequencyResults2.forEach { (text, diffCount) ->
-                println("$text: 다른 문자 $diffCount 개")
-                when (text) {
-                    "salary" -> assertEquals(diffCount, 0)
-                }
-            }
-            println()
-
-            println("=== (빈도 기반) 다른 알파벳 개수 기준 (내부 데이터 사용) ===")
-            val frequencyResultsInner = matcher.findByDifferentCharCount(target, 4)
-            frequencyResultsInner.forEach { (text, diffCount) ->
-                println("  $text: $diffCount 개 차이")
-                when (text) {
-                    "salary" -> assertEquals(diffCount, 0)
-                    "mysalard" -> assertEquals(diffCount, 2)
-                    "sadary" -> assertEquals(diffCount, 2)
-                }
-            }
-            println()
-        }
-
-        @Test
-        fun `(빈도 기반) 다른 알파벳 개수 기준 테스트 2`() {
-            println("=== 빈도 기반 차이 계산 테스트 2 ===")
-            println("-Usage: findMatchingStrings( ..., DifferenceMethod.FREQUENCY_BASED )")
-
-            println("타겟: '$target'")
-            println()
-
-            println("=== (빈도 기반) 다른 알파벳 개수 기준 (최대 5개) ===")
-            val substringResults = matcher.findMatchingStrings(
-                data = data,
-                target = target,
-                maxDifferences = 5,
-                includeSubstring = false,
-                method = StringSimilarityMatcher.DifferenceMethod.FREQUENCY_BASED
-            )
-
-            substringResults.forEach { result ->
-                println("${result.originalString} -> ${result.matchedPart} (차이: ${result.differences}개)")
-                when (result.originalString) {
-                    "salary" -> assertEquals(result.differences, 0)
-                    "sadary" -> assertEquals(result.differences, 2)
-                    "sblbry" -> assertEquals(result.differences, 4)
-                }
-            }
-            println()
-
-            println("=== (빈도 기반) 다른 알파벳 개수 기준 (내부 데이터 사용) ===")
-            val substringResults2 = matcher.findMatchingStrings(
-                target = target,
-                maxDifferences = 5,
-                includeSubstring = false,
-                method = StringSimilarityMatcher.DifferenceMethod.FREQUENCY_BASED
-            )
-
-            substringResults2.forEach { result ->
-                println("${result.originalString} -> ${result.matchedPart} (차이: ${result.differences}개)")
-                when (result.originalString) {
-                    "salary" -> assertEquals(result.differences, 0)
-                    "sadary" -> assertEquals(result.differences, 2)
-                    "sblbry" -> assertEquals(result.differences, 4)
-                }
-            }
-            println()
-        }
-    }
-
-    @Nested
-    inner class FindByPositionDifferences {
-        val matcher = StringSimilarityMatcher()
-
-        @Test
-        fun `(위치 기반) 다른 알파벳 개수 기준 테스트 1`() {
-            println("=== 위치 기반 차이 계산 테스트 1 ===")
-            println("-Usage: findByPositionDifferences()")
-
-            println("타겟: '$target'")
-            println()
-
-            // 위치 기반 매칭
-            val positionResults = matcher.findByPositionDifferences(data, target, 5)
-            println("위치 기반 결과:")
-            positionResults.forEach { (text, diff) ->
-                println("  $text: $diff 개 차이")
-                when (text) {
-                    "salary" -> assertEquals(diff, 0)
-                    "sadary" -> assertEquals(diff, 1)
-                    "sblbry" -> assertEquals(diff, 2)
-                    "mysalard" -> assertEquals(diff, 3)
-                }
-            }
-            println()
-
-            val positionResults2 = matcher.findByPositionDifferences(target, 5)
-            println("위치 기반 결과:")
-            positionResults2.forEach { (text, diff) ->
-                println("  $text: $diff 개 차이")
-                when (text) {
-                    "salary" -> assertEquals(diff, 0)
-                    "sadary" -> assertEquals(diff, 1)
-                    "sblbry" -> assertEquals(diff, 2)
-                    "mysalard" -> assertEquals(diff, 3)
-                }
-            }
-            println()
-        }
-
-        @Test
-        fun `(위치 기반) 다른 알파벳 개수 기준 테스트 2`() {
-            println("=== 위치 기반 (중간 문자열) 차이 계산 테스트 2 ===")
-            println("-Usage: findMatchingStrings( ..., DifferenceMethod.POSITION_BASED )")
-
-            println("타겟: '$target'")
-            println()
-
-            println("=== 위치 기반 (중간 문자열) 다른 알파벳 개수 기준 (최대 3개) ===")
-            val comprehensiveResults = matcher.findMatchingStrings(
-                data = data,
-                target = target,
-                maxDifferences = 3,
-                includeSubstring = true,
-                method = StringSimilarityMatcher.DifferenceMethod.POSITION_BASED
-            )
-
-            comprehensiveResults.forEach { result ->
-                println("원본: ${result.originalString}")
-                println("  매칭 부분: ${result.matchedPart}")
-                println("  차이: ${result.differences}개 (${result.differenceMethod})")
-                println("  타입: ${result.matchType}")
-                println()
-            }
-
-            println("=== 위치 기반 (중간 문자열) 다른 알파벳 개수 기준 (최대 1개) ===")
-            val substringResults = matcher.findMatchingStrings(
-                data = data,
-                target = target,
-                maxDifferences = 1,
-                includeSubstring = true,
-                method = StringSimilarityMatcher.DifferenceMethod.POSITION_BASED
-            )
-
-            substringResults.forEach { result ->
-                println("${result.originalString} -> ${result.matchedPart} (차이: ${result.differences}개)")
-                when (result.originalString) {
-                    "salary" -> assertEquals(result.differences, 0)
-                    "mysalard" -> assertEquals(result.differences, 1)
-                    "sadary" -> assertEquals(result.differences, 1)
-                    "wowsblarywow" -> assertEquals(result.differences, 1)
-                }
-            }
-            println()
-
-            println("=== 위치 기반 (중간 문자열) 다른 알파벳 개수 기준 (target 이 긴 경우) ===")
-            val target2 = "abcdefghijklmnopqrstuvwxyz"
-            println("타겟: '$target2'")
-            val substringResults2 = matcher.findMatchingStrings(
-                data = data,
-                target = target2,
-                maxDifferences = 1,
-                includeSubstring = true,
-                method = StringSimilarityMatcher.DifferenceMethod.POSITION_BASED
-            )
-
-            substringResults2.forEach { result ->
-                println("${result.originalString} -> ${result.matchedPart} (차이: ${result.differences}개)")
-            }
-            println()
-        }
-    }
-
-    @Nested
-    inner class DataProvider {
-        val matcher = StringSimilarityMatcher()
-
-        @Test
-        fun `DataProvider 함수 테스트`() {
-            println("[${matcher.dataSize()}]: ${matcher.getData()}")
-            matcher.addData("asdsa")
-            matcher.addData("가나다라")
-            println("isDataEmpty: ${matcher.isDataEmpty()}")
-            println("[${matcher.dataSize()}]: ${matcher.getData()}")
-        }
     }
 
     @Nested
     inner class Etc {
+
+        @Nested
+        inner class DataProvider {
+            val matcher = StringSimilarityMatcher()
+
+            @Test
+            fun `DataProvider 함수 테스트`() {
+                println("[${matcher.dataSize()}]: ${matcher.getData()}")
+                matcher.addData("asdsa")
+                matcher.addData("가나다라")
+                println("isDataEmpty: ${matcher.isDataEmpty()}")
+                println("[${matcher.dataSize()}]: ${matcher.getData()}")
+            }
+        }
 
         @Test
         fun `Enum entries 테스트`() {

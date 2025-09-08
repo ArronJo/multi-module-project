@@ -1,5 +1,119 @@
 # 유사도 측정
 
+# Usage
+
+데이터 샘플
+```
+val data: List<String> = listOf(
+    "보험 계약정보", 
+    "보험계약 조회", 
+    "나의 자동이체정보", 
+    "미래연금예상액 조회",
+    "사고보험금 신청"
+)
+```
+
+## 문자열 포함 유사도
+Usage 1)
+```kotlin
+println("=== 문자열 포함 여부 유사도 (최소 $minSimilarity) 출력 ===")
+val matcher = StringSimilarityMatcher()
+val results = matcher.findSimilarStrings(
+    data,
+    target,
+    minSimilarity,
+    StringSimilarityMatcher.SimilarityMethod.CONTAINMENT
+)
+results.forEach { result ->
+    println("${result.text}: ${String.format("%.3f", result.similarity)}")
+}
+```
+
+Usage 2)
+```kotlin
+val matcher = StringSimilarityMatcher() 
+val similarity = matcher.findByContainment(data, "계약")
+println("문자열 포함 여부: $similarity")
+```
+
+## 위치 기반 유사도
+
+Usage 1)
+```kotlin
+println("=== 문자열 위치 기반 ===")
+val matcher = StringSimilarityMatcher()
+val substringResults = matcher.findMatchingStrings(
+    data = data,
+    target = target,
+    maxDifferences = 1,
+    includeSubstring = true,
+    method = StringSimilarityMatcher.DifferenceMethod.POSITION_BASED
+)
+substringResults.forEach { result ->
+    println("${result.originalString} -> ${result.matchedPart} (차이: ${result.differences}개)")
+}
+```
+
+Usage 2)
+```kotlin
+val matcher = StringSimilarityMatcher() 
+val positionResults = matcher.findByPositionDifferences(data, "계약", 5)
+println("위치 기반 결과:")
+positionResults.forEach { (text, diff) ->
+    println("  $text: $diff 개 차이")
+}
+```
+
+## 문자열 빈도 유사도
+
+검색문자와 대상문자를 비교하여 (검색문자 포함일 경우) 몇개의 문자가 차이 나는지 비교
+
+Usage 1)
+```kotlin
+println("=== (빈도 기반) 다른 알파벳 개수 기준 (최대 5개) ===")
+val matcher = StringSimilarityMatcher()
+val results = matcher.findMatchingStrings(
+    data = data,
+    target = target,
+    maxDifferences = 5,
+    includeSubstring = false,
+    method = StringSimilarityMatcher.DifferenceMethod.FREQUENCY_BASED
+)
+results.forEach { (text, diffCount) ->
+    println("$text: 다른 문자 $diffCount 개")
+}
+```
+
+Usage 2)
+```kotlin
+println("=== (빈도 기반) 다른 알파벳 개수 기준 (최대 1개) ===")
+val matcher = StringSimilarityMatcher()
+val results = matcher.findByDifferentCharCount(data, target, 1)
+results.forEach { (text, diffCount) ->
+    println("$text: 다른 문자 $diffCount 개")
+}
+```
+
+
+## 유사도 알고리즘
+
+Usage 1)
+```kotlin
+val matcher = StringSimilarityMatcher()
+val levenshteinResults = matcher.findSimilarStrings(
+    data,
+    target,
+    minSimilarity,
+    StringSimilarityMatcher.SimilarityMethod.LEVENSHTEIN // 알고리즘 변경 가능
+)
+levenshteinResults.forEach { result ->
+    println("${result.text}: ${String.format("%.3f", result.similarity)}")
+}
+```
+
+---
+# 알고리즘 설명
+
 ## 레벤슈타인 거리(Levenshtein Distance)
 
 - 측정 대상: 두 문자열
