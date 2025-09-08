@@ -100,8 +100,7 @@ class ThreatDetector {
      */
     private val defaultPatterns = listOf(
         // 이메일 패턴들
-        DetectionPattern(ThreatType.EMAIL, """\b[A-Za-z0-9._%+-ㄱ-ㅎㅏ-ㅣ가-힝]+@[A-Za-z0-9.-ㄱ-ㅎㅏ-ㅣ가-힝]+\.[A-Z|a-z]{2,}(\.[A-Z|a-z]{2,})?\b""".toRegex(), "표준 이메일 패턴"),
-        // 패턴 추가는 고민 해보자. DetectionPattern(ThreatType.EMAIL, """\w+@\w+\.\w+""".toRegex(), "간단한 이메일 패턴"),
+        DetectionPattern(ThreatType.EMAIL, """\b[A-Za-z0-9+-_.]+@[A-Za-z0-9+-_.ㄱ-ㅎㅏ-ㅣ가-힝]+\.[A-Z|a-z]{2,}(\.[A-Z|a-z]{2,})?\b""".toRegex(), "표준 이메일 패턴"),
         // 패턴 추가는 고민 해보자. DetectionPattern(ThreatType.EMAIL, """\b[A-Za-z0-9]+@[A-Za-z0-9]+\.[A-Za-z]{2,4}\b""".toRegex(), "기본 이메일 패턴"),
 
         // 주민등록번호 패턴들
@@ -175,8 +174,8 @@ class ThreatDetector {
         // 스크립트 인젝션 패턴들
         // 3. 프로토콜 기반 XSS
         DetectionPattern(ThreatType.SCRIPT_INJECTION, """(?i)javascript\s*:""".toRegex(), "자바스크립트 프로토콜", priority = 85),
-        DetectionPattern(ThreatType.SCRIPT_INJECTION, """(?i)vbscript\s*:""".toRegex(), "자바스크립트 프로토콜", priority = 85),
-        DetectionPattern(ThreatType.SCRIPT_INJECTION, """(?i)data\s*:.*base64""".toRegex(), "자바스크립트 프로토콜", priority = 70),
+        DetectionPattern(ThreatType.SCRIPT_INJECTION, """(?i)vbscript\s*:""".toRegex(), "비주얼베이직 스크립트 프로토콜", priority = 85),
+        DetectionPattern(ThreatType.SCRIPT_INJECTION, """(?i)data\s*:.*base64""".toRegex(), "바이너리 데이터 프로토콜", priority = 70),
 
         // 4. DOM 조작 기반 XSS
         DetectionPattern(ThreatType.SCRIPT_INJECTION, """(?i)document\.[a-z]*""".toRegex(), "DOM 조작 시도", priority = 75),
