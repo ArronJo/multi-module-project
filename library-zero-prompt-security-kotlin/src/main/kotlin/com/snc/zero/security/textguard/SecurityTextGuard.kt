@@ -100,7 +100,7 @@ class ThreatDetector {
      */
     private val defaultPatterns = listOf(
         // 이메일 패턴들
-        DetectionPattern(ThreatType.EMAIL, """\b[A-Za-z0-9+-_.]+@[A-Za-z0-9+-_.ㄱ-ㅎㅏ-ㅣ가-힝]+\.[A-Z|a-z]{2,}(\.[A-Z|a-z]{2,})?\b""".toRegex(), "표준 이메일 패턴"),
+        DetectionPattern(ThreatType.EMAIL, """\b[A-Za-z0-9+\-_.]+@[A-Za-z0-9+\-_.ㄱ-ㅎㅏ-ㅣ가-힝]+\.[A-Za-z]{2,}(\.[A-Za-z]{2,})?\b""".toRegex(), "표준 이메일 패턴"),
         // 패턴 추가는 고민 해보자. DetectionPattern(ThreatType.EMAIL, """\b[A-Za-z0-9]+@[A-Za-z0-9]+\.[A-Za-z]{2,4}\b""".toRegex(), "기본 이메일 패턴"),
 
         // 주민등록번호 패턴들
