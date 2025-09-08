@@ -24,17 +24,17 @@ enum class ThreatType {
     SSN, // 주민등록번호
     IP_V4_ADDRESS, // IP주소
     IP_V6_ADDRESS, // IP주소
-    SQL_INJECTION, // SQL 인젝션
-    XSS_ATTACK, // XSS 공격
-    SCRIPT_INJECTION, // 스크립트 인젝션
-    COMMAND_INJECTION, // 명령어 인젝션
-    PROMPT_INJECTION, // 프롬프트 인젝션
     PASSPORT_NUMBER, // 여권번호
     DRIVER_LICENSE, // 운전면허번호
     LICENSE_PLATE, // 차량번호
     BUSINESS_NUMBER, // 사업자등록번호
     CORPORATE_NUMBER, // 법인등록번호
     ACCOUNT_NUMBER, // 계좌번호
+    SQL_INJECTION, // SQL 인젝션
+    XSS_ATTACK, // XSS 공격
+    SCRIPT_INJECTION, // 스크립트 인젝션
+    COMMAND_INJECTION, // 명령어 인젝션
+    PROMPT_INJECTION, // 프롬프트 인젝션
     CUSTOM // 사용자 정의 패턴용
 }
 
@@ -431,107 +431,105 @@ class SensitiveDataMasker {
 
         return maskedText
     }
-}
-
-private object Mask {
-
-    private val digitRegex = "\\d".toRegex()
 
     // 마스킹 함수들
-    fun maskSSN(ssn: String): String {
-        // 원하는 평문 노출 문자 길이 인덱스를 찾음
-        val startIndex = ssn.withIndex()
-            .filter { it.value.isDigit() }
-            .getOrNull(6) // 0-based → 일곱 번째 숫자
-            ?.index
-            ?.plus(1)
+    private object Mask {
 
-        return if (startIndex != null && startIndex < ssn.length) {
-            ssn.take(startIndex) +
-                ssn.drop(startIndex).replace(digitRegex, "*")
-        } else {
-            ssn.replace(digitRegex, "*")
-        }
-    }
+        private val digitRegex = "\\d".toRegex()
 
-    fun maskCreditCard(cardNumber: String): String {
-        // 원하는 평문 노출 문자 길이 인덱스를 찾음
-        val startIndex = cardNumber.withIndex()
-            .filter { it.value.isDigit() }
-            .getOrNull(3) // 0-based → 네 번째 숫자
-            ?.index
-            ?.plus(1)
+        fun maskSSN(ssn: String): String {
+            val startIndex = ssn.withIndex()
+                .filter { it.value.isDigit() }
+                .getOrNull(6) // 0-based → 일곱 번째 숫자
+                ?.index
+                ?.plus(1)
 
-        return if (startIndex != null && startIndex < cardNumber.length) {
-            cardNumber.take(startIndex) +
-                cardNumber.drop(startIndex).replace(digitRegex, "*")
-        } else {
-            cardNumber.replace(digitRegex, "*")
-        }
-    }
-
-    fun maskEmail(email: String): String {
-        val parts = email.split("@")
-        if (parts.size != 2) return "***@***.***"
-
-        val localPart = parts[0]
-        val maskedLocal = when {
-            localPart.length <= 3 -> "*".repeat(localPart.length)
-            else -> "${localPart.first()}${"*".repeat(localPart.length - 2)}${localPart.last()}"
-        }
-
-        val domainParts = parts[1].split(".")
-        var maskedDomain = ""
-        for (i in 0..<domainParts.size) {
-            maskedDomain += when {
-                domainParts[i].length <= 5 -> "." + "*".repeat(domainParts[i].length)
-                else -> ".${domainParts[i].take(2)}${"*".repeat(domainParts[i].length - 4)}${domainParts[i].takeLast(2)}"
+            return if (startIndex != null && startIndex < ssn.length) {
+                ssn.take(startIndex) +
+                    ssn.drop(startIndex).replace(digitRegex, "*")
+            } else {
+                ssn.replace(digitRegex, "*")
             }
         }
 
-        return "$maskedLocal@${maskedDomain.substring(1)}"
-    }
+        fun maskCreditCard(cardNumber: String): String {
+            val startIndex = cardNumber.withIndex()
+                .filter { it.value.isDigit() }
+                .getOrNull(3) // 0-based → 네 번째 숫자
+                ?.index
+                ?.plus(1)
 
-    fun maskPhoneNumber(phoneNumber: String): String {
-        val startIndex = when {
-            phoneNumber.startsWith("02") -> 2
-            phoneNumber.startsWith("+") -> {
-                val dashIndex = phoneNumber.indexOf('-')
-                if (dashIndex > -1) dashIndex else 3
+            return if (startIndex != null && startIndex < cardNumber.length) {
+                cardNumber.take(startIndex) +
+                    cardNumber.drop(startIndex).replace(digitRegex, "*")
+            } else {
+                cardNumber.replace(digitRegex, "*")
             }
-            else -> 3
         }
-        return buildString {
-            append(phoneNumber.take(startIndex)) // 앞자리
-            phoneNumber.drop(startIndex).dropLast(4).forEach { c ->
-                append(if (c.isDigit()) '*' else c) // 중간 숫자만 마스킹
+
+        fun maskEmail(email: String): String {
+            val parts = email.split("@")
+            if (parts.size != 2) return "***@***.***"
+
+            val localPart = parts[0]
+            val maskedLocal = when {
+                localPart.length <= 3 -> "*".repeat(localPart.length)
+                else -> "${localPart.first()}${"*".repeat(localPart.length - 2)}${localPart.last()}"
             }
-            append(phoneNumber.takeLast(4)) // 뒤자리
+
+            val domainParts = parts[1].split(".")
+            var maskedDomain = ""
+            for (i in 0..<domainParts.size) {
+                maskedDomain += when {
+                    domainParts[i].length <= 5 -> "." + "*".repeat(domainParts[i].length)
+                    else -> ".${domainParts[i].take(2)}${"*".repeat(domainParts[i].length - 4)}${domainParts[i].takeLast(2)}"
+                }
+            }
+
+            return "$maskedLocal@${maskedDomain.substring(1)}"
         }
-    }
 
-    fun maskIpV4Address(ip: String): String {
-        val delimiters = "."
-        return ip.split(delimiters)
-            .mapIndexed { index, part ->
-                if (index >= 2) part.replace(digitRegex, "*") else part
+        fun maskPhoneNumber(phoneNumber: String): String {
+            val startIndex = when {
+                phoneNumber.startsWith("02") -> 2
+                phoneNumber.startsWith("+") -> {
+                    val dashIndex = phoneNumber.indexOf('-')
+                    if (dashIndex > -1) dashIndex else 3
+                }
+                else -> 3
             }
-            .joinToString(delimiters)
-    }
+            return buildString {
+                append(phoneNumber.take(startIndex)) // 앞자리
+                phoneNumber.drop(startIndex).dropLast(4).forEach { c ->
+                    append(if (c.isDigit()) '*' else c) // 중간 숫자만 마스킹
+                }
+                append(phoneNumber.takeLast(4)) // 뒤자리
+            }
+        }
 
-    fun maskIpV6Address(ip: String): String {
-        val delimiters = ":"
-        val charRegex = "[a-zA-Z0-9]".toRegex()
-        return ip.split(delimiters)
-            .mapIndexed { index, part ->
-                if (index >= 2) part.replace(charRegex, "*") else part
-            }
-            .joinToString(delimiters)
+        fun maskIpV4Address(ip: String): String {
+            val delimiters = "."
+            return ip.split(delimiters)
+                .mapIndexed { index, part ->
+                    if (index >= 2) part.replace(digitRegex, "*") else part
+                }
+                .joinToString(delimiters)
+        }
+
+        fun maskIpV6Address(ip: String): String {
+            val delimiters = ":"
+            val charRegex = "[a-zA-Z0-9]".toRegex()
+            return ip.split(delimiters)
+                .mapIndexed { index, part ->
+                    if (index >= 2) part.replace(charRegex, "*") else part
+                }
+                .joinToString(delimiters)
+        }
     }
 }
 
 // 통합 보안 문자열 프로세서 (개선된 버전)
-class SecureTextProcessor {
+class SecurityTextGuard {
 
     private val unifiedDetector = ThreatDetector()
     private val stringMasker = SensitiveDataMasker()
@@ -542,18 +540,37 @@ class SecureTextProcessor {
     fun getDetector(): ThreatDetector = unifiedDetector
 
     /**
-     * 문자열 탐지 및 마스킹
+     * 통합 탐지 함수 - 모든 탐지 시나리오를 하나의 함수로 처리
+     *
+     * @param inputText 탐지할 입력 텍스트
+     * @param targetTypes 탐지할 ThreatType들 (null이면 전체 탐지, empty이면 아무것도 탐지하지 않음)
+     * @param enableMasking 마스킹 수행 여부 (true: DetectionResult 반환, false: ThreatInfo 리스트만 반환)
+     * @return enableMasking이 true면 DetectionResult, false면 null (detectedThreats만 사용)
      */
-    fun detect(inputText: String): DetectionResult {
-        val allThreats = unifiedDetector.detectAllThreats(inputText)
-            .distinctBy { "${it.startIndex}-${it.endIndex}" }
+    fun detect(
+        inputText: String,
+        targetTypes: Set<ThreatType>? = null,
+        enableMasking: Boolean = true
+    ): DetectionResult {
+        // 전체 위협 탐지
+        val allDetectedThreats = unifiedDetector.detectAllThreats(inputText)
+
+        // 필터링 적용
+        val filteredThreats = when {
+            targetTypes != null -> allDetectedThreats.filter { it.type in targetTypes }
+            else -> allDetectedThreats
+        }.distinctBy { "${it.startIndex}-${it.endIndex}" }
             .sortedBy { it.startIndex }
 
-        val maskedText = stringMasker.maskThreats(inputText, allThreats)
+        val maskedText = if (enableMasking) {
+            stringMasker.maskThreats(inputText, filteredThreats)
+        } else {
+            inputText
+        }
 
         return DetectionResult(
             originalText = inputText,
-            detectedThreats = allThreats,
+            detectedThreats = filteredThreats,
             maskedText = maskedText
         )
     }

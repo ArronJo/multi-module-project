@@ -2,7 +2,7 @@ package com.snc.test.security.textguard
 
 import com.snc.zero.security.textguard.DetectionPattern
 import com.snc.zero.security.textguard.ThreatType
-import com.snc.zero.security.textguard.SecureTextProcessor
+import com.snc.zero.security.textguard.SecurityTextGuard
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -16,13 +16,13 @@ import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.ValueSource
 
 @Suppress("NonAsciiCharacters")
-class SecureTextProcessorTest {
+class SecurityTextGuardTest {
 
-    private lateinit var processor: SecureTextProcessor
+    private lateinit var processor: SecurityTextGuard
 
     @BeforeEach
     fun setUp() {
-        processor = SecureTextProcessor()
+        processor = SecurityTextGuard()
     }
 
     @Nested
@@ -136,14 +136,11 @@ class SecureTextProcessorTest {
         }
 
         @Test
-        fun `프롬프트 텍스트 검출 테스트 3`() {
+        fun `프롬프트 텍스트 검출 테스트 3 - 1`() {
             val testString = TestDataGenerator.generateLongTestString()
             val result = processor.detect(testString)
 
             println("-".repeat(50))
-            //println("=== 원본 텍스트 ===")
-            //println(result.originalText)
-
             println("\n=== 탐지된 위협 ===")
             result.detectedThreats.forEach { threat ->
                 println("유형: ${threat.type}, 위치: ${threat.startIndex}-${threat.endIndex}, 값: ${threat.detectedValue}, 설명: ${threat.description}")
@@ -151,6 +148,53 @@ class SecureTextProcessorTest {
 
             println("\n=== 마스킹된 텍스트 ===")
             println(result.maskedText)
+        }
+
+        @Test
+        fun `프롬프트 텍스트 검출 테스트 3 - 2`() {
+            var testString = TestDataGenerator.generateSpecificTestData("EMAIL")
+            testString += TestDataGenerator.generateSpecificTestData("PHONE")
+            testString += TestDataGenerator.generateSpecificTestData("CARD")
+            testString += TestDataGenerator.generateSpecificTestData("SSN")
+            testString += TestDataGenerator.generateSpecificTestData("SQL")
+            testString += TestDataGenerator.generateSpecificTestData("XSS")
+            testString += TestDataGenerator.generateSpecificTestData("PROMPT")
+            testString += TestDataGenerator.generateSpecificTestData("SCRIPT")
+
+            val result = processor.detect(testString, setOf(ThreatType.SSN))
+
+            println("-".repeat(50))
+            println("\n=== 탐지된 위협 ===")
+            result.detectedThreats.forEach { threat ->
+                println("유형: ${threat.type}, 위치: ${threat.startIndex}-${threat.endIndex}, 값: ${threat.detectedValue}, 설명: ${threat.description}")
+            }
+
+            println("\n=== 마스킹된 텍스트 ===")
+            println(result.maskedText)
+        }
+
+        @Test
+        fun `프롬프트 텍스트 검출 테스트 3 - 3`() {
+            val testString = TestDataGenerator.generateLongTestString()
+            val result = processor.detect(testString, enableMasking = false)
+
+            println("-".repeat(50))
+            println("\n=== 탐지된 위협 ===")
+            result.detectedThreats.forEach { threat ->
+                println("유형: ${threat.type}, 위치: ${threat.startIndex}-${threat.endIndex}, 값: ${threat.detectedValue}, 설명: ${threat.description}")
+            }
+        }
+
+        @Test
+        fun `프롬프트 텍스트 검출 테스트 3 - 4`() {
+            val testString = TestDataGenerator.generateLongTestString()
+            val result = processor.detect(testString, setOf(ThreatType.PHONE_NUMBER), enableMasking = false)
+
+            println("-".repeat(50))
+            println("\n=== 탐지된 위협 ===")
+            result.detectedThreats.forEach { threat ->
+                println("유형: ${threat.type}, 위치: ${threat.startIndex}-${threat.endIndex}, 값: ${threat.detectedValue}, 설명: ${threat.description}")
+            }
         }
     }
 
@@ -161,7 +205,7 @@ class SecureTextProcessorTest {
         @Test
         @DisplayName("커스텀 패턴 테스트")
         fun `커스텀 패턴 테스트`() {
-            val processor = SecureTextProcessor()
+            val processor = SecurityTextGuard()
 
             // 사용자 정의 패턴 추가
             println("-".repeat(50))
