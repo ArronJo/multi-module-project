@@ -278,10 +278,10 @@ class SecurityTextGuardTest {
         fun `이메일 주소 탐지 및 마스킹`(text: String, expectedValue: String) {
             val result = processor.detect(text)
 
-            val emailThreats = result.detectedThreats.filter { it.type == ThreatType.EMAIL }
-            assertTrue(emailThreats.isNotEmpty(), "이메일이 탐지되지 않음: $text")
+            val threats = result.detectedThreats.filter { it.type == ThreatType.EMAIL }
+            assertTrue(threats.isNotEmpty(), "이메일이 탐지되지 않음: $text")
 
-            val detectedEmail = emailThreats.find { it.detectedValue == expectedValue }
+            val detectedEmail = threats.find { it.detectedValue == expectedValue }
             assertNotNull(detectedEmail, "예상된 이메일이 탐지되지 않음: $expectedValue")
 
             assertTrue(result.maskedText.contains("*"), "마스킹이 적용되지 않음")
@@ -299,9 +299,9 @@ class SecurityTextGuardTest {
         fun `전화번호 탐지 및 마스킹`(text: String, expectedValue: String) {
             val result = processor.detect(text)
 
-            val phoneThreats = result.detectedThreats.filter { it.type == ThreatType.PHONE_NUMBER }
-            assertEquals(1, phoneThreats.size)
-            assertEquals(expectedValue, phoneThreats[0].detectedValue)
+            val threats = result.detectedThreats.filter { it.type == ThreatType.PHONE_NUMBER }
+            assertEquals(1, threats.size)
+            assertEquals(expectedValue, threats[0].detectedValue)
             assertTrue(result.maskedText.contains("*"))
         }
 
@@ -315,8 +315,8 @@ class SecurityTextGuardTest {
         fun `주민등록번호 탐지 및 마스킹`(text: String) {
             val result = processor.detect(text)
 
-            val ssnThreats = result.detectedThreats.filter { it.type == ThreatType.SSN }
-            assertEquals(1, ssnThreats.size)
+            val threats = result.detectedThreats.filter { it.type == ThreatType.SSN }
+            assertEquals(1, threats.size)
             assertTrue(result.maskedText.contains("*"))
             // 앞 7자리는 보이고 나머지는 마스킹 확인
             assertTrue(result.maskedText.matches(""".*\d{6}-?\d\*+.*""".toRegex()))
@@ -335,9 +335,9 @@ class SecurityTextGuardTest {
         fun `신용카드번호 탐지 및 마스킹`(text: String, expectedValue: String) {
             val result = processor.detect(text)
 
-            val cardThreats = result.detectedThreats.filter { it.type == ThreatType.CREDIT_CARD }
-            assertTrue(cardThreats.isNotEmpty())
-            assertEquals(expectedValue, cardThreats[0].detectedValue)
+            val threats = result.detectedThreats.filter { it.type == ThreatType.CREDIT_CARD }
+            assertTrue(threats.isNotEmpty())
+            assertEquals(expectedValue, threats[0].detectedValue)
             assertTrue(result.maskedText.contains("*"))
             // 앞 4자리는 보이고 나머지는 마스킹 확인
             assertTrue(result.maskedText.matches(""".*\d{4}[*-]+.*""".toRegex()))
@@ -357,8 +357,8 @@ class SecurityTextGuardTest {
         fun `여권번호 탐지`(text: String) {
             val result = processor.detect(text)
 
-            val passportThreats = result.detectedThreats.filter { it.type == ThreatType.PASSPORT_NUMBER }
-            assertEquals(1, passportThreats.size)
+            val threats = result.detectedThreats.filter { it.type == ThreatType.PASSPORT_NUMBER }
+            assertEquals(1, threats.size)
             assertTrue(result.maskedText.contains("*"))
         }
 
@@ -370,9 +370,9 @@ class SecurityTextGuardTest {
         fun `운전면허번호 탐지`(text: String) {
             val result = processor.detect(text)
 
-            val licenseThreats = result.detectedThreats.filter { it.type == ThreatType.DRIVER_LICENSE }
-            println(licenseThreats)
-            assertEquals(1, licenseThreats.size)
+            val threats = result.detectedThreats.filter { it.type == ThreatType.DRIVER_LICENSE }
+            println(threats)
+            assertEquals(1, threats.size)
             assertTrue(result.maskedText.contains("*"))
         }
 
@@ -386,9 +386,9 @@ class SecurityTextGuardTest {
         fun `구형 운전면허번호 탐지`(text: String) {
             val result = processor.detect(text)
 
-            val licenseThreats = result.detectedThreats.filter { it.type == ThreatType.DRIVER_LICENSE }
-            println(licenseThreats)
-            assertEquals(1, licenseThreats.size)
+            val threats = result.detectedThreats.filter { it.type == ThreatType.DRIVER_LICENSE }
+            println(threats)
+            assertEquals(1, threats.size)
             assertTrue(result.maskedText.contains("*"))
         }
 
@@ -402,29 +402,28 @@ class SecurityTextGuardTest {
             val result = processor.detect(text)
             println(result)
 
-            val licenseThreats = result.detectedThreats.filter { it.type == ThreatType.DRIVER_LICENSE }
-            assertEquals(0, licenseThreats.size)
+            val threats = result.detectedThreats.filter { it.type == ThreatType.DRIVER_LICENSE }
+            assertEquals(0, threats.size)
             assertFalse(result.maskedText.contains("*"))
         }
 
         @ParameterizedTest
         @DisplayName("차량번호 탐지")
-        @ValueSource(strings = [
-            "차량번호: 서울12가3456",
-            "차량번호: 12가3456",
-            "123가 4567",
-            "01나-0123",
-            "12가3456", // 신형
-            "123나4567", // 신형
-            "서울03바1345", // 구형
-            "부산12가5678" // 구형
-        ])
-        fun `차량번호 탐지`(text: String) {
+        @CsvSource(
+            "차량번호: 서울12가3456, 1",
+            "차량번호: 12가3456, 1",
+            "123가 4567, 1",
+            "01나-0123, 0",
+            "12가3456, 1", // 신형
+            "123나4567, 1", // 신형
+            "서울03바1345, 1", // 구형
+            "부산12가5678, 1" // 구형
+        )
+        fun `차량번호 탐지`(text: String, expectedValue: String) {
             val result = processor.detect(text)
 
-            val businessThreats = result.detectedThreats.filter { it.type == ThreatType.LICENSE_PLATE }
-            assertEquals(1, businessThreats.size)
-            assertTrue(result.maskedText.contains("*"))
+            val threats = result.detectedThreats.filter { it.type == ThreatType.LICENSE_PLATE }
+            assertEquals(expectedValue.toInt(), threats.size)
         }
 
         @ParameterizedTest
@@ -435,8 +434,8 @@ class SecurityTextGuardTest {
         fun `사업자등록번호 탐지`(text: String) {
             val result = processor.detect(text)
 
-            val businessThreats = result.detectedThreats.filter { it.type == ThreatType.BUSINESS_NUMBER }
-            assertEquals(1, businessThreats.size)
+            val threats = result.detectedThreats.filter { it.type == ThreatType.BUSINESS_NUMBER }
+            assertEquals(1, threats.size)
             assertTrue(result.maskedText.contains("*"))
         }
 
@@ -444,14 +443,17 @@ class SecurityTextGuardTest {
         @DisplayName("IP 주소 탐지")
         fun `IP 주소 탐지`() {
             val testCases = mapOf(
-                "IPv4: 192.168.1.1" to ThreatType.IP_V4_ADDRESS,
-                "IPv6: 2001:0db8:85a3:0000:0000:8a2e:0370:7334" to ThreatType.IP_V6_ADDRESS
+                "IPv4: 192.168.1.1입니다." to ThreatType.IP_V4_ADDRESS, // "유효한 IP",
+                "IPv4: 255.255.255.255입니다." to ThreatType.IP_V4_ADDRESS, // "최대값 IP",
+                "IPv4: 0.0.0.0입니다." to ThreatType.IP_V4_ADDRESS, // "최소값 IP",
+                "무효: 299.1.1.1입니다." to ThreatType.IP_V4_ADDRESS, // "무효 (299 > 255이지만 정규식은 매칭됨!)",
+                "IPv6: 2001:0db8:85a3:0000:0000:8a2e:0370:7334입니다." to ThreatType.IP_V6_ADDRESS
             )
 
             testCases.forEach { (text, expectedType) ->
                 val result = processor.detect(text)
-                val ipThreats = result.detectedThreats.filter { it.type == expectedType }
-                assertEquals(1, ipThreats.size, "Failed for: $text")
+                val threats = result.detectedThreats.filter { it.type == expectedType }
+                assertEquals(1, threats.size, "Failed for: $text")
                 assertTrue(result.maskedText.contains("*"), "Masking failed for: $text")
             }
         }
@@ -473,8 +475,8 @@ class SecurityTextGuardTest {
         fun `SQL 인젝션 공격 탐지`(maliciousInput: String) {
             val result = processor.detect(maliciousInput)
 
-            val sqlThreats = result.detectedThreats.filter { it.type == ThreatType.SQL_INJECTION }
-            assertTrue(sqlThreats.isNotEmpty(), "SQL 인젝션이 탐지되지 않음: $maliciousInput")
+            val threats = result.detectedThreats.filter { it.type == ThreatType.SQL_INJECTION }
+            assertTrue(threats.isNotEmpty(), "SQL 인젝션이 탐지되지 않음: $maliciousInput")
             assertTrue(result.maskedText.contains("*"), "SQL 인젝션이 마스킹되지 않음: $maliciousInput")
         }
 
@@ -492,9 +494,9 @@ class SecurityTextGuardTest {
             val result = processor.detect(maliciousInput)
             println(result)
 
-            val xssThreats = result.detectedThreats.filter { it.type == ThreatType.XSS_ATTACK }
-            println(xssThreats)
-            assertTrue(xssThreats.isNotEmpty(), "XSS 공격이 탐지되지 않음: $maliciousInput")
+            val threats = result.detectedThreats.filter { it.type == ThreatType.XSS_ATTACK }
+            println(threats)
+            assertTrue(threats.isNotEmpty(), "XSS 공격이 탐지되지 않음: $maliciousInput")
             assertTrue(result.maskedText.contains("*"), "XSS 공격이 마스킹되지 않음: $maliciousInput")
         }
 
@@ -510,9 +512,9 @@ class SecurityTextGuardTest {
             val result = processor.detect(maliciousInput)
             println(result)
 
-            val xssThreats = result.detectedThreats.filter { it.type == ThreatType.SCRIPT_INJECTION }
-            println(xssThreats)
-            assertTrue(xssThreats.isNotEmpty(), "SCRIPT 인젠션 탐지되지 않음: $maliciousInput")
+            val threats = result.detectedThreats.filter { it.type == ThreatType.SCRIPT_INJECTION }
+            println(threats)
+            assertTrue(threats.isNotEmpty(), "SCRIPT 인젠션 탐지되지 않음: $maliciousInput")
             assertTrue(result.maskedText.contains("*"), "SCRIPT 인젠션 마스킹되지 않음: $maliciousInput")
         }
 
@@ -528,8 +530,8 @@ class SecurityTextGuardTest {
         fun `커맨드 인젝션 공격 탐지`(maliciousInput: String) {
             val result = processor.detect(maliciousInput)
 
-            val commandThreats = result.detectedThreats.filter { it.type == ThreatType.COMMAND_INJECTION }
-            assertTrue(commandThreats.isNotEmpty(), "커맨드 인젝션이 탐지되지 않음: $maliciousInput")
+            val threats = result.detectedThreats.filter { it.type == ThreatType.COMMAND_INJECTION }
+            assertTrue(threats.isNotEmpty(), "커맨드 인젝션이 탐지되지 않음: $maliciousInput")
         }
 
         @Nested
@@ -549,8 +551,8 @@ class SecurityTextGuardTest {
             fun `영어 프롬프트 인젝션 탐지`(maliciousInput: String) {
                 val result = processor.detect(maliciousInput)
 
-                val promptThreats = result.detectedThreats.filter { it.type == ThreatType.PROMPT_INJECTION }
-                assertTrue(promptThreats.isNotEmpty(), "프롬프트 인젝션이 탐지되지 않음: $maliciousInput")
+                val threats = result.detectedThreats.filter { it.type == ThreatType.PROMPT_INJECTION }
+                assertTrue(threats.isNotEmpty(), "프롬프트 인젝션이 탐지되지 않음: $maliciousInput")
             }
 
             @ParameterizedTest
@@ -565,8 +567,8 @@ class SecurityTextGuardTest {
             fun `한국어 프롬프트 인젝션 탐지`(maliciousInput: String) {
                 val result = processor.detect(maliciousInput)
 
-                val promptThreats = result.detectedThreats.filter { it.type == ThreatType.PROMPT_INJECTION }
-                assertTrue(promptThreats.isNotEmpty(), "한국어 프롬프트 인젝션이 탐지되지 않음: $maliciousInput")
+                val threats = result.detectedThreats.filter { it.type == ThreatType.PROMPT_INJECTION }
+                assertTrue(threats.isNotEmpty(), "한국어 프롬프트 인젝션이 탐지되지 않음: $maliciousInput")
             }
         }
     }

@@ -127,8 +127,9 @@ class ThreatDetector {
         DetectionPattern(ThreatType.CREDIT_CARD, """3(?:0[0-5]\d|[68]\d{2})-?\d{6}-?\d{4}""".toRegex(), "신용카드 패턴 (Diners Club)", needsValidation = true), // Diners Club 14자리
 
         // IP 패턴들
-        DetectionPattern(ThreatType.IP_V4_ADDRESS, """\b(?:(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\b""".toRegex(), "IPv4 주소"),
-        DetectionPattern(ThreatType.IP_V6_ADDRESS, """\b(?:[A-Fa-f0-9]{1,4}:){7}[A-Fa-f0-9]{1,4}\b""".toRegex(), "IPv6 주소"),
+        // 복잡도 큼: DetectionPattern(ThreatType.IP_V4_ADDRESS, """(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)""".toRegex() , "IPv4 주소"),
+        DetectionPattern(ThreatType.IP_V4_ADDRESS, """(?:[0-2]?\d?\d\.){3}[0-2]?\d?\d""".toRegex(), "IPv4 주소"),
+        DetectionPattern(ThreatType.IP_V6_ADDRESS, """(?:[A-Fa-f0-9]{1,4}:){7}[A-Fa-f0-9]{1,4}""".toRegex(), "IPv6 주소"),
 
         // 추가 검수 필요
         // 여권번호 패턴들 (한국 여권)
@@ -140,7 +141,8 @@ class ThreatDetector {
         DetectionPattern(ThreatType.DRIVER_LICENSE, """\b(?:서울|부산|대구|인천|광주|대전|울산|경기|강원|충북|충남|전북|전남|경북|경남|제주)-\d{2}-\d{6}-\d{2}\b""".toRegex(), "운전면허번호 (구형 지역명 + 숫자 형식)"),
 
         // 차량번호 패턴들
-        DetectionPattern(ThreatType.LICENSE_PLATE, """((서울|부산|대구|인천|광주|대전|울산|경기|강원|충북|충남|전북|전남|경북|경남|제주){2,3}[- ]?)?(?:\d{2}|\d{3})[가-힣][ -]?\d{4}""".toRegex(), "차량 번호판 패턴"),
+        // 복잡도 큼: DetectionPattern(ThreatType.LICENSE_PLATE, """((서울|부산|대구|인천|광주|대전|울산|경기|강원|충북|충남|전북|전남|경북|경남|제주){2,3}[- ]?)?(?:\d{2}|\d{3})[가-힣][ -]?\d{4}""".toRegex(), "차량 번호판 패턴"),
+        DetectionPattern(ThreatType.LICENSE_PLATE, """([가-힣]{2,3} ?)?\d{2,3}[가-힣] ?\d{4}""".toRegex(), "차량 번호판 패턴"),
 
         // 사업자등록번호 패턴들
         DetectionPattern(ThreatType.BUSINESS_NUMBER, """\b\d{3}-\d{2}-\d{5}\b""".toRegex(), "사업자등록번호 (123-45-67890 형식)"),
@@ -154,7 +156,8 @@ class ThreatDetector {
 
         // SQL 인젝션 패턴들
         DetectionPattern(ThreatType.SQL_INJECTION, """(?i)(union\s+select|select\s+.*\s+from|drop\s+table|delete\s+from|insert\s+into)""".toRegex(), "SQL 기본 명령어"),
-        DetectionPattern(ThreatType.SQL_INJECTION, """(?i)('\s*or\s*'|".*\s*or\s*"|1\s*=\s*1|1\s*or\s*1)""".toRegex(), "SQL OR 조건 우회"),
+        // 복잡도 큼: DetectionPattern(ThreatType.SQL_INJECTION, """(?i)('\s*or\s*'|".*\s*or\s*"|1\s*=\s*1|1\s*or\s*1)""".toRegex(), "SQL OR 조건 우회"),
+        DetectionPattern(ThreatType.SQL_INJECTION, """(?i)(['"].*or.*['"]|1\s*[=or]\s*1)""".toRegex(), "SQL OR 조건 우회"),
         DetectionPattern(ThreatType.SQL_INJECTION, """(?i)(exec\s*\(|execute\s*\(|sp_executesql)""".toRegex(), "SQL 실행 명령어"),
         DetectionPattern(ThreatType.SQL_INJECTION, """(?i)(--|#|/\*|\*/)""".toRegex(), "SQL 주석 패턴"),
         DetectionPattern(ThreatType.SQL_INJECTION, """(?i)(xp_cmdshell|sp_configure|openrowset)""".toRegex(), "SQL 확장/시스템 함수"),
