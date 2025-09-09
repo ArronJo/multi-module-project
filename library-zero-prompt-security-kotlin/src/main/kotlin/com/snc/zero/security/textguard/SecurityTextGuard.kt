@@ -127,7 +127,7 @@ class ThreatDetector {
         DetectionPattern(ThreatType.CREDIT_CARD, """3(?:0[0-5]\d|[68]\d{2})-?\d{6}-?\d{4}""".toRegex(), "신용카드 패턴 (Diners Club)", needsValidation = true), // Diners Club 14자리
 
         // IP 패턴들
-        // 복잡도 큼: DetectionPattern(ThreatType.IP_V4_ADDRESS, """(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)""".toRegex() , "IPv4 주소"),
+        // 복잡도 큼: DetectionPattern(ThreatType.IP_V4_ADDRESS, """(?:(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)""".toRegex(), "IPv4 주소"),
         DetectionPattern(ThreatType.IP_V4_ADDRESS, """(?:[0-2]?\d?\d\.){3}[0-2]?\d?\d""".toRegex(), "IPv4 주소"),
         DetectionPattern(ThreatType.IP_V6_ADDRESS, """(?:[A-Fa-f0-9]{1,4}:){7}[A-Fa-f0-9]{1,4}""".toRegex(), "IPv6 주소"),
 
@@ -251,7 +251,7 @@ class ThreatDetector {
 
         // 9. 메타 명령어들
         DetectionPattern(ThreatType.PROMPT_INJECTION, """(?i)\\[INST\\]|\\[/INST\\]""".toRegex(), "INST 태그 사용"),
-        DetectionPattern(ThreatType.PROMPT_INJECTION, """(?i)<\|[^|]*\|>""".toRegex(), "모델별 특수 메타 토큰 패턴"),
+        DetectionPattern(ThreatType.PROMPT_INJECTION, """(?i)<\|[^|]*\|>""".toRegex(), "LLM 모델별 특수 메타 토큰 패턴"),
         DetectionPattern(ThreatType.PROMPT_INJECTION, """(?i)###\s+(instruction|system|user)""".toRegex(), "메타 지시어"),
 
         // 10. 감정적 조작 시도들
