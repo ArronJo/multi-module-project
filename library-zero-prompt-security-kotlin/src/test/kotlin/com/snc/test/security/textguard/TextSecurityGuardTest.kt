@@ -17,7 +17,7 @@ import org.junit.jupiter.params.provider.CsvSource
 import org.junit.jupiter.params.provider.ValueSource
 
 @Suppress("NonAsciiCharacters")
-class SecurityTextGuardTest {
+class TextSecurityGuardTest {
 
     private lateinit var processor: SecurityTextGuard
 
