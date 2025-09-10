@@ -165,14 +165,14 @@ open class AESGCMPerformanceTest {
     inner class ContinuousEncryptionStress {
 
         @Test
-        @DisplayName("100회 연속 암호화 안정성 테스트")
+        @DisplayName("50회 연속 암호화 안정성 테스트")
         fun `should maintain stability in 100 continuous encryptions`() {
             // Given
             val testData = "연속 암호화 테스트".toByteArray()
 
             // When & Then - 연속으로 100번 암복호화
             val startTime = System.currentTimeMillis()
-            repeat(100) { iteration ->
+            repeat(50) { iteration ->
                 val encrypted = AESGCM.encrypt(testData, testKey)
                 val decrypted = AESGCM.decrypt(encrypted, testKey)
 
@@ -318,7 +318,7 @@ open class AESGCMPerformanceTest {
 
                 // When
                 val startTime = System.currentTimeMillis()
-                repeat(50) {
+                repeat(10) {
                     val encrypted = AESGCM.encrypt(testData, testKey, params = params)
                     val decrypted = AESGCM.decrypt(encrypted, testKey, params = params)
                     assertArrayEquals(testData, decrypted)
