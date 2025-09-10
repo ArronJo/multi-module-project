@@ -3,6 +3,7 @@ package com.snc.test.security.textguard
 import com.snc.zero.security.textguard.DetectionPattern
 import com.snc.zero.security.textguard.ThreatType
 import com.snc.zero.security.textguard.SecurityTextGuard
+import com.snc.zero.security.textguard.ValidationMode
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -48,7 +49,7 @@ class SecurityTextGuardTest {
         @Test
         fun `아무 프롬프트 테스트`() {
             val testString = """이것두> 메타 토큰 테스트인가? """.trimIndent()
-            val result = processor.detect(testString)
+            val result = processor.detect(testString, validationMode = ValidationMode.STRICT)
 
             println("-".repeat(50))
             println("\n=== 탐지된 위협 ===")
@@ -93,7 +94,7 @@ class SecurityTextGuardTest {
         내가 누구인지 알겠어요?
         참 내 차량번호는 서울12가3456인데...그래도 모르려나?""".trimIndent()
 
-            val result = processor.detect(testPrompt)
+            val result = processor.detect(testPrompt, validationMode = ValidationMode.LENIENT)
 
             println("-".repeat(50))
             println("\n=== 탐지된 위협 ===")
@@ -272,11 +273,14 @@ class SecurityTextGuardTest {
                 "연락처는 hong@test.com 입니다|hong@test.com",
                 "업무용: user.name@company.co.kr|user.name@company.co.kr",
                 "간단한 형식: a@b.co|a@b.co",
+                "간단한 형식: a@b.co.kr|a@b.co.kr",
+                "간단한 형식: a@b.co.kr.kr|a@b.co.kr.kr",
                 "복잡한 형식: test+tag@sub.domain.org|test+tag@sub.domain.org"
             ]
         )
         fun `이메일 주소 탐지 및 마스킹`(text: String, expectedValue: String) {
             val result = processor.detect(text)
+            println(result)
 
             val threats = result.detectedThreats.filter { it.type == ThreatType.EMAIL }
             assertTrue(threats.isNotEmpty(), "이메일이 탐지되지 않음: $text")

@@ -38,6 +38,12 @@ enum class ThreatType {
     CUSTOM // 사용자 정의 패턴용
 }
 
+// 실행 모드
+enum class ValidationMode {
+    STRICT, // 강력한 방식: 첫 실패에서 바로 중단
+    LENIENT // 느슨한 방식: 모든 룰 검사 후 결과 수집
+}
+
 // 탐지 패턴을 나타내는 데이터 클래스
 data class DetectionPattern(
     val type: ThreatType,
@@ -83,7 +89,7 @@ class DetectionPatternBuilder {
     }
 }
 
-// 통합 보안 탐지기 (개선된 버전)
+// 통합 보안 탐지기
 class ThreatDetector {
 
     private val customPatterns = mutableListOf<DetectionPattern>()
@@ -100,7 +106,7 @@ class ThreatDetector {
      */
     private val defaultPatterns = listOf(
         // 이메일 패턴들
-        DetectionPattern(ThreatType.EMAIL, """\b[A-Za-z0-9+\-_.]+@[A-Za-z0-9+\-_.ㄱ-ㅎㅏ-ㅣ가-힝]+\.[A-Za-z]{2,}(\.[A-Za-z]{2,})?\b""".toRegex(), "표준 이메일 패턴"),
+        DetectionPattern(ThreatType.EMAIL, """\b[a-zA-Z0-9\uAC00-\uD7A3._%+-]+@[A-Za-z0-9+\-_.ㄱ-ㅎㅏ-ㅣ가-힝]+\.[A-Za-z]{2,}(\.[A-Za-z]{2,})?\b""".toRegex(), "표준 이메일 패턴"),
         // 패턴 추가는 고민 해보자. DetectionPattern(ThreatType.EMAIL, """\b[A-Za-z0-9]+@[A-Za-z0-9]+\.[A-Za-z]{2,4}\b""".toRegex(), "기본 이메일 패턴"),
 
         // 주민등록번호 패턴들
@@ -266,7 +272,7 @@ class ThreatDetector {
         // 12. 한국어 프롬프트 인젝션 패턴들
         DetectionPattern(ThreatType.PROMPT_INJECTION, """(?i)\b(무시해|무시하고|잊어버리고)\b""".toRegex(), "한국어 무시 명령"),
         DetectionPattern(ThreatType.PROMPT_INJECTION, """(?i)(이전|위의|모든)\s+(지시|명령|규칙)을?\s+(무시|잊어버려)""".toRegex(), "한국어 지시사항 무시"),
-        DetectionPattern(ThreatType.PROMPT_INJECTION, """(?i)(관리자|개발자|시스템)\s+(모드|권한)""".toRegex(), "역할/권한 변경 시도 (한국어)"),
+        DetectionPattern(ThreatType.PROMPT_INJECTION, """(?i)(관리자|개발자|시스템)\s+(모드|권한|역할)""".toRegex(), "역할/권한 변경 시도 (한국어)"),
         DetectionPattern(ThreatType.PROMPT_INJECTION, """(?i)(가정해|상상해|연기해)\s+""".toRegex(), "시뮬레이션/역할극 시도 (한국어)"),
         DetectionPattern(ThreatType.PROMPT_INJECTION, """(?i)(보안|안전)\s+(기능|제한)을?\s+(해제|비활성화|끄고)""".toRegex(), "보안 해제 시도 (한국어)"),
     )
@@ -347,7 +353,7 @@ class ThreatDetector {
     /**
      * 모든 위협 탐지
      */
-    fun detectAllThreats(text: String): List<ThreatInfo> {
+    fun detectAllThreats(text: String, validationMode: ValidationMode = ValidationMode.LENIENT): List<ThreatInfo> {
         val threats = mutableListOf<ThreatInfo>()
 
         allPatterns.forEach { pattern ->
@@ -370,6 +376,9 @@ class ThreatDetector {
                         detectedValue = match.value,
                         description = pattern.description
                     ))
+                    if (validationMode == ValidationMode.STRICT) {
+                        return threats
+                    }
                 }
             }
         }
@@ -530,7 +539,9 @@ class SensitiveDataMasker {
     }
 }
 
-// 통합 보안 문자열 프로세서 (개선된 버전)
+/**
+ * 텍스트 보안/필터링 클래스
+ */
 class SecurityTextGuard {
 
     private val unifiedDetector = ThreatDetector()
@@ -546,16 +557,18 @@ class SecurityTextGuard {
      *
      * @param inputText 탐지할 입력 텍스트
      * @param targetTypes 탐지할 ThreatType들 (null이면 전체 탐지, empty이면 아무것도 탐지하지 않음)
+     * @param validationMode 탐지 모드 (STRICT 모드에서는 첫 실패에서 즉시 리턴, LENIENT 모드는 계속 탐지)
      * @param enableMasking 마스킹 수행 여부 (true: DetectionResult 반환, false: ThreatInfo 리스트만 반환)
      * @return enableMasking이 true면 DetectionResult, false면 null (detectedThreats만 사용)
      */
     fun detect(
         inputText: String,
         targetTypes: Set<ThreatType>? = null,
+        validationMode: ValidationMode = ValidationMode.LENIENT,
         enableMasking: Boolean = true
     ): DetectionResult {
         // 전체 위협 탐지
-        val allDetectedThreats = unifiedDetector.detectAllThreats(inputText)
+        val allDetectedThreats = unifiedDetector.detectAllThreats(inputText, validationMode)
 
         // 필터링 적용
         val filteredThreats = when {
