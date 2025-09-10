@@ -542,7 +542,7 @@ class SensitiveDataMasker {
 /**
  * 텍스트 보안/필터링 클래스
  */
-class SecurityTextGuard {
+class TextSecurityGuard {
 
     private val unifiedDetector = ThreatDetector()
     private val stringMasker = SensitiveDataMasker()

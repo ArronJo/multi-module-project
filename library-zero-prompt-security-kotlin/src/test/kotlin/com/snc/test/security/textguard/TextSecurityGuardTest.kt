@@ -2,7 +2,7 @@ package com.snc.test.security.textguard
 
 import com.snc.zero.security.textguard.DetectionPattern
 import com.snc.zero.security.textguard.ThreatType
-import com.snc.zero.security.textguard.SecurityTextGuard
+import com.snc.zero.security.textguard.TextSecurityGuard
 import com.snc.zero.security.textguard.ValidationMode
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -19,11 +19,11 @@ import org.junit.jupiter.params.provider.ValueSource
 @Suppress("NonAsciiCharacters")
 class TextSecurityGuardTest {
 
-    private lateinit var processor: SecurityTextGuard
+    private lateinit var processor: TextSecurityGuard
 
     @BeforeEach
     fun setUp() {
-        processor = SecurityTextGuard()
+        processor = TextSecurityGuard()
     }
 
     @Nested
@@ -206,7 +206,7 @@ class TextSecurityGuardTest {
         @Test
         @DisplayName("커스텀 패턴 테스트")
         fun `커스텀 패턴 테스트`() {
-            val processor = SecurityTextGuard()
+            val processor = TextSecurityGuard()
 
             // 사용자 정의 패턴 추가
             println("-".repeat(50))
