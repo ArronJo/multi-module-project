@@ -43,32 +43,6 @@ class InMemoryStringDataProvider(
 }
 
 /**
- * 정적 데이터를 제공하는 데이터 제공자
- */
-class StaticStringDataProvider(
-    private val data: List<String>
-) : StringDataProvider {
-
-    override fun getData(): List<String> = data
-
-    override fun addData(items: List<String>) {
-        throw UnsupportedOperationException("StaticStringDataProvider는 데이터 추가를 지원하지 않습니다")
-    }
-
-    override fun addData(item: String) {
-        throw UnsupportedOperationException("StaticStringDataProvider는 데이터 추가를 지원하지 않습니다")
-    }
-
-    override fun clearData() {
-        throw UnsupportedOperationException("StaticStringDataProvider는 데이터 삭제를 지원하지 않습니다")
-    }
-
-    override fun size(): Int = data.size
-
-    override fun isEmpty(): Boolean = data.isEmpty()
-}
-
-/**
  * 파일에서 데이터를 읽는 데이터 제공자
  */
 class FileStringDataProvider(
@@ -118,44 +92,4 @@ class FileStringDataProvider(
     fun refreshCache() {
         cachedData = null
     }
-}
-
-/**
- * 여러 데이터 제공자를 조합하는 컴포지트 데이터 제공자
- */
-class CompositeStringDataProvider(
-    private val providers: List<StringDataProvider>
-) : StringDataProvider {
-
-    override fun getData(): List<String> {
-        return providers.flatMap { it.getData() }
-    }
-
-    override fun addData(items: List<String>) {
-        providers.filterIsInstance<InMemoryStringDataProvider>()
-            .firstOrNull()
-            ?.addData(items)
-            ?: throw UnsupportedOperationException("데이터를 추가할 수 있는 제공자가 없습니다")
-    }
-
-    override fun addData(item: String) {
-        providers.filterIsInstance<InMemoryStringDataProvider>()
-            .firstOrNull()
-            ?.addData(item)
-            ?: throw UnsupportedOperationException("데이터를 추가할 수 있는 제공자가 없습니다")
-    }
-
-    override fun clearData() {
-        providers.forEach { provider ->
-            try {
-                provider.clearData()
-            } catch (e: UnsupportedOperationException) {
-                // 지원하지 않는 제공자는 무시
-            }
-        }
-    }
-
-    override fun size(): Int = providers.sumOf { it.size() }
-
-    override fun isEmpty(): Boolean = providers.all { it.isEmpty() }
 }
