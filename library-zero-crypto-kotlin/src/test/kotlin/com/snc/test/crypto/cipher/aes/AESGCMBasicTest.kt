@@ -30,13 +30,20 @@ open class AESGCMBasicTest {
 
         @BeforeEach
         fun init() {
-            encrypted = AESGCM.encrypt(plaintext, key)
+            encrypted = AESGCM.encrypt(plaintext = plaintext, key = key)
         }
 
         @Test
-        fun `암호화 시점과 복호화 시점이 다를 경우 텍스트`() {
+        fun `암복호화 테스트 1`() {
+            val encrypted = AESGCM.encrypt(plaintext = plaintext, key = key)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = key)
+            assertArrayEquals(plaintext, decrypted)
+        }
+
+        @Test
+        fun `암호화 시점과 복호화 시점이 다를 경우 테스트`() {
             Thread.sleep(100)
-            val decrypted = AESGCM.decrypt(encrypted, key)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = key)
             assertArrayEquals(plaintext, decrypted)
         }
 
@@ -44,7 +51,7 @@ open class AESGCMBasicTest {
         fun `timestamp가 올바르게 보존되는지 확인`() {
             // Given
             val beforeEncrypt = System.currentTimeMillis()
-            val encrypted = AESGCM.encrypt(plaintext, key)
+            val encrypted = AESGCM.encrypt(plaintext = plaintext, key = key)
             Thread.sleep(100)
             val beforeDecrypt = System.currentTimeMillis()
 
@@ -61,7 +68,7 @@ open class AESGCMBasicTest {
 
         @Test
         fun `기본 암복호화가 원본 평문을 반환해야 한다`() {
-            val decrypted = AESGCM.decrypt(encrypted, key)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = key)
             assertArrayEquals(plaintext, decrypted)
         }
 
@@ -70,7 +77,7 @@ open class AESGCMBasicTest {
             val wrongKey = AESGCM.generateKey(256)
 
             assertThrows(Exception::class.java) {
-                AESGCM.decrypt(encrypted, wrongKey)
+                AESGCM.decrypt(blob = encrypted, key = wrongKey)
             }
         }
 
@@ -92,8 +99,8 @@ open class AESGCMBasicTest {
             val emptyPlaintext = ByteArray(0)
 
             // When
-            val encrypted = AESGCM.encrypt(emptyPlaintext, testKey)
-            val decrypted = AESGCM.decrypt(encrypted, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = emptyPlaintext, key = testKey)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey)
 
             // Then
             assertArrayEquals(emptyPlaintext, decrypted)
@@ -105,8 +112,8 @@ open class AESGCMBasicTest {
             val koreanText = "Hello, World! 안녕하세요!".toByteArray(Charsets.UTF_8)
 
             // When
-            val encrypted = AESGCM.encrypt(koreanText, testKey)
-            val decrypted = AESGCM.decrypt(encrypted, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = koreanText, key = testKey)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey)
 
             // Then
             assertArrayEquals(koreanText, decrypted)
@@ -118,8 +125,8 @@ open class AESGCMBasicTest {
             val largeData = ByteArray(10_000) { (it % 256).toByte() }
 
             // When
-            val encrypted = AESGCM.encrypt(largeData, testKey)
-            val decrypted = AESGCM.decrypt(encrypted, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = largeData, key = testKey)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey)
 
             // Then
             assertArrayEquals(largeData, decrypted)
@@ -131,8 +138,8 @@ open class AESGCMBasicTest {
             val specialChars = "!@#$%^&*()_+-=[]{}|;':\",./<>?".toByteArray(Charsets.UTF_8)
 
             // When
-            val encrypted = AESGCM.encrypt(specialChars, testKey)
-            val decrypted = AESGCM.decrypt(encrypted, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = specialChars, key = testKey)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey)
 
             // Then
             assertArrayEquals(specialChars, decrypted)
@@ -152,8 +159,8 @@ open class AESGCMBasicTest {
             val aad = "additional authenticated data".toByteArray()
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, aad)
-            val decrypted = AESGCM.decrypt(encrypted, testKey, aad)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, aad = aad)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey, aad = aad)
 
             // Then
             assertArrayEquals(testPlaintext, decrypted)
@@ -164,11 +171,11 @@ open class AESGCMBasicTest {
             // Given
             val aad1 = "correct aad".toByteArray()
             val aad2 = "wrong aad".toByteArray()
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, aad1)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, aad = aad1)
 
             // When & Then
             assertThrows(Exception::class.java) {
-                AESGCM.decrypt(encrypted, testKey, aad2)
+                AESGCM.decrypt(blob = encrypted, key = testKey, aad = aad2)
             }
         }
 
@@ -176,11 +183,11 @@ open class AESGCMBasicTest {
         fun `AAD 없이 암호화했는데 AAD로 복호화 시 예외가 발생해야 한다`() {
             // Given
             val aad = "unexpected aad".toByteArray()
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
 
             // When & Then
             assertThrows(Exception::class.java) {
-                AESGCM.decrypt(encrypted, testKey, aad)
+                AESGCM.decrypt(blob = encrypted, key = testKey, aad = aad)
             }
         }
 
@@ -190,8 +197,8 @@ open class AESGCMBasicTest {
             val koreanAAD = "한글 추가 인증 데이터".toByteArray(Charsets.UTF_8)
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, koreanAAD)
-            val decrypted = AESGCM.decrypt(encrypted, testKey, koreanAAD)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, aad = koreanAAD)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey, aad = koreanAAD)
 
             // Then
             assertArrayEquals(testPlaintext, decrypted)
@@ -212,7 +219,7 @@ open class AESGCMBasicTest {
 
             // When & Then
             assertThrows(IllegalArgumentException::class.java) {
-                AESGCM.decrypt(invalidData, testKey)
+                AESGCM.decrypt(blob = invalidData, key = testKey)
             }
         }
 
@@ -220,7 +227,7 @@ open class AESGCMBasicTest {
         fun `null 키로 암호화 시 예외가 발생해야 한다`() {
             // When & Then
             assertThrows(Exception::class.java) {
-                AESGCM.encrypt(testPlaintext, ByteArray(0))
+                AESGCM.encrypt(plaintext = testPlaintext, key = ByteArray(0))
             }
         }
 
@@ -232,20 +239,20 @@ open class AESGCMBasicTest {
 
             // When & Then
             assertThrows(IllegalArgumentException::class.java) {
-                AESGCM.encrypt(testPlaintext, wrongSizeKey, params = params)
+                AESGCM.encrypt(plaintext = testPlaintext, key = wrongSizeKey, params = params)
             }
         }
 
         @Test
         fun `잘못된 크기의 키로 복호화 시 예외가 발생해야 한다`() {
             // Given
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
             val wrongSizeKey = ByteArray(16) // 128비트 키
             val params = AESGCM.Params(keyBits = 256)
 
             // When & Then
             assertThrows(IllegalArgumentException::class.java) {
-                AESGCM.decrypt(encrypted, wrongSizeKey, params = params)
+                AESGCM.decrypt(blob = encrypted, key = wrongSizeKey, params = params)
             }
         }
     }

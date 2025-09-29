@@ -76,10 +76,23 @@ object AESGCM {
         val timestamp = System.currentTimeMillis()
 
         // AES-GCM 암호화
-        val encryptedData = performGcmEncryption(plaintext, key, iv, aad, params)
+        val encryptedData = performGcmEncryption(
+            plaintext = plaintext,
+            key = key,
+            iv = iv,
+            aad = aad,
+            params = params
+        )
 
         // 메타데이터 생성 및 결합
-        val metadata = createMetadata(plaintext, iv, key, salt, timestamp, params)
+        val metadata = createMetadata(
+            plaintext = plaintext,
+            iv = iv,
+            key = key,
+            salt = salt,
+            timestamp = timestamp,
+            params = params
+        )
 
         return metadata.toByteArray() + iv + encryptedData
     }
@@ -119,7 +132,13 @@ object AESGCM {
         val ciphertext = blob.copyOfRange(ivEnd, blob.size)
 
         // AES-GCM 복호화
-        val plaintext = performGcmDecryption(ciphertext, key, iv, aad, params)
+        val plaintext = performGcmDecryption(
+            ciphertext = ciphertext,
+            key = key,
+            iv = iv,
+            aad = aad,
+            params = params
+        )
 
         // 무결성 검증
         verifyIntegrity(metadata, plaintext, iv, key, params)
@@ -280,16 +299,16 @@ object HashGenerator {
  * 암호화 메타데이터
  */
 data class EncryptedMetadata(
-    val version: String = "V02",
+    val version: String = VERSION,
     val hash: ByteArray,
     val salt: ByteArray,
     val timestamp: Long = System.currentTimeMillis()
 ) {
-
     companion object {
         private const val DELIMITER = "::"
-        private const val PREFIX = "ENCRYPTED$DELIMITER"
-        private const val VERSION_SIZE = 3 + DELIMITER.length
+        private const val PREFIX = "ENW$DELIMITER" // Encrypted with aes/gcm/nopadding.
+        private const val VERSION = "AFJ02" // 202509
+        private const val VERSION_SIZE = VERSION.length + DELIMITER.length
         private const val HASH_SIZE = 32 // SHA-256
         private const val TIMESTAMP_SIZE = 8 // Long
         private const val SALT_LENGTH_SIZE = 2 // Salt 길이 정보
@@ -310,12 +329,12 @@ data class EncryptedMetadata(
             var offset = 0
 
             // Prefix 검증
-            val prefixStr = data.copyOfRange(offset, offset + PREFIX.length).toString(Charsets.UTF_8)
+            val prefixStr = data.copyOfRange(offset, PREFIX.length).toString(Charsets.UTF_8)
             require(prefixStr == PREFIX) { "잘못된 메타데이터 형식입니다: 예상 '$PREFIX', 실제 '$prefixStr'" }
             offset += PREFIX.length
 
             // 버전 읽기
-            val version = data.copyOfRange(offset, offset + 3).toString(Charsets.UTF_8)
+            val version = data.copyOfRange(offset, offset + VERSION.length).toString(Charsets.UTF_8)
             offset += VERSION_SIZE
 
             // 해시 읽기

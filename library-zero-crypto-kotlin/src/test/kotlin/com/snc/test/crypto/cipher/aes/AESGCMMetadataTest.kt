@@ -31,30 +31,30 @@ open class AESGCMMetadataTest {
     inner class EncryptedMetadataBasic {
 
         @Test
-        @DisplayName("메타데이터가 올바른 V02 프리픽스로 시작해야 한다")
-        fun `should start with correct v02 prefix`() {
+        @DisplayName("메타데이터가 올바른 AFJ02 프리픽스로 시작해야 한다")
+        fun `should start with correct AFJ02 prefix`() {
             // Given
             val hash = ByteArray(32) { it.toByte() }
             val salt = ByteArray(16) { (it * 2).toByte() }
-            val metadata = EncryptedMetadata(hash = hash, salt = salt)
+            val metadata = EncryptedMetadata(version = "AFJ02", hash = hash, salt = salt)
 
             // When
             val bytes = metadata.toByteArray()
             val prefix = bytes.copyOfRange(0, 16).toString(Charsets.UTF_8)
 
             // Then
-            assertTrue(prefix.startsWith("ENCRYPTED::V02::"), "올바른 V02 프리픽스로 시작해야 한다")
+            assertTrue(prefix.startsWith("ENW::AFJ02::"), "올바른 AFJ02 프리픽스로 시작해야 한다")
         }
 
         @Test
-        @DisplayName("직렬화와 역직렬화가 올바르게 동작해야 한다 (V02)")
-        fun `should serialize and deserialize correctly v02`() {
+        @DisplayName("직렬화와 역직렬화가 올바르게 동작해야 한다 (AFJ02)")
+        fun `should serialize and deserialize correctly AFJ02`() {
             // Given
             val originalHash = ByteArray(32) { (it * 3).toByte() }
             val originalSalt = ByteArray(16) { (it * 5).toByte() }
             val originalTimestamp = System.currentTimeMillis()
             val originalMetadata = EncryptedMetadata(
-                version = "V02",
+                version = "AFJ02",
                 hash = originalHash,
                 salt = originalSalt,
                 timestamp = originalTimestamp
@@ -73,15 +73,15 @@ open class AESGCMMetadataTest {
         }
 
         @Test
-        @DisplayName("메타데이터가 가변 길이로 직렬화되어야 한다 (V02)")
-        fun `should serialize to variable length v02`() {
+        @DisplayName("메타데이터가 가변 길이로 직렬화되어야 한다 (AFJ02)")
+        fun `should serialize to variable length AFJ02`() {
             // Given
             val hash = ByteArray(32) { it.toByte() }
             val salt16 = ByteArray(16) { (it * 2).toByte() }
             val salt32 = ByteArray(32) { (it * 3).toByte() }
 
-            val metadata1 = EncryptedMetadata(hash = hash, salt = salt16, timestamp = 1000L)
-            val metadata2 = EncryptedMetadata(hash = hash, salt = salt32, timestamp = System.currentTimeMillis())
+            val metadata1 = EncryptedMetadata(version = "AFJ02", hash = hash, salt = salt16, timestamp = 1000L)
+            val metadata2 = EncryptedMetadata(version = "AFJ02", hash = hash, salt = salt32, timestamp = System.currentTimeMillis())
 
             // When
             val bytes1 = metadata1.toByteArray()
@@ -113,7 +113,7 @@ open class AESGCMMetadataTest {
         @DisplayName("잘못된 프리픽스로 역직렬화 시 예외가 발생해야 한다")
         fun `should throw exception for invalid prefix during deserialization`() {
             // Given
-            val invalidData = "INVALID::V02::".toByteArray() + ByteArray(32) + ByteArray(16) + ByteArray(8)
+            val invalidData = "INVALID::AFJ02::".toByteArray() + ByteArray(32) + ByteArray(16) + ByteArray(8)
 
             // When & Then
             assertThrows(IllegalArgumentException::class.java) {
@@ -240,7 +240,7 @@ open class AESGCMMetadataTest {
             val iterations = 1000
             val fixedTimestamp = 123456789L
             val hash = HashGenerator.createSecureHash(plaintext, iv, key, salt, iterations, fixedTimestamp)
-            val metadata = EncryptedMetadata(hash = hash, salt = salt, timestamp = fixedTimestamp)
+            val metadata = EncryptedMetadata(version = "M02", hash = hash, salt = salt, timestamp = fixedTimestamp)
 
             // When & Then
             assertTrue(
@@ -282,7 +282,7 @@ open class AESGCMMetadataTest {
             saltSizes.forEach { saltSize ->
                 // Given
                 val salt = ByteArray(saltSize) { (it % 256).toByte() }
-                val originalMetadata = EncryptedMetadata(hash = hash, salt = salt, timestamp = timestamp)
+                val originalMetadata = EncryptedMetadata(version = "AFJ02", hash = hash, salt = salt, timestamp = timestamp)
 
                 // When
                 val serialized = originalMetadata.toByteArray()
@@ -311,14 +311,14 @@ open class AESGCMMetadataTest {
         private val testPlaintext = "메타데이터 추출 테스트".toByteArray()
 
         @Test
-        @DisplayName("메타데이터 추출이 올바르게 동작해야 한다 (V02)")
-        fun `should extract v02 metadata correctly`() {
+        @DisplayName("메타데이터 추출이 올바르게 동작해야 한다 (AFJ02)")
+        fun `should extract AFJ02 metadata correctly`() {
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
             val metadata = AESGCM.extractMetadata(encrypted)
 
             // Then
-            assertEquals("V02", metadata.version, "올바른 V02 버전이어야 한다")
+            assertEquals("AFJ02", metadata.version, "올바른 AFJ02 버전이어야 한다")
             assertEquals(32, metadata.hash.size, "해시 크기가 32바이트여야 한다")
             assertEquals(16, metadata.salt.size, "Salt 크기가 16바이트여야 한다")
             assertTrue(metadata.timestamp > 0, "타임스탬프가 설정되어야 한다")
@@ -331,7 +331,7 @@ open class AESGCMMetadataTest {
             val params = AESGCM.Params(saltBytes = 32)
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = params)
             val metadata = AESGCM.extractMetadata(encrypted)
 
             // Then
@@ -345,7 +345,7 @@ open class AESGCMMetadataTest {
             val beforeEncrypt = System.currentTimeMillis()
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
             val metadata = AESGCM.extractMetadata(encrypted)
             val afterExtract = System.currentTimeMillis()
 
@@ -419,7 +419,7 @@ open class AESGCMMetadataTest {
         @DisplayName("동일한 모든 필드를 가진 객체들은 같아야 한다")
         fun `동일한 모든 필드를 가진 객체들은 같아야 한다`() {
             // Given
-            val version = "V02"
+            val version = "AFJ02"
             val hash = byteArrayOf(1, 2, 3, 4, 5)
             val salt = byteArrayOf(10, 20, 30)
             val timestamp = 1234567890L
@@ -437,7 +437,7 @@ open class AESGCMMetadataTest {
         fun `같은 객체 참조는 자기 자신과 같아야 한다`() {
             // Given
             val metadata = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = byteArrayOf(1, 2, 3),
                 salt = byteArrayOf(4, 5, 6),
                 timestamp = 1234567890L
@@ -452,7 +452,7 @@ open class AESGCMMetadataTest {
         fun `null과 비교시 false를 반환해야 한다`() {
             // Given
             val metadata = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = byteArrayOf(1, 2, 3),
                 salt = byteArrayOf(4, 5, 6),
                 timestamp = 1234567890L
@@ -467,7 +467,7 @@ open class AESGCMMetadataTest {
         fun `다른 타입의 객체와 비교시 false를 반환해야 한다`() {
             // Given
             val metadata = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = byteArrayOf(1, 2, 3),
                 salt = byteArrayOf(4, 5, 6),
                 timestamp = 1234567890L
@@ -486,8 +486,8 @@ open class AESGCMMetadataTest {
             val baseSalt = byteArrayOf(4, 5, 6)
             val baseTimestamp = 1234567890L
 
-            val metadata1 = EncryptedMetadata("V01", baseHash, baseSalt, baseTimestamp)
-            val metadata2 = EncryptedMetadata("V02", baseHash, baseSalt, baseTimestamp)
+            val metadata1 = EncryptedMetadata("AFJ01", baseHash, baseSalt, baseTimestamp)
+            val metadata2 = EncryptedMetadata("AFJ02", baseHash, baseSalt, baseTimestamp)
 
             // When & Then
             assertFalse(metadata1.equals(metadata2))
@@ -497,7 +497,7 @@ open class AESGCMMetadataTest {
         @DisplayName("hash가 다른 경우 false를 반환해야 한다")
         fun `hash가 다른 경우 false를 반환해야 한다`() {
             // Given
-            val version = "V02"
+            val version = "AFJ02"
             val salt = byteArrayOf(4, 5, 6)
             val timestamp = 1234567890L
 
@@ -512,7 +512,7 @@ open class AESGCMMetadataTest {
         @DisplayName("hash 길이가 다른 경우 false를 반환해야 한다")
         fun `hash 길이가 다른 경우 false를 반환해야 한다`() {
             // Given
-            val version = "V02"
+            val version = "AFJ02"
             val salt = byteArrayOf(4, 5, 6)
             val timestamp = 1234567890L
 
@@ -527,7 +527,7 @@ open class AESGCMMetadataTest {
         @DisplayName("salt가 다른 경우 false를 반환해야 한다")
         fun `salt가 다른 경우 false를 반환해야 한다`() {
             // Given
-            val version = "V02"
+            val version = "AFJ02"
             val hash = byteArrayOf(1, 2, 3)
             val timestamp = 1234567890L
 
@@ -542,7 +542,7 @@ open class AESGCMMetadataTest {
         @DisplayName("salt 길이가 다른 경우 false를 반환해야 한다")
         fun `salt 길이가 다른 경우 false를 반환해야 한다`() {
             // Given
-            val version = "V02"
+            val version = "AFJ02"
             val hash = byteArrayOf(1, 2, 3)
             val timestamp = 1234567890L
 
@@ -557,7 +557,7 @@ open class AESGCMMetadataTest {
         @DisplayName("timestamp가 다른 경우 false를 반환해야 한다")
         fun `timestamp가 다른 경우 false를 반환해야 한다`() {
             // Given
-            val version = "V02"
+            val version = "AFJ02"
             val hash = byteArrayOf(1, 2, 3)
             val salt = byteArrayOf(4, 5, 6)
 
@@ -573,13 +573,13 @@ open class AESGCMMetadataTest {
         fun `빈 배열들도 올바르게 비교되어야 한다`() {
             // Given
             val metadata1 = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = byteArrayOf(),
                 salt = byteArrayOf(),
                 timestamp = 1234567890L
             )
             val metadata2 = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = byteArrayOf(),
                 salt = byteArrayOf(),
                 timestamp = 1234567890L
@@ -598,7 +598,7 @@ open class AESGCMMetadataTest {
         @DisplayName("동일한 객체는 같은 hashCode를 가져야 한다")
         fun `동일한 객체는 같은 hashCode를 가져야 한다`() {
             // Given
-            val version = "V02"
+            val version = "AFJ02"
             val hash = byteArrayOf(1, 2, 3, 4, 5)
             val salt = byteArrayOf(10, 20, 30)
             val timestamp = 1234567890L
@@ -614,13 +614,13 @@ open class AESGCMMetadataTest {
         @DisplayName("서로 다른 객체는 다른 hashCode를 가져야 한다")
         fun `서로 다른 객체는 다른 hashCode를 가져야 한다`() {
             // Given
-            val baseVersion = "V02"
+            val baseVersion = "AFJ02"
             val baseHash = byteArrayOf(1, 2, 3)
             val baseSalt = byteArrayOf(4, 5, 6)
             val baseTimestamp = 1234567890L
 
             val metadata1 = EncryptedMetadata(baseVersion, baseHash, baseSalt, baseTimestamp)
-            val metadata2 = EncryptedMetadata("V01", baseHash, baseSalt, baseTimestamp) // version 다름
+            val metadata2 = EncryptedMetadata("AFJ01", baseHash, baseSalt, baseTimestamp) // version 다름
             val metadata3 = EncryptedMetadata(baseVersion, byteArrayOf(7, 8, 9), baseSalt, baseTimestamp) // hash 다름
             val metadata4 = EncryptedMetadata(baseVersion, baseHash, byteArrayOf(7, 8, 9), baseTimestamp) // salt 다름
             val metadata5 = EncryptedMetadata(baseVersion, baseHash, baseSalt, 9876543210L) // timestamp 다름
@@ -639,7 +639,7 @@ open class AESGCMMetadataTest {
         fun `hashCode 일관성을 유지해야 한다`() {
             // Given
             val metadata = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = byteArrayOf(1, 2, 3, 4, 5),
                 salt = byteArrayOf(10, 20, 30),
                 timestamp = 1234567890L
@@ -663,13 +663,13 @@ open class AESGCMMetadataTest {
         fun `빈 배열을 가진 객체도 올바른 hashCode를 생성해야 한다`() {
             // Given
             val metadata1 = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = byteArrayOf(),
                 salt = byteArrayOf(),
                 timestamp = 1234567890L
             )
             val metadata2 = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = byteArrayOf(),
                 salt = byteArrayOf(),
                 timestamp = 1234567890L
@@ -684,7 +684,7 @@ open class AESGCMMetadataTest {
         fun `각 필드의 변경이 hashCode에 영향을 주어야 한다`() {
             // Given
             val original = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = byteArrayOf(1, 2, 3),
                 salt = byteArrayOf(4, 5, 6),
                 timestamp = 1234567890L
@@ -724,8 +724,8 @@ open class AESGCMMetadataTest {
             val salt = byteArrayOf(10, 20, 30, 40)
             val timestamp = 1234567890L
 
-            val metadata1 = EncryptedMetadata("V02", hash, salt, timestamp)
-            val metadata2 = EncryptedMetadata("V02", hash, salt, timestamp)
+            val metadata1 = EncryptedMetadata("AFJ02", hash, salt, timestamp)
+            val metadata2 = EncryptedMetadata("AFJ02", hash, salt, timestamp)
 
             // When & Then
             assertTrue(metadata1.equals(metadata2))
@@ -737,7 +737,7 @@ open class AESGCMMetadataTest {
         fun `equals가 false인 경우 hashCode는 다를 가능성이 높아야 한다`() {
             // Given
             val baseMetadata = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = byteArrayOf(1, 2, 3),
                 salt = byteArrayOf(4, 5, 6),
                 timestamp = 1234567890L
@@ -766,13 +766,13 @@ open class AESGCMMetadataTest {
         fun `바이트 배열의 내용이 같으면 equals와 hashCode가 일치해야 한다`() {
             // Given
             val metadata1 = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = byteArrayOf(1, 2, 3, 4, 5),
                 salt = byteArrayOf(10, 20, 30),
                 timestamp = 1234567890L
             )
             val metadata2 = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = byteArrayOf(1, 2, 3, 4, 5), // 같은 내용의 새로운 배열
                 salt = byteArrayOf(10, 20, 30), // 같은 내용의 새로운 배열
                 timestamp = 1234567890L
@@ -788,13 +788,13 @@ open class AESGCMMetadataTest {
         fun `바이트 배열의 순서가 다르면 equals와 hashCode가 달라야 한다`() {
             // Given
             val metadata1 = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = byteArrayOf(1, 2, 3),
                 salt = byteArrayOf(4, 5, 6),
                 timestamp = 1234567890L
             )
             val metadata2 = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = byteArrayOf(3, 2, 1), // 순서가 다름
                 salt = byteArrayOf(6, 5, 4), // 순서가 다름
                 timestamp = 1234567890L
@@ -817,8 +817,8 @@ open class AESGCMMetadataTest {
             val largeHash = ByteArray(1024) { it.toByte() }
             val largeSalt = ByteArray(512) { (it * 2).toByte() }
 
-            val metadata1 = EncryptedMetadata("V02", largeHash, largeSalt, 1234567890L)
-            val metadata2 = EncryptedMetadata("V02", largeHash, largeSalt, 1234567890L)
+            val metadata1 = EncryptedMetadata("Z02", largeHash, largeSalt, 1234567890L)
+            val metadata2 = EncryptedMetadata("Z02", largeHash, largeSalt, 1234567890L)
 
             // When & Then
             assertTrue(metadata1.equals(metadata2))
@@ -830,13 +830,13 @@ open class AESGCMMetadataTest {
         fun `최대값 timestamp도 올바르게 처리되어야 한다`() {
             // Given
             val metadata1 = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = byteArrayOf(1, 2, 3),
                 salt = byteArrayOf(4, 5, 6),
                 timestamp = Long.MAX_VALUE
             )
             val metadata2 = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = byteArrayOf(1, 2, 3),
                 salt = byteArrayOf(4, 5, 6),
                 timestamp = Long.MAX_VALUE
@@ -852,13 +852,13 @@ open class AESGCMMetadataTest {
         fun `최소값 timestamp도 올바르게 처리되어야 한다`() {
             // Given
             val metadata1 = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = byteArrayOf(1, 2, 3),
                 salt = byteArrayOf(4, 5, 6),
                 timestamp = Long.MIN_VALUE
             )
             val metadata2 = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = byteArrayOf(1, 2, 3),
                 salt = byteArrayOf(4, 5, 6),
                 timestamp = Long.MIN_VALUE
@@ -874,13 +874,13 @@ open class AESGCMMetadataTest {
         fun `단일 바이트 배열도 올바르게 처리되어야 한다`() {
             // Given
             val metadata1 = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = byteArrayOf(42),
                 salt = byteArrayOf(-1),
                 timestamp = 0L
             )
             val metadata2 = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = byteArrayOf(42),
                 salt = byteArrayOf(-1),
                 timestamp = 0L
@@ -901,13 +901,13 @@ open class AESGCMMetadataTest {
         fun `equals 연산이 효율적으로 수행되어야 한다`() {
             // Given
             val metadata1 = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = ByteArray(32) { it.toByte() },
                 salt = ByteArray(16) { it.toByte() },
                 timestamp = 1234567890L
             )
             val metadata2 = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = ByteArray(32) { it.toByte() },
                 salt = ByteArray(16) { it.toByte() },
                 timestamp = 1234567890L
@@ -931,7 +931,7 @@ open class AESGCMMetadataTest {
         fun `hashCode 연산이 효율적으로 수행되어야 한다`() {
             // Given
             val metadata = EncryptedMetadata(
-                version = "V02",
+                version = "M02",
                 hash = ByteArray(32) { it.toByte() },
                 salt = ByteArray(16) { it.toByte() },
                 timestamp = 1234567890L

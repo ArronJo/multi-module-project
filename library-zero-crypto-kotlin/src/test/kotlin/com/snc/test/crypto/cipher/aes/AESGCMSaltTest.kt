@@ -30,7 +30,7 @@ open class AESGCMSaltTest {
             val params = AESGCM.Params()
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = params)
             val metadata = AESGCM.extractMetadata(encrypted)
 
             // Then
@@ -46,7 +46,7 @@ open class AESGCMSaltTest {
             val params = AESGCM.Params(saltBytes = customSaltSize)
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = params)
             val metadata = AESGCM.extractMetadata(encrypted)
 
             // Then
@@ -57,9 +57,9 @@ open class AESGCMSaltTest {
         @DisplayName("여러 번 암호화할 때마다 다른 Salt가 생성되어야 한다")
         fun `should generate different salt for each encryption`() {
             // Given & When
-            val encrypted1 = AESGCM.encrypt(testPlaintext, testKey)
-            val encrypted2 = AESGCM.encrypt(testPlaintext, testKey)
-            val encrypted3 = AESGCM.encrypt(testPlaintext, testKey)
+            val encrypted1 = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
+            val encrypted2 = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
+            val encrypted3 = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
 
             val salt1 = AESGCM.extractMetadata(encrypted1).salt
             val salt2 = AESGCM.extractMetadata(encrypted2).salt
@@ -75,7 +75,7 @@ open class AESGCMSaltTest {
         @DisplayName("Salt는 0이 아닌 값들을 포함해야 한다")
         fun `should generate non-zero salt values`() {
             // Given & When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
             val salt = AESGCM.extractMetadata(encrypted).salt
 
             // Then
@@ -91,11 +91,11 @@ open class AESGCMSaltTest {
         @DisplayName("같은 Salt로 생성된 해시는 검증에 성공해야 한다")
         fun `should verify hash with same salt successfully`() {
             // Given
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
 
             // When & Then
             assertDoesNotThrow {
-                AESGCM.decrypt(encrypted, testKey)
+                AESGCM.decrypt(blob = encrypted, key = testKey)
             }
         }
 
@@ -103,7 +103,7 @@ open class AESGCMSaltTest {
         @DisplayName("다른 Salt로 해시를 조작하면 검증에 실패해야 한다")
         fun `should fail hash verification with different salt`() {
             // Given
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
             val metadata = AESGCM.extractMetadata(encrypted)
 
             // Salt 조작
@@ -113,7 +113,7 @@ open class AESGCMSaltTest {
 
             // When & Then
             val exception = assertThrows<SecurityException> {
-                AESGCM.decrypt(manipulatedEncrypted, testKey)
+                AESGCM.decrypt(blob = manipulatedEncrypted, key = testKey)
             }
             assertEquals("데이터 무결성 검증 실패 - 데이터가 변조되었을 수 있습니다", exception.message)
         }
@@ -122,7 +122,7 @@ open class AESGCMSaltTest {
         @DisplayName("Salt 일부만 변경되어도 해시 검증에 실패해야 한다")
         fun `should fail hash verification with partially modified salt`() {
             // Given
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
             val metadata = AESGCM.extractMetadata(encrypted)
 
             // Salt의 첫 번째 바이트만 변경
@@ -133,7 +133,7 @@ open class AESGCMSaltTest {
 
             // When & Then
             assertThrows<SecurityException> {
-                AESGCM.decrypt(manipulatedEncrypted, testKey)
+                AESGCM.decrypt(blob = manipulatedEncrypted, key = testKey)
             }
         }
     }
@@ -206,8 +206,8 @@ open class AESGCMSaltTest {
             saltSizes.forEach { saltSize ->
                 // When
                 val params = AESGCM.Params(saltBytes = saltSize)
-                val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = params)
-                val decrypted = AESGCM.decrypt(encrypted, testKey, params = params)
+                val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = params)
+                val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey, params = params)
 
                 // Then
                 assertArrayEquals(testPlaintext, decrypted, "Salt size: $saltSize")
@@ -221,11 +221,11 @@ open class AESGCMSaltTest {
             // Given
             val encryptParams = AESGCM.Params(saltBytes = 16)
             val decryptParams = AESGCM.Params(saltBytes = 32) // 다른 크기
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = encryptParams)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = encryptParams)
 
             // When & Then
             assertThrows<Exception> {
-                AESGCM.decrypt(encrypted, testKey, params = decryptParams)
+                AESGCM.decrypt(blob = encrypted, key = testKey, params = decryptParams)
             }
         }
     }
@@ -242,9 +242,9 @@ open class AESGCMSaltTest {
             val key = AESGCM.generateKey()
 
             // When
-            val encrypted1 = AESGCM.encrypt(plaintext, key)
-            val encrypted2 = AESGCM.encrypt(plaintext, key)
-            val encrypted3 = AESGCM.encrypt(plaintext, key)
+            val encrypted1 = AESGCM.encrypt(plaintext = plaintext, key = key)
+            val encrypted2 = AESGCM.encrypt(plaintext = plaintext, key = key)
+            val encrypted3 = AESGCM.encrypt(plaintext = plaintext, key = key)
 
             val hash1 = AESGCM.extractMetadata(encrypted1).hash
             val hash2 = AESGCM.extractMetadata(encrypted2).hash
@@ -265,7 +265,7 @@ open class AESGCMSaltTest {
 
             // When
             repeat(sampleSize) {
-                val encrypted = AESGCM.encrypt(testPlaintext, testKey)
+                val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
                 salts.add(AESGCM.extractMetadata(encrypted).salt)
             }
 

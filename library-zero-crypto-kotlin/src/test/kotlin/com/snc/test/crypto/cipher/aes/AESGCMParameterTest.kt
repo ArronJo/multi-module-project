@@ -42,8 +42,8 @@ open class AESGCMParameterTest {
             )
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, key128, params = params)
-            val decrypted = AESGCM.decrypt(encrypted, key128, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = key128, params = params)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = key128, params = params)
 
             // Then
             assertArrayEquals(testPlaintext, decrypted, "128비트 키 매개변수로 올바르게 동작해야 한다")
@@ -63,8 +63,8 @@ open class AESGCMParameterTest {
             )
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, key192, params = params)
-            val decrypted = AESGCM.decrypt(encrypted, key192, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = key192, params = params)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = key192, params = params)
 
             // Then
             assertArrayEquals(testPlaintext, decrypted, "192비트 키 매개변수로 올바르게 동작해야 한다")
@@ -84,8 +84,8 @@ open class AESGCMParameterTest {
             )
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, key256, params = params)
-            val decrypted = AESGCM.decrypt(encrypted, key256, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = key256, params = params)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = key256, params = params)
 
             // Then
             assertArrayEquals(testPlaintext, decrypted, "256비트 키 매개변수로 올바르게 동작해야 한다")
@@ -105,8 +105,8 @@ open class AESGCMParameterTest {
             val params = AESGCM.Params(ivBytes = 12)
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = params)
-            val decrypted = AESGCM.decrypt(encrypted, testKey, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = params)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey, params = params)
 
             // Then
             assertArrayEquals(testPlaintext, decrypted, "12바이트 IV로 올바르게 동작해야 한다")
@@ -119,8 +119,8 @@ open class AESGCMParameterTest {
             val params = AESGCM.Params(ivBytes = 16)
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = params)
-            val decrypted = AESGCM.decrypt(encrypted, testKey, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = params)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey, params = params)
 
             // Then
             assertArrayEquals(testPlaintext, decrypted, "16바이트 IV로 올바르게 동작해야 한다")
@@ -134,11 +134,11 @@ open class AESGCMParameterTest {
             val params16 = AESGCM.Params(ivBytes = 16)
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = params12)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = params12)
 
             // Then
             assertThrows(Exception::class.java) {
-                AESGCM.decrypt(encrypted, testKey, params = params16)
+                AESGCM.decrypt(blob = encrypted, key = testKey, params = params16)
             }
         }
     }
@@ -156,8 +156,8 @@ open class AESGCMParameterTest {
             val params = AESGCM.Params(tagBits = 96)
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = params)
-            val decrypted = AESGCM.decrypt(encrypted, testKey, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = params)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey, params = params)
 
             // Then
             assertArrayEquals(testPlaintext, decrypted, "96비트 태그로 올바르게 동작해야 한다")
@@ -170,8 +170,8 @@ open class AESGCMParameterTest {
             val params = AESGCM.Params(tagBits = 128)
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = params)
-            val decrypted = AESGCM.decrypt(encrypted, testKey, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = params)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey, params = params)
 
             // Then
             assertArrayEquals(testPlaintext, decrypted, "128비트 태그로 올바르게 동작해야 한다")
@@ -185,11 +185,11 @@ open class AESGCMParameterTest {
             val params128 = AESGCM.Params(tagBits = 128)
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = params96)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = params96)
 
             // Then
             assertThrows(Exception::class.java) {
-                AESGCM.decrypt(encrypted, testKey, params = params128)
+                AESGCM.decrypt(blob = encrypted, key = testKey, params = params128)
             }
         }
     }
@@ -207,14 +207,14 @@ open class AESGCMParameterTest {
             val params = AESGCM.Params(saltBytes = 16)
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = params)
             val metadata = AESGCM.extractMetadata(encrypted)
 
             // Then
             assertEquals(16, metadata.salt.size, "16바이트 Salt가 적용되어야 한다")
 
             // 복호화도 정상적으로 동작해야 함
-            val decrypted = AESGCM.decrypt(encrypted, testKey, params = params)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey, params = params)
             assertArrayEquals(testPlaintext, decrypted)
         }
 
@@ -225,14 +225,14 @@ open class AESGCMParameterTest {
             val params = AESGCM.Params(saltBytes = 32)
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = params)
             val metadata = AESGCM.extractMetadata(encrypted)
 
             // Then
             assertEquals(32, metadata.salt.size, "32바이트 Salt가 적용되어야 한다")
 
             // 복호화도 정상적으로 동작해야 함
-            val decrypted = AESGCM.decrypt(encrypted, testKey, params = params)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey, params = params)
             assertArrayEquals(testPlaintext, decrypted)
         }
 
@@ -243,9 +243,9 @@ open class AESGCMParameterTest {
             val params = AESGCM.Params(saltBytes = 8)
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = params)
             val metadata = AESGCM.extractMetadata(encrypted)
-            val decrypted = AESGCM.decrypt(encrypted, testKey, params = params)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey, params = params)
 
             // Then
             assertEquals(8, metadata.salt.size, "8바이트 Salt가 적용되어야 한다")
@@ -259,9 +259,9 @@ open class AESGCMParameterTest {
             val params = AESGCM.Params(saltBytes = 64)
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = params)
             val metadata = AESGCM.extractMetadata(encrypted)
-            val decrypted = AESGCM.decrypt(encrypted, testKey, params = params)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey, params = params)
 
             // Then
             assertEquals(64, metadata.salt.size, "64바이트 Salt가 적용되어야 한다")
@@ -282,8 +282,8 @@ open class AESGCMParameterTest {
             val params = AESGCM.Params(hashIterations = 1000)
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = params)
-            val decrypted = AESGCM.decrypt(encrypted, testKey, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = params)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey, params = params)
 
             // Then
             assertArrayEquals(testPlaintext, decrypted, "1000회 반복으로 암복호화가 성공해야 한다")
@@ -296,8 +296,8 @@ open class AESGCMParameterTest {
             val params = AESGCM.Params(hashIterations = 5000)
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = params)
-            val decrypted = AESGCM.decrypt(encrypted, testKey, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = params)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey, params = params)
 
             // Then
             assertArrayEquals(testPlaintext, decrypted, "5000회 반복으로 암복호화가 성공해야 한다")
@@ -311,11 +311,11 @@ open class AESGCMParameterTest {
             val params2000 = AESGCM.Params(hashIterations = 2000)
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = params1000)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = params1000)
 
             // Then
             assertThrows(SecurityException::class.java) {
-                AESGCM.decrypt(encrypted, testKey, params = params2000)
+                AESGCM.decrypt(blob = encrypted, key = testKey, params = params2000)
             }
         }
 
@@ -326,8 +326,8 @@ open class AESGCMParameterTest {
             val params = AESGCM.Params(hashIterations = 50_000)
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = params)
-            val decrypted = AESGCM.decrypt(encrypted, testKey, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = params)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey, params = params)
 
             // Then
             assertArrayEquals(testPlaintext, decrypted, "높은 반복 횟수에서도 정상 동작해야 한다")
@@ -352,8 +352,8 @@ open class AESGCMParameterTest {
             )
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, key128, params = params)
-            val decrypted = AESGCM.decrypt(encrypted, key128, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = key128, params = params)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = key128, params = params)
 
             // Then
             assertArrayEquals(testPlaintext, decrypted, "모든 매개변수가 일치할 때 성공해야 한다")
@@ -397,19 +397,19 @@ open class AESGCMParameterTest {
             )
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, key, params = paramsOriginal)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = key, params = paramsOriginal)
 
             // Then
             assertThrows(Exception::class.java) {
-                AESGCM.decrypt(encrypted, key, params = paramsWithDifferentIV)
+                AESGCM.decrypt(blob = encrypted, key = key, params = paramsWithDifferentIV)
             }
 
             assertThrows(Exception::class.java) {
-                AESGCM.decrypt(encrypted, key, params = paramsWithDifferentTag)
+                AESGCM.decrypt(blob = encrypted, key = key, params = paramsWithDifferentTag)
             }
 
             assertThrows(Exception::class.java) {
-                AESGCM.decrypt(encrypted, key, params = paramsWithDifferentIterations)
+                AESGCM.decrypt(blob = encrypted, key = key, params = paramsWithDifferentIterations)
             }
         }
     }
@@ -532,7 +532,7 @@ open class AESGCMParameterTest {
 
             // When & Then
             val exception = assertThrows<IllegalArgumentException> {
-                AESGCM.encrypt(testPlaintext, key256, params = params128)
+                AESGCM.encrypt(plaintext = testPlaintext, key = key256, params = params128)
             }
             assertTrue(exception.message!!.contains("Key must be 128 bits, got 256"))
         }

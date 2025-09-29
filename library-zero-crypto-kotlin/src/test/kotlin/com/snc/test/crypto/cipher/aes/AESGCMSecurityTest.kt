@@ -36,15 +36,15 @@ open class AESGCMSecurityTest {
         @DisplayName("동일한 평문을 여러 번 암호화해도 다른 결과가 나와야 한다")
         fun `should produce different ciphertext for same plaintext`() {
             // When
-            val encrypted1 = AESGCM.encrypt(testPlaintext, testKey)
-            val encrypted2 = AESGCM.encrypt(testPlaintext, testKey)
+            val encrypted1 = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
+            val encrypted2 = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
 
             // Then
             assertFalse(encrypted1.contentEquals(encrypted2), "동일한 평문이라도 다른 암호문이 생성되어야 한다")
 
             // 하지만 복호화 결과는 동일해야 함
-            val decrypted1 = AESGCM.decrypt(encrypted1, testKey)
-            val decrypted2 = AESGCM.decrypt(encrypted2, testKey)
+            val decrypted1 = AESGCM.decrypt(blob = encrypted1, key = testKey)
+            val decrypted2 = AESGCM.decrypt(blob = encrypted2, key = testKey)
             assertArrayEquals(decrypted1, decrypted2, "복호화 결과는 동일해야 한다")
         }
 
@@ -52,8 +52,8 @@ open class AESGCMSecurityTest {
         @DisplayName("메타데이터 해시가 암호화마다 다르게 생성되어야 한다 (Salt 포함)")
         fun `should generate different metadata hash for each encryption with salt`() {
             // When
-            val encrypted1 = AESGCM.encrypt(testPlaintext, testKey)
-            val encrypted2 = AESGCM.encrypt(testPlaintext, testKey)
+            val encrypted1 = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
+            val encrypted2 = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
 
             val metadata1 = AESGCM.extractMetadata(encrypted1)
             val metadata2 = AESGCM.extractMetadata(encrypted2)
@@ -100,7 +100,7 @@ open class AESGCMSecurityTest {
         @DisplayName("데이터 위변조 시 복호화에서 예외가 발생해야 한다")
         fun `should throw exception when data is tampered`() {
             // Given
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
             val tamperedData = encrypted.copyOf()
 
             // 메타데이터 크기 계산 (기본 16바이트 Salt)
@@ -111,7 +111,7 @@ open class AESGCMSecurityTest {
 
             // When & Then - GCM 태그 검증에서 AEADBadTagException 발생
             assertThrows(AEADBadTagException::class.java) {
-                AESGCM.decrypt(tamperedData, testKey)
+                AESGCM.decrypt(blob = tamperedData, key = testKey)
             }
         }
 
@@ -119,16 +119,16 @@ open class AESGCMSecurityTest {
         @DisplayName("메타데이터 위변조 시 해시 검증에서 SecurityException이 발생해야 한다")
         fun `should throw SecurityException when metadata is tampered`() {
             // Given
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
             val tamperedData = encrypted.copyOf()
 
             // 메타데이터 내의 해시 부분 변조
-            val hashStartPos = "ENCRYPTED::V02::".toByteArray().size
+            val hashStartPos = "ENW::AFJ02::".toByteArray().size
             tamperedData[hashStartPos + 10] = (tamperedData[hashStartPos + 10] + 1).toByte()
 
             // When & Then - 해시 검증에서 SecurityException 발생
             val exception = assertThrows(SecurityException::class.java) {
-                AESGCM.decrypt(tamperedData, testKey)
+                AESGCM.decrypt(blob = tamperedData, key = testKey)
             }
 
             assertTrue(
@@ -141,16 +141,16 @@ open class AESGCMSecurityTest {
         @DisplayName("해시 위변조 시 SecurityException이 발생해야 한다")
         fun `should throw SecurityException when hash is tampered`() {
             // Given
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
             val tamperedData = encrypted.copyOf()
 
             // 메타데이터 내 해시 부분 변조 (GCM은 통과하지만 해시 검증에서 실패)
-            val hashPosition = "ENCRYPTED::V02::".length
+            val hashPosition = "ENW::AFJ02::".length
             tamperedData[hashPosition] = (tamperedData[hashPosition] + 1).toByte()
 
             // When & Then - 해시 검증에서 SecurityException 발생
             assertThrows(SecurityException::class.java) {
-                AESGCM.decrypt(tamperedData, testKey)
+                AESGCM.decrypt(blob = tamperedData, key = testKey)
             }
         }
 
@@ -158,14 +158,14 @@ open class AESGCMSecurityTest {
         @DisplayName("Salt 위변조 시에도 해시 검증이 실패해야 한다")
         fun `should fail hash verification when salt is tampered`() {
             // Given
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = AESGCM.Params(saltBytes = 16))
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = AESGCM.Params(saltBytes = 16))
             val tamperedData = encrypted.copyOf()
 
             // 메타데이터 파싱 (정확한 offset 계산용)
             val metadata = AESGCM.extractMetadata(encrypted)
 
             // Salt 시작 위치 구하기
-            val saltStart = "ENCRYPTED::".toByteArray().size + metadata.version.toByteArray().size +
+            val saltStart = "ENW::".toByteArray().size + metadata.version.toByteArray().size +
                 "::".toByteArray().size + 32 + 2 // prefix+version+delimiter+hash+saltLength(2바이트)
 
             // Salt 바이트 중 하나 변조
@@ -173,7 +173,7 @@ open class AESGCMSecurityTest {
 
             // When & Then - 해시 검증에서 SecurityException 발생
             assertThrows(SecurityException::class.java) {
-                AESGCM.decrypt(tamperedData, testKey)
+                AESGCM.decrypt(blob = tamperedData, key = testKey)
             }
         }
     }
@@ -210,11 +210,11 @@ open class AESGCMSecurityTest {
             val params2 = AESGCM.Params(hashIterations = 2000)
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = params1)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = params1)
 
             // Then - 다른 반복 횟수로 복호화 시도 시 해시 검증 실패
             assertThrows(SecurityException::class.java) {
-                AESGCM.decrypt(encrypted, testKey, params = params2)
+                AESGCM.decrypt(blob = encrypted, key = testKey, params = params2)
             }
         }
     }
@@ -232,7 +232,7 @@ open class AESGCMSecurityTest {
 
             // When - 10번 암호화
             repeat(10) {
-                val encrypted = AESGCM.encrypt(commonPlaintext, testKey)
+                val encrypted = AESGCM.encrypt(plaintext = commonPlaintext, key = testKey)
                 encryptionResults.add(encrypted)
             }
 
@@ -248,7 +248,7 @@ open class AESGCMSecurityTest {
 
             // 모든 결과가 정상적으로 복호화되어야 함
             encryptionResults.forEach { encrypted ->
-                val decrypted = AESGCM.decrypt(encrypted, testKey)
+                val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey)
                 assertArrayEquals(commonPlaintext, decrypted, "모든 암호화 결과가 정상 복호화되어야 한다")
             }
         }
@@ -260,8 +260,8 @@ open class AESGCMSecurityTest {
             val plaintext = "repeated plaintext".toByteArray()
 
             // When
-            val encrypted1 = AESGCM.encrypt(plaintext, testKey)
-            val encrypted2 = AESGCM.encrypt(plaintext, testKey)
+            val encrypted1 = AESGCM.encrypt(plaintext = plaintext, key = testKey)
+            val encrypted2 = AESGCM.encrypt(plaintext = plaintext, key = testKey)
 
             val metadata1 = AESGCM.extractMetadata(encrypted1)
             val metadata2 = AESGCM.extractMetadata(encrypted2)
@@ -308,7 +308,7 @@ open class AESGCMSecurityTest {
             val currentTime = System.currentTimeMillis()
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
             val metadata = AESGCM.extractMetadata(encrypted)
 
             // Then
@@ -324,28 +324,28 @@ open class AESGCMSecurityTest {
         @Test
         @DisplayName("메타데이터 버전 호환성 테스트")
         fun `should handle metadata version compatibility`() {
-            // Given - V02 버전으로 암호화
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey)
+            // Given - AFJ02 버전으로 암호화
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
             val metadata = AESGCM.extractMetadata(encrypted)
 
             // Then
-            assertEquals("V02", metadata.version, "현재 버전은 V02여야 한다")
-            assertTrue(metadata.salt.isNotEmpty(), "V02는 Salt를 포함해야 한다")
+            assertEquals("AFJ02", metadata.version, "현재 버전은 AFJ02여야 한다")
+            assertTrue(metadata.salt.isNotEmpty(), "AFJ02는 Salt를 포함해야 한다")
 
             // 정상 복호화 확인
-            val decrypted = AESGCM.decrypt(encrypted, testKey)
-            assertArrayEquals(testPlaintext, decrypted, "V02 버전으로 정상 복호화되어야 한다")
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey)
+            assertArrayEquals(testPlaintext, decrypted, "AFJ02 버전으로 정상 복호화되어야 한다")
         }
 
         @Test
-        @DisplayName("V02 메타데이터가 필수 구성 요소를 포함해야 한다")
-        fun `should include required components in v02 metadata`() {
+        @DisplayName("AFJ02 메타데이터가 필수 구성 요소를 포함해야 한다")
+        fun `should include required components in AFJ02 metadata`() {
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
             val metadata = AESGCM.extractMetadata(encrypted)
 
             // Then
-            assertEquals("V02", metadata.version, "V02 버전이어야 한다")
+            assertEquals("AFJ02", metadata.version, "AFJ02 버전이어야 한다")
             assertEquals(32, metadata.hash.size, "32바이트 해시를 포함해야 한다")
             assertTrue(metadata.salt.isNotEmpty(), "Salt를 포함해야 한다")
             assertTrue(metadata.timestamp > 0, "유효한 타임스탬프를 포함해야 한다")
@@ -365,22 +365,22 @@ open class AESGCMSecurityTest {
             val key3 = AESGCM.generateKey(256)
 
             // When
-            val encrypted1 = AESGCM.encrypt(testPlaintext, key1)
-            val encrypted2 = AESGCM.encrypt(testPlaintext, key2)
-            val encrypted3 = AESGCM.encrypt(testPlaintext, key3)
+            val encrypted1 = AESGCM.encrypt(plaintext = testPlaintext, key = key1)
+            val encrypted2 = AESGCM.encrypt(plaintext = testPlaintext, key = key2)
+            val encrypted3 = AESGCM.encrypt(plaintext = testPlaintext, key = key3)
 
             // Then - 각 키로만 해당 암호문을 복호화할 수 있어야 함
-            assertArrayEquals(testPlaintext, AESGCM.decrypt(encrypted1, key1))
-            assertArrayEquals(testPlaintext, AESGCM.decrypt(encrypted2, key2))
-            assertArrayEquals(testPlaintext, AESGCM.decrypt(encrypted3, key3))
+            assertArrayEquals(testPlaintext, AESGCM.decrypt(blob = encrypted1, key = key1))
+            assertArrayEquals(testPlaintext, AESGCM.decrypt(blob = encrypted2, key = key2))
+            assertArrayEquals(testPlaintext, AESGCM.decrypt(blob = encrypted3, key = key3))
 
             // 다른 키로는 복호화할 수 없어야 함
-            assertThrows(Exception::class.java) { AESGCM.decrypt(encrypted1, key2) }
-            assertThrows(Exception::class.java) { AESGCM.decrypt(encrypted1, key3) }
-            assertThrows(Exception::class.java) { AESGCM.decrypt(encrypted2, key1) }
-            assertThrows(Exception::class.java) { AESGCM.decrypt(encrypted2, key3) }
-            assertThrows(Exception::class.java) { AESGCM.decrypt(encrypted3, key1) }
-            assertThrows(Exception::class.java) { AESGCM.decrypt(encrypted3, key2) }
+            assertThrows(Exception::class.java) { AESGCM.decrypt(blob = encrypted1, key = key2) }
+            assertThrows(Exception::class.java) { AESGCM.decrypt(blob = encrypted1, key = key3) }
+            assertThrows(Exception::class.java) { AESGCM.decrypt(blob = encrypted2, key = key1) }
+            assertThrows(Exception::class.java) { AESGCM.decrypt(blob = encrypted2, key = key3) }
+            assertThrows(Exception::class.java) { AESGCM.decrypt(blob = encrypted3, key = key1) }
+            assertThrows(Exception::class.java) { AESGCM.decrypt(blob = encrypted3, key = key2) }
         }
 
         @Test
@@ -396,23 +396,23 @@ open class AESGCMSecurityTest {
             val param256 = AESGCM.Params(keyBits = 256)
 
             // When - 각 키 길이로 암호화
-            val encrypted128 = AESGCM.encrypt(testPlaintext, key128, params = param128)
-            val encrypted192 = AESGCM.encrypt(testPlaintext, key192, params = param192)
-            val encrypted256 = AESGCM.encrypt(testPlaintext, key256, params = param256)
+            val encrypted128 = AESGCM.encrypt(plaintext = testPlaintext, key = key128, params = param128)
+            val encrypted192 = AESGCM.encrypt(plaintext = testPlaintext, key = key192, params = param192)
+            val encrypted256 = AESGCM.encrypt(plaintext = testPlaintext, key = key256, params = param256)
 
             // Then - 모든 키 길이에서 정상적으로 동작해야 함
-            assertArrayEquals(testPlaintext, AESGCM.decrypt(encrypted128, key128, params = param128))
-            assertArrayEquals(testPlaintext, AESGCM.decrypt(encrypted192, key192, params = param192))
-            assertArrayEquals(testPlaintext, AESGCM.decrypt(encrypted256, key256, params = param256))
+            assertArrayEquals(testPlaintext, AESGCM.decrypt(blob = encrypted128, key = key128, params = param128))
+            assertArrayEquals(testPlaintext, AESGCM.decrypt(blob = encrypted192, key = key192, params = param192))
+            assertArrayEquals(testPlaintext, AESGCM.decrypt(blob = encrypted256, key = key256, params = param256))
 
             // 메타데이터도 올바르게 생성되어야 함
             val metadata128 = AESGCM.extractMetadata(encrypted128)
             val metadata192 = AESGCM.extractMetadata(encrypted192)
             val metadata256 = AESGCM.extractMetadata(encrypted256)
 
-            assertEquals("V02", metadata128.version)
-            assertEquals("V02", metadata192.version)
-            assertEquals("V02", metadata256.version)
+            assertEquals("AFJ02", metadata128.version)
+            assertEquals("AFJ02", metadata192.version)
+            assertEquals("AFJ02", metadata256.version)
         }
 
         @Test
@@ -423,12 +423,12 @@ open class AESGCMSecurityTest {
             val largeSaltParams = AESGCM.Params(saltBytes = 64) // 큰 크기
 
             // When
-            val encryptedSmall = AESGCM.encrypt(testPlaintext, testKey, params = smallSaltParams)
-            val encryptedLarge = AESGCM.encrypt(testPlaintext, testKey, params = largeSaltParams)
+            val encryptedSmall = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = smallSaltParams)
+            val encryptedLarge = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = largeSaltParams)
 
             // Then
-            assertArrayEquals(testPlaintext, AESGCM.decrypt(encryptedSmall, testKey, params = smallSaltParams))
-            assertArrayEquals(testPlaintext, AESGCM.decrypt(encryptedLarge, testKey, params = largeSaltParams))
+            assertArrayEquals(testPlaintext, AESGCM.decrypt(blob = encryptedSmall, key = testKey, params = smallSaltParams))
+            assertArrayEquals(testPlaintext, AESGCM.decrypt(blob = encryptedLarge, key = testKey, params = largeSaltParams))
 
             // 메타데이터에서 Salt 크기 확인
             val metadataSmall = AESGCM.extractMetadata(encryptedSmall)
@@ -445,15 +445,15 @@ open class AESGCMSecurityTest {
             val highIterParams = AESGCM.Params(hashIterations = 100_000)
 
             // When
-            val encrypted = AESGCM.encrypt(testPlaintext, testKey, params = highIterParams)
-            val decrypted = AESGCM.decrypt(encrypted, testKey, params = highIterParams)
+            val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey, params = highIterParams)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey, params = highIterParams)
 
             // Then
             assertArrayEquals(testPlaintext, decrypted, "높은 반복 횟수에서도 정상 동작해야 한다")
 
             // 메타데이터 검증
             val metadata = AESGCM.extractMetadata(encrypted)
-            assertEquals("V02", metadata.version)
+            assertEquals("AFJ02", metadata.version)
             assertTrue(metadata.hash.isNotEmpty())
             assertTrue(metadata.salt.isNotEmpty())
         }

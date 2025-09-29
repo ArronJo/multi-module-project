@@ -22,7 +22,12 @@ object SecurityUtils {
         aad: ByteArray? = null,
         params: AESGCM.Params = AESGCM.Params()
     ): ByteArray {
-        return AESGCM.encrypt(plaintext, key, aad, params)
+        return AESGCM.encrypt(
+            plaintext = plaintext,
+            key = key,
+            aad = aad,
+            params = params
+        )
     }
 
     /**
@@ -35,7 +40,12 @@ object SecurityUtils {
         aad: ByteArray? = null,
         params: AESGCM.Params = AESGCM.Params()
     ): ByteArray {
-        return AESGCM.decrypt(blob, key, aad, params)
+        return AESGCM.decrypt(
+            blob = blob,
+            key = key,
+            aad = aad,
+            params = params
+        )
     }
 
     // ===== Password Hash (PBKDF2-SHA256) =====

@@ -234,8 +234,8 @@ open class AESGCMKeyTest {
             val plaintext = "키 호환성 테스트".toByteArray(Charsets.UTF_8)
 
             // When
-            val encrypted = AESGCM.encrypt(plaintext, key)
-            val decrypted = AESGCM.decrypt(encrypted, key)
+            val encrypted = AESGCM.encrypt(plaintext = plaintext, key = key)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = key)
 
             // Then
             assertArrayEquals(plaintext, decrypted)
@@ -250,8 +250,8 @@ open class AESGCMKeyTest {
             val params = Params(keyBits = 192)
 
             // When
-            val encrypted = AESGCM.encrypt(plaintext, key, params = params)
-            val decrypted = AESGCM.decrypt(encrypted, key, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = plaintext, key = key, params = params)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = key, params = params)
 
             // Then
             assertArrayEquals(plaintext, decrypted)
@@ -265,8 +265,8 @@ open class AESGCMKeyTest {
             val plaintext = "128비트 키 테스트".toByteArray(Charsets.UTF_8)
             val params = Params(keyBits = 128)
             // When
-            val encrypted = AESGCM.encrypt(plaintext, key, params = params)
-            val decrypted = AESGCM.decrypt(encrypted, key, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = plaintext, key = key, params = params)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = key, params = params)
 
             // Then
             assertArrayEquals(plaintext, decrypted)

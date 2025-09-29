@@ -32,8 +32,8 @@ open class AESGCMPerformanceTest {
 
             // When
             val startTime = System.currentTimeMillis()
-            val encrypted = AESGCM.encrypt(largeData, testKey)
-            val decrypted = AESGCM.decrypt(encrypted, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = largeData, key = testKey)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey)
             val endTime = System.currentTimeMillis()
 
             // Then
@@ -54,8 +54,8 @@ open class AESGCMPerformanceTest {
 
                 // When
                 val startTime = System.currentTimeMillis()
-                val encrypted = AESGCM.encrypt(data, testKey)
-                val decrypted = AESGCM.decrypt(encrypted, testKey)
+                val encrypted = AESGCM.encrypt(plaintext = data, key = testKey)
+                val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey)
                 val endTime = System.currentTimeMillis()
 
                 // Then
@@ -83,8 +83,8 @@ open class AESGCMPerformanceTest {
 
             // When
             val startTime = System.currentTimeMillis()
-            val encrypted = AESGCM.encrypt(smallData, testKey, params = params)
-            val decrypted = AESGCM.decrypt(encrypted, testKey, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = smallData, key = testKey, params = params)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey, params = params)
             val endTime = System.currentTimeMillis()
 
             // Then
@@ -102,8 +102,8 @@ open class AESGCMPerformanceTest {
 
             // When
             val startTime = System.currentTimeMillis()
-            val encrypted = AESGCM.encrypt(smallData, testKey, params = params)
-            val decrypted = AESGCM.decrypt(encrypted, testKey, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = smallData, key = testKey, params = params)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey, params = params)
             val endTime = System.currentTimeMillis()
 
             // Then
@@ -121,8 +121,8 @@ open class AESGCMPerformanceTest {
 
             // When
             val startTime = System.currentTimeMillis()
-            val encrypted = AESGCM.encrypt(smallData, testKey, params = params)
-            val decrypted = AESGCM.decrypt(encrypted, testKey, params = params)
+            val encrypted = AESGCM.encrypt(plaintext = smallData, key = testKey, params = params)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey, params = params)
             val endTime = System.currentTimeMillis()
 
             // Then
@@ -144,8 +144,8 @@ open class AESGCMPerformanceTest {
 
                 // When
                 val startTime = System.currentTimeMillis()
-                val encrypted = AESGCM.encrypt(testData, testKey, params = params)
-                val decrypted = AESGCM.decrypt(encrypted, testKey, params = params)
+                val encrypted = AESGCM.encrypt(plaintext = testData, key = testKey, params = params)
+                val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey, params = params)
                 val endTime = System.currentTimeMillis()
 
                 // Then
@@ -173,8 +173,8 @@ open class AESGCMPerformanceTest {
             // When & Then - 연속으로 100번 암복호화
             val startTime = System.currentTimeMillis()
             repeat(50) { iteration ->
-                val encrypted = AESGCM.encrypt(testData, testKey)
-                val decrypted = AESGCM.decrypt(encrypted, testKey)
+                val encrypted = AESGCM.encrypt(plaintext = testData, key = testKey)
+                val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey)
 
                 assertArrayEquals(
                     testData,
@@ -202,8 +202,8 @@ open class AESGCMPerformanceTest {
                 // When
                 val startTime = System.currentTimeMillis()
                 repeat(iterations) { iteration ->
-                    val encrypted = AESGCM.encrypt(testData, testKey)
-                    val decrypted = AESGCM.decrypt(encrypted, testKey)
+                    val encrypted = AESGCM.encrypt(plaintext = testData, key = testKey)
+                    val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey)
 
                     // Then
                     assertArrayEquals(
@@ -239,8 +239,8 @@ open class AESGCMPerformanceTest {
                 val data = ByteArray(size) { (it % 256).toByte() }
 
                 // When
-                val encrypted = AESGCM.encrypt(data, testKey)
-                val decrypted = AESGCM.decrypt(encrypted, testKey)
+                val encrypted = AESGCM.encrypt(plaintext = data, key = testKey)
+                val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey)
 
                 // Then
                 assertArrayEquals(data, decrypted, "${size}바이트 데이터가 정상 처리되어야 한다")
@@ -297,8 +297,8 @@ open class AESGCMPerformanceTest {
 
                 // When
                 val startTime = System.currentTimeMillis()
-                val encrypted = AESGCM.encrypt(testData, key, params = params)
-                val decrypted = AESGCM.decrypt(encrypted, key, params = params)
+                val encrypted = AESGCM.encrypt(plaintext = testData, key = key, params = params)
+                val decrypted = AESGCM.decrypt(blob = encrypted, key = key, params = params)
                 val endTime = System.currentTimeMillis()
 
                 // Then
@@ -319,8 +319,8 @@ open class AESGCMPerformanceTest {
                 // When
                 val startTime = System.currentTimeMillis()
                 repeat(10) {
-                    val encrypted = AESGCM.encrypt(testData, testKey, params = params)
-                    val decrypted = AESGCM.decrypt(encrypted, testKey, params = params)
+                    val encrypted = AESGCM.encrypt(plaintext = testData, key = testKey, params = params)
+                    val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey, params = params)
                     assertArrayEquals(testData, decrypted)
                 }
                 val endTime = System.currentTimeMillis()
@@ -337,8 +337,8 @@ open class AESGCMPerformanceTest {
 
             // When
             val startTime = System.currentTimeMillis()
-            val encrypted = AESGCM.encrypt(largeData, testKey)
-            val decrypted = AESGCM.decrypt(encrypted, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = largeData, key = testKey)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey)
             val endTime = System.currentTimeMillis()
 
             // Then
@@ -355,8 +355,8 @@ open class AESGCMPerformanceTest {
 
             // When
             val startTime = System.currentTimeMillis()
-            val encrypted = AESGCM.encrypt(largeData, testKey)
-            val decrypted = AESGCM.decrypt(encrypted, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = largeData, key = testKey)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey)
             val endTime = System.currentTimeMillis()
 
             // Then
@@ -373,8 +373,8 @@ open class AESGCMPerformanceTest {
 
             // When
             val startTime = System.currentTimeMillis()
-            val encrypted = AESGCM.encrypt(largeData, testKey)
-            val decrypted = AESGCM.decrypt(encrypted, testKey)
+            val encrypted = AESGCM.encrypt(plaintext = largeData, key = testKey)
+            val decrypted = AESGCM.decrypt(blob = encrypted, key = testKey)
             val endTime = System.currentTimeMillis()
 
             // Then
