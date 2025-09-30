@@ -3,6 +3,7 @@ package com.snc.test.crypto.cipher.aes
 import com.snc.zero.crypto.cipher.aes.AESGCM
 import com.snc.zero.crypto.cipher.aes.EncryptedMetadata
 import com.snc.zero.crypto.cipher.aes.HashGenerator
+import com.snc.zero.crypto.cipher.aes.MetadataVersion
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -123,7 +124,7 @@ open class AESGCMSecurityTest {
             val tamperedData = encrypted.copyOf()
 
             // 메타데이터 내의 해시 부분 변조
-            val hashStartPos = "ENW::AFJ02::".toByteArray().size
+            val hashStartPos = "ENW::${MetadataVersion.VERSION2.value}::".toByteArray().size
             tamperedData[hashStartPos + 10] = (tamperedData[hashStartPos + 10] + 1).toByte()
 
             // When & Then - 해시 검증에서 SecurityException 발생
@@ -145,7 +146,7 @@ open class AESGCMSecurityTest {
             val tamperedData = encrypted.copyOf()
 
             // 메타데이터 내 해시 부분 변조 (GCM은 통과하지만 해시 검증에서 실패)
-            val hashPosition = "ENW::AFJ02::".length
+            val hashPosition = "ENW::${MetadataVersion.VERSION2.value}::".length
             tamperedData[hashPosition] = (tamperedData[hashPosition] + 1).toByte()
 
             // When & Then - 해시 검증에서 SecurityException 발생
@@ -329,7 +330,7 @@ open class AESGCMSecurityTest {
             val metadata = AESGCM.extractMetadata(encrypted)
 
             // Then
-            assertEquals("AFJ02", metadata.version, "현재 버전은 AFJ02여야 한다")
+            assertEquals(MetadataVersion.VERSION2.value, metadata.version, "현재 버전은 AFJ02여야 한다")
             assertTrue(metadata.salt.isNotEmpty(), "AFJ02는 Salt를 포함해야 한다")
 
             // 정상 복호화 확인
@@ -338,14 +339,14 @@ open class AESGCMSecurityTest {
         }
 
         @Test
-        @DisplayName("AFJ02 메타데이터가 필수 구성 요소를 포함해야 한다")
+        @DisplayName("버전 메타데이터가 필수 구성 요소를 포함해야 한다")
         fun `should include required components in AFJ02 metadata`() {
             // When
             val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
             val metadata = AESGCM.extractMetadata(encrypted)
 
             // Then
-            assertEquals("AFJ02", metadata.version, "AFJ02 버전이어야 한다")
+            assertEquals(MetadataVersion.VERSION2.value, metadata.version, "AFJ02 버전이어야 한다")
             assertEquals(32, metadata.hash.size, "32바이트 해시를 포함해야 한다")
             assertTrue(metadata.salt.isNotEmpty(), "Salt를 포함해야 한다")
             assertTrue(metadata.timestamp > 0, "유효한 타임스탬프를 포함해야 한다")
@@ -410,9 +411,9 @@ open class AESGCMSecurityTest {
             val metadata192 = AESGCM.extractMetadata(encrypted192)
             val metadata256 = AESGCM.extractMetadata(encrypted256)
 
-            assertEquals("AFJ02", metadata128.version)
-            assertEquals("AFJ02", metadata192.version)
-            assertEquals("AFJ02", metadata256.version)
+            assertEquals(MetadataVersion.VERSION2.value, metadata128.version)
+            assertEquals(MetadataVersion.VERSION2.value, metadata192.version)
+            assertEquals(MetadataVersion.VERSION2.value, metadata256.version)
         }
 
         @Test
@@ -453,7 +454,7 @@ open class AESGCMSecurityTest {
 
             // 메타데이터 검증
             val metadata = AESGCM.extractMetadata(encrypted)
-            assertEquals("AFJ02", metadata.version)
+            assertEquals(MetadataVersion.VERSION2.value, metadata.version)
             assertTrue(metadata.hash.isNotEmpty())
             assertTrue(metadata.salt.isNotEmpty())
         }

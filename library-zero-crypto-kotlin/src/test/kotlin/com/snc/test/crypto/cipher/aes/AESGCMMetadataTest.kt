@@ -3,6 +3,7 @@ package com.snc.test.crypto.cipher.aes
 import com.snc.zero.crypto.cipher.aes.AESGCM
 import com.snc.zero.crypto.cipher.aes.EncryptedMetadata
 import com.snc.zero.crypto.cipher.aes.HashGenerator
+import com.snc.zero.crypto.cipher.aes.MetadataVersion
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -31,23 +32,24 @@ open class AESGCMMetadataTest {
     inner class EncryptedMetadataBasic {
 
         @Test
-        @DisplayName("메타데이터가 올바른 AFJ02 프리픽스로 시작해야 한다")
+        @DisplayName("메타데이터가 올바른 프리픽스로 시작해야 한다")
         fun `should start with correct AFJ02 prefix`() {
             // Given
             val hash = ByteArray(32) { it.toByte() }
             val salt = ByteArray(16) { (it * 2).toByte() }
-            val metadata = EncryptedMetadata(version = "AFJ02", hash = hash, salt = salt)
+            val metadata = EncryptedMetadata(version = MetadataVersion.VERSION2.value, hash = hash, salt = salt)
 
             // When
             val bytes = metadata.toByteArray()
-            val prefix = bytes.copyOfRange(0, 16).toString(Charsets.UTF_8)
+            val prefix = bytes.copyOfRange(0, EncryptedMetadata.FIXED_SIZE).toString(Charsets.UTF_8)
+            println(prefix)
 
             // Then
-            assertTrue(prefix.startsWith("ENW::AFJ02::"), "올바른 AFJ02 프리픽스로 시작해야 한다")
+            assertTrue(prefix.startsWith("${EncryptedMetadata.PREFIX}${EncryptedMetadata.DELIMITER}${MetadataVersion.VERSION2.value}${EncryptedMetadata.DELIMITER}"), "올바른 프리픽스로 시작해야 한다")
         }
 
         @Test
-        @DisplayName("직렬화와 역직렬화가 올바르게 동작해야 한다 (AFJ02)")
+        @DisplayName("직렬화와 역직렬화가 올바르게 동작해야 한다")
         fun `should serialize and deserialize correctly AFJ02`() {
             // Given
             val originalHash = ByteArray(32) { (it * 3).toByte() }
@@ -73,15 +75,15 @@ open class AESGCMMetadataTest {
         }
 
         @Test
-        @DisplayName("메타데이터가 가변 길이로 직렬화되어야 한다 (AFJ02)")
+        @DisplayName("메타데이터가 가변 길이로 직렬화되어야 한다")
         fun `should serialize to variable length AFJ02`() {
             // Given
             val hash = ByteArray(32) { it.toByte() }
             val salt16 = ByteArray(16) { (it * 2).toByte() }
             val salt32 = ByteArray(32) { (it * 3).toByte() }
 
-            val metadata1 = EncryptedMetadata(version = "AFJ02", hash = hash, salt = salt16, timestamp = 1000L)
-            val metadata2 = EncryptedMetadata(version = "AFJ02", hash = hash, salt = salt32, timestamp = System.currentTimeMillis())
+            val metadata1 = EncryptedMetadata(version = MetadataVersion.VERSION2.value, hash = hash, salt = salt16, timestamp = 1000L)
+            val metadata2 = EncryptedMetadata(version = MetadataVersion.VERSION2.value, hash = hash, salt = salt32, timestamp = System.currentTimeMillis())
 
             // When
             val bytes1 = metadata1.toByteArray()
@@ -113,7 +115,7 @@ open class AESGCMMetadataTest {
         @DisplayName("잘못된 프리픽스로 역직렬화 시 예외가 발생해야 한다")
         fun `should throw exception for invalid prefix during deserialization`() {
             // Given
-            val invalidData = "INVALID::AFJ02::".toByteArray() + ByteArray(32) + ByteArray(16) + ByteArray(8)
+            val invalidData = "INVALID::${MetadataVersion.VERSION2.value}::".toByteArray() + ByteArray(32) + ByteArray(16) + ByteArray(8)
 
             // When & Then
             assertThrows(IllegalArgumentException::class.java) {
@@ -282,7 +284,7 @@ open class AESGCMMetadataTest {
             saltSizes.forEach { saltSize ->
                 // Given
                 val salt = ByteArray(saltSize) { (it % 256).toByte() }
-                val originalMetadata = EncryptedMetadata(version = "AFJ02", hash = hash, salt = salt, timestamp = timestamp)
+                val originalMetadata = EncryptedMetadata(version = MetadataVersion.VERSION2.value, hash = hash, salt = salt, timestamp = timestamp)
 
                 // When
                 val serialized = originalMetadata.toByteArray()
@@ -311,14 +313,14 @@ open class AESGCMMetadataTest {
         private val testPlaintext = "메타데이터 추출 테스트".toByteArray()
 
         @Test
-        @DisplayName("메타데이터 추출이 올바르게 동작해야 한다 (AFJ02)")
+        @DisplayName("메타데이터 추출이 올바르게 동작해야 한다")
         fun `should extract AFJ02 metadata correctly`() {
             // When
             val encrypted = AESGCM.encrypt(plaintext = testPlaintext, key = testKey)
             val metadata = AESGCM.extractMetadata(encrypted)
 
             // Then
-            assertEquals("AFJ02", metadata.version, "올바른 AFJ02 버전이어야 한다")
+            assertEquals(MetadataVersion.VERSION2.value, metadata.version, "올바른 AFJ02 버전이어야 한다")
             assertEquals(32, metadata.hash.size, "해시 크기가 32바이트여야 한다")
             assertEquals(16, metadata.salt.size, "Salt 크기가 16바이트여야 한다")
             assertTrue(metadata.timestamp > 0, "타임스탬프가 설정되어야 한다")
@@ -419,7 +421,7 @@ open class AESGCMMetadataTest {
         @DisplayName("동일한 모든 필드를 가진 객체들은 같아야 한다")
         fun `동일한 모든 필드를 가진 객체들은 같아야 한다`() {
             // Given
-            val version = "AFJ02"
+            val version = MetadataVersion.VERSION2.value
             val hash = byteArrayOf(1, 2, 3, 4, 5)
             val salt = byteArrayOf(10, 20, 30)
             val timestamp = 1234567890L
@@ -486,8 +488,8 @@ open class AESGCMMetadataTest {
             val baseSalt = byteArrayOf(4, 5, 6)
             val baseTimestamp = 1234567890L
 
-            val metadata1 = EncryptedMetadata("AFJ01", baseHash, baseSalt, baseTimestamp)
-            val metadata2 = EncryptedMetadata("AFJ02", baseHash, baseSalt, baseTimestamp)
+            val metadata1 = EncryptedMetadata(MetadataVersion.VERSION1.value, baseHash, baseSalt, baseTimestamp)
+            val metadata2 = EncryptedMetadata(MetadataVersion.VERSION2.value, baseHash, baseSalt, baseTimestamp)
 
             // When & Then
             assertFalse(metadata1.equals(metadata2))
@@ -497,7 +499,7 @@ open class AESGCMMetadataTest {
         @DisplayName("hash가 다른 경우 false를 반환해야 한다")
         fun `hash가 다른 경우 false를 반환해야 한다`() {
             // Given
-            val version = "AFJ02"
+            val version = MetadataVersion.VERSION2.value
             val salt = byteArrayOf(4, 5, 6)
             val timestamp = 1234567890L
 
@@ -512,7 +514,7 @@ open class AESGCMMetadataTest {
         @DisplayName("hash 길이가 다른 경우 false를 반환해야 한다")
         fun `hash 길이가 다른 경우 false를 반환해야 한다`() {
             // Given
-            val version = "AFJ02"
+            val version = MetadataVersion.VERSION2.value
             val salt = byteArrayOf(4, 5, 6)
             val timestamp = 1234567890L
 
@@ -527,7 +529,7 @@ open class AESGCMMetadataTest {
         @DisplayName("salt가 다른 경우 false를 반환해야 한다")
         fun `salt가 다른 경우 false를 반환해야 한다`() {
             // Given
-            val version = "AFJ02"
+            val version = MetadataVersion.VERSION2.value
             val hash = byteArrayOf(1, 2, 3)
             val timestamp = 1234567890L
 
@@ -542,7 +544,7 @@ open class AESGCMMetadataTest {
         @DisplayName("salt 길이가 다른 경우 false를 반환해야 한다")
         fun `salt 길이가 다른 경우 false를 반환해야 한다`() {
             // Given
-            val version = "AFJ02"
+            val version = MetadataVersion.VERSION2.value
             val hash = byteArrayOf(1, 2, 3)
             val timestamp = 1234567890L
 
@@ -557,7 +559,7 @@ open class AESGCMMetadataTest {
         @DisplayName("timestamp가 다른 경우 false를 반환해야 한다")
         fun `timestamp가 다른 경우 false를 반환해야 한다`() {
             // Given
-            val version = "AFJ02"
+            val version = MetadataVersion.VERSION2.value
             val hash = byteArrayOf(1, 2, 3)
             val salt = byteArrayOf(4, 5, 6)
 
@@ -598,7 +600,7 @@ open class AESGCMMetadataTest {
         @DisplayName("동일한 객체는 같은 hashCode를 가져야 한다")
         fun `동일한 객체는 같은 hashCode를 가져야 한다`() {
             // Given
-            val version = "AFJ02"
+            val version = MetadataVersion.VERSION2.value
             val hash = byteArrayOf(1, 2, 3, 4, 5)
             val salt = byteArrayOf(10, 20, 30)
             val timestamp = 1234567890L
@@ -614,7 +616,7 @@ open class AESGCMMetadataTest {
         @DisplayName("서로 다른 객체는 다른 hashCode를 가져야 한다")
         fun `서로 다른 객체는 다른 hashCode를 가져야 한다`() {
             // Given
-            val baseVersion = "AFJ02"
+            val baseVersion = MetadataVersion.VERSION2.value
             val baseHash = byteArrayOf(1, 2, 3)
             val baseSalt = byteArrayOf(4, 5, 6)
             val baseTimestamp = 1234567890L
@@ -724,8 +726,8 @@ open class AESGCMMetadataTest {
             val salt = byteArrayOf(10, 20, 30, 40)
             val timestamp = 1234567890L
 
-            val metadata1 = EncryptedMetadata("AFJ02", hash, salt, timestamp)
-            val metadata2 = EncryptedMetadata("AFJ02", hash, salt, timestamp)
+            val metadata1 = EncryptedMetadata(MetadataVersion.VERSION2.value, hash, salt, timestamp)
+            val metadata2 = EncryptedMetadata(MetadataVersion.VERSION2.value, hash, salt, timestamp)
 
             // When & Then
             assertTrue(metadata1.equals(metadata2))

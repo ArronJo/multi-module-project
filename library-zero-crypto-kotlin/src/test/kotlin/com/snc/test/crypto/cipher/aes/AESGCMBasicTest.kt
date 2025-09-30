@@ -36,7 +36,13 @@ open class AESGCMBasicTest {
         @Test
         fun `암복호화 테스트 1`() {
             val encrypted = AESGCM.encrypt(plaintext = plaintext, key = key)
+            println("-".repeat(20))
+            println("plaintext=${String(plaintext)}")
+            println("encrypted=${String(encrypted)}")
+
             val decrypted = AESGCM.decrypt(blob = encrypted, key = key)
+            println("decrypted=${String(decrypted)}")
+
             assertArrayEquals(plaintext, decrypted)
         }
 
