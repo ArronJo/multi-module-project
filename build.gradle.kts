@@ -308,14 +308,15 @@ sonar {
         val sonarHost = (sonarProperties["sonar.host.url"] as String?) ?: "https://sonarcloud.io"
         val sonarToken = (sonarProperties["sonar.token"] as String?) ?: System.getenv("SONAR_TOKEN")
 
-        //println("-sonarProjectKey: $sonarProjectKey")
-        //println("-sonarOrganization: $sonarOrganization")
-        //println("-sonarToken: $sonarToken")
+        println("-sonarProjectKey: $sonarProjectKey")
+        println("-sonarOrganization: $sonarOrganization")
+        println("-sonarToken: $sonarToken")
 
         property("sonar.sourceEncoding", "UTF-8")
         property("sonar.projectKey", sonarProjectKey)
         property("sonar.organization", sonarOrganization)
         property("sonar.token", sonarToken)
+        property("SONAR_TOKEN", sonarToken)
         property("sonar.host.url", sonarHost)
 
         property("sonar.java.binaries", "${layout.buildDirectory}/classes")

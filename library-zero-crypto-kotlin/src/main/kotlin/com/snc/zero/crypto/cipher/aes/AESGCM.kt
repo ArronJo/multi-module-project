@@ -324,7 +324,7 @@ data class EncryptedMetadata(
 ) {
     companion object {
         const val DELIMITER = ":"
-        const val PREFIX = "EDC" // Encrypted Data/Document Code
+        const val PREFIX = "CRX" // Cryptography + X(미지수/보안 느낌)
         private const val PREFIX_SIZE = PREFIX.length + DELIMITER.length
         private const val VERSION = "12345" // 버전 길이
         private const val VERSION_SIZE = VERSION.length + DELIMITER.length
