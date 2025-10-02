@@ -13,6 +13,14 @@
 # -task 캐시로 인해 옵션 반영이 누락된 경우
 #  ./gradlew ktlintCheck --rerun-tasks --no-build-cache
 
+
+######################################
+# Project - build.gradle.kts
+# plugins {
+#   id("org.jlleitschuh.gradle.ktlint") version "12.3.0"
+# }
+
+######################################
 # -top-most EditorConfig file
 # 해당 .editorconfig 파일이 해당 디렉토리에서 최상위 설정 파일임을 명시하는 것을 의미합니다.
 # 이 설정은 Ktlint가 .editorconfig 파일을 찾을 때, 이 파일이 발견된 디렉토리부터 상위로 더 이상 탐색하지 않고 해당 파일에서 설정을 적용하도록 지시하는 역할을 합니다.
