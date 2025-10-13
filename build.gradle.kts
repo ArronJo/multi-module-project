@@ -79,20 +79,33 @@ dependencies {
     implementation(rootProject.libs.kotlin.build.tools.impl)
     //implementation("org.owasp:dependency-check-gradle:5.3.0")
 
+    // #dependency constraints 사용 (Gradle 5+ 권장 방식)
+    // constraints는 강제(force)보단 약하지만,
+    // Gradle이 의존성 트리를 계산할 때 기본 후보로 이 버전을 선택하도록 한다.
+    //constraints {
+    //    implementation("ch.qos.logback:logback-core:1.5.13") {
+    //        because("logback 버전 통일 — 보안 및 호환성 유지")
+    //    }
+    //    implementation("ch.qos.logback:logback-classic:1.5.13") {
+    //        because("logback 버전 통일 — 보안 및 호환성 유지")
+    //    }
+    //}
+
     //testImplementation(kotlin("test"))
     //testImplementation(rootProject.libs.junit.jupiter.api)
     //testRuntimeOnly(rootProject.libs.junit.platform.launcher)
     //testRuntimeOnly(rootProject.libs.junit.jupiter.engine)
 }
 
-// 버전 강제화 (force):
-configurations.all {
-    resolutionStrategy {
-        // logback 버전 강제화
-        force("ch.qos.logback:logback-core:1.5.13")
-        force("ch.qos.logback:logback-classic:1.5.13")
-    }
-}
+// 버전 강제화 (force):, #dependency constraints 사용 (Gradle 5+ 권장 방식) 도 참고
+// logback-core 1.5.19 에서 취약점 패치되어 주석 처리함.
+//configurations.all {
+//    resolutionStrategy {
+//        // logback 버전 강제화
+//        force("ch.qos.logback:logback-core:1.5.13")
+//        force("ch.qos.logback:logback-classic:1.5.13")
+//    }
+//}
 
 // Dependency-check OWASP
 //dependencyCheck {

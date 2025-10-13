@@ -11,8 +11,7 @@ testng = "7.9.0"
 mockito-kotlin = "5.3.1"
 kotest = "6.0.0.M5" # "5.9.1" # https://github.com/kotest/kotest/releases
 #kotlinx-coroutines-test = "1.9.0"
-logback-core = "1.5.13"
-logback-classic = "1.5.13"
+logback-core = "1.5.19" # 1.5.19 에 logback 취약점 조치 완료됨.
 kotlin-logging-jvm = "5.1.0"
 bouncycastle-bcprov = "1.81" # https://mvnrepository.com/artifact/org.bouncycastle/bcprov-jdk18on
 caffeine = "3.1.8"
@@ -45,7 +44,7 @@ kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.
 testng = { module = "org.testng:testng", version.ref = "testng" }
 
 logback-core = { module = "ch.qos.logback:logback-core", version.ref = "logback-core" }
-logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-classic" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback-core" }
 kotlin-logging-jvm = { module = "io.github.oshai:kotlin-logging-jvm", version.ref = "kotlin-logging-jvm" }
 
 bouncycastle-bcprov = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncycastle-bcprov" }
