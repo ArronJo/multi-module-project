@@ -1,6 +1,6 @@
 [versions]
 kotlin-bom = "2.1.0" # https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-bom
-ktlint = "12.3.0" # 플러그인 최신버전 확인하기: https://github.com/JLLeitschuh/ktlint-gradle/blob/main/CHANGELOG.md
+ktlint = "13.1.0" # 플러그인 최신버전 확인하기: https://github.com/JLLeitschuh/ktlint-gradle/blob/main/CHANGELOG.md
 #detekt = "1.23.7"  # https://github.com/detekt/detekt
 sonarqube = "5.1.0.4882"
 dependencycheck = "8.0.2"

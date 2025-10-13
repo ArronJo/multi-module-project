@@ -204,6 +204,9 @@ ktlint_standard_string-template = enabled
 # Backing property is only allowed when a matching property or function exists (cannot be auto-corrected) (standard:backing-property-naming)
 #ktlint_standard_backing-property-naming = enabled
 
+# Declarations and declarations with comments should have an empty space between.
+#ktlint_standard_spacing-between-declarations-with-comments = disabled
+
 
 ######################################
 # yaml
