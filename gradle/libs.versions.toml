@@ -1,11 +1,11 @@
 [versions]
 kotlin-bom = "2.1.0" # https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-bom
-ktlint = "13.1.0" # 플러그인 최신버전 확인하기: https://github.com/JLLeitschuh/ktlint-gradle/blob/main/CHANGELOG.md
+ktlint = "14.0.1" # "13.1.0" # 플러그인 최신버전 확인하기: https://github.com/JLLeitschuh/ktlint-gradle/blob/main/CHANGELOG.md
 #detekt = "1.23.7"  # https://github.com/detekt/detekt
 sonarqube = "5.1.0.4882"
 dependencycheck = "8.0.2"
-cyclonedx = "2.2.0" # "1.7.4" # https://plugins.gradle.org/plugin/org.cyclonedx.bom
-license-report = "2.5"
+cyclonedx = "3.1.0" # "2.2.0" # "1.7.4" # https://plugins.gradle.org/plugin/org.cyclonedx.bom
+license-report = "2.9" # https://github.com/jk1/Gradle-License-Report
 junit-jupiter = "5.10.2"
 testng = "7.9.0"
 mockito-kotlin = "5.3.1"
@@ -19,7 +19,7 @@ jsoup = "1.16.1"
 google-gson = "2.11.0"
 jackson-kotlin = "2.17.1"
 #kotlinx-coroutines-core = "1.9.0"
-kotlinx-serialization-json = "1.5.0"
+kotlinx-serialization-json = "1.9.0"
 kotlinx-datetime = "0.4.0"
 pdfbox-3 = "3.0.1"
 pdfbox-2 = "2.0.24"

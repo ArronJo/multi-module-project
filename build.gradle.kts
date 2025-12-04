@@ -9,8 +9,8 @@ plugins {
 
     // https://plugins.gradle.org/plugin/org.jetbrains.kotlin.jvm
     // Kotlin 관련 플러그인은 같은 버전을 사용하는 것이 좋다고 하네.
-    kotlin("jvm") version "2.2.0" // id("org.jetbrains.kotlin.jvm") version "2.1.20"
-    kotlin("plugin.serialization") version "2.2.0"
+    kotlin("jvm") version "2.2.20" // id("org.jetbrains.kotlin.jvm") version "2.1.20"
+    kotlin("plugin.serialization") version "2.2.20"
 
     id("jacoco")
 
@@ -49,11 +49,11 @@ plugins {
     alias(libs.plugins.cyclonedx) // id("org.cyclonedx.bom") version "2.2.0"
 
     // 오픈 소스 라이선스 리포트 만들기
-    alias(libs.plugins.license.report) // id("com.github.jk1.dependency-license-report") version "2.5"
+    alias(libs.plugins.license.report) // id("com.github.jk1.dependency-license-report") version "2.9"
 }
 
 group = "com.snc.zero"
-version = "0.1-beta"
+version = "0.1-beta" // "1.0-SNAPSHOT"
 
 buildscript {
     extra.apply {

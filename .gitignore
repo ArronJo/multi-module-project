@@ -50,7 +50,6 @@ bin/
 ######################################
 
 property**/
-#gradle/verification-metadata.xml
 
 ### IntelliJ IDEA ###
 .idea/jsLibraryMappings.xml
