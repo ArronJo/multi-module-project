@@ -142,7 +142,8 @@ kotlin {
         // Kotlin K2모드 사용 설정, freeCompilerArgs.add("-Xuse-k2")
     }
 
-    println("[kotlin-compilerOptions] KotlinVersion = " + rootProject.extra["kotlinVersion"] as String + " --> " + KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String) + " --- " + KotlinVersion.KOTLIN_2_1 + " : " + KotlinVersion.fromVersion("2.1"))
+    println("[kotlin-compilerOptions] KotlinVersion = " + rootProject.extra["kotlinVersion"] as String + " --> " + KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
+    println("    --- " + KotlinVersion.KOTLIN_2_1 + " : " + KotlinVersion.fromVersion("2.1"))
 }
 
 // 중복 처리 전략 추가
@@ -210,6 +211,18 @@ sourceSets {
     }
 }
  */
+
+///////////////////////////////////////////////////////////
+//  Pinterest ktlint (CLI 도구) Gradle에서 직접 사용
+// build.gradle.kts
+//val ktlintCheck by tasks.registering(JavaExec::class) {
+//    group = VerificationGroup.VERIFICATION
+//    description = "Kotlin 코드 스타일 체크"
+//    classpath = configurations.ktlint.get()
+//    mainClass.set("com.pinterest.ktlint.Main")
+//    args = listOf("src/**/*.kt")
+//}
+
 
 ///////////////////////////////////////////////////////////
 // KtLint
