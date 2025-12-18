@@ -6,9 +6,9 @@ ktlint = "14.0.1" # 공식 추천 플러그인 # 플러그인 최신버전 확�
 # https://github.com/pinterest/ktlint
 #detekt = "1.23.7"  # https://github.com/detekt/detekt
 sonarqube = "5.1.0.4882"
-dependencycheck = "8.0.2"
+owasp-dependencycheck = "12.1.9" # "8.0.2" # https://plugins.gradle.org/plugin/org.owasp.dependencycheck
 cyclonedx = "3.1.0" # "2.2.0" # "1.7.4" # https://plugins.gradle.org/plugin/org.cyclonedx.bom
-license-report = "2.9" # https://github.com/jk1/Gradle-License-Report
+license-report = "3.0.1" # https://github.com/jk1/Gradle-License-Report
 junit-jupiter = "5.10.2"
 testng = "7.9.0"
 mockito-kotlin = "5.3.1"
@@ -85,4 +85,4 @@ cyclonedx = { id ="org.cyclonedx.bom", version.ref = "cyclonedx" }
 
 license-report = { id = "com.github.jk1.dependency-license-report", version.ref = "license-report" }
 
-dependencycheck = { id = "org.owasp.dependencycheck", version.ref = "dependencycheck" }
+owasp-dependencycheck = { id = "org.owasp.dependencycheck", version.ref = "owasp-dependencycheck" }

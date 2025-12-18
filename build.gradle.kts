@@ -17,12 +17,13 @@ plugins {
     // https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
     alias(libs.plugins.sonarqube) // id("org.sonarqube") version "5.1.0.4882"
 
+    // 오픈 소스 취약점을 확인
     // Dependency-check OWASP
     // https://plugins.gradle.org/plugin/org.owasp.dependencycheck
     // https://wiki.owasp.org/images/b/bd/OWASP_Top_10-2017-ko.pdf
     // https://rcan.net/149?category=998453
     // https://github.com/dependency-check/dependency-check-sonar-plugin
-    alias(libs.plugins.dependencycheck) // id("org.owasp.dependencycheck") version "8.0.2"
+    alias(libs.plugins.owasp.dependencycheck) // id("org.owasp.dependencycheck") version "8.0.2"
 
     // 플러그인 최신버전 확인하기: https://github.com/JLLeitschuh/ktlint-gradle/blob/main/CHANGELOG.md
     // https://beaniejoy.tistory.com/108
@@ -77,7 +78,6 @@ dependencies {
     implementation(platform(rootProject.libs.kotlin.bom))
     implementation(rootProject.libs.kotlin.stdlib)
     implementation(rootProject.libs.kotlin.build.tools.impl)
-    //implementation("org.owasp:dependency-check-gradle:5.3.0")
 
     // #dependency constraints 사용 (Gradle 5+ 권장 방식)
     // constraints는 강제(force)보단 약하지만,
