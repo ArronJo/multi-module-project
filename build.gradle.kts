@@ -9,8 +9,8 @@ plugins {
 
     // https://plugins.gradle.org/plugin/org.jetbrains.kotlin.jvm
     // Kotlin 관련 플러그인은 같은 버전을 사용하는 것이 좋다고 하네.
-    kotlin("jvm") version "2.2.20" // id("org.jetbrains.kotlin.jvm") version "2.1.20"
-    kotlin("plugin.serialization") version "2.2.20"
+    kotlin("jvm") version "2.3.0" // id("org.jetbrains.kotlin.jvm") version "2.1.20"
+    kotlin("plugin.serialization") version "2.3.0"
 
     id("jacoco")
 
@@ -222,7 +222,6 @@ sourceSets {
 //    mainClass.set("com.pinterest.ktlint.Main")
 //    args = listOf("src/**/*.kt")
 //}
-
 
 ///////////////////////////////////////////////////////////
 // KtLint
