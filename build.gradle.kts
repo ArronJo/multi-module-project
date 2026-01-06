@@ -60,8 +60,8 @@ buildscript {
     extra.apply {
         // Gradle JVM: File > Settings > Build, Execution, Deployment > Build Tools > Gradle > "Gradle JVM"
         set("javaVersion", JavaVersion.VERSION_17)
-        set("kotlinVersion", "2.0") // org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0
         set("jvmToolchain", 17)
+        set("kotlinVersion", "2.0") // org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0
     }
 }
 
@@ -136,7 +136,9 @@ kotlin {
 
     compilerOptions {
         // Kotlin 언어 기능, API 버전 설정
-        // 일반적으로 jvmToolchain(17)만 설정하면 충분하며, Kotlin 언어 버전은 사용 중인 Kotlin 플러그인 버전에 따라 자동으로 결정됩니다.
+        // "이 문법/표준 라이브러리 수준까지 허용할 것인가” 를 의미해
+        // 2.0 = K2 컴파일러 + 2.0 문법까지만 허용
+        // 컴파일러 버전이 2.1이어도 languageVersion을 2.0으로 제한 가능
         languageVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
         apiVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
         // Kotlin K2모드 사용 설정, freeCompilerArgs.add("-Xuse-k2")

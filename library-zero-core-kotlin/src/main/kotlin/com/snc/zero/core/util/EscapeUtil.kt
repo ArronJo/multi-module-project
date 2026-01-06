@@ -26,6 +26,5 @@ class EscapeUtil private constructor() {
                 .replace("&apos;".toRegex(), "'")
                 .replace("&#39;".toRegex(), "'")
         }
-
     }
 }
