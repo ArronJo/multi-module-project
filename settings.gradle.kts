@@ -1,4 +1,5 @@
 plugins {
+    // Gradle에서 Java 런타임(JDK)을 자동으로 찾고 관리해주는 플러그인
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }
 
