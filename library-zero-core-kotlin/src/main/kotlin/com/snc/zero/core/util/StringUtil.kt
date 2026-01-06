@@ -1,8 +1,5 @@
 package com.snc.zero.core.util
 
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonElement
-
 /**
  * 문자열 유틸리티
  *
@@ -12,6 +9,10 @@ import kotlinx.serialization.json.JsonElement
 class StringUtil private constructor() {
 
     companion object {
+
+        fun isNullOrEmpty(str: String?): Boolean {
+            return str.isNullOrEmpty() // str == null || str.isEmpty()
+        }
 
         fun toString(arr: Array<String>): String {
             val buff = StringBuilder()
@@ -28,17 +29,6 @@ class StringUtil private constructor() {
 
         fun join(arr: Array<String>, separator: CharSequence = ", ", prefix: CharSequence = "", postfix: CharSequence = ""): String {
             return arr.joinToString(prefix = prefix, separator = separator, postfix = postfix)
-        }
-
-        fun print(arr: Array<String>): String {
-            return arr.joinToString(prefix = "[", separator = "|", postfix = "]")
-        }
-
-        fun printJSON(input: String): String {
-            val clean = input.trim().removeSurrounding("\"")
-            val parsed: JsonElement = Json.parseToJsonElement(clean)
-            val prettyJson = Json { prettyPrint = true }
-            return prettyJson.encodeToString(JsonElement.serializer(), parsed)
         }
     }
 }
