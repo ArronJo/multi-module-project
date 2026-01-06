@@ -363,12 +363,13 @@ System.setProperty("sonar.gradle.skipCompile", "true")
 // Cannot add task 'clean' as a task with that name already exists.
 //tasks.register("clean") { }
 tasks.named("clean") {
+    val buildDir = project.layout.buildDirectory.asFile.get()
+
     doFirst {
         delete("$projectDir/out")
         //delete("$projectDir/gradle/verification-metadata.xml")
     }
     doLast {
-        val buildDir = project.layout.buildDirectory.asFile.get()
         println("##############################")
         println("Deleting build directory: $buildDir")
         println("##############################")
