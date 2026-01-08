@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
-
 plugins {
     kotlin("jvm")
     id("jacoco")
@@ -24,9 +22,13 @@ dependencies {
 }
 
 kotlin {
+    // 상황에 따라 모듈별 JVM 버전을 지정합니다
+    //jvmToolchain(rootProject.extra["jvmToolchain"] as Int)
+
     compilerOptions {
-        languageVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
-        apiVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
+        // Kotlin 언어 버전은 대부분 명시 불필요, 점진적 마이그레이션이 필요한 경우만, "엄격한 버전 제어" 설정 권장:
+        //languageVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
+        //apiVersion.set(org.jetbrains.kotlin.gradle.dsl.KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
     }
 }
 

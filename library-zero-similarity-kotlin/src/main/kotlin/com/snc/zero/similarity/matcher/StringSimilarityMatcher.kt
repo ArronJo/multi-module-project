@@ -599,7 +599,6 @@ class StringSimilarityMatcher(
                         SimilarityMethod.COSINE -> cosineSimilarity(target, text)
                         SimilarityMethod.JARO -> jaroSimilarity(target, text)
                         SimilarityMethod.JARO_WINKLER -> jaroWinklerSimilarity(target, text)
-                        else -> 0.0 // CONTAINMENT는 위에서 처리됨
                     }
 
                     if (similarity >= minSimilarity) {

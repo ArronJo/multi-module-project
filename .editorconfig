@@ -26,9 +26,33 @@
 # 이 설정은 Ktlint가 .editorconfig 파일을 찾을 때, 이 파일이 발견된 디렉토리부터 상위로 더 이상 탐색하지 않고 해당 파일에서 설정을 적용하도록 지시하는 역할을 합니다.
 root = true
 
+######################################
+# 1. 기본 개념 차이
+#   ktlint 규칙 (ktlint_*)
+#     - ktlint라는 별도의 린터 도구에서 사용하는 규칙
+#     - 코드 스타일 검사 및 자동 포맷팅 전용
+#     - CLI 또는 Gradle/Maven 플러그인으로 실행
+#
+#   IntelliJ 규칙 (ij_*)
+#     - IntelliJ IDEA IDE의 내장 코드 포맷터가 사용하는 규칙
+#     - IDE 내에서 코드 작성 시 실시간 적용
+#     - Ctrl+Alt+L (또는 Cmd+Option+L) 포맷팅 시 적용
+#
+# 2. 적용 시점 차이
+#  ktlint 규칙:
+#    - CI/CD 파이프라인에서 실행
+#    - Git pre-commit hook에서 실행
+#    - 수동으로 `./gradlew ktlintCheck` 실행 시
+#
+#  IntelliJ 규칙:
+#    - IDE에서 코드 작성 중 실시간
+#    - 파일 저장 시 자동 포맷팅 설정한 경우
+#    - 수동으로 "Reformat Code" 실행 시
+
 
 ######################################
 # all files
+
 # noinspection EditorConfigKeyCorrectness
 [*]
 charset = utf-8
@@ -45,19 +69,20 @@ insert_final_newline = true
 
 ######################################
 # gradle
+
 # noinspection EditorConfigKeyCorrectness
 #[*.gradle.kts]
 #ktlint = disabled
 
+
+######################################
+# kotlin
 
 [*Test.kt]
 # TDD 작성 중에는 해당 옵션이 켜져 있으니깐 너무 힘들다...
 # Argument should be on a separate line (unless all arguments can fit a single line) (standard:argument-list-wrapping)
 ktlint_standard_argument-list-wrapping = disabled
 
-
-######################################
-# kotlin
 # noinspection EditorConfigKeyCorrectness
 [*.{kt,kts}]
 # IntelliJ에서 Ktlint와 충돌 없이 저장 시 자동 포맷을 적용

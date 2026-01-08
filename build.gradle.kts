@@ -1,13 +1,16 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.FileInputStream
 import java.util.Properties
-import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 //import org.gradle.api.artifacts.verification.DependencyVerificationMode as VerificationMode
 
+// plugins {}   Gradle Plugin Portal (기본값) 에서 정보를 찾음
+// Gradle이 내부적으로 //https://plugins.gradle.org/m2 로 나가려고 함
 plugins {
     id("java")
 
-    // https://plugins.gradle.org/plugin/org.jetbrains.kotlin.jvm
+    // https://kotlinlang.org/docs/releases.html#release-details
+    // https://kotlinlang.org/docs/gradle-configure-project.html#apply-the-plugin
     // Kotlin 관련 플러그인은 같은 버전을 사용하는 것이 좋다고 하네.
     kotlin("jvm") version "2.3.0" // id("org.jetbrains.kotlin.jvm") version "2.1.20"
     kotlin("plugin.serialization") version "2.3.0"
@@ -58,22 +61,26 @@ version = "0.1-beta" // "1.0-SNAPSHOT"
 
 buildscript {
     extra.apply {
-        // Gradle JVM: File > Settings > Build, Execution, Deployment > Build Tools > Gradle > "Gradle JVM"
-        set("javaVersion", JavaVersion.VERSION_17)
-        set("jvmToolchain", 17)
-        set("kotlinVersion", "2.0") // org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_2_0
+        //set("javaVersion", JavaVersion.VERSION_17)
+
+        // Gradle JVM = Gradle 실행, 빌드 도구를 돌리는 엔진, 서로 독립적, 최신 설정 권장
+        // jvmToolchain = 프로젝트 코드, 내 코드를 컴파일하는 컴파일러, 서로 독립적, 프로젝트에 맞게 설정 권장
+        set("jvmToolchain", 17) // 프로젝트에 맞게 jvm 버전 설정 추천.
+
+        //set("kotlinVersion", "2.1")
     }
 }
 
 repositories {
     mavenCentral()
+    //gradlePluginPortal()
     //maven("https://oss.sonatype.org/content/repositories/snapshots")
     //maven {
     //    url = uri("https://plugins.gradle.org/m2/")
     //}
-    //gradlePluginPortal()
 }
 
+// dependencies {}	Maven Repo 에서 정보를 찾음
 dependencies {
     implementation(platform(rootProject.libs.kotlin.bom))
     implementation(rootProject.libs.kotlin.stdlib)
@@ -116,36 +123,32 @@ tasks.test {
     useJUnitPlatform()
 }
 
-java {
-    sourceCompatibility = rootProject.extra["javaVersion"] as JavaVersion
-    targetCompatibility = rootProject.extra["javaVersion"] as JavaVersion
-}
+// Java 버전: (환경 의존적이므로) 반드시 명시 하는 것이 좋으나, jvmToolchain()이 자동 설정 해줌.
+//java {
+//    sourceCompatibility = rootProject.extra["javaVersion"] as JavaVersion
+//    targetCompatibility = rootProject.extra["javaVersion"] as JavaVersion
+//}
 
 kotlin {
-    sourceSets.all {
-        println("Source set: $name")
-        println("Depends on: ${dependsOn.joinToString(", ") { it.name }}")
-        println("---")
-    }
-
     // JVM 버전을 지정합니다
     // Kotlin 코드를 컴파일하고 실행할 때 사용할 Java 툴체인을 설정
     // 실제로 Java 17 JDK를 사용하여 바이트코드를 생성
     // 컴파일러, 실행 환경 모두 Java 17을 사용
     jvmToolchain(rootProject.extra["jvmToolchain"] as Int)
 
+    // Kotlin 버전: 선택사항 (플러그인이 관리하므로 일관성 보장됨)
     compilerOptions {
-        // Kotlin 언어 기능, API 버전 설정
-        // "이 문법/표준 라이브러리 수준까지 허용할 것인가” 를 의미해
-        // 2.0 = K2 컴파일러 + 2.0 문법까지만 허용
-        // 컴파일러 버전이 2.1이어도 languageVersion을 2.0으로 제한 가능
-        languageVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
-        apiVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
-        // Kotlin K2모드 사용 설정, freeCompilerArgs.add("-Xuse-k2")
+        // Kotlin 언어 기능, API 버전 제한 설정
+        // 컴파일러 버전이 2.1이어도 languageVersion, apiVersion을 2.0으로 제한 가능하다.
+        //languageVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
+        //apiVersion.set(KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
     }
 
-    println("[kotlin-compilerOptions] KotlinVersion = " + rootProject.extra["kotlinVersion"] as String + " --> " + KotlinVersion.fromVersion(rootProject.extra["kotlinVersion"] as String))
-    println("    --- " + KotlinVersion.KOTLIN_2_1 + " : " + KotlinVersion.fromVersion("2.1"))
+    sourceSets.all {
+        println("Source set: $name")
+        println("Depends on: ${dependsOn.joinToString(", ") { it.name }}")
+        println("---")
+    }
 }
 
 // 중복 처리 전략 추가
@@ -429,6 +432,7 @@ tasks.named("build") {
 ///////////////////////////////////////////////////////////
 // Sub-Projects Settings
 subprojects {
+    apply(plugin = "org.jetbrains.kotlin.jvm")
     apply(plugin = "java")
     apply(plugin = "jacoco")
     apply(plugin = "org.owasp.dependencycheck")
@@ -438,6 +442,15 @@ subprojects {
 
     repositories {
         mavenCentral()
+    }
+
+    kotlin {
+        // 기본값 설정 (개별 모듈에서 오버라이드 가능)
+        if (!project.hasProperty("customToolchain")) {
+            kotlin {
+                jvmToolchain(rootProject.extra["jvmToolchain"] as Int)
+            }
+        }
     }
 
     ktlint {

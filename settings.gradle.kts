@@ -1,6 +1,7 @@
 plugins {
     // Gradle에서 Java 런타임(JDK)을 자동으로 찾고 관리해주는 플러그인
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+    // https://mvnrepository.com/artifact/org.gradle.toolchains.foojay-resolver-convention/org.gradle.toolchains.foojay-resolver-convention.gradle.plugin
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0" // "0.8.0"
 }
 
 rootProject.name = "multi-module-project"

@@ -1,14 +1,13 @@
 [versions]
 kotlin-bom = "2.1.0" # https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-bom
-ktlint = "14.0.1" # 공식 추천 플러그인 # 플러그인 최신버전 확인하기: https://github.com/JLLeitschuh/ktlint-gradle/blob/main/CHA
+# https://github.com/pinterest/ktlint의 ktlint는 Gradle 플러그인이 아니라 CLI 기반 Kotlin linter 도구.
+ktlint = "14.0.1" # 공식 추천 플러그인 # https://github.com/JLLeitschuh/ktlint-gradle/blob/main/CHANGELOG.md
 #ktlint-usefulness = "0.11.0" # 경량 대안
-# Pinterest의 ktlint는 Gradle 플러그인이 아니라 CLI 기반 Kotlin linter 도구.
-# https://github.com/pinterest/ktlint
 #detekt = "1.23.7"  # https://github.com/detekt/detekt
 sonarqube = "5.1.0.4882"
 owasp-dependencycheck = "12.1.9" # "8.0.2" # https://plugins.gradle.org/plugin/org.owasp.dependencycheck
 cyclonedx = "3.1.0" # "2.2.0" # "1.7.4" # https://plugins.gradle.org/plugin/org.cyclonedx.bom
-license-report = "3.0.1" # https://github.com/jk1/Gradle-License-Report
+license-report = "3.0.1" # https://github.com/jk1/Gradle-License-Report/blob/master/CHANGELOG.md
 junit-jupiter = "5.10.2"
 testng = "7.9.0"
 mockito-kotlin = "5.3.1"
@@ -82,7 +81,5 @@ ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
 #detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 sonarqube = { id ="org.sonarqube", version.ref = "sonarqube" }
 cyclonedx = { id ="org.cyclonedx.bom", version.ref = "cyclonedx" }
-
 license-report = { id = "com.github.jk1.dependency-license-report", version.ref = "license-report" }
-
 owasp-dependencycheck = { id = "org.owasp.dependencycheck", version.ref = "owasp-dependencycheck" }
