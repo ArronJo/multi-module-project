@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.FileInputStream
+import java.util.Locale
 import java.util.Properties
 
 //import org.gradle.api.artifacts.verification.DependencyVerificationMode as VerificationMode
@@ -44,12 +45,11 @@ plugins {
     //alias(libs.plugins.detekt) // id("io.gitlab.arturbosch.detekt") version "1.23.7"
 
     // SBOM 생성
-    // https://plugins.gradle.org/plugin/org.cyclonedx.bom
-    // 명령어: `./gradlew cyclonedxBom`
-    // 취약점검사: `trivy sbom ./build/reports/bom.json`
     // https://github.com/CycloneDX/cyclonedx-gradle-plugin
-    // https://scribesecurity.com/ko/sbom/sample-sbom/#sbom-samples
-    // https://mvnrepository.com/artifact/org.cyclonedx.bom/org.cyclonedx.bom.gradle.plugin
+    // 명령어: `./gradlew cyclonedxBom`
+    // 뷰어: https://cyclonedx.github.io/cyclonedx-web-tool/ 접속
+    //      build/reports/bom.json 파일 업로드
+    // 취약점검사: `trivy sbom ./build/reports/bom.json`
     alias(libs.plugins.cyclonedx) // id("org.cyclonedx.bom") version "2.2.0"
 
     // 오픈 소스 라이선스 리포트 만들기
@@ -313,6 +313,97 @@ tasks.jacocoTestCoverageVerification {
     }
 }
  */
+
+
+///////////////////////////////////////////////////////////
+// CycloneDx
+
+tasks.register<Exec>("cyclonedxBomCheckVulnerabilities") {
+    dependsOn("cyclonedxBom")
+    group = "verification"
+    description = "CycloneDX BOM으로 취약점 검사"
+
+    val bomFile = file("build/reports/cyclonedx/bom.json")
+
+    // 가능한 osv-scanner 경로들
+    val possiblePaths = listOf(
+        "/opt/homebrew/bin/osv-scanner",  // Apple Silicon Mac
+        "/usr/local/bin/osv-scanner",      // Intel Mac
+        "/usr/bin/osv-scanner",            // Linux
+        System.getenv("HOME") + "/.local/bin/osv-scanner"  // User local
+    )
+
+    val osvScannerPath = possiblePaths.firstOrNull { file(it).exists() }
+        ?: throw GradleException(
+            "osv-scanner를 찾을 수 없습니다. 다음 경로들을 확인했습니다:\n" +
+                possiblePaths.joinToString("\n") { "  - $it" } +
+                "\n\n설치 확인: which osv-scanner"
+        )
+
+    executable = osvScannerPath
+    args("--sbom", bomFile.absolutePath)
+
+    isIgnoreExitValue = true
+
+    doFirst {
+        println("🔍 OSV Scanner: $osvScannerPath")
+        println("🔍 BOM 파일: ${bomFile.absolutePath}")
+        println("🛡️  취약점 검사 시작...\n")
+    }
+
+    doLast {
+        println("\n✅ 취약점 검사 완료")
+    }
+}
+
+tasks.named("cyclonedxBom") {
+    outputs.upToDateWhen { false }
+
+    doLast {
+        println("tasks.named(\"cyclonedxBom\") doLast {}")
+
+        val bomFile = file("build/reports/cyclonedx/bom.json")
+        val templateHtml = file("src/test/resources/bom-viewer-template.html")
+        val outputHtml = file("build/reports/bom-viewer.html")
+
+        if (bomFile.exists() && templateHtml.exists()) {
+            // JSON 데이터 읽기
+            val bomJson = bomFile.readText()
+
+            // HTML 템플릿 읽고 데이터 삽입
+            val htmlContent = templateHtml.readText()
+                .replace("\"/*BOM_DATA_PLACEHOLDER*/\"", bomJson)
+
+            outputHtml.writeText(htmlContent)
+
+            // 브라우저에서 자동 열기
+            val os = System.getProperty("os.name").lowercase(Locale.getDefault())
+            val command = when {
+                os.contains("win") -> listOf("cmd", "/c", "start", outputHtml.absolutePath)
+                os.contains("mac") -> listOf("open", outputHtml.absolutePath)
+                os.contains("nix") || os.contains("nux") -> listOf("xdg-open", outputHtml.absolutePath)
+                else -> null
+            }
+
+            command?.let {
+                try {
+                    ProcessBuilder(it).start()
+                    println("✅ BOM 생성 완료: ${bomFile.absolutePath}")
+                    println("🌐 뷰어 열림: ${outputHtml.absolutePath}")
+
+                    println("\n💡 취약점 검사를 실행하려면:")
+                    println("   ./gradlew checkVulnerabilities")
+                } catch (e: Exception) {
+                    println("⚠️  브라우저 자동 실행 실패: ${e.message}")
+                    println("   수동으로 열어주세요: ${outputHtml.absolutePath}")
+                }
+            }
+        } else {
+            if (!bomFile.exists()) println("⚠️  BOM 파일이 생성되지 않았습니다")
+            if (!templateHtml.exists()) println("⚠️  bom-viewer-template.html 파일이 프로젝트 루트에 없습니다")
+        }
+    }
+}
 
 ///////////////////////////////////////////////////////////
 // SonarQube
