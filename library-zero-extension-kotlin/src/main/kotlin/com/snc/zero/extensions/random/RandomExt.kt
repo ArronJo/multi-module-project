@@ -4,7 +4,7 @@ import java.util.IllegalFormatException
 import java.util.SplittableRandom
 import kotlin.math.ln
 
-/**
+/*
  SecureRandom와 SplittableRandom는 둘 다 Java의 랜덤 숫자 생성 클래스이지만, 그 목적과 사용 사례가 다릅니다.
  다음은 이 두 클래스의 주요 차이점입니다:
 

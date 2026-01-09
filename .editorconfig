@@ -233,6 +233,12 @@ ktlint_standard_string-template = enabled
 #ktlint_standard_spacing-between-declarations-with-comments = disabled
 
 
+# Settings after ktlint 1.8.
+
+# A dangling toplevel KDoc is not allowed (cannot be auto-corrected) (standard:kdoc)
+#ktlint_standard_kdoc = disabled
+
+
 ######################################
 # yaml
 #[*.{yml,yaml}]

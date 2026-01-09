@@ -15,10 +15,6 @@ import javax.crypto.spec.GCMParameterSpec
 /**
  * DRM 문서 암호화 및 보안 관리 시스템
  */
-
-/**
- * DRM 문서 암호화 및 보안 관리 시스템
- */
 class DrmDocumentEncryption {
 
     companion object {

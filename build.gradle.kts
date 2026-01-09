@@ -163,11 +163,6 @@ tasks.withType<KotlinCompile>().configureEach {
     }
 }
 
-//val compileTestKotlin: KotlinCompile by tasks
-//compileTestKotlin.compilerOptions {
-//    languageVersion.set(KotlinVersion.KOTLIN_2_1)
-//}
-
 tasks.register("allProjectDependencies") {
     group = "help"
     description = "Displays dependencies for all projects"
@@ -236,7 +231,7 @@ sourceSets {
 //
 
 // CLI 최신버전 확인: https://pinterest.github.io/ktlint/latest/
-var ktlintVersion = "1.6.0"
+var ktlintVersion = "1.8.0"
 
 //configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
 ktlint {
