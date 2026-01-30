@@ -1,7 +1,6 @@
 package com.snc.zero.pdfbox.editor
 
 import com.snc.zero.logger.jvm.TLogging
-import org.apache.pdfbox.multipdf.Splitter
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.apache.pdfbox.pdmodel.PDPageContentStream
@@ -179,20 +178,31 @@ class PDFEditor private constructor() {
             mkdirs(outputPath)
 
             PDDocument.load(File(inputPath)).use { document ->
-                val splitter = Splitter()
-                val pages: List<PDDocument> = splitter.split(document)
+                // [개선] Splitter 쓰는 방식 자체가 메모리 낭비
+                //val splitter = Splitter()
+                //val pages: List<PDDocument> = splitter.split(document)
 
-                PDDocument().use { newDocument ->
-                    // 페이지 추출 (1-based index)
-                    for (pageNum in pagesToKeep) {
-                        // if (pageNum in 0 until pages.size) { // 0-based index
-                        if (pageNum in 1..pages.size) { // 1-based index
-                            val page = pages[pageNum - 1].getPage(0)
-                            newDocument.addPage(page)
+                //try {
+                    PDDocument().use { newDocument ->
+                        val totalPages = document.numberOfPages
+
+                        // 페이지 추출 (1-based index)
+                        for (pageNum in pagesToKeep) {
+                            // if (pageNum in 0 until pages.size) { // 0-based index
+                            //if (pageNum in 1..pages.size) { // 1-based index
+                            //    val page = pages[pageNum - 1].getPage(0)
+                            //    newDocument.addPage(page)
+                            //}
+                            if (pageNum in 1..totalPages) {
+                                val page = document.getPage(pageNum - 1)
+                                newDocument.addPage(page)
+                            }
                         }
+                        newDocument.save(outputPath)
                     }
-                    newDocument.save(outputPath)
-                }
+                //} finally {
+                //    pages.forEach { it.close() }
+                //}
             }
         }
 
