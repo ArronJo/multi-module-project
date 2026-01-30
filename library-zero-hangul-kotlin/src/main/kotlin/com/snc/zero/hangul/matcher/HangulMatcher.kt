@@ -43,47 +43,114 @@ class HangulMatcher {
         return this
     }
 
+    // matching 함수 위치(기존 86줄)에 추가
+    private fun extractChosung(char: Char): String {
+        if (char !in '가'..'힣') {
+            return char.toString()
+        }
+
+        val chosung = listOf(
+            'ㄱ', 'ㄲ', 'ㄴ', 'ㄷ', 'ㄸ', 'ㄹ', 'ㅁ', 'ㅂ', 'ㅃ',
+            'ㅅ', 'ㅆ', 'ㅇ', 'ㅈ', 'ㅉ', 'ㅊ', 'ㅋ', 'ㅌ', 'ㅍ', 'ㅎ'
+        )
+
+        val code = char.code - 0xAC00
+        val chosungIndex = code / (21 * 28)
+
+        return chosung[chosungIndex].toString()
+    }
+
+    private fun isChosung(char: Char): Boolean {
+        return char in 'ㄱ'..'ㅎ'
+    }
+
+    //++ 26.1.30 검색 기능 강화
+    // match 함수 수정
     fun match(data: String, startIndex: Int = 0): HangulMatchResult {
         if (keyword.isEmpty()) {
             return HangulMatchResult(0, 0)
         }
 
         val target = data.lowercase(Locale.getDefault())
-        val len = target.length - keyword.length + 1
 
-        for (i in startIndex until len) {
-            var k = 0
-            var j = 0
-            while (i + j < target.length) {
-                val tc = target[i + j]
-                val kc = keyword[k]
+        // keyword에 초성이 포함되어 있는지 확인
+        val hasChosung = keyword.any { isChosung(it) }
 
-                val matched = matching(tc, kc)
+        return if (hasChosung) {
+            matchByChosung(target, startIndex)
+        } else {
+            matchByJamo(target, startIndex)
+        }
+    }
 
-                // 불일치 혹은 매칭 안된 상태에서 무시 문자인 경우
-                if (-1 == matched || (0 == k && 0 == matched)) {
+    // 자모 검색 함수
+    private fun matchByJamo(target: String, startIndex: Int): HangulMatchResult {
+        // keyword에서 허용되지 않은 문자 제거 후 자모 분리
+        val keywordDecomposed = keyword.replace(notAllowedRegex, "")
+            .map { HangulDecompose.decompose(it) }
+            .joinToString("")
+
+        if (keywordDecomposed.isEmpty()) {
+            return HangulMatchResult(0, 0)
+        }
+
+        for (searchPos in startIndex until target.length) {
+            var decomposedStr = ""
+
+            for (charCount in 0 until (target.length - searchPos)) {
+                val currentChar = target[searchPos + charCount]
+
+                // 허용된 문자만 자모 분리하여 추가
+                if (!notAllowedRegex.matches(currentChar.toString())) {
+                    decomposedStr += HangulDecompose.decompose(currentChar).replace(" ", "")
+                }
+
+                if (decomposedStr.startsWith(keywordDecomposed)) {
+                    return HangulMatchResult(searchPos, charCount + 1)
+                }
+
+                if (!keywordDecomposed.startsWith(decomposedStr)) {
                     break
                 }
-                if (1 == matched) {
-                    k++
-                }
-                if (k == keyword.length) {
-                    return HangulMatchResult(i, j + 1)
-                }
-                j++
             }
         }
+
         return HangulMatchResult.EMPTY
     }
 
-    private fun matching(t: Char, k: Char): Int {
-        if (!isValidCharacter(t)) {
-            return 0 // ignore
+    // 초성 검색 함수
+    private fun matchByChosung(target: String, startIndex: Int): HangulMatchResult {
+        // keyword에서 허용되지 않은 문자 제거 후 초성 추출
+        val keywordChosung = keyword.replace(notAllowedRegex, "")
+            .map { if (isChosung(it)) it.toString() else extractChosung(it) }
+            .joinToString("")
+
+        if (keywordChosung.isEmpty()) {
+            return HangulMatchResult(0, 0)
         }
-        if (HangulDecompose.decompose(t).startsWith(HangulDecompose.decompose(k))) {
-            return 1 // match
+
+        for (searchPos in startIndex until target.length) {
+            var chosungStr = ""
+
+            for (charCount in 0 until (target.length - searchPos)) {
+                val currentChar = target[searchPos + charCount]
+
+                // 한글만 초성 추출, 그 외 문자는 건너뛰기
+                if (currentChar in '가'..'힣') {
+                    chosungStr += extractChosung(currentChar)
+                }
+
+                if (chosungStr.startsWith(keywordChosung)) {
+                    return HangulMatchResult(searchPos, charCount + 1)
+                }
+
+                if (!keywordChosung.startsWith(chosungStr)) {
+                    break
+                }
+            }
         }
-        return -1 // not a match
+
+        return HangulMatchResult.EMPTY
     }
 
     fun isValidCharacter(char: Char): Boolean {

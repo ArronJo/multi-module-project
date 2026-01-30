@@ -26,7 +26,7 @@ class HangulMatcherTest : BaseJUnit5Test() {
     }
 
     @Test
-    fun `한글 초성 검색`() {
+    fun `한글 검색`() {
         // given
         val menus = arrayOf(
             "사고보험금 신청",
@@ -37,17 +37,24 @@ class HangulMatcherTest : BaseJUnit5Test() {
             "휴대폰인증 NICE 평가",
             "휴대폰인증NICE 인증",
             "휴대폰인증 KCB 평가 (not NICE))",
-            "당사는 전용선을 통해 VAN사(NICE)에 카드인증을 요청합니다."
+            "당사는 전용선을 통해 VAN사(NICE)에 카드인증을 요청합니다.",
+            "FP 보수교육 이수 관리"
         )
         // when
-        val keyword = "ㅈㅇㅅㅇㅌㅎv" // "ㅈ N", "ㅅㄱ"
+        val keywords = arrayOf(
+            "ㅂㅎ",
+            "봏",
+            "ㅇㅅㄱㄹ"
+        )
         val matcher = HangulMatcher()
-        matcher.keyword(keyword)
-        for (m in menus) {
-            val match = matcher.match(m)
-            // then
-            if (HangulMatchResult.EMPTY != match) {
-                logger.debug { "한글 초성 검색 ($keyword) -> 결과: $m" }
+        for (k in keywords) {
+            matcher.keyword(k)
+            for (m in menus) {
+                val match = matcher.match(m)
+                // then
+                if (HangulMatchResult.EMPTY != match) {
+                    logger.debug { "한글 검색 : $k == 매칭: $m -> 결과: $match" }
+                }
             }
         }
     }
