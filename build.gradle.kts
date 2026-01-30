@@ -314,97 +314,6 @@ tasks.jacocoTestCoverageVerification {
 }
  */
 
-
-///////////////////////////////////////////////////////////
-// CycloneDx
-
-tasks.register<Exec>("cyclonedxBomCheckVulnerabilities") {
-    dependsOn("cyclonedxBom")
-    group = "verification"
-    description = "CycloneDX BOM으로 취약점 검사"
-
-    val bomFile = file("build/reports/cyclonedx/bom.json")
-
-    // 가능한 osv-scanner 경로들
-    val possiblePaths = listOf(
-        "/opt/homebrew/bin/osv-scanner",  // Apple Silicon Mac
-        "/usr/local/bin/osv-scanner",      // Intel Mac
-        "/usr/bin/osv-scanner",            // Linux
-        System.getenv("HOME") + "/.local/bin/osv-scanner"  // User local
-    )
-
-    val osvScannerPath = possiblePaths.firstOrNull { file(it).exists() }
-        ?: throw GradleException(
-            "osv-scanner를 찾을 수 없습니다. 다음 경로들을 확인했습니다:\n" +
-                possiblePaths.joinToString("\n") { "  - $it" } +
-                "\n\n설치 확인: which osv-scanner"
-        )
-
-    executable = osvScannerPath
-    args("--sbom", bomFile.absolutePath)
-
-    isIgnoreExitValue = true
-
-    doFirst {
-        println("🔍 OSV Scanner: $osvScannerPath")
-        println("🔍 BOM 파일: ${bomFile.absolutePath}")
-        println("🛡️  취약점 검사 시작...\n")
-    }
-
-    doLast {
-        println("\n✅ 취약점 검사 완료")
-    }
-}
-
-tasks.named("cyclonedxBom") {
-    outputs.upToDateWhen { false }
-
-    doLast {
-        println("tasks.named(\"cyclonedxBom\") doLast {}")
-
-        val bomFile = file("build/reports/cyclonedx/bom.json")
-        val templateHtml = file("src/test/resources/bom-viewer-template.html")
-        val outputHtml = file("build/reports/bom-viewer.html")
-
-        if (bomFile.exists() && templateHtml.exists()) {
-            // JSON 데이터 읽기
-            val bomJson = bomFile.readText()
-
-            // HTML 템플릿 읽고 데이터 삽입
-            val htmlContent = templateHtml.readText()
-                .replace("\"/*BOM_DATA_PLACEHOLDER*/\"", bomJson)
-
-            outputHtml.writeText(htmlContent)
-
-            // 브라우저에서 자동 열기
-            val os = System.getProperty("os.name").lowercase(Locale.getDefault())
-            val command = when {
-                os.contains("win") -> listOf("cmd", "/c", "start", outputHtml.absolutePath)
-                os.contains("mac") -> listOf("open", outputHtml.absolutePath)
-                os.contains("nix") || os.contains("nux") -> listOf("xdg-open", outputHtml.absolutePath)
-                else -> null
-            }
-
-            command?.let {
-                try {
-                    ProcessBuilder(it).start()
-                    println("✅ BOM 생성 완료: ${bomFile.absolutePath}")
-                    println("🌐 뷰어 열림: ${outputHtml.absolutePath}")
-
-                    println("\n💡 취약점 검사를 실행하려면:")
-                    println("   ./gradlew checkVulnerabilities")
-                } catch (e: Exception) {
-                    println("⚠️  브라우저 자동 실행 실패: ${e.message}")
-                    println("   수동으로 열어주세요: ${outputHtml.absolutePath}")
-                }
-            }
-        } else {
-            if (!bomFile.exists()) println("⚠️  BOM 파일이 생성되지 않았습니다")
-            if (!templateHtml.exists()) println("⚠️  bom-viewer-template.html 파일이 프로젝트 루트에 없습니다")
-        }
-    }
-}
-
 ///////////////////////////////////////////////////////////
 // SonarQube
 val sonarProperties = Properties()
@@ -456,6 +365,7 @@ tasks.named("clean") {
 
     doFirst {
         delete("$projectDir/out")
+        //delete("$projectDir/report/licenses")
         //delete("$projectDir/gradle/verification-metadata.xml")
     }
     doLast {
@@ -513,6 +423,45 @@ tasks.register<Exec>("generateVerificationMetadata") {
 // root build task가 완료된 후 generateVerificationMetadata task 실행
 tasks.named("build") {
     finalizedBy("generateVerificationMetadata")
+}
+
+///////////////////////////////////////////////////////////
+// 빌드 이후 후속 Task
+// LicenseReport 생성 후 파일 정리
+tasks.named("build") {
+    finalizedBy("generateLicenseReport")
+}
+
+val licenseOutputDir = "${rootProject.projectDir}/report/licenses"
+licenseReport {
+    outputDir = licenseOutputDir
+    renderers = arrayOf<com.github.jk1.license.render.ReportRenderer>(
+        com.github.jk1.license.render.JsonReportRenderer("licenses.json"),
+        //com.github.jk1.license.render.CsvReportRenderer("licenses.csv"),
+        com.github.jk1.license.render.SimpleHtmlReportRenderer("licenses.html")
+    )
+}
+
+val cleanLicenseReportDirs by tasks.registering(Delete::class) {
+    val licenseDir = file(licenseOutputDir)
+
+    //delete(
+    //    licenseDir.resolve("dependencies"),
+    //    licenseDir.resolve("css"),
+    //    licenseDir.resolve("js")
+    //)
+
+    doFirst {
+        if (licenseDir.exists()) {
+            licenseDir.listFiles()
+                ?.filter { it.isDirectory }
+                ?.forEach { delete(it) }
+        }
+    }
+}
+
+tasks.named("generateLicenseReport") {
+    finalizedBy(cleanLicenseReportDirs)
 }
 
 ///////////////////////////////////////////////////////////
@@ -687,3 +636,160 @@ subprojects {
     }
      */
 }
+
+///////////////////////////////////////////////////////////
+// Utilities
+///////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////
+// 의존성 정보 출력
+// ./gradlew showAllDependencies
+subprojects {
+    val projectName = project.name
+
+    tasks.register("showDependencies") {
+        group = "help"
+        description = "Shows dependencies for this module"
+
+        doLast {
+            fun printDeps(configName: String, title: String) {
+                val config = configurations.findByName(configName) ?: return
+
+                println("\n" + "=".repeat(60))
+                println("  [$projectName] $title")
+                println("=".repeat(60))
+
+                try {
+                    // 의존성 목록
+                    config.resolvedConfiguration.firstLevelModuleDependencies
+                        .sortedBy { it.moduleName }
+                        .forEach {
+                            println("  📦 ${it.moduleGroup}:${it.moduleName}:${it.moduleVersion}")
+                        }
+
+                    // 파일 목록
+                    println("\n  📁 파일 목록:")
+                    config.resolvedConfiguration.resolvedArtifacts
+                        .sortedBy { it.file.name }
+                        .forEach {
+                            println("    - ${it.file.name}")
+                            //println("      ${it.file.absolutePath}")
+                        }
+
+                } catch (_: Exception) {
+                    println("  (의존성 없음)")
+                }
+            }
+
+            printDeps("compileClasspath", "Main Dependencies (Compile)")
+            //printDeps("testCompileClasspath", "Test Dependencies (Compile)")
+        }
+    }
+}
+
+tasks.register("showAllDependencies") {
+    group = "help"
+    description = "Shows dependencies for all modules"
+
+    dependsOn(subprojects.map { it.tasks.named("showDependencies") })
+}
+
+///////////////////////////////////////////////////////////
+// CycloneDx
+// SBOM 생성 이후 취약점 검사
+tasks.register<Exec>("cyclonedxBomCheckVulnerabilities") {
+    dependsOn("cyclonedxBom")
+    group = "verification"
+    description = "CycloneDX BOM으로 취약점 검사"
+
+    val bomFile = file("build/reports/cyclonedx/bom.json")
+
+    // 가능한 osv-scanner 경로들
+    val possiblePaths = listOf(
+        "/opt/homebrew/bin/osv-scanner", // Apple Silicon Mac
+        "/usr/local/bin/osv-scanner", // Intel Mac
+        "/usr/bin/osv-scanner", // Linux
+        System.getenv("HOME") + "/.local/bin/osv-scanner" // User local
+    )
+
+    val osvScannerPath = possiblePaths.firstOrNull { file(it).exists() }
+        ?: throw GradleException(
+            "osv-scanner를 찾을 수 없습니다. 다음 경로들을 확인했습니다:\n" +
+                possiblePaths.joinToString("\n") { "  - $it" } +
+                "\n\n설치 확인: which osv-scanner"
+        )
+
+    executable = osvScannerPath
+    args("--sbom", bomFile.absolutePath)
+
+    isIgnoreExitValue = true
+
+    doFirst {
+        println("🔍 OSV Scanner: $osvScannerPath")
+        println("🔍 BOM 파일: ${bomFile.absolutePath}")
+        println("🛡️  취약점 검사 시작...\n")
+    }
+
+    doLast {
+        println("\n✅ 취약점 검사 완료")
+    }
+}
+
+// SBOM 취약점 검사를 자동으로 수행 할지는 고민 좀 해보자.
+//tasks.named("cyclonedxBom") {
+//    finalizedBy("cyclonedxBomCheckVulnerabilities")
+//}
+
+// SBOM 생성 후 Viewer 연동
+tasks.named("cyclonedxBom") {
+    outputs.upToDateWhen { false }
+
+    doLast {
+        println("tasks.named(\"cyclonedxBom\") doLast {}")
+
+        val bomFile = file("build/reports/cyclonedx/bom.json")
+        val templateHtml = file("src/test/resources/bom-viewer-template.html")
+        val outputHtml = file("build/reports/bom-viewer.html")
+
+        if (bomFile.exists() && templateHtml.exists()) {
+            // JSON 데이터 읽기
+            val bomJson = bomFile.readText()
+
+            // HTML 템플릿 읽고 데이터 삽입
+            val htmlContent = templateHtml.readText()
+                .replace("\"/*BOM_DATA_PLACEHOLDER*/\"", bomJson)
+
+            outputHtml.writeText(htmlContent)
+
+            // 브라우저에서 자동 열기
+            val os = System.getProperty("os.name").lowercase(Locale.getDefault())
+            val command = when {
+                os.contains("win") -> listOf("cmd", "/c", "start", outputHtml.absolutePath)
+                os.contains("mac") -> listOf("open", outputHtml.absolutePath)
+                os.contains("nix") || os.contains("nux") -> listOf("xdg-open", outputHtml.absolutePath)
+                else -> null
+            }
+
+            command?.let {
+                try {
+                    ProcessBuilder(it).start()
+                    println("✅ BOM 생성 완료: ${bomFile.absolutePath}")
+                    println("🌐 뷰어 열림: ${outputHtml.absolutePath}")
+
+                    println("\n💡 직접 취약점 검사를 실행하려면:")
+                    println("   ./gradlew checkVulnerabilities")
+                } catch (e: Exception) {
+                    println("⚠️  브라우저 자동 실행 실패: ${e.message}")
+                    println("   수동으로 열어주세요: ${outputHtml.absolutePath}")
+                }
+            }
+        } else {
+            if (!bomFile.exists()) println("⚠️  BOM 파일이 생성되지 않았습니다")
+            if (!templateHtml.exists()) println("⚠️  bom-viewer-template.html 파일이 프로젝트 루트에 없습니다")
+        }
+    }
+}
+
+//tasks.named("build") {
+//    finalizedBy("cyclonedxBom")
+//}
