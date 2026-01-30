@@ -1,0 +1,1082 @@
+{
+    "dependencies": [
+        {
+            "moduleName": "ch.qos.logback:logback-classic",
+            "moduleUrl": "http://www.qos.ch",
+            "moduleVersion": "1.5.19",
+            "moduleLicense": "GNU Lesser General Public License",
+            "moduleLicenseUrl": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html"
+        },
+        {
+            "moduleName": "ch.qos.logback:logback-core",
+            "moduleUrl": "http://www.qos.ch",
+            "moduleVersion": "1.5.19",
+            "moduleLicense": "GNU Lesser General Public License",
+            "moduleLicenseUrl": "http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html"
+        },
+        {
+            "moduleName": "com.fasterxml.jackson.core:jackson-annotations",
+            "moduleUrl": "https://github.com/FasterXML/jackson",
+            "moduleVersion": "2.17.1",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "com.fasterxml.jackson.core:jackson-core",
+            "moduleUrl": "https://github.com/FasterXML/jackson-core",
+            "moduleVersion": "2.17.1",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "com.fasterxml.jackson.core:jackson-databind",
+            "moduleUrl": "https://github.com/FasterXML/jackson",
+            "moduleVersion": "2.17.1",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "com.fasterxml.jackson.module:jackson-module-kotlin",
+            "moduleUrl": "https://github.com/FasterXML/jackson-module-kotlin",
+            "moduleVersion": "2.17.1",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "com.fasterxml.jackson:jackson-bom",
+            "moduleUrl": "https://github.com/FasterXML/jackson-bom",
+            "moduleVersion": "2.17.1",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "com.github.ajalt.colormath:colormath",
+            "moduleUrl": "https://github.com/ajalt/colormath/",
+            "moduleVersion": "3.6.0",
+            "moduleLicense": "The MIT License",
+            "moduleLicenseUrl": "https://opensource.org/licenses/MIT"
+        },
+        {
+            "moduleName": "com.github.ajalt.colormath:colormath-jvm",
+            "moduleUrl": "https://github.com/ajalt/colormath/",
+            "moduleVersion": "3.6.0",
+            "moduleLicense": "The MIT License",
+            "moduleLicenseUrl": "https://opensource.org/licenses/MIT"
+        },
+        {
+            "moduleName": "com.github.ajalt.mordant:mordant",
+            "moduleUrl": "https://github.com/ajalt/mordant/",
+            "moduleVersion": "3.0.2",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0"
+        },
+        {
+            "moduleName": "com.github.ajalt.mordant:mordant-core",
+            "moduleUrl": "https://github.com/ajalt/mordant/",
+            "moduleVersion": "3.0.2",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0"
+        },
+        {
+            "moduleName": "com.github.ajalt.mordant:mordant-core-jvm",
+            "moduleUrl": "https://github.com/ajalt/mordant/",
+            "moduleVersion": "3.0.2",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0"
+        },
+        {
+            "moduleName": "com.github.ajalt.mordant:mordant-jvm",
+            "moduleUrl": "https://github.com/ajalt/mordant/",
+            "moduleVersion": "3.0.2",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0"
+        },
+        {
+            "moduleName": "com.github.ajalt.mordant:mordant-jvm-ffm",
+            "moduleUrl": "https://github.com/ajalt/mordant/",
+            "moduleVersion": "3.0.2",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0"
+        },
+        {
+            "moduleName": "com.github.ajalt.mordant:mordant-jvm-ffm-jvm",
+            "moduleUrl": "https://github.com/ajalt/mordant/",
+            "moduleVersion": "3.0.2",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0"
+        },
+        {
+            "moduleName": "com.github.ajalt.mordant:mordant-jvm-graal-ffi",
+            "moduleUrl": "https://github.com/ajalt/mordant/",
+            "moduleVersion": "3.0.2",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0"
+        },
+        {
+            "moduleName": "com.github.ajalt.mordant:mordant-jvm-graal-ffi-jvm",
+            "moduleUrl": "https://github.com/ajalt/mordant/",
+            "moduleVersion": "3.0.2",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0"
+        },
+        {
+            "moduleName": "com.github.ajalt.mordant:mordant-jvm-jna",
+            "moduleUrl": "https://github.com/ajalt/mordant/",
+            "moduleVersion": "3.0.2",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0"
+        },
+        {
+            "moduleName": "com.github.ajalt.mordant:mordant-jvm-jna-jvm",
+            "moduleUrl": "https://github.com/ajalt/mordant/",
+            "moduleVersion": "3.0.2",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0"
+        },
+        {
+            "moduleName": "com.github.ben-manes.caffeine:caffeine",
+            "moduleUrl": "https://github.com/ben-manes/caffeine",
+            "moduleVersion": "3.1.8",
+            "moduleLicense": "Apache License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "com.github.ua-parser:uap-java",
+            "moduleUrl": "https://github.com/ua-parser/uap-java",
+            "moduleVersion": "1.6.1",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "com.google.code.gson:gson",
+            "moduleUrl": "https://github.com/google/gson",
+            "moduleVersion": "2.11.0",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "com.google.errorprone:error_prone_annotations",
+            "moduleUrl": "https://errorprone.info/error_prone_annotations",
+            "moduleVersion": "2.21.1",
+            "moduleLicense": "Apache 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "com.google.errorprone:error_prone_annotations",
+            "moduleUrl": "https://errorprone.info/error_prone_annotations",
+            "moduleVersion": "2.27.0",
+            "moduleLicense": "Apache 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "com.ibm.icu:icu4j",
+            "moduleUrl": "https://icu.unicode.org/",
+            "moduleVersion": "72.1",
+            "moduleLicense": "Unicode/ICU License",
+            "moduleLicenseUrl": "https://raw.githubusercontent.com/unicode-org/icu/main/icu4c/LICENSE"
+        },
+        {
+            "moduleName": "com.openhtmltopdf:openhtmltopdf-core",
+            "moduleVersion": "1.0.10",
+            "moduleLicense": "GNU Lesser General Public License (LGPL), version 2.1 or later",
+            "moduleLicenseUrl": "http://www.gnu.org/licenses/lgpl.html"
+        },
+        {
+            "moduleName": "com.openhtmltopdf:openhtmltopdf-pdfbox",
+            "moduleVersion": "1.0.10",
+            "moduleLicense": "GNU Lesser General Public License (LGPL), version 2.1 or later",
+            "moduleLicenseUrl": "http://www.gnu.org/licenses/lgpl.html"
+        },
+        {
+            "moduleName": "com.openhtmltopdf:openhtmltopdf-rtl-support",
+            "moduleVersion": "1.0.10",
+            "moduleLicense": "GNU Lesser General Public License (LGPL), version 2.1 or later",
+            "moduleLicenseUrl": "http://www.gnu.org/licenses/lgpl.html"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-all",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-abbreviation",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-admonition",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-anchorlink",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-aside",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-attributes",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-autolink",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-definition",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-emoji",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-enumerated-reference",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-escaped-character",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-footnotes",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-gfm-issues",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-gfm-strikethrough",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-gfm-tasklist",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-gfm-users",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-gitlab",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-ins",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-jekyll-front-matter",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-jekyll-tag",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-macros",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-media-tags",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-resizable-image",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-superscript",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-tables",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-toc",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-typographic",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-wikilink",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-xwiki-macros",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-yaml-front-matter",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-ext-youtube-embedded",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-html2md-converter",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-jira-converter",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-pdf-converter",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-profile-pegdown",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-util",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-util-ast",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-util-builder",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-util-collection",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-util-data",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-util-dependency",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-util-format",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-util-html",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-util-misc",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-util-options",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-util-sequence",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-util-visitor",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "com.vladsch.flexmark:flexmark-youtrack-converter",
+            "moduleVersion": "0.64.8",
+            "moduleLicense": "BSD 2-Clause License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/BSD-2-Clause"
+        },
+        {
+            "moduleName": "commons-logging:commons-logging",
+            "moduleUrl": "http://commons.apache.org/proper/commons-logging/",
+            "moduleVersion": "1.2",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "de.rototor.pdfbox:graphics2d",
+            "moduleVersion": "0.32",
+            "moduleLicense": "Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "io.github.java-diff-utils:java-diff-utils",
+            "moduleVersion": "4.12",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "io.github.oshai:kotlin-logging-jvm",
+            "moduleUrl": "https://github.com/oshai/kotlin-logging",
+            "moduleVersion": "5.1.0",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "io.kotest:kotest-assertions-core",
+            "moduleUrl": "https://github.com/kotest/kotest",
+            "moduleVersion": "6.0.0.M5",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://opensource.org/licenses/Apache-2.0"
+        },
+        {
+            "moduleName": "io.kotest:kotest-assertions-core-jvm",
+            "moduleUrl": "https://github.com/kotest/kotest",
+            "moduleVersion": "6.0.0.M5",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://opensource.org/licenses/Apache-2.0"
+        },
+        {
+            "moduleName": "io.kotest:kotest-assertions-shared",
+            "moduleUrl": "https://github.com/kotest/kotest",
+            "moduleVersion": "6.0.0.M5",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://opensource.org/licenses/Apache-2.0"
+        },
+        {
+            "moduleName": "io.kotest:kotest-assertions-shared-jvm",
+            "moduleUrl": "https://github.com/kotest/kotest",
+            "moduleVersion": "6.0.0.M5",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://opensource.org/licenses/Apache-2.0"
+        },
+        {
+            "moduleName": "io.kotest:kotest-common",
+            "moduleUrl": "https://github.com/kotest/kotest",
+            "moduleVersion": "6.0.0.M5",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://opensource.org/licenses/Apache-2.0"
+        },
+        {
+            "moduleName": "io.kotest:kotest-common-jvm",
+            "moduleUrl": "https://github.com/kotest/kotest",
+            "moduleVersion": "6.0.0.M5",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://opensource.org/licenses/Apache-2.0"
+        },
+        {
+            "moduleName": "io.kotest:kotest-extensions",
+            "moduleUrl": "https://github.com/kotest/kotest",
+            "moduleVersion": "6.0.0.M5",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://opensource.org/licenses/Apache-2.0"
+        },
+        {
+            "moduleName": "io.kotest:kotest-extensions-jvm",
+            "moduleUrl": "https://github.com/kotest/kotest",
+            "moduleVersion": "6.0.0.M5",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://opensource.org/licenses/Apache-2.0"
+        },
+        {
+            "moduleName": "io.kotest:kotest-framework-engine",
+            "moduleUrl": "https://github.com/kotest/kotest",
+            "moduleVersion": "6.0.0.M5",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://opensource.org/licenses/Apache-2.0"
+        },
+        {
+            "moduleName": "io.kotest:kotest-framework-engine-jvm",
+            "moduleUrl": "https://github.com/kotest/kotest",
+            "moduleVersion": "6.0.0.M5",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://opensource.org/licenses/Apache-2.0"
+        },
+        {
+            "moduleName": "io.kotest:kotest-runner-junit5",
+            "moduleUrl": "https://github.com/kotest/kotest",
+            "moduleVersion": "6.0.0.M5",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://opensource.org/licenses/Apache-2.0"
+        },
+        {
+            "moduleName": "io.kotest:kotest-runner-junit5-jvm",
+            "moduleUrl": "https://github.com/kotest/kotest",
+            "moduleVersion": "6.0.0.M5",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://opensource.org/licenses/Apache-2.0"
+        },
+        {
+            "moduleName": "net.bytebuddy:byte-buddy",
+            "moduleVersion": "1.10.9",
+            "moduleLicense": "Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "net.bytebuddy:byte-buddy-agent",
+            "moduleVersion": "1.10.9",
+            "moduleLicense": "Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "net.java.dev.jna:jna",
+            "moduleUrl": "https://github.com/java-native-access/jna",
+            "moduleVersion": "5.14.0",
+            "moduleLicense": "LGPL-2.1-or-later",
+            "moduleLicenseUrl": "https://www.gnu.org/licenses/old-licenses/lgpl-2.1"
+        },
+        {
+            "moduleName": "net.java.dev.jna:jna-platform",
+            "moduleUrl": "https://github.com/java-native-access/jna",
+            "moduleVersion": "5.9.0",
+            "moduleLicense": "LGPL-2.1-or-later",
+            "moduleLicenseUrl": "https://www.gnu.org/licenses/old-licenses/lgpl-2.1"
+        },
+        {
+            "moduleName": "org.apache.commons:commons-collections4",
+            "moduleUrl": "https://commons.apache.org/proper/commons-collections/",
+            "moduleVersion": "4.4",
+            "moduleLicense": "Apache License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.apache.commons:commons-lang3",
+            "moduleUrl": "https://commons.apache.org/proper/commons-lang/",
+            "moduleVersion": "3.13.0",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.apache.pdfbox:fontbox",
+            "moduleUrl": "http://pdfbox.apache.org/",
+            "moduleVersion": "2.0.24",
+            "moduleLicense": "Apache License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.apache.pdfbox:fontbox",
+            "moduleUrl": "https://pdfbox.apache.org",
+            "moduleVersion": "3.0.1",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.apache.pdfbox:pdfbox",
+            "moduleUrl": "http://pdfbox.apache.org",
+            "moduleVersion": "2.0.24",
+            "moduleLicense": "Apache License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.apache.pdfbox:pdfbox",
+            "moduleUrl": "https://pdfbox.apache.org",
+            "moduleVersion": "3.0.1",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.apache.pdfbox:pdfbox-io",
+            "moduleUrl": "https://pdfbox.apache.org",
+            "moduleVersion": "3.0.1",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.apache.pdfbox:xmpbox",
+            "moduleUrl": "http://pdfbox.apache.org",
+            "moduleVersion": "2.0.24",
+            "moduleLicense": "Apache License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.bouncycastle:bcprov-jdk18on",
+            "moduleUrl": "https://www.bouncycastle.org/download/bouncy-castle-java/",
+            "moduleVersion": "1.81",
+            "moduleLicense": "Bouncy Castle Licence",
+            "moduleLicenseUrl": "https://www.bouncycastle.org/licence.html"
+        },
+        {
+            "moduleName": "org.checkerframework:checker-qual",
+            "moduleUrl": "https://checkerframework.org/",
+            "moduleVersion": "3.37.0",
+            "moduleLicense": "The MIT License",
+            "moduleLicenseUrl": "http://opensource.org/licenses/MIT"
+        },
+        {
+            "moduleName": "org.jetbrains.intellij.deps:trove4j",
+            "moduleUrl": "https://github.com/JetBrains/intellij-deps-trove4j",
+            "moduleVersion": "1.0.20200330",
+            "moduleLicense": "GNU LESSER GENERAL PUBLIC LICENSE 2.1",
+            "moduleLicenseUrl": "https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-bom",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.1.0",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-build-common",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.1.0",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-build-tools-api",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.1.0",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-build-tools-impl",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.1.0",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-compiler-embeddable",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.1.0",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-compiler-runner",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.1.0",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-daemon-client",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.1.0",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-daemon-embeddable",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.1.0",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-reflect",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.1.0",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-reflect",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.2.0",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-script-runtime",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.1.0",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-scripting-common",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.1.0",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-scripting-compiler-embeddable",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.1.0",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-scripting-compiler-impl-embeddable",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.1.0",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-scripting-jvm",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.1.0",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-stdlib",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.1.0",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-stdlib",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.3.0",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-stdlib-common",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "2.3.0",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-stdlib-jdk7",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "1.8.22",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-stdlib-jdk8",
+            "moduleUrl": "https://kotlinlang.org/",
+            "moduleVersion": "1.8.22",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlinx:kotlinx-coroutines-bom",
+            "moduleUrl": "https://github.com/Kotlin/kotlinx.coroutines",
+            "moduleVersion": "1.10.0",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlinx:kotlinx-coroutines-core",
+            "moduleUrl": "https://github.com/Kotlin/kotlinx.coroutines",
+            "moduleVersion": "1.10.0",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm",
+            "moduleUrl": "https://github.com/Kotlin/kotlinx.coroutines",
+            "moduleVersion": "1.10.0",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm",
+            "moduleUrl": "https://github.com/Kotlin/kotlinx.coroutines",
+            "moduleVersion": "1.6.4",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlinx:kotlinx-coroutines-debug",
+            "moduleUrl": "https://github.com/Kotlin/kotlinx.coroutines",
+            "moduleVersion": "1.10.0",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8",
+            "moduleUrl": "https://github.com/Kotlin/kotlinx.coroutines",
+            "moduleVersion": "1.10.0",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlinx:kotlinx-coroutines-test",
+            "moduleUrl": "https://github.com/Kotlin/kotlinx.coroutines",
+            "moduleVersion": "1.10.0",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm",
+            "moduleUrl": "https://github.com/Kotlin/kotlinx.coroutines",
+            "moduleVersion": "1.10.0",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlinx:kotlinx-datetime",
+            "moduleUrl": "https://github.com/Kotlin/kotlinx-datetime",
+            "moduleVersion": "0.4.0",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlinx:kotlinx-datetime-jvm",
+            "moduleUrl": "https://github.com/Kotlin/kotlinx-datetime",
+            "moduleVersion": "0.4.0",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlinx:kotlinx-serialization-bom",
+            "moduleUrl": "https://github.com/Kotlin/kotlinx.serialization",
+            "moduleVersion": "1.9.0",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlinx:kotlinx-serialization-core",
+            "moduleUrl": "https://github.com/Kotlin/kotlinx.serialization",
+            "moduleVersion": "1.9.0",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlinx:kotlinx-serialization-core-jvm",
+            "moduleUrl": "https://github.com/Kotlin/kotlinx.serialization",
+            "moduleVersion": "1.9.0",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlinx:kotlinx-serialization-json",
+            "moduleUrl": "https://github.com/Kotlin/kotlinx.serialization",
+            "moduleVersion": "1.9.0",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlinx:kotlinx-serialization-json-jvm",
+            "moduleUrl": "https://github.com/Kotlin/kotlinx.serialization",
+            "moduleVersion": "1.9.0",
+            "moduleLicense": "Apache-2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains:annotations",
+            "moduleUrl": "http://www.jetbrains.org",
+            "moduleVersion": "13.0",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains:annotations",
+            "moduleUrl": "https://github.com/JetBrains/java-annotations",
+            "moduleVersion": "23.0.0",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jetbrains:annotations",
+            "moduleUrl": "https://github.com/JetBrains/java-annotations",
+            "moduleVersion": "24.0.1",
+            "moduleLicense": "The Apache Software License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.jsoup:jsoup",
+            "moduleUrl": "https://jsoup.org/",
+            "moduleVersion": "1.15.4",
+            "moduleLicense": "The MIT License",
+            "moduleLicenseUrl": "https://jsoup.org/license"
+        },
+        {
+            "moduleName": "org.jsoup:jsoup",
+            "moduleUrl": "https://jsoup.org/",
+            "moduleVersion": "1.16.1",
+            "moduleLicense": "The MIT License",
+            "moduleLicenseUrl": "https://jsoup.org/license"
+        },
+        {
+            "moduleName": "org.junit.jupiter:junit-jupiter",
+            "moduleUrl": "https://junit.org/junit5/",
+            "moduleVersion": "5.10.2",
+            "moduleLicense": "Eclipse Public License v2.0",
+            "moduleLicenseUrl": "https://www.eclipse.org/legal/epl-v20.html"
+        },
+        {
+            "moduleName": "org.junit.jupiter:junit-jupiter-api",
+            "moduleUrl": "https://junit.org/junit5/",
+            "moduleVersion": "5.10.2",
+            "moduleLicense": "Eclipse Public License v2.0",
+            "moduleLicenseUrl": "https://www.eclipse.org/legal/epl-v20.html"
+        },
+        {
+            "moduleName": "org.junit.jupiter:junit-jupiter-engine",
+            "moduleUrl": "https://junit.org/junit5/",
+            "moduleVersion": "5.10.2",
+            "moduleLicense": "Eclipse Public License v2.0",
+            "moduleLicenseUrl": "https://www.eclipse.org/legal/epl-v20.html"
+        },
+        {
+            "moduleName": "org.junit.jupiter:junit-jupiter-params",
+            "moduleUrl": "https://junit.org/junit5/",
+            "moduleVersion": "5.10.2",
+            "moduleLicense": "Eclipse Public License v2.0",
+            "moduleLicenseUrl": "https://www.eclipse.org/legal/epl-v20.html"
+        },
+        {
+            "moduleName": "org.junit.platform:junit-platform-commons",
+            "moduleUrl": "https://junit.org/junit5/",
+            "moduleVersion": "1.10.2",
+            "moduleLicense": "Eclipse Public License v2.0",
+            "moduleLicenseUrl": "https://www.eclipse.org/legal/epl-v20.html"
+        },
+        {
+            "moduleName": "org.junit.platform:junit-platform-engine",
+            "moduleUrl": "https://junit.org/junit5/",
+            "moduleVersion": "1.10.2",
+            "moduleLicense": "Eclipse Public License v2.0",
+            "moduleLicenseUrl": "https://www.eclipse.org/legal/epl-v20.html"
+        },
+        {
+            "moduleName": "org.junit.platform:junit-platform-launcher",
+            "moduleUrl": "https://junit.org/junit5/",
+            "moduleVersion": "1.10.2",
+            "moduleLicense": "Eclipse Public License v2.0",
+            "moduleLicenseUrl": "https://www.eclipse.org/legal/epl-v20.html"
+        },
+        {
+            "moduleName": "org.junit.platform:junit-platform-suite-api",
+            "moduleUrl": "https://junit.org/junit5/",
+            "moduleVersion": "1.10.2",
+            "moduleLicense": "Eclipse Public License v2.0",
+            "moduleLicenseUrl": "https://www.eclipse.org/legal/epl-v20.html"
+        },
+        {
+            "moduleName": "org.junit:junit-bom",
+            "moduleUrl": "https://junit.org/junit5/",
+            "moduleVersion": "5.10.2",
+            "moduleLicense": "Eclipse Public License v2.0",
+            "moduleLicenseUrl": "https://www.eclipse.org/legal/epl-v20.html"
+        },
+        {
+            "moduleName": "org.nibor.autolink:autolink",
+            "moduleUrl": "https://github.com/robinst/autolink-java",
+            "moduleVersion": "0.6.0",
+            "moduleLicense": "MIT License",
+            "moduleLicenseUrl": "http://www.opensource.org/licenses/mit-license.php"
+        },
+        {
+            "moduleName": "org.opentest4j:opentest4j",
+            "moduleUrl": "https://github.com/ota4j-team/opentest4j",
+            "moduleVersion": "1.3.0",
+            "moduleLicense": "The Apache License, Version 2.0",
+            "moduleLicenseUrl": "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        },
+        {
+            "moduleName": "org.passay:passay",
+            "moduleUrl": "https://www.passay.org",
+            "moduleVersion": "1.6.6",
+            "moduleLicense": "GNU Lesser General Public License",
+            "moduleLicenseUrl": "https://www.gnu.org/licenses/lgpl-3.0.txt"
+        },
+        {
+            "moduleName": "org.slf4j:slf4j-api",
+            "moduleUrl": "http://www.slf4j.org",
+            "moduleVersion": "2.0.17",
+            "moduleLicense": "MIT",
+            "moduleLicenseUrl": "https://opensource.org/license/mit"
+        },
+        {
+            "moduleName": "org.yaml:snakeyaml",
+            "moduleUrl": "https://bitbucket.org/snakeyaml/snakeyaml",
+            "moduleVersion": "2.2",
+            "moduleLicense": "Apache License, Version 2.0",
+            "moduleLicenseUrl": "http://www.apache.org/licenses/LICENSE-2.0.txt"
+        }
+    ]
+}
