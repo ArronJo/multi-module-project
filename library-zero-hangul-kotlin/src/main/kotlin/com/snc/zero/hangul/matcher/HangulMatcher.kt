@@ -96,17 +96,23 @@ class HangulMatcher {
 
         for (searchPos in startIndex until target.length) {
             var decomposedStr = ""
+            var actualStartPos = -1  // 실제 매칭 시작 위치
 
             for (charCount in 0 until (target.length - searchPos)) {
                 val currentChar = target[searchPos + charCount]
 
                 // 허용된 문자만 자모 분리하여 추가
                 if (!notAllowedRegex.matches(currentChar.toString())) {
+                    // 첫 번째 허용된 문자 위치 기록
+                    if (actualStartPos == -1) {
+                        actualStartPos = searchPos + charCount
+                    }
                     decomposedStr += HangulDecompose.decompose(currentChar).replace(" ", "")
                 }
 
                 if (decomposedStr.startsWith(keywordDecomposed)) {
-                    return HangulMatchResult(searchPos, charCount + 1)
+                    val matchLength = (searchPos + charCount + 1) - actualStartPos
+                    return HangulMatchResult(actualStartPos, matchLength)
                 }
 
                 if (!keywordDecomposed.startsWith(decomposedStr)) {

@@ -44,7 +44,8 @@ class HangulMatcherTest : BaseJUnit5Test() {
         val keywords = arrayOf(
             "ㅂㅎ",
             "봏",
-            "ㅇㅅㄱㄹ"
+            "ㅇㅅㄱㄹ",
+            "NICE"
         )
         val matcher = HangulMatcher()
         for (k in keywords) {
@@ -68,9 +69,13 @@ class HangulMatcherTest : BaseJUnit5Test() {
 
     @Test
     fun `match should return correct start and length when match found`() {
-        matcher.keyword("ㄱㄴ")
+        matcher.keyword("ㄴㄷ")
         val result = matcher.match("가나다라마")
-        assertEquals(HangulMatchResult(0, 2), result)
+        assertEquals(HangulMatchResult(1, 2), result)
+
+        matcher.keyword("NICE")
+        val result2 = matcher.match("휴대폰인증  NICE 평가")
+        assertEquals(HangulMatchResult(7, 4), result2)
     }
 
     @Test
