@@ -96,7 +96,7 @@ class HangulMatcher {
 
         for (searchPos in startIndex until target.length) {
             var decomposedStr = ""
-            var actualStartPos = -1  // 실제 매칭 시작 위치
+            var actualStartPos = -1 // 실제 매칭 시작 위치
 
             for (charCount in 0 until (target.length - searchPos)) {
                 val currentChar = target[searchPos + charCount]
