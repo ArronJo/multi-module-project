@@ -46,8 +46,8 @@ class DownloadFileNameUtil {
                 // 3순위: URL 경로에서 파일명 추출
                 if (fileName == null) {
                     val pathSegments: List<String> = getPathSegments(uri)
-                    if (!pathSegments.isEmpty()) {
-                        val lastSegment = pathSegments.get(pathSegments.size - 1)
+                    if (pathSegments.isNotEmpty()) {
+                        val lastSegment = pathSegments[pathSegments.size - 1]
                         // 경로가 파일명처럼 보이는지 확인 (확장자가 있는지)
                         if (lastSegment.contains(".")) {
                             fileName = lastSegment
@@ -104,22 +104,22 @@ class DownloadFileNameUtil {
             }
 
             // MIME 타입에서 확장자 매핑
-            when (mimeType.lowercase(Locale.getDefault())) {
-                "image/jpeg", "image/jpg" -> return ".jpg"
-                "image/png" -> return ".png"
-                "image/gif" -> return ".gif"
-                "application/pdf" -> return ".pdf"
-                "text/plain" -> return ".txt"
-                "application/zip" -> return ".zip"
-                "audio/mp3" -> return ".mp3"
-                "video/mp4" -> return ".mp4"
+            return when (mimeType.lowercase(Locale.getDefault())) {
+                "image/jpeg", "image/jpg" -> ".jpg"
+                "image/png" -> ".png"
+                "image/gif" -> ".gif"
+                "application/pdf" -> ".pdf"
+                "text/plain" -> ".txt"
+                "application/zip" -> ".zip"
+                "audio/mp3" -> ".mp3"
+                "video/mp4" -> ".mp4"
                 else -> {
                     // MIME 타입에서 확장자 추출 시도 (예: image/png -> .png)
                     val slashIndex = mimeType.indexOf('/')
                     if (slashIndex != -1 && slashIndex < mimeType.length - 1) {
-                        return "." + mimeType.substring(slashIndex + 1)
+                        "." + mimeType.substring(slashIndex + 1)
                     }
-                    return ".bin"
+                    ".bin"
                 }
             }
         }

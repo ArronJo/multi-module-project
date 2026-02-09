@@ -220,13 +220,13 @@ class DownloadFileNameUtilTest {
         }
 
         @Test
-        fun `정의되지 않은 MIME 타입은 슬래시 뒤 문자열을 확장자로 사용`() {
+        fun `정의되지 않은 MIME 타입은 bin 확장자로 사용`() {
             val result = DownloadFileNameUtil.getFilenameFromDownloadContent(
                 urlString = "https://example.com/download",
                 contentDisposition = null,
                 mimeType = "application/custom"
             )
-            assertTrue(result?.endsWith(".custom") ?: false)
+            assertTrue(result?.endsWith(".bin") ?: false)
         }
 
         @Test

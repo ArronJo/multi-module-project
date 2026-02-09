@@ -30,9 +30,9 @@ class FileNameUtil {
         private const val ADDITIONAL_UNSAFE_CHARS_PATTERN = ";!,\\[\\]{}()#$&@%\\s"
 
         // 각 OS별 Regex
-        //private val WINDOWS_INVALID_CHARS = Regex("[$WINDOWS_INVALID_CHARS_PATTERN]")
-        //private val MACOS_INVALID_CHARS = Regex("[$MACOS_INVALID_CHARS_PATTERN]")
-        //private val LINUX_INVALID_CHARS = Regex("[$LINUX_INVALID_CHARS_PATTERN]")
+        // 윈도우: private val WINDOWS_INVALID_CHARS = Regex("[$WINDOWS_INVALID_CHARS_PATTERN]")
+        // 맥: private val MACOS_INVALID_CHARS = Regex("[$MACOS_INVALID_CHARS_PATTERN]")
+        // 리눅스: private val LINUX_INVALID_CHARS = Regex("[$LINUX_INVALID_CHARS_PATTERN]")
         private val ADDITIONAL_UNSAFE_CHARS = Regex("[$ADDITIONAL_UNSAFE_CHARS_PATTERN]")
 
         // 통합: 중복 제거하여 조합
@@ -117,33 +117,5 @@ class FileNameUtil {
 
             return sanitized
         }
-
-        /*
-        fun sanitizeFileName(fileName: String?): String {
-            // null 또는 빈 문자열 체크
-            if (fileName.isNullOrEmpty()) {
-                return ""
-            }
-
-            // 공백 제거 및 모든 따옴표 제거
-            val sanitized = fileName.trim().replace("\"", "").replace("'", "")
-
-            // 확장자 분리
-            val lastDot = sanitized.lastIndexOf(".")
-            val (name, extension) = if (lastDot > 0) {
-                sanitized.substring(0, lastDot) to sanitized.substring(lastDot)
-            } else {
-                sanitized to ""
-            }
-
-            // 파일명에서 안전하지 않은 문자를 언더스코어로 치환
-            val cleanedName = name
-                .replace("[\\s,;:!?()\\[\\]{}]".toRegex(), "_")  // 특수문자 치환
-                .replace("_+".toRegex(), "_")                     // 연속 언더스코어 통합
-                .trim('_')                                         // 앞뒤 언더스코어 제거
-
-            return cleanedName + extension
-        }
-         */
     }
 }
