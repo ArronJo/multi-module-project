@@ -29,7 +29,7 @@ object RSAKeyGen {
     const val TRANSFORM_RSA_ECB_OAEP = "RSA/ECB/OAEPPadding"
     const val TRANSFORM_RSA_ECB_OAEP_SHA256 = "RSA/ECB/OAEPWithSHA-256AndMGF1Padding"
 
-    fun genKeyPair(keySize: Int = 2048, random: SecureRandom? = null): KeyPair {
+    fun generateKeyPair(keySize: Int = 2048, random: SecureRandom? = null): KeyPair {
         var ran = random
         if (null == ran) {
             ran = SecureRandom(randomString().toByteArray())

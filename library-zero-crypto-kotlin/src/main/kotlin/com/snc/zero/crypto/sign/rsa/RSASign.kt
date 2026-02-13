@@ -1,4 +1,4 @@
-package com.snc.zero.crypto.cipher.rsa
+package com.snc.zero.crypto.sign.rsa
 
 import java.security.KeyPair
 import java.security.KeyPairGenerator
@@ -11,6 +11,7 @@ import java.security.spec.PSSParameterSpec
 
 /**
  * RSA Sign/Verify with PSS padding
+ * RSA 전자서명 및 검증
  */
 object RSASign {
     private val secureRandom = SecureRandom()
@@ -23,7 +24,7 @@ object RSASign {
         1
     )
 
-    fun generateRsaKeyPair(bits: Int = 2048): KeyPair {
+    fun generateKeyPair(bits: Int = 2048): KeyPair {
         val gen = KeyPairGenerator.getInstance("RSA")
         gen.initialize(bits, secureRandom)
         return gen.generateKeyPair()
@@ -32,7 +33,7 @@ object RSASign {
     /**
      * PSS(Probabilistic Signature Scheme) 패딩을 사용하지 않는 한, SHA256withRSA는 같은 입력에 대해 항상 같은 출력을 만듭니다.
      */
-    fun rsaSign(privateKey: PrivateKey, data: ByteArray, pssPadding: Boolean = false): ByteArray {
+    fun sign(privateKey: PrivateKey, data: ByteArray, pssPadding: Boolean = false): ByteArray {
         return if (pssPadding) {
             val sig = Signature.getInstance("RSASSA-PSS")
             sig.setParameter(pssParameterSpec)
@@ -47,7 +48,7 @@ object RSASign {
         }
     }
 
-    fun rsaVerify(publicKey: PublicKey, data: ByteArray, signature: ByteArray, pssPadding: Boolean = false): Boolean {
+    fun verify(publicKey: PublicKey, data: ByteArray, signature: ByteArray, pssPadding: Boolean = false): Boolean {
         return if (pssPadding) {
             val sig = Signature.getInstance("RSASSA-PSS")
             sig.setParameter(pssParameterSpec)

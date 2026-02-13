@@ -1,7 +1,7 @@
 package com.snc.zero.crypto.cipher
 
 import com.snc.zero.crypto.cipher.aes.SimpleAES
-import com.snc.zero.crypto.cipher.rsa.RSA
+import com.snc.zero.crypto.cipher.rsa.RSACipher
 import com.snc.zero.crypto.encoder.Decoder
 import com.snc.zero.crypto.encoder.Encoder
 import java.security.Key
@@ -68,8 +68,8 @@ class Cipher private constructor(var algo: Algo = Algo.AES) {
             }
             Algo.RSA -> {
                 requireNotNull(rsaKey) { "Empty key" }
-                val enc = RSA.encrypt(input, rsaKey!!, transform)
-                return Encoder.with(Encoder.Algo.BASE64).encode(enc)
+                val enc = RSACipher.encrypt(input, rsaKey!!, transform)
+                Encoder.with(Encoder.Algo.BASE64).encode(enc)
             }
         }
     }
@@ -87,7 +87,7 @@ class Cipher private constructor(var algo: Algo = Algo.AES) {
             Algo.RSA -> {
                 requireNotNull(rsaKey) { "Empty key" }
                 val decoded = Decoder.with(Decoder.Algo.BASE64).decode(input)
-                return RSA.decrypt(decoded, rsaKey!!, transform)
+                RSACipher.decrypt(decoded, rsaKey!!, transform)
             }
         }
     }

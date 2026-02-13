@@ -1,7 +1,7 @@
 package com.snc.zero.crypto.security
 
 import com.snc.zero.crypto.cipher.aes.AESGCM
-import com.snc.zero.crypto.cipher.rsa.RSASign
+import com.snc.zero.crypto.sign.rsa.RSASign
 import com.snc.zero.crypto.hash.pbkdf2.PBKDF2
 import com.snc.zero.crypto.token.SignedToken
 import java.security.KeyPair
@@ -64,15 +64,15 @@ object SecurityUtils {
     // ===== RSA Sign/Verify =====
 
     fun generateRsaKeyPair(bits: Int = 2048): KeyPair {
-        return RSASign.generateRsaKeyPair(bits)
+        return RSASign.generateKeyPair(bits)
     }
 
     fun rsaSign(privateKey: PrivateKey, data: ByteArray): ByteArray {
-        return RSASign.rsaSign(privateKey, data)
+        return RSASign.sign(privateKey, data)
     }
 
     fun rsaVerify(publicKey: PublicKey, data: ByteArray, signature: ByteArray): Boolean {
-        return RSASign.rsaVerify(publicKey, data, signature)
+        return RSASign.verify(publicKey, data, signature)
     }
 
     // ===== HMAC-SHA256 & 간단 토큰 샘플 (미니 JWT) =====

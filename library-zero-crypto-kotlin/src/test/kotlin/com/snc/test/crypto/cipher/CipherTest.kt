@@ -16,8 +16,8 @@ private val logger = TLogging.logger { }
 @Suppress("NonAsciiCharacters")
 class CipherTest : BaseJUnit5Test() {
 
-    private val pair = RSAKeyGen.genKeyPair(2048, SecureRandom("".repeat(16).toByteArray()))
-    private val pair2 = RSAKeyGen.genKeyPair(2048)
+    private val pair = RSAKeyGen.generateKeyPair(2048, SecureRandom("".repeat(16).toByteArray()))
+    private val pair2 = RSAKeyGen.generateKeyPair(2048)
 
     companion object {
         private lateinit var key: String
