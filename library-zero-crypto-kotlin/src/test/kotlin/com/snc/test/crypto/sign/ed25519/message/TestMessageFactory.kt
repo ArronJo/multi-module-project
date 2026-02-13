@@ -1,8 +1,8 @@
-package com.snc.test.crypto.sign.ed25519
+package com.snc.test.crypto.sign.ed25519.message
 
+import com.snc.zero.crypto.canonical.CanonicalJsonUtil
 import java.security.MessageDigest
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
@@ -15,26 +15,20 @@ object TestMessageFactory {
         .toByteArray(Charsets.UTF_8)
 
     fun create(): ByteArray {
-        val dateTime = LocalDateTime.now()
-            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+        val message = PaymentMessage(
+            dateTime = LocalDateTime.now(),
+            location = "서울 강남구",
+            user = "홍길동",
+            menu = "아메리카노 Tall",
+            purpose = "업무 미팅",
+            amount = 4500
+        )
 
-        val baseMessage = """
-            일시:$dateTime
-            장소:서울 강남구
-            사용자:홍길동
-            메뉴:아메리카노 Tall
-            목적:업무 미팅
-            금액:4500원
-        """.trimIndent()
+        message.hash = hmacSha256(CanonicalJsonUtil.toCanonical(message))
 
-        val hmac = hmacSha256(baseMessage)
-
-        val finalMessage = """
-            $baseMessage
-            HASH:$hmac
-        """.trimIndent()
-
-        return finalMessage.toByteArray(Charsets.UTF_8)
+        val signedMessage = CanonicalJsonUtil.toCanonical(message)
+        println("signedMessage: $signedMessage")
+        return signedMessage.toByteArray(Charsets.UTF_8)
     }
 
     private fun hmacSha256(data: String): String {

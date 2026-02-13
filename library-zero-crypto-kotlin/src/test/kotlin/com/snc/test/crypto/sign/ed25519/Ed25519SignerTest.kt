@@ -1,5 +1,6 @@
 package com.snc.test.crypto.sign.ed25519
 
+import com.snc.test.crypto.sign.ed25519.message.TestMessageFactory
 import com.snc.zero.crypto.sign.ed25519.Ed25519Signer
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -76,7 +77,7 @@ class Ed25519SignerTest {
             val original = TestMessageFactory.create()
 
             val tampered = String(original)
-                .replace("4500원", "9000원")
+                .replace("4500", "9000")
                 .toByteArray()
 
             val signature = Ed25519Signer.sign(
