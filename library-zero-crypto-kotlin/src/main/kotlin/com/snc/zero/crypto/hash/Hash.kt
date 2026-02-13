@@ -69,19 +69,19 @@ class Hash private constructor(var algo: Algo) {
         return when (this.algo) {
             Algo.HmacSHA224 -> {
                 require(key.isNotEmpty()) { msgEmptyKey }
-                return SHA2.hmacSHA224(msg, key, salt, iterationCount, charSet)
+                SHA2.hmacSHA224(msg, key, salt, iterationCount, charSet)
             }
             Algo.HmacSHA256 -> {
                 require(key.isNotEmpty()) { msgEmptyKey }
-                return SHA2.hmacSHA256(msg, key, salt, iterationCount, charSet)
+                SHA2.hmacSHA256(msg, key, salt, iterationCount, charSet)
             }
             Algo.HmacSHA384 -> {
                 require(key.isNotEmpty()) { msgEmptyKey }
-                return SHA2.hmacSHA384(msg, key, salt, iterationCount, charSet)
+                SHA2.hmacSHA384(msg, key, salt, iterationCount, charSet)
             }
             Algo.HmacSHA512 -> {
                 require(key.isNotEmpty()) { msgEmptyKey }
-                return SHA2.hmacSHA512(msg, key, salt, iterationCount, charSet)
+                SHA2.hmacSHA512(msg, key, salt, iterationCount, charSet)
             }
             Algo.SHA224 -> {
                 SHA2.sha224(msg, salt, iterationCount, charSet)

@@ -5,6 +5,8 @@ import java.security.KeyPairGenerator
 import java.security.PrivateKey
 import java.security.PublicKey
 import java.security.Signature
+import javax.crypto.Mac
+import javax.crypto.spec.SecretKeySpec
 
 /**
  * Ed25519 = Edwards-curve Digital Signature Algorithm (EdDSA)
@@ -63,5 +65,22 @@ object Ed25519Signer {
         sig.initVerify(publicKey)
         sig.update(message)
         return sig.verify(signature)
+    }
+
+    private const val HMAC_ALGO = "HmacSHA256"
+
+    // 테스트용 고정 시크릿 (실서비스에서는 절대 하드코딩 금지)
+    private val secretKey = "test-hmac-secret-key-2026"
+        .toByteArray(Charsets.UTF_8)
+
+    fun hmacSha256(data: String): String {
+        val mac = Mac.getInstance(HMAC_ALGO)
+        val keySpec = SecretKeySpec(secretKey, HMAC_ALGO)
+        mac.init(keySpec)
+        val hashBytes = mac.doFinal(data.toByteArray(Charsets.UTF_8))
+
+        return hashBytes.joinToString("") {
+            "%02x".format(it)
+        }
     }
 }

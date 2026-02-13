@@ -18,7 +18,7 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
  */
 object CanonicalJsonUtil {
 
-    private val mapper: ObjectMapper =
+    val mapper: ObjectMapper =
         JsonMapper.builder()
             // Kotlin 지원
             .addModule(KotlinModule.Builder().build())

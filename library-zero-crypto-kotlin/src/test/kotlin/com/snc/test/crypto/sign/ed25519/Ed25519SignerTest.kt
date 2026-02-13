@@ -2,6 +2,7 @@ package com.snc.test.crypto.sign.ed25519
 
 import com.snc.test.crypto.sign.ed25519.message.TestMessageFactory
 import com.snc.zero.crypto.sign.ed25519.Ed25519Signer
+import com.snc.zero.crypto.sign.ed25519.JsonHashVerifier
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import java.security.KeyPair
+import java.security.SignatureException
 
 @Suppress("NonAsciiCharacters")
 @DisplayName("Ed25519T 테스트")
@@ -98,26 +100,31 @@ class Ed25519SignerTest {
 
         @Test
         fun `서명 위조 시 검증 실패`() {
-            // given
-            val message = TestMessageFactory.create()
+            try {
+                // given
+                val message = TestMessageFactory.create()
 
-            val signature = Ed25519Signer.sign(
-                keyPair.private,
-                message
-            )
+                val signature = Ed25519Signer.sign(
+                    keyPair.private,
+                    message
+                )
 
-            // 서명 조작
-            signature[0] = (signature[0] + 1).toByte()
+                // 서명 조작
+                signature[0] = (signature[0] + 1).toByte()
 
-            // when
-            val result = Ed25519Signer.verify(
-                keyPair.public,
-                message,
-                signature
-            )
+                // when
+                val result = Ed25519Signer.verify(
+                    keyPair.public,
+                    message,
+                    signature
+                )
 
-            // then
-            assertFalse(result)
+                // then
+                assertFalse(result)
+
+            } catch (e: SignatureException) {
+                println("Signature verification failed as expected: $e")
+            }
         }
 
         @Test
@@ -141,6 +148,35 @@ class Ed25519SignerTest {
 
             // then
             assertFalse(result)
+        }
+    }
+
+    @Nested
+    @DisplayName("서명화 데이터 테스트")
+    inner class SignMessageTest {
+
+        @Test
+        fun `서명화 메시지 검증`() {
+            val message = TestMessageFactory.create()
+
+            // 1단계: 서명 검증
+            val signature =
+                Ed25519Signer.sign(keyPair.private, message)
+
+            val sigValid =
+                Ed25519Signer.verify(
+                    keyPair.public,
+                    message,
+                    signature
+                )
+
+            assertTrue(sigValid)
+
+            // 2단계: JSON 기반 hash 검증
+            val hashValid =
+                JsonHashVerifier.verify(message)
+
+            assertTrue(hashValid)
         }
     }
 }

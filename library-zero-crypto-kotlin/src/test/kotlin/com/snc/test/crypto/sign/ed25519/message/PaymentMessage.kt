@@ -1,11 +1,11 @@
 package com.snc.test.crypto.sign.ed25519.message
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDateTime
 
 data class PaymentMessage(
-
     @field:JsonProperty("일시")
     @field:JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     val dateTime: LocalDateTime,
@@ -20,4 +20,9 @@ data class PaymentMessage(
     @field:JsonProperty("금액")
     val amount: Int,
     var hash: String = ""
-)
+) {
+    /** HMAC 계산 전용 (hash 제외) */
+    @JsonIgnore
+    fun withoutHash(): PaymentMessage =
+        this.copy(hash = "")
+}

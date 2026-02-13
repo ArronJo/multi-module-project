@@ -1,18 +1,10 @@
 package com.snc.test.crypto.sign.ed25519.message
 
 import com.snc.zero.crypto.canonical.CanonicalJsonUtil
-import java.security.MessageDigest
+import com.snc.zero.crypto.sign.ed25519.Ed25519Signer.hmacSha256
 import java.time.LocalDateTime
-import javax.crypto.Mac
-import javax.crypto.spec.SecretKeySpec
 
 object TestMessageFactory {
-
-    private const val HMAC_ALGO = "HmacSHA256"
-
-    // 테스트용 고정 시크릿 (실서비스에서는 절대 하드코딩 금지)
-    private val secretKey = "test-hmac-secret-key-2026"
-        .toByteArray(Charsets.UTF_8)
 
     fun create(): ByteArray {
         val message = PaymentMessage(
@@ -24,31 +16,21 @@ object TestMessageFactory {
             amount = 4500
         )
 
-        message.hash = hmacSha256(CanonicalJsonUtil.toCanonical(message))
+        // ✅ hash 제외 Canonical
+        val canonical = CanonicalJsonUtil
+            .toCanonical(message.withoutHash())
 
-        val signedMessage = CanonicalJsonUtil.toCanonical(message)
-        println("signedMessage: $signedMessage")
-        return signedMessage.toByteArray(Charsets.UTF_8)
-    }
+        // ✅ HMAC 생성
+        val hmac = hmacSha256(canonical)
 
-    private fun hmacSha256(data: String): String {
-        val mac = Mac.getInstance(HMAC_ALGO)
-        val keySpec = SecretKeySpec(secretKey, HMAC_ALGO)
-        mac.init(keySpec)
-        val hashBytes = mac.doFinal(data.toByteArray(Charsets.UTF_8))
+        // ✅ hash 세팅
+        message.hash = hmac
 
-        return hashBytes.joinToString("") {
-            "%02x".format(it)
-        }
-    }
+        // ✅ 최종 서명용 Canonical
+        val signedJson =
+            CanonicalJsonUtil.toCanonical(message)
+        println("signedMessage: $signedJson")
 
-    // SHA-256 해시 함수
-    private fun sha256(input: String): String {
-        val digest = MessageDigest.getInstance("SHA-256")
-        val hashBytes = digest.digest(input.toByteArray(Charsets.UTF_8))
-
-        return hashBytes.joinToString("") {
-            "%02x".format(it)
-        }
+        return signedJson.toByteArray(Charsets.UTF_8)
     }
 }
