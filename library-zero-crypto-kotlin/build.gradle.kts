@@ -44,3 +44,10 @@ tasks.named("clean") {
 //tasks.named<Test>("test") {
 //    enabled = false
 //}
+
+tasks.withType<JavaExec> {
+    systemProperty(
+        "HMAC_SECRET_KEY",
+        project.findProperty("HMAC_SECRET_KEY") ?: ""
+    )
+}

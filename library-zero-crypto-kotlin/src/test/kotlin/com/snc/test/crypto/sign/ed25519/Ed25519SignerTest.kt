@@ -17,10 +17,17 @@ import java.security.SignatureException
 class Ed25519SignerTest {
 
     private lateinit var keyPair: KeyPair
+    private lateinit var secretKey: ByteArray
 
     @BeforeEach
     fun setup() {
         keyPair = Ed25519Signer.generateKeyPair()
+
+        val bytes = ByteArray(32)
+        java.security.SecureRandom().nextBytes(bytes)
+        secretKey = java.util.Base64.getEncoder()
+            .encodeToString(bytes)
+            .toByteArray(Charsets.UTF_8)
     }
 
     @Nested
@@ -55,7 +62,7 @@ class Ed25519SignerTest {
         @Test
         fun `HMAC 포함 메시지 서명 및 검증 성공`() {
             // given
-            val message = TestMessageFactory.create()
+            val message = TestMessageFactory.create(secretKey)
 
             // when
             val signature = Ed25519Signer.sign(
@@ -76,7 +83,7 @@ class Ed25519SignerTest {
         @Test
         fun `메시지 변조 시 검증 실패`() {
             // given
-            val original = TestMessageFactory.create()
+            val original = TestMessageFactory.create(secretKey)
 
             val tampered = String(original)
                 .replace("4500", "9000")
@@ -102,7 +109,7 @@ class Ed25519SignerTest {
         fun `서명 위조 시 검증 실패`() {
             try {
                 // given
-                val message = TestMessageFactory.create()
+                val message = TestMessageFactory.create(secretKey)
 
                 val signature = Ed25519Signer.sign(
                     keyPair.private,
@@ -132,7 +139,7 @@ class Ed25519SignerTest {
             // given
             val otherKeyPair = Ed25519Signer.generateKeyPair()
 
-            val message = TestMessageFactory.create()
+            val message = TestMessageFactory.create(secretKey)
 
             val signature = Ed25519Signer.sign(
                 keyPair.private,
@@ -157,7 +164,7 @@ class Ed25519SignerTest {
 
         @Test
         fun `서명화 메시지 검증`() {
-            val message = TestMessageFactory.create()
+            val message = TestMessageFactory.create(secretKey)
 
             // 1단계: 서명 검증
             val signature =
@@ -174,7 +181,7 @@ class Ed25519SignerTest {
 
             // 2단계: JSON 기반 hash 검증
             val hashValid =
-                JsonHashVerifier.verify(message)
+                JsonHashVerifier.verify(message, secretKey)
 
             assertTrue(hashValid)
         }

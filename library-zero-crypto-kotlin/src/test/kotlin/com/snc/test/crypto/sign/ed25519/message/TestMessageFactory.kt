@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 
 object TestMessageFactory {
 
-    fun create(): ByteArray {
+    fun create(secretKey: ByteArray): ByteArray {
         val message = PaymentMessage(
             dateTime = LocalDateTime.now(),
             location = "서울 강남구",
@@ -21,7 +21,7 @@ object TestMessageFactory {
             .toCanonical(message.withoutHash())
 
         // ✅ HMAC 생성
-        val hmac = hmacSha256(canonical)
+        val hmac = hmacSha256(canonical, secretKey)
 
         // ✅ hash 세팅
         message.hash = hmac

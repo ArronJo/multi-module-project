@@ -9,7 +9,7 @@ object JsonHashVerifier {
     /**
      * DTO 없이 JSON 기반 HMAC 검증
      */
-    fun verify(jsonBytes: ByteArray): Boolean {
+    fun verify(jsonBytes: ByteArray, secretKey: ByteArray): Boolean {
         // 1️⃣ JSON → Map 변환
         val map: MutableMap<String, Any> =
             CanonicalJsonUtil.mapper.readValue(
@@ -29,8 +29,7 @@ object JsonHashVerifier {
             CanonicalJsonUtil.toCanonical(map)
 
         // 5️⃣ HMAC 재계산
-        val expected =
-            hmacSha256(canonical)
+        val expected = hmacSha256(canonical, secretKey)
 
         // 6️⃣ 비교
         return expected == originalHash

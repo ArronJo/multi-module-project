@@ -4,6 +4,7 @@ import java.security.KeyPair
 import java.security.KeyPairGenerator
 import java.security.PrivateKey
 import java.security.PublicKey
+import java.security.SecureRandom
 import java.security.Signature
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
@@ -69,14 +70,33 @@ object Ed25519Signer {
 
     private const val HMAC_ALGO = "HmacSHA256"
 
-    // 테스트용 고정 시크릿 (실서비스에서는 절대 하드코딩 금지)
-    private val secretKey = "test-hmac-secret-key-2026"
-        .toByteArray(Charsets.UTF_8)
+    /**
+     * System Property로 주입
+     *
+     * 운영 서버에서는:
+     *   ./gradlew bootRun -PHMAC_SECRET_KEY=real-prod-secret
+     *
+     * 또는
+     *   java -DHMAC_SECRET_KEY=real-prod-secret -jar app.jar
+     */
+    private val DEFAULT_HMAC_SECRET: ByteArray by lazy {
+        val env = System.getenv("HMAC_SECRET_KEY")
 
-    fun hmacSha256(data: String): String {
+        if (env.isNullOrBlank()) {
+            //println("⚠️ HMAC_SECRET_KEY not configured. Using fallback secret.")
+            //"fallback-secret-change-me".toByteArray(Charsets.UTF_8)
+            println("⚠️ HMAC_SECRET_KEY not configured. Generating temporary key.")
+            ByteArray(32).also { SecureRandom().nextBytes(it) }
+        } else {
+            env.toByteArray(Charsets.UTF_8)
+        }
+    }
+
+    fun hmacSha256(data: String, secretKey: ByteArray = DEFAULT_HMAC_SECRET): String {
         val mac = Mac.getInstance(HMAC_ALGO)
         val keySpec = SecretKeySpec(secretKey, HMAC_ALGO)
         mac.init(keySpec)
+
         val hashBytes = mac.doFinal(data.toByteArray(Charsets.UTF_8))
 
         return hashBytes.joinToString("") {
