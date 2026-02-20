@@ -71,7 +71,7 @@ object Ed25519Signer {
     private const val HMAC_ALGO = "HmacSHA256"
 
     /**
-     * System Property로 주입
+     * System Property로 주입한 값을 이용함
      *
      * 운영 서버에서는:
      *   ./gradlew bootRun -PHMAC_SECRET_KEY=real-prod-secret
@@ -79,16 +79,22 @@ object Ed25519Signer {
      * 또는
      *   java -DHMAC_SECRET_KEY=real-prod-secret -jar app.jar
      */
-    private val DEFAULT_HMAC_SECRET: ByteArray by lazy {
-        val env = System.getenv("HMAC_SECRET_KEY")
+    val DEFAULT_HMAC_SECRET: ByteArray by lazy {
+        val hmacKey = System.getProperty("HMAC_SECRET_KEY")
+            ?: System.getenv("HMAC_SECRET_KEY")
 
-        if (env.isNullOrBlank()) {
+        println("DEFAULT_HMAC_SECRET >> hamcKey 값 가져오기: $hmacKey")
+
+        if (hmacKey.isNullOrBlank()) {
             //println("⚠️ HMAC_SECRET_KEY not configured. Using fallback secret.")
             //"fallback-secret-change-me".toByteArray(Charsets.UTF_8)
             println("⚠️ HMAC_SECRET_KEY not configured. Generating temporary key.")
-            ByteArray(32).also { SecureRandom().nextBytes(it) }
+            val bytes = ByteArray(32).also { SecureRandom().nextBytes(it) }
+            java.util.Base64.getEncoder()
+                .encodeToString(bytes)
+                .toByteArray(Charsets.UTF_8)
         } else {
-            env.toByteArray(Charsets.UTF_8)
+            hmacKey.toByteArray(Charsets.UTF_8)
         }
     }
 

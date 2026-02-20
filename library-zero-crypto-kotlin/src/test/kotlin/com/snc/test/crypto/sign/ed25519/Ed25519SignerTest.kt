@@ -22,12 +22,7 @@ class Ed25519SignerTest {
     @BeforeEach
     fun setup() {
         keyPair = Ed25519Signer.generateKeyPair()
-
-        val bytes = ByteArray(32)
-        java.security.SecureRandom().nextBytes(bytes)
-        secretKey = java.util.Base64.getEncoder()
-            .encodeToString(bytes)
-            .toByteArray(Charsets.UTF_8)
+        secretKey = Ed25519Signer.DEFAULT_HMAC_SECRET
     }
 
     @Nested
