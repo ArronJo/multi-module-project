@@ -14,7 +14,9 @@ dependencies {
     implementation(project(":library-zero-logger-kotlin"))
     implementation(project(":library-zero-extension-kotlin"))
     implementation(libs.bouncycastle.bcprov)
+    implementation(platform(libs.jackson.bom))
     implementation(libs.jackson.kotlin)
+    implementation(libs.jackson.core)
     implementation(libs.jackson.datatype.jsr310)
 
     testImplementation(project(":library-zero-test-kotlin"))
