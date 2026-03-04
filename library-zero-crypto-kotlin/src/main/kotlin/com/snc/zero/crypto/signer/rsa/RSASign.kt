@@ -1,4 +1,4 @@
-package com.snc.zero.crypto.sign.rsa
+package com.snc.zero.crypto.signer.rsa
 
 import java.security.KeyPair
 import java.security.KeyPairGenerator

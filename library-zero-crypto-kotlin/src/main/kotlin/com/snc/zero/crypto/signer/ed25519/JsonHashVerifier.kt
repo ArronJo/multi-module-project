@@ -1,8 +1,8 @@
-package com.snc.zero.crypto.sign.ed25519
+package com.snc.zero.crypto.signer.ed25519
 
 import com.fasterxml.jackson.core.type.TypeReference
 import com.snc.zero.crypto.canonical.CanonicalJsonUtil
-import com.snc.zero.crypto.sign.ed25519.Ed25519Signer.hmacSha256
+import com.snc.zero.crypto.signer.ed25519.HmacSigner.Companion.hmacSha256
 
 object JsonHashVerifier {
 

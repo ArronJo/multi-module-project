@@ -1,7 +1,7 @@
-package com.snc.test.crypto.sign.ed25519.message
+package com.snc.test.crypto.signer.ed25519.message
 
 import com.snc.zero.crypto.canonical.CanonicalJsonUtil
-import com.snc.zero.crypto.sign.ed25519.Ed25519Signer.hmacSha256
+import com.snc.zero.crypto.signer.ed25519.HmacSigner.Companion.hmacSha256
 import java.time.LocalDateTime
 
 object TestMessageFactory {

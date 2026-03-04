@@ -2,8 +2,6 @@ package com.snc.zero.crypto.cipher.ecc
 
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
-import kotlin.math.ceil
-import kotlin.math.min
 
 object HKDF {
 
@@ -22,38 +20,39 @@ object HKDF {
         salt: ByteArray? = null,
         info: ByteArray? = null
     ): ByteArray {
+        require(length > 0) { "length must be > 0" }
+        require(length <= 255 * HASH_LEN) { "length must be <= ${255 * HASH_LEN}" }
+
         val realSalt = salt ?: ByteArray(HASH_LEN) { 0 }
 
         // Step 1: Extract
         val prk = hmac(realSalt, ikm)
 
         // Step 2: Expand
-        val n = ceil(length.toDouble() / HASH_LEN).toInt()
+        val n = (length + HASH_LEN - 1) / HASH_LEN
+
+        val macTemplate = Mac.getInstance(HMAC)
+        macTemplate.init(SecretKeySpec(prk, HMAC))
 
         var t = ByteArray(0)
         val okm = ByteArray(length)
-
         var pos = 0
 
-        for (i in 1..n) {
-            val mac = Mac.getInstance(HMAC)
+        try {
+            for (i in 1..n) {
+                val mac = macTemplate.clone() as Mac
+                mac.update(t)
+                if (info != null) mac.update(info)
+                mac.update(i.toByte())
+                t = mac.doFinal()
 
-            mac.init(SecretKeySpec(prk, HMAC))
-
-            mac.update(t)
-
-            if (info != null) {
-                mac.update(info)
+                val copyLen = minOf(t.size, length - pos)
+                System.arraycopy(t, 0, okm, pos, copyLen)
+                pos += copyLen
             }
-
-            mac.update(i.toByte())
-
-            t = mac.doFinal()
-
-            val copyLen = min(t.size, length - pos)
-            System.arraycopy(t, 0, okm, pos, copyLen)
-
-            pos += copyLen
+        } finally {
+            prk.fill(0)
+            t.fill(0)
         }
 
         return okm

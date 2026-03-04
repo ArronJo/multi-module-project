@@ -1,6 +1,6 @@
-package com.snc.test.crypto.sign.rsa
+package com.snc.test.crypto.signer.rsa
 
-import com.snc.zero.crypto.sign.rsa.RSASign
+import com.snc.zero.crypto.signer.rsa.RSASign
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName

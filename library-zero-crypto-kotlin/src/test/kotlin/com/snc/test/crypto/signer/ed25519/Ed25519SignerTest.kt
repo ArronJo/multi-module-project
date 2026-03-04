@@ -1,8 +1,9 @@
-package com.snc.test.crypto.sign.ed25519
+package com.snc.test.crypto.signer.ed25519
 
-import com.snc.test.crypto.sign.ed25519.message.TestMessageFactory
-import com.snc.zero.crypto.sign.ed25519.Ed25519Signer
-import com.snc.zero.crypto.sign.ed25519.JsonHashVerifier
+import com.snc.test.crypto.signer.ed25519.message.TestMessageFactory
+import com.snc.zero.crypto.key.generator.BetterAuthGenerator
+import com.snc.zero.crypto.signer.ed25519.Ed25519Signer
+import com.snc.zero.crypto.signer.ed25519.JsonHashVerifier
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -13,16 +14,18 @@ import java.security.KeyPair
 import java.security.SignatureException
 
 @Suppress("NonAsciiCharacters")
-@DisplayName("Ed25519T 테스트")
+@DisplayName("Ed25519Signer 테스트")
 class Ed25519SignerTest {
 
+    private lateinit var signer: Ed25519Signer
     private lateinit var keyPair: KeyPair
     private lateinit var secretKey: ByteArray
 
     @BeforeEach
     fun setup() {
-        keyPair = Ed25519Signer.generateKeyPair()
-        secretKey = Ed25519Signer.DEFAULT_HMAC_SECRET
+        signer = Ed25519Signer()
+        keyPair = signer.generateKeyPair()
+        secretKey = BetterAuthGenerator.generate()
     }
 
     @Nested
@@ -30,20 +33,12 @@ class Ed25519SignerTest {
     inner class DefaultTest {
 
         @Test
-        @DisplayName("기본 2048비트 키 페어 생성")
+        @DisplayName("Ed25519 키 페어 생성 및 기본 서명 검증")
         fun `전자서명 알고리즘 테스트`() {
             val message = "Hello Ed25519".toByteArray()
 
-            val signature = Ed25519Signer.sign(
-                keyPair.private,
-                message
-            )
-
-            val isValid = Ed25519Signer.verify(
-                keyPair.public,
-                message,
-                signature
-            )
+            val signature = signer.sign(keyPair.private, message)
+            val isValid = signer.verify(keyPair.public, message, signature)
 
             println("Signature valid: $isValid")
             assertTrue(isValid)
@@ -60,16 +55,8 @@ class Ed25519SignerTest {
             val message = TestMessageFactory.create(secretKey)
 
             // when
-            val signature = Ed25519Signer.sign(
-                keyPair.private,
-                message
-            )
-
-            val result = Ed25519Signer.verify(
-                keyPair.public,
-                message,
-                signature
-            )
+            val signature = signer.sign(keyPair.private, message)
+            val result = signer.verify(keyPair.public, message, signature)
 
             // then
             assertTrue(result)
@@ -79,22 +66,11 @@ class Ed25519SignerTest {
         fun `메시지 변조 시 검증 실패`() {
             // given
             val original = TestMessageFactory.create(secretKey)
-
-            val tampered = String(original)
-                .replace("4500", "9000")
-                .toByteArray()
-
-            val signature = Ed25519Signer.sign(
-                keyPair.private,
-                original
-            )
+            val tampered = String(original).replace("4500", "9000").toByteArray()
+            val signature = signer.sign(keyPair.private, original)
 
             // when
-            val result = Ed25519Signer.verify(
-                keyPair.public,
-                tampered,
-                signature
-            )
+            val result = signer.verify(keyPair.public, tampered, signature)
 
             // then
             assertFalse(result)
@@ -105,21 +81,13 @@ class Ed25519SignerTest {
             try {
                 // given
                 val message = TestMessageFactory.create(secretKey)
-
-                val signature = Ed25519Signer.sign(
-                    keyPair.private,
-                    message
-                )
+                val signature = signer.sign(keyPair.private, message)
 
                 // 서명 조작
                 signature[0] = (signature[0] + 1).toByte()
 
                 // when
-                val result = Ed25519Signer.verify(
-                    keyPair.public,
-                    message,
-                    signature
-                )
+                val result = signer.verify(keyPair.public, message, signature)
 
                 // then
                 assertFalse(result)
@@ -132,21 +100,12 @@ class Ed25519SignerTest {
         @Test
         fun `다른 키로는 검증 실패`() {
             // given
-            val otherKeyPair = Ed25519Signer.generateKeyPair()
-
+            val otherKeyPair = signer.generateKeyPair()
             val message = TestMessageFactory.create(secretKey)
-
-            val signature = Ed25519Signer.sign(
-                keyPair.private,
-                message
-            )
+            val signature = signer.sign(keyPair.private, message)
 
             // when
-            val result = Ed25519Signer.verify(
-                otherKeyPair.public,
-                message,
-                signature
-            )
+            val result = signer.verify(otherKeyPair.public, message, signature)
 
             // then
             assertFalse(result)
@@ -162,22 +121,12 @@ class Ed25519SignerTest {
             val message = TestMessageFactory.create(secretKey)
 
             // 1단계: 서명 검증
-            val signature =
-                Ed25519Signer.sign(keyPair.private, message)
-
-            val sigValid =
-                Ed25519Signer.verify(
-                    keyPair.public,
-                    message,
-                    signature
-                )
-
+            val signature = signer.sign(keyPair.private, message)
+            val sigValid = signer.verify(keyPair.public, message, signature)
             assertTrue(sigValid)
 
             // 2단계: JSON 기반 hash 검증
-            val hashValid =
-                JsonHashVerifier.verify(message, secretKey)
-
+            val hashValid = JsonHashVerifier.verify(message, secretKey)
             assertTrue(hashValid)
         }
     }

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>ECDH Key Exchange</title>
+    <style>
+        body { font-family: monospace; max-width: 800px; margin: 40px auto; padding: 0 20px; background: #1e1e1e; color: #d4d4d4; }
+        h2 { color: #569cd6; }
+        button { background: #0e639c; color: #fff; border: none; padding: 8px 16px; cursor: pointer; border-radius: 4px; margin: 4px 0; }
+        button:hover { background: #1177bb; }
+        pre { background: #252526; padding: 12px; border-radius: 4px; overflow-x: auto; font-size: 0.8rem; white-space: pre-wrap; word-break: break-all; }
+        .label { color: #9cdcfe; margin-top: 12px; display: block; }
+        .success { color: #4ec9b0; }
+        .error { color: #f44747; }
+        input { width: 100%; padding: 6px; background: #3c3c3c; color: #d4d4d4; border: 1px solid #555; border-radius: 4px; box-sizing: border-box; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+
+<h2>🔐 ECDH Key Exchange (Browser ↔ Kotlin Server)</h2>
+
+<button onclick="step1_generateClientKey()">Step 1: 클라이언트 키 생성</button>
+<span class="label">클라이언트 공개키 (서버로 전송할 값):</span>
+<pre id="clientPublicKey">-</pre>
+
+<br>
+<span class="label">서버 공개키 입력 (서버 응답값 붙여넣기):</span>
+<input type="text" id="serverPublicKeyInput" placeholder="서버에서 받은 Base64 공개키 붙여넣기">
+<button onclick="step2_deriveSharedSecret()">Step 2: 공유 비밀키 도출</button>
+
+<span class="label">공유 비밀키 (AES-256 세션키):</span>
+<pre id="sharedSecret">-</pre>
+
+<span class="label">암호화 테스트 메시지:</span>
+<input type="text" id="plaintext" value="Hello Kotlin Server!">
+<button onclick="step3_encrypt()">Step 3: AES-GCM 암호화</button>
+
+<span class="label">암호화 결과 (iv:ciphertext Base64):</span>
+<pre id="encrypted">-</pre>
+
+<button onclick="step4_decrypt()">Step 4: AES-GCM 복호화</button>
+<span class="label">복호화 결과:</span>
+<pre id="decrypted">-</pre>
+
+<script>
+    let clientKeyPair = null
+    let aesKey = null
+    let encryptedData = null
+
+    // ── Step 1: 클라이언트 ECDH 키페어 생성 ──────────────────────────────
+    async function step1_generateClientKey() {
+        clientKeyPair = await crypto.subtle.generateKey(
+            { name: 'ECDH', namedCurve: 'P-256' },
+            true,
+            ['deriveKey', 'deriveBits']
+        )
+
+        // 브라우저 공개키 → SPKI(X.509) → Base64 → 서버 전송
+        const spki = await crypto.subtle.exportKey('spki', clientKeyPair.publicKey)
+        const base64 = btoa(String.fromCharCode(...new Uint8Array(spki)))
+
+        document.getElementById('clientPublicKey').textContent = base64
+    }
+
+    // ── Step 2: 서버 공개키로 공유 비밀키 도출 ───────────────────────────
+    async function step2_deriveSharedSecret() {
+        const serverBase64 = document.getElementById('serverPublicKeyInput').value.trim()
+        if (!serverBase64) {
+            alert('서버 공개키를 입력하세요.')
+            return
+        }
+
+        // Base64 → ArrayBuffer → 서버 공개키 import
+        const serverKeyBytes = Uint8Array.from(atob(serverBase64), c => c.charCodeAt(0))
+        const serverPublicKey = await crypto.subtle.importKey(
+            'spki',
+            serverKeyBytes,
+            { name: 'ECDH', namedCurve: 'P-256' },
+            false,
+            []
+        )
+
+        // ECDH 공유 비밀키 도출 → SHA-256 → AES-256-GCM 키
+        const sharedBits = await crypto.subtle.deriveBits(
+            { name: 'ECDH', public: serverPublicKey },
+            clientKeyPair.privateKey,
+            256
+        )
+
+        // SHA-256 해시 → AES 키 (서버의 deriveAesKey 와 동일 방식)
+        const hashBuffer = await crypto.subtle.digest('SHA-256', sharedBits)
+
+        aesKey = await crypto.subtle.importKey(
+            'raw',
+            hashBuffer,
+            { name: 'AES-GCM' },
+            false,
+            ['encrypt', 'decrypt']
+        )
+
+        const hex = Array.from(new Uint8Array(hashBuffer))
+            .map(b => b.toString(16).padStart(2, '0')).join('')
+
+        document.getElementById('sharedSecret').innerHTML =
+            `<span class="success">✅ AES-256 세션키 도출 성공</span>\n${hex}`
+    }
+
+    // ── Step 3: AES-GCM 암호화 ───────────────────────────────────────────
+    async function step3_encrypt() {
+        if (!aesKey) { alert('먼저 공유 비밀키를 도출하세요.'); return }
+
+        const plaintext = document.getElementById('plaintext').value
+        const iv = crypto.getRandomValues(new Uint8Array(12))  // AES-GCM IV: 12바이트
+        const encoded = new TextEncoder().encode(plaintext)
+
+        const ciphertext = await crypto.subtle.encrypt(
+            { name: 'AES-GCM', iv },
+            aesKey,
+            encoded
+        )
+
+        const ivBase64 = btoa(String.fromCharCode(...iv))
+        const ctBase64 = btoa(String.fromCharCode(...new Uint8Array(ciphertext)))
+
+        encryptedData = { iv, ciphertext }
+        document.getElementById('encrypted').textContent = `${ivBase64}:${ctBase64}`
+    }
+
+    // ── Step 4: AES-GCM 복호화 ───────────────────────────────────────────
+    async function step4_decrypt() {
+        if (!aesKey || !encryptedData) { alert('먼저 암호화를 수행하세요.'); return }
+
+        const decrypted = await crypto.subtle.decrypt(
+            { name: 'AES-GCM', iv: encryptedData.iv },
+            aesKey,
+            encryptedData.ciphertext
+        )
+
+        const result = new TextDecoder().decode(decrypted)
+        document.getElementById('decrypted').innerHTML =
+            `<span class="success">✅ ${result}</span>`
+    }
+</script>
+</body>
+</html>

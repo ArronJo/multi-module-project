@@ -1,4 +1,4 @@
-package com.snc.test.crypto.sign.ed25519.message
+package com.snc.test.crypto.signer.ed25519.message
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnore

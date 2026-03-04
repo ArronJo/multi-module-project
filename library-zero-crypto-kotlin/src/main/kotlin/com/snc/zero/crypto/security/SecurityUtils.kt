@@ -1,7 +1,7 @@
 package com.snc.zero.crypto.security
 
 import com.snc.zero.crypto.cipher.aes.AESGCM
-import com.snc.zero.crypto.sign.rsa.RSASign
+import com.snc.zero.crypto.signer.rsa.RSASign
 import com.snc.zero.crypto.hash.pbkdf2.PBKDF2
 import com.snc.zero.crypto.token.SignedToken
 import java.security.KeyPair

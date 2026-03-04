@@ -1,5 +1,6 @@
 package com.snc.zero.crypto.cipher.ecc
 
+import java.nio.ByteBuffer
 import java.security.KeyFactory
 import java.security.KeyPair
 import java.security.KeyPairGenerator
@@ -14,43 +15,36 @@ import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.SecretKeySpec
 
 /**
- * ✅ 1. 가장 현실적인 대체: ECC (타원곡선 암호, Elliptic Curve Cryptography)
- * 👉 결론: 지금 RSA 대신 쓸 거면 ECC가 정답이야.
+ * Hybrid Encryption: ECDH + HKDF + AES-GCM
  *
- * > https://velog.io/@constantlearner/%EC%95%94%ED%98%B8%ED%99%94-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98-%EB%B9%84%EA%B5%90-RSA-vs-ED25519
- * >
- * > https://academy.gopax.co.kr/ed25519-seomyeong-gaenyeomgwa-api-boaneul-wihan-hwalyong-bangbeob/
+ * 1. ECDH   → 공유키 생성 (Ephemeral Key로 Forward Secrecy 보장)
+ * 2. HKDF   → AES Key 파생 (RFC 5869)
+ * 3. AES-GCM → 데이터 암호화 (인증 포함)
  *
- * 왜 ECC가 좋은가?
- * | 항목		 | 		RSA		| 	ECC		|
- * |-------------|--------------|-----------|
- * | 키 길이		 | 2048~4096bit	| 	256bit	|
- * | 보안 강도	 | 		보통		| 	매우 높음	|
- * | 성능		 | 		느림		| 	빠름		|
- * | 서버 부하	 | 		큼		| 	작음		|
- * | 모바일/클라우드 | 		불리		| 	유리		|
+ * ---
+ * 용도:
+ *   ✅ 두 당사자가 안전하게 공유 비밀키(세션키) 생성
+ *   ✅ TLS 핸드셰이크 기반
+ *   ✅ E2E 암호화 (Signal, WhatsApp 등)
  *
- * ✔️ 같은 보안 수준이면 ECC가 훨씬 짧은 키 + 빠른 속도
- * ✔️ TLS, HTTPS, JWT, WebAuthn 전부 ECC 기반으로 이동 중
- *
- *
- * ✅ 2. ECC로 가는 “정답 구조”
- *
- * 표준 구조는 무조건 이거야:
- *
- * 🔐 Hybrid Encryption (혼합 암호)
- *   1. ECDH → 공유키 생성
- *   2. HKDF → AES Key 파생
- *   3. AES-GCM → 데이터 암호화
- *
- *   즉:
- *     ❌ 공개키로 데이터 암호화 안 함
- *     ✅ 공개키로 "키"만 교환
+ * 흐름:
+ *   Alice 공개키 → Bob 에게 전달
+ *   Bob 공개키   → Alice 에게 전달
+ *   각자 상대방 공개키 + 자신의 개인키 → 동일한 공유비밀 도출
  */
 object ECCCipher {
 
     private const val CURVE = "secp256r1"
+    private const val AES_KEY_LENGTH = 32
+    private const val GCM_IV_LENGTH = 12
+    private const val GCM_TAG_BITS = 128
+    private const val HKDF_INFO = "ECC-AES-KEY"
 
+    private val secureRandom = SecureRandom()
+
+    // ──────────────────────────────────────────────
+    // EncryptedData
+    // ──────────────────────────────────────────────
     class EncryptedData(
         publicKey: ByteArray,
         iv: ByteArray,
@@ -60,86 +54,115 @@ object ECCCipher {
         val iv = iv.clone()
         val cipherText = cipherText.clone()
 
-        override fun toString(): String {
-            return "EncryptedData(publicKey=${publicKey.toHexString()}, iv=${iv.toHexString()}, cipherText=${cipherText.toHexString()})"
+        /**
+         * 직렬화: [4byte: pubKeyLen][pubKey][12byte: iv][cipherText]
+         */
+        fun toByteArray(): ByteArray {
+            return ByteBuffer.allocate(4 + publicKey.size + GCM_IV_LENGTH + cipherText.size).apply {
+                putInt(publicKey.size)
+                put(publicKey)
+                put(iv)
+                put(cipherText)
+            }.array()
         }
 
-        private fun ByteArray.toHexString(): String {
-            return this.joinToString("") { "%02x".format(it) }
+        override fun toString(): String {
+            return "EncryptedData(" +
+                "publicKey=${publicKey.toHexString()}, " +
+                "iv=${iv.toHexString()}, " +
+                "cipherText=${cipherText.toHexString()})"
+        }
+
+        private fun ByteArray.toHexString() = joinToString("") { "%02x".format(it) }
+
+        companion object {
+            /**
+             * 역직렬화: toByteArray() 의 역연산
+             */
+            fun fromByteArray(data: ByteArray): EncryptedData {
+                val buf = ByteBuffer.wrap(data)
+                val pubKeyLen = buf.int
+                val pubKey = ByteArray(pubKeyLen).also { buf.get(it) }
+                val iv = ByteArray(GCM_IV_LENGTH).also { buf.get(it) }
+                val cipher = ByteArray(buf.remaining()).also { buf.get(it) }
+                return EncryptedData(pubKey, iv, cipher)
+            }
         }
     }
 
+    // ──────────────────────────────────────────────
+    // Key Generation
+    // ──────────────────────────────────────────────
     fun generateKeyPair(): KeyPair {
         val kpg = KeyPairGenerator.getInstance("EC")
-        kpg.initialize(ECGenParameterSpec("secp256r1"))
+        kpg.initialize(ECGenParameterSpec(CURVE))
         return kpg.generateKeyPair()
     }
 
+    // ──────────────────────────────────────────────
+    // Encrypt
+    // ──────────────────────────────────────────────
     fun encrypt(data: ByteArray, peerPublicKey: PublicKey): EncryptedData {
-        // 1. Ephemeral Key 생성
+        // 1. Ephemeral Key 생성 (Forward Secrecy)
         val kpg = KeyPairGenerator.getInstance("EC")
         kpg.initialize(ECGenParameterSpec(CURVE))
         val ephKey = kpg.generateKeyPair()
 
-        // 2. ECDH
-        val ka = KeyAgreement.getInstance("ECDH")
-        ka.init(ephKey.private)
-        ka.doPhase(peerPublicKey, true)
-        val secret = ka.generateSecret()
+        // 2. ECDH → 공유 비밀키
+        val secret = ecdh(ephKey.private, peerPublicKey)
 
-        // 3. HKDF → AES Key
-        val aesKey = HKDF.deriveKey(
-            ikm = secret,
-            length = 32,
-            salt = null,
-            info = "ECC-AES-KEY".toByteArray()
-        )
+        // 3. HKDF → AES-256 Key
+        val aesKey = deriveAesKey(secret)
 
         // 4. AES-GCM 암호화
+        val iv = ByteArray(GCM_IV_LENGTH).also { secureRandom.nextBytes(it) }
         val cipher = Cipher.getInstance("AES/GCM/NoPadding")
-
-        val iv = ByteArray(12).also { SecureRandom().nextBytes(it) }
-
-        cipher.init(
-            Cipher.ENCRYPT_MODE,
-            SecretKeySpec(aesKey, "AES"),
-            GCMParameterSpec(128, iv)
-        )
-
-        val enc = cipher.doFinal(data)
+        cipher.init(Cipher.ENCRYPT_MODE, SecretKeySpec(aesKey, "AES"), GCMParameterSpec(GCM_TAG_BITS, iv))
 
         return EncryptedData(
-            ephKey.public.encoded,
-            iv,
-            enc
+            publicKey = ephKey.public.encoded,
+            iv = iv,
+            cipherText = cipher.doFinal(data)
         )
     }
 
+    // ──────────────────────────────────────────────
+    // Decrypt
+    // ──────────────────────────────────────────────
     fun decrypt(enc: EncryptedData, myPrivateKey: PrivateKey): ByteArray {
-        val kf = KeyFactory.getInstance("EC")
-        val pubKey = kf.generatePublic(X509EncodedKeySpec(enc.publicKey))
+        // 1. Ephemeral 공개키 복원
+        val ephPublicKey = KeyFactory.getInstance("EC")
+            .generatePublic(X509EncodedKeySpec(enc.publicKey))
 
-        val ka = KeyAgreement.getInstance("ECDH")
-        ka.init(myPrivateKey)
-        ka.doPhase(pubKey, true)
+        // 2. ECDH → 공유 비밀키
+        val secret = ecdh(myPrivateKey, ephPublicKey)
 
-        val secret = ka.generateSecret()
+        // 3. HKDF → AES-256 Key
+        val aesKey = deriveAesKey(secret)
 
-        val aesKey = HKDF.deriveKey(
-            ikm = secret,
-            length = 32,
-            salt = null,
-            info = "ECC-AES-KEY".toByteArray()
-        )
-
+        // 4. AES-GCM 복호화
         val cipher = Cipher.getInstance("AES/GCM/NoPadding")
-
-        cipher.init(
-            Cipher.DECRYPT_MODE,
-            SecretKeySpec(aesKey, "AES"),
-            GCMParameterSpec(128, enc.iv)
-        )
+        cipher.init(Cipher.DECRYPT_MODE, SecretKeySpec(aesKey, "AES"), GCMParameterSpec(GCM_TAG_BITS, enc.iv))
 
         return cipher.doFinal(enc.cipherText)
+    }
+
+    // ──────────────────────────────────────────────
+    // Private
+    // ──────────────────────────────────────────────
+    private fun ecdh(privateKey: PrivateKey, publicKey: PublicKey): ByteArray {
+        val ka = KeyAgreement.getInstance("ECDH")
+        ka.init(privateKey)
+        ka.doPhase(publicKey, true)
+        return ka.generateSecret()
+    }
+
+    private fun deriveAesKey(secret: ByteArray): ByteArray {
+        return HKDF.deriveKey(
+            ikm = secret,
+            length = AES_KEY_LENGTH,
+            salt = null,
+            info = HKDF_INFO.toByteArray()
+        )
     }
 }
