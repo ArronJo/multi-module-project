@@ -207,7 +207,7 @@ ktlint_standard_function-signature = disabled
 
 # [고민] 모든 arguments는 single line 으로 위치해야 함. 이 옵션이 영향도가 좀 크네...
 # Argument should be on a separate line (unless all arguments can fit a single line) (standard:argument-list-wrapping)
-#ktlint_standard_argument-list-wrapping = disabled
+ktlint_standard_argument-list-wrapping = disabled
 
 # Add a blank line between all when-condition in case at least one multiline when-condition is found in the statement (standard:blank-line-between-when-conditions)
 # when 문 내에 여러 줄로 구성된 조건(multiline when-condition)이 하나라도 있을 경우, 다른 모든 when-condition 사이에도 일관적으로 빈 줄을 추가하여 각 조건 블록을 명확하게 구분하도록 합니다.
