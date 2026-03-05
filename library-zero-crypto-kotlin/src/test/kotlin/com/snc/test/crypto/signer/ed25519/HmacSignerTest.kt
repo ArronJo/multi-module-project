@@ -1,6 +1,6 @@
 package com.snc.test.crypto.signer.ed25519
 
-import com.snc.zero.crypto.key.generator.BetterAuthGenerator
+import com.snc.zero.crypto.password.generator.BetterAuthGenerator
 import com.snc.zero.crypto.signer.ed25519.HmacSigner
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue

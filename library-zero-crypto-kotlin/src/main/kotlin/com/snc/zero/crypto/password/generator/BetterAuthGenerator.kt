@@ -1,4 +1,4 @@
-package com.snc.zero.crypto.key.generator
+package com.snc.zero.crypto.password.generator
 
 import java.security.SecureRandom
 import java.util.Base64

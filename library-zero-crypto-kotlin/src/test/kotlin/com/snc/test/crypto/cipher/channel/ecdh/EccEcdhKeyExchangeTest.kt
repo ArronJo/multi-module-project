@@ -1,6 +1,6 @@
-package com.snc.test.crypto.cipher.key.exchange
+package com.snc.test.crypto.cipher.channel.ecdh
 
-import com.snc.zero.crypto.key.exchange.EccKeyExchange
+import com.snc.zero.crypto.channel.ecdh.EccEcdhKeyExchange
 import com.snc.zero.extensions.text.toHexString
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -11,16 +11,43 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.security.MessageDigest
+import java.util.Base64
 
+/**
+ * 테스트 방법
+ * 1. ecsh-client.html 파일을 브라우저에서 오픈한다.
+ * 2. 브라우저에서 "Step 1: 클라어언트 키 생성" 버튼을 누른다.
+ * 3. `EcdhClientHtmlTest` 테스트를 실행하여 "서버 공개키" 를 만든다.
+ * 4. 만들어진 "서버 공개키"를 브라우저에 입력하고 "Step 2: 공유 비밀키 도출" 버튼을 누른다.
+ *
+ */
 @Suppress("NonAsciiCharacters")
 @DisplayName("EccKeyExchange 테스트")
-class EccKeyExchangeTest {
+class EccEcdhKeyExchangeTest {
 
-    private lateinit var exchange: EccKeyExchange
+    private lateinit var exchange: EccEcdhKeyExchange
 
     @BeforeEach
     fun setup() {
-        exchange = EccKeyExchange()
+        exchange = EccEcdhKeyExchange()
+    }
+
+    @Nested
+    @DisplayName("ecdh-client.html 테스트")
+    inner class EcdhClientHtmlTest {
+
+        @Test
+        fun `ecdh-client html - 클라이언트 공개키 - 공유 비밀키 도출`() {
+            // given
+            // "클라이언트 공개키 (서버로 전송할 값)" 을 세팅하면 됨.
+            val bob =
+                "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEPhjGcxIvyHE33Oyrs6TQyjh59QOa2XQHF6XddhN2UEw49avH4RQyKisZXvJGhF75YSQGRxp5JsyUTMhNsLPucw=="
+
+            val sharedSecret = EccEcdhKeyExchange.handleKeyExchange(bob)
+            println("\n공유 비밀키 도출: $sharedSecret")
+            println("\n")
+        }
     }
 
     @Nested
@@ -175,16 +202,6 @@ class EccKeyExchangeTest {
     inner class ScenarioTest {
 
         @Test
-        fun `ecdh-client html - 클라이언트 공개키 - 공유 비밀키 도출`() {
-            // given
-            // "클라이언트 공개키 (서버로 전송할 값)" 을 세팅하면 됨.
-            val bob = "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEPhjGcxIvyHE33Oyrs6TQyjh59QOa2XQHF6XddhN2UEw49avH4RQyKisZXvJGhF75YSQGRxp5JsyUTMhNsLPucw=="
-
-            val sharedSecret = EccKeyExchange.handleKeyExchange(bob)
-            println("공유 비밀키 도출: $sharedSecret")
-        }
-
-        @Test
         fun `공유 비밀키로 AES 키 도출 가능 (SHA-256 해시)`() {
             // given
             val alice = exchange.generateKeyPair()
@@ -194,7 +211,7 @@ class EccKeyExchangeTest {
             println("공유 비밀키: ${sharedSecret.toHexString()}")
 
             // when - 공유 비밀키를 SHA-256 해시 → AES-256 키로 활용
-            val aesKey = java.security.MessageDigest.getInstance("SHA-256")
+            val aesKey = MessageDigest.getInstance("SHA-256")
                 .digest(sharedSecret)
 
             // then
@@ -209,8 +226,8 @@ class EccKeyExchangeTest {
             val bob = exchange.generateKeyPair()
 
             // 네트워크 전송 시뮬레이션: Base64 인코딩 → 디코딩
-            val encoded = java.util.Base64.getEncoder().encodeToString(bob.publicKeyBytes)
-            val decoded = java.util.Base64.getDecoder().decode(encoded)
+            val encoded = Base64.getEncoder().encodeToString(bob.publicKeyBytes)
+            val decoded = Base64.getDecoder().decode(encoded)
 
             // when
             val aliceShared = exchange.deriveSharedSecret(alice.privateKey, decoded)

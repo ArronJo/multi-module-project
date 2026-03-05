@@ -1,6 +1,6 @@
-package com.snc.test.crypto.cipher.key.verify
+package com.snc.test.crypto.password.verify
 
-import com.snc.zero.crypto.key.verify.PasswordVerify
+import com.snc.zero.crypto.password.verify.PasswordVerify
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 

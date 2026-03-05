@@ -1,6 +1,6 @@
-package com.snc.test.crypto.cipher.key.generator
+package com.snc.test.crypto.password.generator
 
-import com.snc.zero.crypto.key.generator.BetterAuthGenerator
+import com.snc.zero.crypto.password.generator.BetterAuthGenerator
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.util.Base64

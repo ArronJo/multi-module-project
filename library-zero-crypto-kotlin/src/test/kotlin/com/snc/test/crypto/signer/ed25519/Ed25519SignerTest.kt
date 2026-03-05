@@ -1,7 +1,7 @@
 package com.snc.test.crypto.signer.ed25519
 
 import com.snc.test.crypto.signer.ed25519.message.TestMessageFactory
-import com.snc.zero.crypto.key.generator.BetterAuthGenerator
+import com.snc.zero.crypto.password.generator.BetterAuthGenerator
 import com.snc.zero.crypto.signer.ed25519.Ed25519Signer
 import com.snc.zero.crypto.signer.ed25519.JsonHashVerifier
 import org.junit.jupiter.api.Assertions.assertFalse

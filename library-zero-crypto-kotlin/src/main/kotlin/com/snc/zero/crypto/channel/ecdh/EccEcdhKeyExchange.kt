@@ -1,4 +1,4 @@
-package com.snc.zero.crypto.key.exchange
+package com.snc.zero.crypto.channel.ecdh
 
 import java.security.KeyFactory
 import java.security.KeyPairGenerator
@@ -11,7 +11,7 @@ import java.util.Base64
 import javax.crypto.KeyAgreement
 
 /**
- * ECC - ECDH (Elliptic Curve Diffie-Hellman) 키 교환
+ * ECC - ECDH (Elliptic Curve Diffie-Hellman) 키 교환 (Key Exchange)
  *
  * 용도:
  *   ✅ 두 당사자가 안전하게 공유 비밀키(세션키) 생성
@@ -23,12 +23,12 @@ import javax.crypto.KeyAgreement
  *   Bob 공개키   → Alice 에게 전달
  *   각자 상대방 공개키 + 자신의 개인키 → 동일한 공유비밀 도출
  */
-class EccKeyExchange {
+class EccEcdhKeyExchange {
 
     companion object {
 
         fun handleKeyExchange(clientPublicKeyBase64: String): String {
-            val exchange = EccKeyExchange()
+            val exchange = EccEcdhKeyExchange()
             val serverKeyPair = exchange.generateKeyPair()
 
             val sharedSecret = exchange.deriveSharedSecretFromBase64(

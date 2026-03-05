@@ -1,4 +1,4 @@
-package com.snc.zero.crypto.key.verify
+package com.snc.zero.crypto.password.verify
 
 import org.bouncycastle.crypto.generators.SCrypt
 import java.security.SecureRandom
