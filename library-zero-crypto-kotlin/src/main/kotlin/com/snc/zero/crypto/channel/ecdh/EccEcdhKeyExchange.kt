@@ -11,7 +11,12 @@ import java.util.Base64
 import javax.crypto.KeyAgreement
 
 /**
- * ECC - ECDH (Elliptic Curve Diffie-Hellman) 키 교환 (Key Exchange)
+ * ECC (Elliptic Curve Cryptography): 타원 곡선 암호
+ * - ECDH (Elliptic Curve Diffie-Hellman) 키 교환 (Key Exchange)
+ *
+ * 섫명
+ *  ECC(타원곡선암호)는 타원곡선 수학을 기반으로 하는 암호 기술의 거대한 상위 개념(틀)이며,
+ *  ECDH(타원곡선 디피-헬만)는 이 ECC 기술을 사용하여 공유 비밀키를 교환하는 알고리즘(응용 기술)입니다.
  *
  * 용도:
  *   ✅ 두 당사자가 안전하게 공유 비밀키(세션키) 생성
