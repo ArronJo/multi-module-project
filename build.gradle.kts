@@ -50,10 +50,10 @@ plugins {
     // 뷰어: https://cyclonedx.github.io/cyclonedx-web-tool/ 접속
     //      build/reports/bom.json 파일 업로드
     // 취약점검사: `trivy sbom ./build/reports/bom.json`
-    alias(libs.plugins.cyclonedx) // id("org.cyclonedx.bom") version "2.2.0"
+    alias(libs.plugins.cyclonedx) // id("org.cyclonedx.bom") version "3.1.0"
 
     // 오픈 소스 라이선스 리포트 만들기
-    alias(libs.plugins.license.report) // id("com.github.jk1.dependency-license-report") version "2.9"
+    alias(libs.plugins.license.report) // id("com.github.jk1.dependency-license-report") version "3.0.1"
 }
 
 group = "com.snc.zero"
