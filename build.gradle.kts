@@ -8,26 +8,18 @@ import java.util.Properties
 // plugins {}   Gradle Plugin Portal (기본값) 에서 정보를 찾음
 // Gradle이 내부적으로 //https://plugins.gradle.org/m2 로 나가려고 함
 plugins {
-    id("java")
+    alias(libs.plugins.java) // id("java")
 
     // https://kotlinlang.org/docs/releases.html#release-details
     // https://kotlinlang.org/docs/gradle-configure-project.html#apply-the-plugin
     // Kotlin 관련 플러그인은 같은 버전을 사용하는 것이 좋다고 하네.
-    kotlin("jvm") version "2.3.0" // id("org.jetbrains.kotlin.jvm") version "2.1.20"
-    kotlin("plugin.serialization") version "2.3.0"
+    alias(libs.plugins.kotlin.jvm) // kotlin("jvm") version "2.3.0"
+    alias(libs.plugins.kotlin.serialization) // kotlin("plugin.serialization") version "2.3.0"
 
-    id("jacoco")
+    alias(libs.plugins.jacoco) // id("jacoco")
 
     // https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
     alias(libs.plugins.sonarqube) // id("org.sonarqube") version "5.1.0.4882"
-
-    // 오픈 소스 취약점을 확인
-    // Dependency-check OWASP
-    // https://plugins.gradle.org/plugin/org.owasp.dependencycheck
-    // https://wiki.owasp.org/images/b/bd/OWASP_Top_10-2017-ko.pdf
-    // https://rcan.net/149?category=998453
-    // https://github.com/dependency-check/dependency-check-sonar-plugin
-    alias(libs.plugins.owasp.dependencycheck) // id("org.owasp.dependencycheck") version "8.0.2"
 
     // 플러그인 최신버전 확인하기: https://github.com/JLLeitschuh/ktlint-gradle/blob/main/CHANGELOG.md
     // https://beaniejoy.tistory.com/108
@@ -54,6 +46,14 @@ plugins {
 
     // 오픈 소스 라이선스 리포트 만들기
     alias(libs.plugins.license.report) // id("com.github.jk1.dependency-license-report") version "3.0.1"
+
+    // 오픈 소스 취약점을 확인
+    // Dependency-check OWASP
+    // https://plugins.gradle.org/plugin/org.owasp.dependencycheck
+    // https://wiki.owasp.org/images/b/bd/OWASP_Top_10-2017-ko.pdf
+    // https://rcan.net/149?category=998453
+    // https://github.com/dependency-check/dependency-check-sonar-plugin
+    alias(libs.plugins.owasp.dependencycheck) // id("org.owasp.dependencycheck") version "8.0.2"
 }
 
 group = "com.snc.zero"
@@ -381,7 +381,7 @@ tasks.named("clean") {
 ///////////////////////////////////////////////////////////
 // compileJava 사전 Task
 tasks.register<Exec>("deleteDSStoreShellScript") {
-    println("\n\n>>>>> task deleteDSStoreShellScript : $projectDir/,  os.name: ${System.getProperty("os.name")}") // "Mac OS X"
+    println("\n\n>>>>> task deleteDSStoreShellScript :\n  $projectDir/,\n  os.name: ${System.getProperty("os.name")}") // "Mac OS X"
 
     description = "This is a shell task that deletes the '.DS_Store' file when building a project."
     group = JavaBasePlugin.BUILD_TASK_NAME
