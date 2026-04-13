@@ -32,7 +32,7 @@ import javax.crypto.spec.SecretKeySpec
  *   Bob 공개키   → Alice 에게 전달
  *   각자 상대방 공개키 + 자신의 개인키 → 동일한 공유비밀 도출
  */
-object ECCCipher {
+object ECCCrypto {
 
     private const val CURVE = "secp256r1"
     private const val AES_KEY_LENGTH = 32

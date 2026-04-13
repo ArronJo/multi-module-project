@@ -1,6 +1,6 @@
 package com.snc.test.crypto.cipher.ecc
 
-import com.snc.zero.crypto.cipher.ecc.ECCCipher
+import com.snc.zero.crypto.cipher.ecc.ECCCrypto
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -23,20 +23,20 @@ import java.security.spec.X509EncodedKeySpec
  * ECC + AES-GCM 암복호화 TDD 테스트
  */
 @Suppress("NonAsciiCharacters")
-class ECCCipherTest {
+class ECCCryptoTest {
 
     private lateinit var keyPair: KeyPair
 
     @BeforeEach
     fun setup() {
-        keyPair = ECCCipher.generateKeyPair()
+        keyPair = ECCCrypto.generateKeyPair()
     }
 
     @Nested
     inner class ECCKeyGenerationTest {
         @Test
         fun `키쌍 생성 검증`() {
-            val keyPair = ECCCipher.generateKeyPair()
+            val keyPair = ECCCrypto.generateKeyPair()
             assertNotNull(keyPair.private)
             assertNotNull(keyPair.public)
         }
@@ -46,8 +46,8 @@ class ECCCipherTest {
     @Nested
     inner class DefaultEncDec {
         private val origin = "Hello ECC Crypto Test".toByteArray()
-        private var encrypted: ECCCipher.EncryptedData? = null
-        private val keyPair = ECCCipher.generateKeyPair()
+        private var encrypted: ECCCrypto.EncryptedData? = null
+        private val keyPair = ECCCrypto.generateKeyPair()
 
         /**
          * 정상 암복호화 테스트
@@ -56,7 +56,7 @@ class ECCCipherTest {
         @Order(1)
         fun `정상 분리 암호화 테스트`() {
             println("정상 분리 암호화 테스트")
-            this.encrypted = ECCCipher.encrypt(this.origin, this.keyPair.public)
+            this.encrypted = ECCCrypto.encrypt(this.origin, this.keyPair.public)
             println(this.encrypted)
         }
 
@@ -70,7 +70,7 @@ class ECCCipherTest {
             if (null == this.encrypted) throw Exception("암호화 값이 없음")
 
             this.encrypted?.let {
-                val decrypted = ECCCipher.decrypt(it, this.keyPair.private)
+                val decrypted = ECCCrypto.decrypt(it, this.keyPair.private)
                 assertArrayEquals(this.origin, decrypted)
             }
         }
@@ -86,8 +86,8 @@ class ECCCipherTest {
         fun `encrypt and decrypt should return original data`() {
             val origin = "Hello ECC Crypto Test".toByteArray()
 
-            val encrypted = ECCCipher.encrypt(origin, keyPair.public)
-            val decrypted = ECCCipher.decrypt(encrypted, keyPair.private)
+            val encrypted = ECCCrypto.encrypt(origin, keyPair.public)
+            val decrypted = ECCCrypto.decrypt(encrypted, keyPair.private)
 
             assertArrayEquals(origin, decrypted)
         }
@@ -100,8 +100,8 @@ class ECCCipherTest {
     fun `encrypt should generate different ciphertext every time`() {
         val origin = "Same Message".toByteArray()
 
-        val enc1 = ECCCipher.encrypt(origin, keyPair.public)
-        val enc2 = ECCCipher.encrypt(origin, keyPair.public)
+        val enc1 = ECCCrypto.encrypt(origin, keyPair.public)
+        val enc2 = ECCCrypto.encrypt(origin, keyPair.public)
 
         assertNotEquals(
             enc1.cipherText.contentToString(),
@@ -118,10 +118,10 @@ class ECCCipherTest {
 
         val otherKeyPair = generateKeyPair()
 
-        val encrypted = ECCCipher.encrypt(origin, keyPair.public)
+        val encrypted = ECCCrypto.encrypt(origin, keyPair.public)
 
         assertThrows(Exception::class.java) {
-            ECCCipher.decrypt(encrypted, otherKeyPair.private)
+            ECCCrypto.decrypt(encrypted, otherKeyPair.private)
         }
     }
 
@@ -135,8 +135,8 @@ class ECCCipherTest {
         val restored = restorePublicKey(encoded)
         val origin = "Key Restore Test".toByteArray()
 
-        val encrypted = ECCCipher.encrypt(origin, restored)
-        val decrypted = ECCCipher.decrypt(encrypted, keyPair.private)
+        val encrypted = ECCCrypto.encrypt(origin, restored)
+        val decrypted = ECCCrypto.decrypt(encrypted, keyPair.private)
 
         assertArrayEquals(origin, decrypted)
     }
@@ -151,8 +151,8 @@ class ECCCipherTest {
         val restored = restorePrivateKey(encoded)
         val origin = "Private Key Test".toByteArray()
 
-        val encrypted = ECCCipher.encrypt(origin, keyPair.public)
-        val decrypted = ECCCipher.decrypt(encrypted, restored)
+        val encrypted = ECCCrypto.encrypt(origin, keyPair.public)
+        val decrypted = ECCCrypto.decrypt(encrypted, restored)
 
         assertArrayEquals(origin, decrypted)
     }

@@ -205,6 +205,10 @@ ktlint_standard_function-signature = disabled
 # Trailing space(s) (standard:no-trailing-spaces)
 #ktlint_standard_no-trailing-spaces = disabled
 
+# Expected a single space (standard:parameter-list-spacing)
+# 함수나 메서드의 파라미터 선언부에서 괄호와 파라미터 사이의 공백(Space) 규칙
+#ktlint_standard_parameter-list-spacing = disabled
+
 # [고민] 모든 arguments는 single line 으로 위치해야 함. 이 옵션이 영향도가 좀 크네...
 # Argument should be on a separate line (unless all arguments can fit a single line) (standard:argument-list-wrapping)
 ktlint_standard_argument-list-wrapping = disabled
@@ -232,8 +236,14 @@ ktlint_standard_string-template = enabled
 # Declarations and declarations with comments should have an empty space between.
 #ktlint_standard_spacing-between-declarations-with-comments = disabled
 
+# Line must not begin with "||" (standard:chain-wrapping)
+#ktlint_standard_chain-wrapping = disabled
 
-# Settings after ktlint 1.8.
+# Enum entry should start on a separate line
+ktlint_standard_enum-wrapping = disabled
+
+
+##### Settings after ktlint 1.8.
 
 # A dangling toplevel KDoc is not allowed (cannot be auto-corrected) (standard:kdoc)
 #ktlint_standard_kdoc = disabled

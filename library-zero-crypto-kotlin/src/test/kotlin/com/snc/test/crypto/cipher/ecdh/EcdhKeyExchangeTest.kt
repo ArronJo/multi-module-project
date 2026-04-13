@@ -1,6 +1,6 @@
-package com.snc.test.crypto.cipher.channel.ecdh
+package com.snc.test.crypto.cipher.ecdh
 
-import com.snc.zero.crypto.channel.ecdh.EccEcdhKeyExchange
+import com.snc.zero.crypto.ecdh.EcdhKeyExchange
 import com.snc.zero.extensions.text.toHexString
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -24,13 +24,13 @@ import java.util.Base64
  */
 @Suppress("NonAsciiCharacters")
 @DisplayName("EccKeyExchange 테스트")
-class EccEcdhKeyExchangeTest {
+class EcdhKeyExchangeTest {
 
-    private lateinit var exchange: EccEcdhKeyExchange
+    private lateinit var exchange: EcdhKeyExchange
 
     @BeforeEach
     fun setup() {
-        exchange = EccEcdhKeyExchange()
+        exchange = EcdhKeyExchange()
     }
 
     @Nested
@@ -44,7 +44,7 @@ class EccEcdhKeyExchangeTest {
             val bob =
                 "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEPhjGcxIvyHE33Oyrs6TQyjh59QOa2XQHF6XddhN2UEw49avH4RQyKisZXvJGhF75YSQGRxp5JsyUTMhNsLPucw=="
 
-            val sharedSecret = EccEcdhKeyExchange.handleKeyExchange(bob)
+            val sharedSecret = EcdhKeyExchange.handleKeyExchange(bob)
             println("\n공유 비밀키 도출: $sharedSecret")
             println("\n")
         }

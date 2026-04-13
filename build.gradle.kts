@@ -16,11 +16,6 @@ plugins {
     alias(libs.plugins.kotlin.jvm) // kotlin("jvm") version "2.3.0"
     alias(libs.plugins.kotlin.serialization) // kotlin("plugin.serialization") version "2.3.0"
 
-    alias(libs.plugins.jacoco) // id("jacoco")
-
-    // https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
-    alias(libs.plugins.sonarqube) // id("org.sonarqube") version "5.1.0.4882"
-
     // 플러그인 최신버전 확인하기: https://github.com/JLLeitschuh/ktlint-gradle/blob/main/CHANGELOG.md
     // https://beaniejoy.tistory.com/108
     // https://plugins.gradle.org/plugin/org.jlleitschuh.gradle.ktlint
@@ -46,6 +41,11 @@ plugins {
 
     // 오픈 소스 라이선스 리포트 만들기
     alias(libs.plugins.license.report) // id("com.github.jk1.dependency-license-report") version "3.0.1"
+
+    alias(libs.plugins.jacoco) // id("jacoco")
+
+    // https://docs.sonarsource.com/sonarqube/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/
+    alias(libs.plugins.sonarqube) // id("org.sonarqube") version "5.1.0.4882"
 
     // 오픈 소스 취약점을 확인
     // Dependency-check OWASP
@@ -231,11 +231,11 @@ sourceSets {
 //
 
 // CLI 최신버전 확인: https://pinterest.github.io/ktlint/latest/
-var ktlintVersion = "1.8.0"
+//var ktlintVersion = "1.8.0"
 
 //configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
 ktlint {
-    version.set(ktlintVersion)
+    //version.set(ktlintVersion)
     debug.set(false)
     verbose.set(true)
     android.set(false)
@@ -489,7 +489,7 @@ subprojects {
     }
 
     ktlint {
-        version.set(ktlintVersion)
+        //version.set(ktlintVersion)
         debug.set(false)
         verbose.set(true)
         android.set(false)

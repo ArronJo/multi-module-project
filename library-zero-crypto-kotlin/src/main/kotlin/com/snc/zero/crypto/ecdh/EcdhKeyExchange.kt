@@ -1,4 +1,4 @@
-package com.snc.zero.crypto.channel.ecdh
+package com.snc.zero.crypto.ecdh
 
 import java.security.KeyFactory
 import java.security.KeyPairGenerator
@@ -28,12 +28,12 @@ import javax.crypto.KeyAgreement
  *   Bob 공개키   → Alice 에게 전달
  *   각자 상대방 공개키 + 자신의 개인키 → 동일한 공유비밀 도출
  */
-class EccEcdhKeyExchange {
+class EcdhKeyExchange {
 
     companion object {
 
         fun handleKeyExchange(clientPublicKeyBase64: String): String {
-            val exchange = EccEcdhKeyExchange()
+            val exchange = EcdhKeyExchange()
             val serverKeyPair = exchange.generateKeyPair()
 
             val sharedSecret = exchange.deriveSharedSecretFromBase64(

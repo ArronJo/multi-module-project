@@ -24,14 +24,14 @@
 <pre id="clientPublicKey">-</pre>
 
 <br>
-<span class="label">서버 공개키 입력 (서버 응답값 붙여넣기):</span>
+<label class="label" for="serverPublicKeyInput">서버 공개키 입력 (서버 응답값 붙여넣기):</label>
 <input type="text" id="serverPublicKeyInput" placeholder="서버에서 받은 Base64 공개키 붙여넣기">
 <button onclick="step2_deriveSharedSecret()">Step 2: 공유 비밀키 도출</button>
 
 <span class="label">공유 비밀키 (AES-256 세션키):</span>
 <pre id="sharedSecret">-</pre>
 
-<span class="label">암호화 테스트 메시지:</span>
+<label class="label" for="plaintext">암호화 테스트 메시지:</label>
 <input type="text" id="plaintext" value="Hello Kotlin Server!">
 <button onclick="step3_encrypt()">Step 3: AES-GCM 암호화</button>
 
@@ -58,7 +58,7 @@
         // 브라우저 공개키 → SPKI(X.509) → Base64 → 서버 전송
         const spki = await crypto.subtle.exportKey('spki', clientKeyPair.publicKey)
         const base64 = btoa(String.fromCharCode(...new Uint8Array(spki)))
-
+        console.log("base64: " + base64)
         document.getElementById('clientPublicKey').textContent = base64
     }
 
