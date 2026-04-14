@@ -58,13 +58,13 @@ root = true
 charset = utf-8
 end_of_line = lf
 insert_final_newline = true
-#ktlint_code_style = intellij_idea
-#indent_size = 4
-#indent_style = space
-#max_line_length = 120
+indent_size = 4
+indent_style = space
 #tab_width = 4
-#trim_trailing_whitespace = true
+#max_line_length = 160
+trim_trailing_whitespace = true
 #ij_continuation_indent_size = 8
+#ktlint_code_style = intellij_idea
 
 
 ######################################
@@ -85,11 +85,8 @@ ktlint_standard_argument-list-wrapping = disabled
 
 # noinspection EditorConfigKeyCorrectness
 [*.{kt,kts}]
-# IntelliJ에서 Ktlint와 충돌 없이 저장 시 자동 포맷을 적용
-indent_size = 4
-indent_style = space
 # - 코드 스타일 프리셋을 선택하는 옵션
-# official			: Ktlint의 기본 스타일 (Kotlin 공식 스타일 가이드 기반)
+# official (default): Ktlint의 기본 스타일 (Kotlin 공식 스타일 가이드 기반)
 # intellij_idea		: IntelliJ IDEA에서 사용하는 기본 Kotlin 코드 스타일
 # android_studio	: Android 개발에 최적화된 Android Studio 스타일 (Ktlint 1.2.0+부터 지원)
 ktlint_code_style = intellij_idea

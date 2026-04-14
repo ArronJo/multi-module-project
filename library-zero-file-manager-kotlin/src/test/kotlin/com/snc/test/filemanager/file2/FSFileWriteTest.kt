@@ -40,8 +40,9 @@ class FSFileWriteTest : BaseJUnit5Test() {
     fun `FSFile write 1메가 이상`() {
         val file = File(dir, "1mb.txt")
         var data = ""
-        (1..10 * 1024).forEach { i ->
-            data += "svg width=\"70px\" height=\"70px\" viewBox=\"0 0 70 70\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+        (1..10 * 1024).forEach { _ ->
+            data += "svg width=\"70px\" height=\"70px\" viewBox=\"0 0 70 70\" version=\"1.1\" " +
+                "xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\""
         }
 
         try {

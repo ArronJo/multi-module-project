@@ -45,7 +45,10 @@ open class AESGCMMetadataTest {
             println(prefix)
 
             // Then
-            assertTrue(prefix.startsWith("${EncryptedMetadata.PREFIX}${EncryptedMetadata.DELIMITER}${MetadataVersion.VERSION2.value}${EncryptedMetadata.DELIMITER}"), "올바른 프리픽스로 시작해야 한다")
+            assertTrue(
+                prefix.startsWith("${EncryptedMetadata.PREFIX}${EncryptedMetadata.DELIMITER}${MetadataVersion.VERSION2.value}${EncryptedMetadata.DELIMITER}"),
+                "올바른 프리픽스로 시작해야 한다"
+            )
         }
 
         @Test

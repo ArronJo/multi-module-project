@@ -58,7 +58,10 @@ class CalendarExtTest : BaseJUnit5Test() {
         cal.setSecond(22)
         cal.setMillisecond(123)
         // then
-        logger.debug { "Calendar 연산 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} ${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}" }
+        logger.debug {
+            "Calendar 연산 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} " +
+                "${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}"
+        }
     }
 
     @Test
@@ -74,7 +77,10 @@ class CalendarExtTest : BaseJUnit5Test() {
         cal.addSecond(1)
         cal.addMillisecond(1)
         // then
-        logger.debug { "Calendar 연산 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} ${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}" }
+        logger.debug {
+            "Calendar 연산 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} " +
+                "${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}"
+        }
     }
 
     @Test
@@ -132,7 +138,10 @@ class CalendarExtTest : BaseJUnit5Test() {
         // when
         cal.startOfMonth()
         // then
-        logger.debug { "Calendar start day of month 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} ${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}" }
+        logger.debug {
+            "Calendar start day of month 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} " +
+                "${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}"
+        }
     }
 
     @Test
@@ -142,7 +151,10 @@ class CalendarExtTest : BaseJUnit5Test() {
         // when
         cal.endOfMonth()
         // then
-        logger.debug { "Calendar end day of month 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} ${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}" }
+        logger.debug {
+            "Calendar end day of month 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} " +
+                "${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}"
+        }
     }
 
     @Test
@@ -152,7 +164,10 @@ class CalendarExtTest : BaseJUnit5Test() {
         // when
         cal.endOfDay()
         // then
-        logger.debug { "Calendar last time of day 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} ${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}" }
+        logger.debug {
+            "Calendar last time of day 결과: ${cal.getYear()}-${cal.getMonth()}-${cal.getDay()} " +
+                "${cal.getHour()}:${cal.getMinute()}:${cal.getSecond()}.${cal.getMillisecond()}"
+        }
     }
 
     @Test

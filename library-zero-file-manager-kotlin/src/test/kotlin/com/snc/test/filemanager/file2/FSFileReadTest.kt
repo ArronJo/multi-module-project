@@ -33,8 +33,9 @@ class FSFileReadTest : BaseJUnit5Test() {
     fun `FSFile read 1 - TOCTOU 대응 1`() {
         val file = File(dir, "read_test.txt")
         var data = ""
-        (1..10 * 1024).forEach { i ->
-            data += "svg width=\"70px\" height=\"70px\" viewBox=\"0 0 70 70\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+        (1..10 * 1024).forEach { _ ->
+            data += "svg width=\"70px\" height=\"70px\" viewBox=\"0 0 70 70\" version=\"1.1\" " +
+                "xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\""
         }
 
         try {
@@ -55,8 +56,9 @@ class FSFileReadTest : BaseJUnit5Test() {
     fun `FSFile read 1 - TOCTOU 대응 2`() {
         val file = File(dir, "read_test.txt")
         var data = ""
-        (1..10 * 1024).forEach { i ->
-            data += "svg width=\"70px\" height=\"70px\" viewBox=\"0 0 70 70\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+        (1..10 * 1024).forEach { _ ->
+            data += "svg width=\"70px\" height=\"70px\" viewBox=\"0 0 70 70\" version=\"1.1\" " +
+                "xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\""
         }
 
         try {
@@ -77,8 +79,9 @@ class FSFileReadTest : BaseJUnit5Test() {
     fun `FSFile read 2`() {
         val file = File(dir, "read_test.txt")
         var data = ""
-        (1..10 * 1024).forEach { i ->
-            data += "svg width=\"70px\" height=\"70px\" viewBox=\"0 0 70 70\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\""
+        (1..10 * 1024).forEach { _ ->
+            data += "svg width=\"70px\" height=\"70px\" viewBox=\"0 0 70 70\" version=\"1.1\" " +
+                "xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\""
         }
 
         try {
