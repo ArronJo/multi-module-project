@@ -1,6 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.io.FileInputStream
-import java.util.Locale
 import java.util.Properties
 
 //import org.gradle.api.artifacts.verification.DependencyVerificationMode as VerificationMode
@@ -357,7 +356,7 @@ sonar {
 System.setProperty("sonar.gradle.skipCompile", "true")
 
 ///////////////////////////////////////////////////////////
-// clean Task 에 커스텀 Task 추가
+// Task - clean task 에 커스텀 Task 추가
 // Cannot add task 'clean' as a task with that name already exists.
 //tasks.register("clean") { }
 tasks.named("clean") {
@@ -379,7 +378,11 @@ tasks.named("clean") {
 }
 
 ///////////////////////////////////////////////////////////
-// compileJava 사전 Task
+// Task - compileJava 사전
+tasks.named("compileJava") {
+    dependsOn("deleteDSStoreShellScript")
+}
+
 tasks.register<Exec>("deleteDSStoreShellScript") {
     println("\n\n>>>>> task deleteDSStoreShellScript :\n  $projectDir/,\n  os.name: ${System.getProperty("os.name")}") // "Mac OS X"
 
@@ -394,13 +397,14 @@ tasks.register<Exec>("deleteDSStoreShellScript") {
     //delete file('src/main/generated') // 인텔리제이 Annotation processor 생성물 생성 위치
 }
 
-tasks.named("compileJava") {
-    dependsOn("deleteDSStoreShellScript")
-}
-
 ///////////////////////////////////////////////////////////
 // 빌드 이후 후속 Task
-// 의존성 검증 메타데이터 생성 task 정의
+// Task - 의존성 검증 메타데이터 생성 task 정의
+// root build task가 완료된 후 generateVerificationMetadata task 실행
+tasks.named("build") {
+    finalizedBy("generateVerificationMetadata")
+}
+
 tasks.register<Exec>("generateVerificationMetadata") {
     group = "verification"
     description = "모든 하위 프로젝트 빌드 완료 후 의존성 검증 메타데이터 파일 생성"
@@ -416,23 +420,23 @@ tasks.register<Exec>("generateVerificationMetadata") {
     }
 
     doLast {
-        println("\n의존성 검증 metadata가 생성되었습니다.")
+        println("\n의존성 검증 metadata가 생성되었습니다.\n  -위치: <root project>/gradle/verification-metadata.xml")
     }
-}
-
-// root build task가 완료된 후 generateVerificationMetadata task 실행
-tasks.named("build") {
-    finalizedBy("generateVerificationMetadata")
 }
 
 ///////////////////////////////////////////////////////////
 // 빌드 이후 후속 Task
-// LicenseReport 생성 후 파일 정리
+// Task - LicenseReport 생성 후 파일 정리
 tasks.named("build") {
     finalizedBy("generateLicenseReport")
 }
 
-val licenseOutputDir = "${rootProject.projectDir}/report/licenses"
+tasks.named("generateLicenseReport") {
+    finalizedBy(cleanLicenseReportDirs)
+}
+
+val licenseOutputDir = "${rootProject.projectDir}/build/reports/licenses"
+println("licenseOutputDir = $licenseOutputDir")
 licenseReport {
     outputDir = licenseOutputDir
     renderers = arrayOf<com.github.jk1.license.render.ReportRenderer>(
@@ -458,10 +462,6 @@ val cleanLicenseReportDirs by tasks.registering(Delete::class) {
                 ?.forEach { delete(it) }
         }
     }
-}
-
-tasks.named("generateLicenseReport") {
-    finalizedBy(cleanLicenseReportDirs)
 }
 
 ///////////////////////////////////////////////////////////
@@ -696,7 +696,71 @@ tasks.register("showAllDependencies") {
 
 ///////////////////////////////////////////////////////////
 // CycloneDx
-// SBOM 생성 이후 취약점 검사
+// SBOM 생성 및 취약점 검사
+// - Task :cyclonedxDirectBom, 생성 단위	개별 프로젝트 단위 (Per-Project)
+//        : 명령어를 실행한 해당 모듈(프로젝트)에 선언된 의존성만을 분석하여 개별적인 SBOM 문서를 생성합니다.
+// - Task :cyclonedxBom, 통합 단위 (Aggregated)
+//        : 루트 프로젝트와 그 하위에 있는 모든 서브 프로젝트(모듈)의 의존성을 끌어모아 **단일 SBOM 문서로 병합(Aggregate)**합니다.
+
+tasks.named("build") {
+    finalizedBy("cyclonedxBom")
+}
+
+// SBOM 생성 -> HTML 제작 -> Viewer 연동
+tasks.named("cyclonedxBom") {
+    outputs.upToDateWhen { false }
+
+    doLast {
+        println("tasks.named(\"cyclonedxBom\") doLast {}")
+
+        val bomFile = file("build/reports/cyclonedx/bom.json")
+        val templateHtml = file("src/test/resources/bom-viewer-template.html")
+        val outputHtml = file("build/reports/bom-viewer.html")
+
+        if (bomFile.exists() && templateHtml.exists()) {
+            // JSON 데이터 읽기
+            val bomJson = bomFile.readText()
+
+            // HTML 템플릿 읽고 데이터 삽입
+            val htmlContent = templateHtml.readText()
+                .replace("\"/*BOM_DATA_PLACEHOLDER*/\"", bomJson)
+
+            outputHtml.writeText(htmlContent)
+            println("✅ BOM 생성 완료: ${bomFile.absolutePath}")
+
+            println("\n💡 직접 취약점 검사를 실행하려면:")
+            println("   ./gradlew checkVulnerabilities")
+
+            // 빌드 단계에서 매번 뷰어를 실행하는게 맞는 지 검토한다.
+            // 브라우저에서 자동 열기
+            //val os = System.getProperty("os.name").lowercase(Locale.getDefault())
+            //val command = when {
+            //    os.contains("win") -> listOf("cmd", "/c", "start", outputHtml.absolutePath)
+            //    os.contains("mac") -> listOf("open", outputHtml.absolutePath)
+            //    os.contains("nix") || os.contains("nux") -> listOf("xdg-open", outputHtml.absolutePath)
+            //    else -> null
+            //}
+            //command?.let {
+            //    try {
+            //        ProcessBuilder(it).start()
+            //        println("🌐 뷰어 열림: ${outputHtml.absolutePath}")
+            //    } catch (e: Exception) {
+            //        println("⚠️  브라우저 자동 실행 실패: ${e.message}")
+            //        println("   수동으로 열어주세요: ${outputHtml.absolutePath}")
+            //    }
+            //}
+        } else {
+            if (!bomFile.exists()) println("⚠️  BOM 파일이 생성되지 않았습니다")
+            if (!templateHtml.exists()) println("⚠️  bom-viewer-template.html 파일이 프로젝트 루트에 없습니다")
+        }
+    }
+}
+
+// SBOM 취약점 검사를 자동으로 수행 할지는 고민 좀 해보자.
+//tasks.named("cyclonedxBom") {
+//    finalizedBy("cyclonedxBomCheckVulnerabilities")
+//}
+
 tasks.register<Exec>("cyclonedxBomCheckVulnerabilities") {
     dependsOn("cyclonedxBom")
     group = "verification"
@@ -734,62 +798,3 @@ tasks.register<Exec>("cyclonedxBomCheckVulnerabilities") {
         println("\n✅ 취약점 검사 완료")
     }
 }
-
-// SBOM 취약점 검사를 자동으로 수행 할지는 고민 좀 해보자.
-//tasks.named("cyclonedxBom") {
-//    finalizedBy("cyclonedxBomCheckVulnerabilities")
-//}
-
-// SBOM 생성 후 Viewer 연동
-tasks.named("cyclonedxBom") {
-    outputs.upToDateWhen { false }
-
-    doLast {
-        println("tasks.named(\"cyclonedxBom\") doLast {}")
-
-        val bomFile = file("build/reports/cyclonedx/bom.json")
-        val templateHtml = file("src/test/resources/bom-viewer-template.html")
-        val outputHtml = file("build/reports/bom-viewer.html")
-
-        if (bomFile.exists() && templateHtml.exists()) {
-            // JSON 데이터 읽기
-            val bomJson = bomFile.readText()
-
-            // HTML 템플릿 읽고 데이터 삽입
-            val htmlContent = templateHtml.readText()
-                .replace("\"/*BOM_DATA_PLACEHOLDER*/\"", bomJson)
-
-            outputHtml.writeText(htmlContent)
-
-            // 브라우저에서 자동 열기
-            val os = System.getProperty("os.name").lowercase(Locale.getDefault())
-            val command = when {
-                os.contains("win") -> listOf("cmd", "/c", "start", outputHtml.absolutePath)
-                os.contains("mac") -> listOf("open", outputHtml.absolutePath)
-                os.contains("nix") || os.contains("nux") -> listOf("xdg-open", outputHtml.absolutePath)
-                else -> null
-            }
-
-            command?.let {
-                try {
-                    ProcessBuilder(it).start()
-                    println("✅ BOM 생성 완료: ${bomFile.absolutePath}")
-                    println("🌐 뷰어 열림: ${outputHtml.absolutePath}")
-
-                    println("\n💡 직접 취약점 검사를 실행하려면:")
-                    println("   ./gradlew checkVulnerabilities")
-                } catch (e: Exception) {
-                    println("⚠️  브라우저 자동 실행 실패: ${e.message}")
-                    println("   수동으로 열어주세요: ${outputHtml.absolutePath}")
-                }
-            }
-        } else {
-            if (!bomFile.exists()) println("⚠️  BOM 파일이 생성되지 않았습니다")
-            if (!templateHtml.exists()) println("⚠️  bom-viewer-template.html 파일이 프로젝트 루트에 없습니다")
-        }
-    }
-}
-
-//tasks.named("build") {
-//    finalizedBy("cyclonedxBom")
-//}
