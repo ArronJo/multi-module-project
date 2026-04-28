@@ -28,7 +28,7 @@ class TextSecurityGuardTest {
 
     @Nested
     @DisplayName("정규식 테스트")
-    inner class RegexTextTest() {
+    inner class RegexTextTest {
 
         @Test
         fun `정규식 테스트`() {

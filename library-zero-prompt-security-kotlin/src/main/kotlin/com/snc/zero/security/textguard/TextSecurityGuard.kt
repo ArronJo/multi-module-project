@@ -143,8 +143,8 @@ class ThreatDetector {
         DetectionPattern(ThreatType.PASSPORT_NUMBER, """\b[A-Z]{2}\d{7}\b""".toRegex(), "구형 한국 여권번호 (PM1234567 형식)"),
 
         // 운전면허번호 패턴들
-        DetectionPattern(ThreatType.DRIVER_LICENSE, """\b\d{2}-\d{2}-\d{6}-\d{2}\b""".toRegex(), "운전면허번호 (11-12-345678-90 형식)"),
-        DetectionPattern(ThreatType.DRIVER_LICENSE, """\b(?:서울|부산|대구|인천|광주|대전|울산|경기|강원|충북|충남|전북|전남|경북|경남|제주)-\d{2}-\d{6}-\d{2}\b""".toRegex(), "운전면허번호 (구형 지역명 + 숫자 형식)"),
+        DetectionPattern(ThreatType.DRIVER_LICENSE, """(?<!\d)\d{2}-\d{2}-\d{6}-\d{2}(?!\d)""".toRegex(), "운전면허번호 (11-12-345678-90 형식)"),
+        DetectionPattern(ThreatType.DRIVER_LICENSE, """(?:서울|부산|대구|인천|광주|대전|울산|경기|강원|충북|충남|전북|전남|경북|경남|제주)-\d{2}-\d{6}-\d{2}(?!\d)""".toRegex(), "운전면허번호 (구형 지역명 + 숫자 형식)"),
 
         // 차량번호 패턴들
         // 복잡도 큼: DetectionPattern(ThreatType.LICENSE_PLATE, """((서울|부산|대구|인천|광주|대전|울산|경기|강원|충북|충남|전북|전남|경북|경남|제주){2,3}[- ]?)?(?:\d{2}|\d{3})[가-힣][ -]?\d{4}""".toRegex(), "차량 번호판 패턴"),
@@ -270,8 +270,8 @@ class ThreatDetector {
         DetectionPattern(ThreatType.PROMPT_INJECTION, """\*\*\*\s*(ignore|override|new\s+instruction)""".toRegex(), "별표 기호로 지시 강조"),
 
         // 12. 한국어 프롬프트 인젝션 패턴들
-        DetectionPattern(ThreatType.PROMPT_INJECTION, """(?i)\b(무시해|무시하고|잊어버리고)\b""".toRegex(), "한국어 무시 명령"),
-        DetectionPattern(ThreatType.PROMPT_INJECTION, """(?i)(이전|위의|모든)\s+(지시|명령|규칙)을?\s+(무시|잊어버려)""".toRegex(), "한국어 지시사항 무시"),
+        DetectionPattern(ThreatType.PROMPT_INJECTION, """(?i)(무시해|무시하고|잊어버리고)""".toRegex(), "한국어 무시 명령"),
+        DetectionPattern(ThreatType.PROMPT_INJECTION, """(?i)(이전|위의|모든)\s+(지시|명령|규칙)(사항)?을?\s+(모두\s+)?(무시|잊어버려|잊어버리고)""".toRegex(), "한국어 지시사항 무시"),
         DetectionPattern(ThreatType.PROMPT_INJECTION, """(?i)(관리자|개발자|시스템)\s+(모드|권한|역할)""".toRegex(), "역할/권한 변경 시도 (한국어)"),
         DetectionPattern(ThreatType.PROMPT_INJECTION, """(?i)(가정해|상상해|연기해)\s+""".toRegex(), "시뮬레이션/역할극 시도 (한국어)"),
         DetectionPattern(ThreatType.PROMPT_INJECTION, """(?i)(보안|안전)\s+(기능|제한)을?\s+(해제|비활성화|끄고)""".toRegex(), "보안 해제 시도 (한국어)"),

@@ -64,7 +64,7 @@ buildscript {
 
         // Gradle JVM = Gradle 실행, 빌드 도구를 돌리는 엔진, 서로 독립적, 최신 설정 권장
         // jvmToolchain = 프로젝트 코드, 내 코드를 컴파일하는 컴파일러, 서로 독립적, 프로젝트에 맞게 설정 권장
-        set("jvmToolchain", 17) // 프로젝트에 맞게 jvm 버전 설정 추천.
+        set("jvmToolchain", 21) // 프로젝트에 맞게 jvm 버전 설정 추천. 26.4 17 -> 21
 
         //set("kotlinVersion", "2.1")
     }
