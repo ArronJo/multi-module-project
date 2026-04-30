@@ -40,7 +40,7 @@ import java.security.Signature
  * - JDK 11 이하라면:
  * ```
  *   dependencies {
- *     implementation("org.bouncycastle:bcprov-jdk18on:1.78")
+ *     implementation("org.bouncycastle:bcprov-jdk18on:1.84")
  *   }
  * ```
  *

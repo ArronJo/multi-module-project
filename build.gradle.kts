@@ -409,6 +409,21 @@ tasks.register<Exec>("generateVerificationMetadata") {
     group = "verification"
     description = "모든 하위 프로젝트 빌드 완료 후 의존성 검증 메타데이터 파일 생성"
 
+    val metadataFile = File(projectDir, "gradle/verification-metadata.xml")
+
+    // 1. 실행 전 기존 파일 삭제 로직 추가
+    doFirst {
+        if (metadataFile.exists()) {
+            if (metadataFile.delete()) {
+                println("\n[진행] 기존 verification-metadata.xml 파일을 삭제했습니다.")
+            } else {
+                println("\n[경고] 기존 파일을 삭제하지 못했습니다. 파일이 열려있는지 확인하세요.")
+            }
+        } else {
+            println("\n[정보] 기존 메타데이터 파일이 없어 바로 생성을 시작합니다.")
+        }
+    }
+
     // 프로젝트 루트 디렉토리에서 실행
     workingDir = projectDir
 
@@ -420,7 +435,7 @@ tasks.register<Exec>("generateVerificationMetadata") {
     }
 
     doLast {
-        println("\n의존성 검증 metadata가 생성되었습니다.\n  -위치: <root project>/gradle/verification-metadata.xml")
+        println("\n의존성 검증 metadata가 생성되었습니다.\n  -위치: ${metadataFile.absolutePath}}")
     }
 }
 
@@ -464,16 +479,25 @@ val cleanLicenseReportDirs by tasks.registering(Delete::class) {
     }
 }
 
+// 루트 build.gradle.kts
+allprojects {
+    tasks.register<DependencyReportTask>("allDeps") {
+        // 모든 프로젝트의 의존성을 리포트로 출력하도록 설정
+    }
+}
+
 ///////////////////////////////////////////////////////////
 // Sub-Projects Settings
 subprojects {
-    apply(plugin = "org.jetbrains.kotlin.jvm")
-    apply(plugin = "java")
-    apply(plugin = "jacoco")
-    apply(plugin = "org.owasp.dependencycheck")
-    apply(plugin = "org.jlleitschuh.gradle.ktlint")
-    //apply(plugin = "io.gitlab.arturbosch.detekt")
-    apply(plugin = "org.jetbrains.kotlin.plugin.serialization")
+    apply {
+        plugin("org.jetbrains.kotlin.jvm")
+        plugin("java")
+        plugin("jacoco")
+        plugin("org.owasp.dependencycheck")
+        plugin("org.jlleitschuh.gradle.ktlint")
+        //plugin("io.gitlab.arturbosch.detekt")
+        plugin("org.jetbrains.kotlin.plugin.serialization")
+    }
 
     repositories {
         mavenCentral()
