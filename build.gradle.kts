@@ -114,9 +114,14 @@ dependencies {
 //}
 
 // Dependency-check OWASP
-//dependencyCheck {
-//    format = org.owasp.dependencycheck.reporting.ReportGenerator.Format.ALL
-//}
+// https://dependency-check.github.io/DependencyCheck/dependency-check-gradle/configuration.html
+dependencyCheck {
+    // 리포트 생성 형식 설정 (HTML, XML 등)
+    formats = listOf("HTML", "JSON")
+    //formats = listOf("ALL")
+    // 취약점 점수(CVSS) 임계치 설정 (이 점수 이상만 실패로 처리)
+    failBuildOnCVSS = 7.0f
+}
 
 tasks.test {
     useJUnitPlatform()

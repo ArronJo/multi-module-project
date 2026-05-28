@@ -6,7 +6,7 @@ ktlint = "14.0.1" # 공식 추천 플러그인 # https://github.com/JLLeitschuh/
 #ktlint-usefulness = "0.11.0" # 경량 대안
 #detekt = "1.23.7"  # https://github.com/detekt/detekt
 sonarqube = "7.2.3.7755"
-owasp-dependencycheck = "12.1.9" # "8.0.2" # https://plugins.gradle.org/plugin/org.owasp.dependencycheck
+owasp-dependencycheck = "12.2.2"  # https://plugins.gradle.org/plugin/org.owasp.dependencycheck
 cyclonedx = "3.2.2" # "2.2.0" # "1.7.4" # https://plugins.gradle.org/plugin/org.cyclonedx.bom
 license-report = "3.1.1" # https://github.com/jk1/Gradle-License-Report/blob/master/CHANGELOG.md
 junit-jupiter = "5.10.2"
@@ -63,7 +63,7 @@ jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin"
 jackson-core = { module = "com.fasterxml.jackson.core:jackson-core" }
 jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" }
 
-#kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines-core" }
+#kotlinx-coroutines-core = { module = "org.jetbrainsq.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines-core" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
 
